@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewUsuarioRolTrabajogradoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewUsuarioRolTrabajogradoLabel_usuarioroltrabajoid}"/>
+                    <h:outputText value="#{usuarioRolTrabajogradoController.selected.usuarioroltrabajoid}" title="#{bundle.ViewUsuarioRolTrabajogradoTitle_usuarioroltrabajoid}"/>
+                    <h:outputText value="#{bundle.ViewUsuarioRolTrabajogradoLabel_fechaasignacion}"/>
+                    <h:outputText value="#{usuarioRolTrabajogradoController.selected.fechaasignacion}" title="#{bundle.ViewUsuarioRolTrabajogradoTitle_fechaasignacion}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewUsuarioRolTrabajogradoLabel_personacedula}"/>
+                    <h:outputText value="#{usuarioRolTrabajogradoController.selected.personacedula}" title="#{bundle.ViewUsuarioRolTrabajogradoTitle_personacedula}"/>
+                    <h:outputText value="#{bundle.ViewUsuarioRolTrabajogradoLabel_trabajoid}"/>
+                    <h:outputText value="#{usuarioRolTrabajogradoController.selected.trabajoid}" title="#{bundle.ViewUsuarioRolTrabajogradoTitle_trabajoid}"/>
+                    <h:outputText value="#{bundle.ViewUsuarioRolTrabajogradoLabel_rolid}"/>
+                    <h:outputText value="#{usuarioRolTrabajogradoController.selected.rolid}" title="#{bundle.ViewUsuarioRolTrabajogradoTitle_rolid}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{usuarioRolTrabajogradoController.destroyAndView}" value="#{bundle.ViewUsuarioRolTrabajogradoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewUsuarioRolTrabajogradoEditLink}"/>
+                <br />
+                <h:commandLink action="#{usuarioRolTrabajogradoController.prepareCreate}" value="#{bundle.ViewUsuarioRolTrabajogradoCreateLink}" />
+                <br />
+                <h:commandLink action="#{usuarioRolTrabajogradoController.prepareList}" value="#{bundle.ViewUsuarioRolTrabajogradoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewUsuarioRolTrabajogradoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

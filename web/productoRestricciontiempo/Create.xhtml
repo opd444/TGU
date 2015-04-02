@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateProductoRestricciontiempoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateProductoRestricciontiempoLabel_productorestriccionid}" for="productorestriccionid" />
+                    <h:inputText id="productorestriccionid" value="#{productoRestricciontiempoController.selected.productorestriccionid}" title="#{bundle.CreateProductoRestricciontiempoTitle_productorestriccionid}" required="true" requiredMessage="#{bundle.CreateProductoRestricciontiempoRequiredMessage_productorestriccionid}"/>
+                    <h:outputLabel value="#{bundle.CreateProductoRestricciontiempoLabel_valoractual}" for="valoractual" />
+                    <h:inputText id="valoractual" value="#{productoRestricciontiempoController.selected.valoractual}" title="#{bundle.CreateProductoRestricciontiempoTitle_valoractual}" required="true" requiredMessage="#{bundle.CreateProductoRestricciontiempoRequiredMessage_valoractual}"/>
+                    <h:outputLabel value="#{bundle.CreateProductoRestricciontiempoLabel_restriccionid}" for="restriccionid" />
+                    <h:selectOneMenu id="restriccionid" value="#{productoRestricciontiempoController.selected.restriccionid}" title="#{bundle.CreateProductoRestricciontiempoTitle_restriccionid}" required="true" requiredMessage="#{bundle.CreateProductoRestricciontiempoRequiredMessage_restriccionid}">
+                        <f:selectItems value="#{restricciontiempoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateProductoRestricciontiempoLabel_productoid}" for="productoid" />
+                    <h:selectOneMenu id="productoid" value="#{productoRestricciontiempoController.selected.productoid}" title="#{bundle.CreateProductoRestricciontiempoTitle_productoid}" required="true" requiredMessage="#{bundle.CreateProductoRestricciontiempoRequiredMessage_productoid}">
+                        <f:selectItems value="#{productodetrabajoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{productoRestricciontiempoController.create}" value="#{bundle.CreateProductoRestricciontiempoSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{productoRestricciontiempoController.prepareList}" value="#{bundle.CreateProductoRestricciontiempoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateProductoRestricciontiempoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

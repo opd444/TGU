@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListProductodetrabajoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListProductodetrabajoEmpty}" rendered="#{productodetrabajoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{productodetrabajoController.items.rowCount > 0}">
+                    <h:outputText value="#{productodetrabajoController.pagination.pageFirstItem + 1}..#{productodetrabajoController.pagination.pageLastItem + 1}/#{productodetrabajoController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{productodetrabajoController.previous}" value="#{bundle.Previous} #{productodetrabajoController.pagination.pageSize}" rendered="#{productodetrabajoController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{productodetrabajoController.next}" value="#{bundle.Next} #{productodetrabajoController.pagination.pageSize}" rendered="#{productodetrabajoController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{productodetrabajoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListProductodetrabajoTitle_productoid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.productoid}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListProductodetrabajoTitle_productoaprobado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.productoaprobado}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListProductodetrabajoTitle_productocontenido}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.productocontenido}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListProductodetrabajoTitle_trabajoid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.trabajoid}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListProductodetrabajoTitle_formatoid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.formatoid}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{productodetrabajoController.prepareView}" value="#{bundle.ListProductodetrabajoViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{productodetrabajoController.prepareEdit}" value="#{bundle.ListProductodetrabajoEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{productodetrabajoController.destroy}" value="#{bundle.ListProductodetrabajoDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{productodetrabajoController.prepareCreate}" value="#{bundle.ListProductodetrabajoCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListProductodetrabajoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

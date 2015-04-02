@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateNotificacionUsuarioTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateNotificacionUsuarioLabel_notificacionusuarioid}" for="notificacionusuarioid" />
+                    <h:inputText id="notificacionusuarioid" value="#{notificacionUsuarioController.selected.notificacionusuarioid}" title="#{bundle.CreateNotificacionUsuarioTitle_notificacionusuarioid}" required="true" requiredMessage="#{bundle.CreateNotificacionUsuarioRequiredMessage_notificacionusuarioid}"/>
+                    <h:outputLabel value="#{bundle.CreateNotificacionUsuarioLabel_fechanotificacion}" for="fechanotificacion" />
+                    <h:inputText id="fechanotificacion" value="#{notificacionUsuarioController.selected.fechanotificacion}" title="#{bundle.CreateNotificacionUsuarioTitle_fechanotificacion}" required="true" requiredMessage="#{bundle.CreateNotificacionUsuarioRequiredMessage_fechanotificacion}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateNotificacionUsuarioLabel_personacedula}" for="personacedula" />
+                    <h:selectOneMenu id="personacedula" value="#{notificacionUsuarioController.selected.personacedula}" title="#{bundle.CreateNotificacionUsuarioTitle_personacedula}" required="true" requiredMessage="#{bundle.CreateNotificacionUsuarioRequiredMessage_personacedula}">
+                        <f:selectItems value="#{usuarioController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateNotificacionUsuarioLabel_notificacionid}" for="notificacionid" />
+                    <h:selectOneMenu id="notificacionid" value="#{notificacionUsuarioController.selected.notificacionid}" title="#{bundle.CreateNotificacionUsuarioTitle_notificacionid}" required="true" requiredMessage="#{bundle.CreateNotificacionUsuarioRequiredMessage_notificacionid}">
+                        <f:selectItems value="#{notificacionController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{notificacionUsuarioController.create}" value="#{bundle.CreateNotificacionUsuarioSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{notificacionUsuarioController.prepareList}" value="#{bundle.CreateNotificacionUsuarioShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateNotificacionUsuarioIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

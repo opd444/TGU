@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateFormatoproductoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateFormatoproductoLabel_formatoid}" for="formatoid" />
+                    <h:inputText id="formatoid" value="#{formatoproductoController.selected.formatoid}" title="#{bundle.CreateFormatoproductoTitle_formatoid}" required="true" requiredMessage="#{bundle.CreateFormatoproductoRequiredMessage_formatoid}"/>
+                    <h:outputLabel value="#{bundle.CreateFormatoproductoLabel_formatonombre}" for="formatonombre" />
+                    <h:inputText id="formatonombre" value="#{formatoproductoController.selected.formatonombre}" title="#{bundle.CreateFormatoproductoTitle_formatonombre}" required="true" requiredMessage="#{bundle.CreateFormatoproductoRequiredMessage_formatonombre}"/>
+                    <h:outputLabel value="#{bundle.CreateFormatoproductoLabel_formatoaprobable}" for="formatoaprobable" />
+                    <h:inputText id="formatoaprobable" value="#{formatoproductoController.selected.formatoaprobable}" title="#{bundle.CreateFormatoproductoTitle_formatoaprobable}" required="true" requiredMessage="#{bundle.CreateFormatoproductoRequiredMessage_formatoaprobable}"/>
+                    <h:outputLabel value="#{bundle.CreateFormatoproductoLabel_formatoobligatorio}" for="formatoobligatorio" />
+                    <h:inputText id="formatoobligatorio" value="#{formatoproductoController.selected.formatoobligatorio}" title="#{bundle.CreateFormatoproductoTitle_formatoobligatorio}" required="true" requiredMessage="#{bundle.CreateFormatoproductoRequiredMessage_formatoobligatorio}"/>
+                    <h:outputLabel value="#{bundle.CreateFormatoproductoLabel_formatocontenido}" for="formatocontenido" />
+                    <h:inputTextarea rows="4" cols="30" id="formatocontenido" value="#{formatoproductoController.selected.formatocontenido}" title="#{bundle.CreateFormatoproductoTitle_formatocontenido}" required="true" requiredMessage="#{bundle.CreateFormatoproductoRequiredMessage_formatocontenido}"/>
+                    <h:outputLabel value="#{bundle.CreateFormatoproductoLabel_faseid}" for="faseid" />
+                    <h:selectOneMenu id="faseid" value="#{formatoproductoController.selected.faseid}" title="#{bundle.CreateFormatoproductoTitle_faseid}" required="true" requiredMessage="#{bundle.CreateFormatoproductoRequiredMessage_faseid}">
+                        <f:selectItems value="#{faseController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{formatoproductoController.create}" value="#{bundle.CreateFormatoproductoSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{formatoproductoController.prepareList}" value="#{bundle.CreateFormatoproductoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateFormatoproductoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

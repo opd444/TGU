@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListRolFormatoproductoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListRolFormatoproductoEmpty}" rendered="#{rolFormatoproductoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{rolFormatoproductoController.items.rowCount > 0}">
+                    <h:outputText value="#{rolFormatoproductoController.pagination.pageFirstItem + 1}..#{rolFormatoproductoController.pagination.pageLastItem + 1}/#{rolFormatoproductoController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{rolFormatoproductoController.previous}" value="#{bundle.Previous} #{rolFormatoproductoController.pagination.pageSize}" rendered="#{rolFormatoproductoController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{rolFormatoproductoController.next}" value="#{bundle.Next} #{rolFormatoproductoController.pagination.pageSize}" rendered="#{rolFormatoproductoController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{rolFormatoproductoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListRolFormatoproductoTitle_rolformatoprodid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rolformatoprodid}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListRolFormatoproductoTitle_responsabilidad}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.responsabilidad}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListRolFormatoproductoTitle_rolid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.rolid}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListRolFormatoproductoTitle_formatoid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.formatoid}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{rolFormatoproductoController.prepareView}" value="#{bundle.ListRolFormatoproductoViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{rolFormatoproductoController.prepareEdit}" value="#{bundle.ListRolFormatoproductoEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{rolFormatoproductoController.destroy}" value="#{bundle.ListRolFormatoproductoDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{rolFormatoproductoController.prepareCreate}" value="#{bundle.ListRolFormatoproductoCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListRolFormatoproductoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

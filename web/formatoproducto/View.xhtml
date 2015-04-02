@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewFormatoproductoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewFormatoproductoLabel_formatoid}"/>
+                    <h:outputText value="#{formatoproductoController.selected.formatoid}" title="#{bundle.ViewFormatoproductoTitle_formatoid}"/>
+                    <h:outputText value="#{bundle.ViewFormatoproductoLabel_formatonombre}"/>
+                    <h:outputText value="#{formatoproductoController.selected.formatonombre}" title="#{bundle.ViewFormatoproductoTitle_formatonombre}"/>
+                    <h:outputText value="#{bundle.ViewFormatoproductoLabel_formatoaprobable}"/>
+                    <h:outputText value="#{formatoproductoController.selected.formatoaprobable}" title="#{bundle.ViewFormatoproductoTitle_formatoaprobable}"/>
+                    <h:outputText value="#{bundle.ViewFormatoproductoLabel_formatoobligatorio}"/>
+                    <h:outputText value="#{formatoproductoController.selected.formatoobligatorio}" title="#{bundle.ViewFormatoproductoTitle_formatoobligatorio}"/>
+                    <h:outputText value="#{bundle.ViewFormatoproductoLabel_formatocontenido}"/>
+                    <h:outputText value="#{formatoproductoController.selected.formatocontenido}" title="#{bundle.ViewFormatoproductoTitle_formatocontenido}"/>
+                    <h:outputText value="#{bundle.ViewFormatoproductoLabel_faseid}"/>
+                    <h:outputText value="#{formatoproductoController.selected.faseid}" title="#{bundle.ViewFormatoproductoTitle_faseid}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{formatoproductoController.destroyAndView}" value="#{bundle.ViewFormatoproductoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewFormatoproductoEditLink}"/>
+                <br />
+                <h:commandLink action="#{formatoproductoController.prepareCreate}" value="#{bundle.ViewFormatoproductoCreateLink}" />
+                <br />
+                <h:commandLink action="#{formatoproductoController.prepareList}" value="#{bundle.ViewFormatoproductoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewFormatoproductoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

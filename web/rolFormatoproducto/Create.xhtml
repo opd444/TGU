@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateRolFormatoproductoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateRolFormatoproductoLabel_rolformatoprodid}" for="rolformatoprodid" />
+                    <h:inputText id="rolformatoprodid" value="#{rolFormatoproductoController.selected.rolformatoprodid}" title="#{bundle.CreateRolFormatoproductoTitle_rolformatoprodid}" required="true" requiredMessage="#{bundle.CreateRolFormatoproductoRequiredMessage_rolformatoprodid}"/>
+                    <h:outputLabel value="#{bundle.CreateRolFormatoproductoLabel_responsabilidad}" for="responsabilidad" />
+                    <h:inputText id="responsabilidad" value="#{rolFormatoproductoController.selected.responsabilidad}" title="#{bundle.CreateRolFormatoproductoTitle_responsabilidad}" required="true" requiredMessage="#{bundle.CreateRolFormatoproductoRequiredMessage_responsabilidad}"/>
+                    <h:outputLabel value="#{bundle.CreateRolFormatoproductoLabel_rolid}" for="rolid" />
+                    <h:selectOneMenu id="rolid" value="#{rolFormatoproductoController.selected.rolid}" title="#{bundle.CreateRolFormatoproductoTitle_rolid}" required="true" requiredMessage="#{bundle.CreateRolFormatoproductoRequiredMessage_rolid}">
+                        <f:selectItems value="#{rolController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateRolFormatoproductoLabel_formatoid}" for="formatoid" />
+                    <h:selectOneMenu id="formatoid" value="#{rolFormatoproductoController.selected.formatoid}" title="#{bundle.CreateRolFormatoproductoTitle_formatoid}" required="true" requiredMessage="#{bundle.CreateRolFormatoproductoRequiredMessage_formatoid}">
+                        <f:selectItems value="#{formatoproductoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{rolFormatoproductoController.create}" value="#{bundle.CreateRolFormatoproductoSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{rolFormatoproductoController.prepareList}" value="#{bundle.CreateRolFormatoproductoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateRolFormatoproductoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

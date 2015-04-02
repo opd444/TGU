@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewRestriccionfrecuenciaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewRestriccionfrecuenciaLabel_restriccionid}"/>
+                    <h:outputText value="#{restriccionfrecuenciaController.selected.restriccionid}" title="#{bundle.ViewRestriccionfrecuenciaTitle_restriccionid}"/>
+                    <h:outputText value="#{bundle.ViewRestriccionfrecuenciaLabel_restriccionnombre}"/>
+                    <h:outputText value="#{restriccionfrecuenciaController.selected.restriccionnombre}" title="#{bundle.ViewRestriccionfrecuenciaTitle_restriccionnombre}"/>
+                    <h:outputText value="#{bundle.ViewRestriccionfrecuenciaLabel_restriccionestado}"/>
+                    <h:outputText value="#{restriccionfrecuenciaController.selected.restriccionestado}" title="#{bundle.ViewRestriccionfrecuenciaTitle_restriccionestado}"/>
+                    <h:outputText value="#{bundle.ViewRestriccionfrecuenciaLabel_maxactualizaciones}"/>
+                    <h:outputText value="#{restriccionfrecuenciaController.selected.maxactualizaciones}" title="#{bundle.ViewRestriccionfrecuenciaTitle_maxactualizaciones}"/>
+                    <h:outputText value="#{bundle.ViewRestriccionfrecuenciaLabel_formatoid}"/>
+                    <h:outputText value="#{restriccionfrecuenciaController.selected.formatoid}" title="#{bundle.ViewRestriccionfrecuenciaTitle_formatoid}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{restriccionfrecuenciaController.destroyAndView}" value="#{bundle.ViewRestriccionfrecuenciaDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewRestriccionfrecuenciaEditLink}"/>
+                <br />
+                <h:commandLink action="#{restriccionfrecuenciaController.prepareCreate}" value="#{bundle.ViewRestriccionfrecuenciaCreateLink}" />
+                <br />
+                <h:commandLink action="#{restriccionfrecuenciaController.prepareList}" value="#{bundle.ViewRestriccionfrecuenciaShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewRestriccionfrecuenciaIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

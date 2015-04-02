@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditProductodetrabajoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditProductodetrabajoLabel_productoid}" for="productoid" />
+                    <h:inputText id="productoid" value="#{productodetrabajoController.selected.productoid}" title="#{bundle.EditProductodetrabajoTitle_productoid}" required="true" requiredMessage="#{bundle.EditProductodetrabajoRequiredMessage_productoid}"/>
+                    <h:outputLabel value="#{bundle.EditProductodetrabajoLabel_productoaprobado}" for="productoaprobado" />
+                    <h:inputText id="productoaprobado" value="#{productodetrabajoController.selected.productoaprobado}" title="#{bundle.EditProductodetrabajoTitle_productoaprobado}" required="true" requiredMessage="#{bundle.EditProductodetrabajoRequiredMessage_productoaprobado}"/>
+                    <h:outputLabel value="#{bundle.EditProductodetrabajoLabel_productocontenido}" for="productocontenido" />
+                    <h:inputTextarea rows="4" cols="30" id="productocontenido" value="#{productodetrabajoController.selected.productocontenido}" title="#{bundle.EditProductodetrabajoTitle_productocontenido}" required="true" requiredMessage="#{bundle.EditProductodetrabajoRequiredMessage_productocontenido}"/>
+                    <h:outputLabel value="#{bundle.EditProductodetrabajoLabel_trabajoid}" for="trabajoid" />
+                    <h:selectOneMenu id="trabajoid" value="#{productodetrabajoController.selected.trabajoid}" title="#{bundle.EditProductodetrabajoTitle_trabajoid}" required="true" requiredMessage="#{bundle.EditProductodetrabajoRequiredMessage_trabajoid}">
+                        <f:selectItems value="#{trabajodegradoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditProductodetrabajoLabel_formatoid}" for="formatoid" />
+                    <h:selectOneMenu id="formatoid" value="#{productodetrabajoController.selected.formatoid}" title="#{bundle.EditProductodetrabajoTitle_formatoid}" required="true" requiredMessage="#{bundle.EditProductodetrabajoRequiredMessage_formatoid}">
+                        <f:selectItems value="#{formatoproductoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{productodetrabajoController.update}" value="#{bundle.EditProductodetrabajoSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditProductodetrabajoViewLink}"/>
+                <br />
+                <h:commandLink action="#{productodetrabajoController.prepareList}" value="#{bundle.EditProductodetrabajoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditProductodetrabajoIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditUsuarioTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditUsuarioLabel_personacedula}" for="personacedula" />
+                    <h:inputText id="personacedula" value="#{usuarioController.selected.personacedula}" title="#{bundle.EditUsuarioTitle_personacedula}" required="true" requiredMessage="#{bundle.EditUsuarioRequiredMessage_personacedula}"/>
+                    <h:outputLabel value="#{bundle.EditUsuarioLabel_personanombres}" for="personanombres" />
+                    <h:inputText id="personanombres" value="#{usuarioController.selected.personanombres}" title="#{bundle.EditUsuarioTitle_personanombres}" required="true" requiredMessage="#{bundle.EditUsuarioRequiredMessage_personanombres}"/>
+                    <h:outputLabel value="#{bundle.EditUsuarioLabel_personaapellidos}" for="personaapellidos" />
+                    <h:inputText id="personaapellidos" value="#{usuarioController.selected.personaapellidos}" title="#{bundle.EditUsuarioTitle_personaapellidos}" required="true" requiredMessage="#{bundle.EditUsuarioRequiredMessage_personaapellidos}"/>
+                    <h:outputLabel value="#{bundle.EditUsuarioLabel_personacorreo}" for="personacorreo" />
+                    <h:inputText id="personacorreo" value="#{usuarioController.selected.personacorreo}" title="#{bundle.EditUsuarioTitle_personacorreo}" required="true" requiredMessage="#{bundle.EditUsuarioRequiredMessage_personacorreo}"/>
+                    <h:outputLabel value="#{bundle.EditUsuarioLabel_usuarionombre}" for="usuarionombre" />
+                    <h:inputText id="usuarionombre" value="#{usuarioController.selected.usuarionombre}" title="#{bundle.EditUsuarioTitle_usuarionombre}" required="true" requiredMessage="#{bundle.EditUsuarioRequiredMessage_usuarionombre}"/>
+                    <h:outputLabel value="#{bundle.EditUsuarioLabel_usuariocontrasena}" for="usuariocontrasena" />
+                    <h:inputText id="usuariocontrasena" value="#{usuarioController.selected.usuariocontrasena}" title="#{bundle.EditUsuarioTitle_usuariocontrasena}" required="true" requiredMessage="#{bundle.EditUsuarioRequiredMessage_usuariocontrasena}"/>
+                    <h:outputLabel value="#{bundle.EditUsuarioLabel_facultadid}" for="facultadid" />
+                    <h:selectOneMenu id="facultadid" value="#{usuarioController.selected.facultadid}" title="#{bundle.EditUsuarioTitle_facultadid}" >
+                        <f:selectItems value="#{facultadController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{usuarioController.update}" value="#{bundle.EditUsuarioSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditUsuarioViewLink}"/>
+                <br />
+                <h:commandLink action="#{usuarioController.prepareList}" value="#{bundle.EditUsuarioShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditUsuarioIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

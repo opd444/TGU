@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditCustomerTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditCustomerLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{customerController.selected.id}" title="#{bundle.EditCustomerTitle_id}" required="true" requiredMessage="#{bundle.EditCustomerRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.EditCustomerLabel_firstname}" for="firstname" />
+                    <h:inputText id="firstname" value="#{customerController.selected.firstname}" title="#{bundle.EditCustomerTitle_firstname}" required="true" requiredMessage="#{bundle.EditCustomerRequiredMessage_firstname}"/>
+                    <h:outputLabel value="#{bundle.EditCustomerLabel_lastname}" for="lastname" />
+                    <h:inputText id="lastname" value="#{customerController.selected.lastname}" title="#{bundle.EditCustomerTitle_lastname}" />
+                </h:panelGrid>
+                <h:commandLink action="#{customerController.update}" value="#{bundle.EditCustomerSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditCustomerViewLink}"/>
+                <br />
+                <h:commandLink action="#{customerController.prepareList}" value="#{bundle.EditCustomerShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditCustomerIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

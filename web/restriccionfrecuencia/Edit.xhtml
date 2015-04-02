@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditRestriccionfrecuenciaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditRestriccionfrecuenciaLabel_restriccionid}" for="restriccionid" />
+                    <h:inputText id="restriccionid" value="#{restriccionfrecuenciaController.selected.restriccionid}" title="#{bundle.EditRestriccionfrecuenciaTitle_restriccionid}" required="true" requiredMessage="#{bundle.EditRestriccionfrecuenciaRequiredMessage_restriccionid}"/>
+                    <h:outputLabel value="#{bundle.EditRestriccionfrecuenciaLabel_restriccionnombre}" for="restriccionnombre" />
+                    <h:inputText id="restriccionnombre" value="#{restriccionfrecuenciaController.selected.restriccionnombre}" title="#{bundle.EditRestriccionfrecuenciaTitle_restriccionnombre}" required="true" requiredMessage="#{bundle.EditRestriccionfrecuenciaRequiredMessage_restriccionnombre}"/>
+                    <h:outputLabel value="#{bundle.EditRestriccionfrecuenciaLabel_restriccionestado}" for="restriccionestado" />
+                    <h:inputText id="restriccionestado" value="#{restriccionfrecuenciaController.selected.restriccionestado}" title="#{bundle.EditRestriccionfrecuenciaTitle_restriccionestado}" required="true" requiredMessage="#{bundle.EditRestriccionfrecuenciaRequiredMessage_restriccionestado}"/>
+                    <h:outputLabel value="#{bundle.EditRestriccionfrecuenciaLabel_maxactualizaciones}" for="maxactualizaciones" />
+                    <h:inputText id="maxactualizaciones" value="#{restriccionfrecuenciaController.selected.maxactualizaciones}" title="#{bundle.EditRestriccionfrecuenciaTitle_maxactualizaciones}" required="true" requiredMessage="#{bundle.EditRestriccionfrecuenciaRequiredMessage_maxactualizaciones}"/>
+                    <h:outputLabel value="#{bundle.EditRestriccionfrecuenciaLabel_formatoid}" for="formatoid" />
+                    <h:selectOneMenu id="formatoid" value="#{restriccionfrecuenciaController.selected.formatoid}" title="#{bundle.EditRestriccionfrecuenciaTitle_formatoid}" required="true" requiredMessage="#{bundle.EditRestriccionfrecuenciaRequiredMessage_formatoid}">
+                        <f:selectItems value="#{formatoproductoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{restriccionfrecuenciaController.update}" value="#{bundle.EditRestriccionfrecuenciaSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditRestriccionfrecuenciaViewLink}"/>
+                <br />
+                <h:commandLink action="#{restriccionfrecuenciaController.prepareList}" value="#{bundle.EditRestriccionfrecuenciaShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditRestriccionfrecuenciaIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

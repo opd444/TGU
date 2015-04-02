@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListRestricciontiempoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListRestricciontiempoEmpty}" rendered="#{restricciontiempoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{restricciontiempoController.items.rowCount > 0}">
+                    <h:outputText value="#{restricciontiempoController.pagination.pageFirstItem + 1}..#{restricciontiempoController.pagination.pageLastItem + 1}/#{restricciontiempoController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{restricciontiempoController.previous}" value="#{bundle.Previous} #{restricciontiempoController.pagination.pageSize}" rendered="#{restricciontiempoController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{restricciontiempoController.next}" value="#{bundle.Next} #{restricciontiempoController.pagination.pageSize}" rendered="#{restricciontiempoController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{restricciontiempoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListRestricciontiempoTitle_restriccionid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.restriccionid}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListRestricciontiempoTitle_restriccionnombre}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.restriccionnombre}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListRestricciontiempoTitle_restriccionestado}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.restriccionestado}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListRestricciontiempoTitle_maxduracion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.maxduracion}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListRestricciontiempoTitle_formatoid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.formatoid}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{restricciontiempoController.prepareView}" value="#{bundle.ListRestricciontiempoViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{restricciontiempoController.prepareEdit}" value="#{bundle.ListRestricciontiempoEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{restricciontiempoController.destroy}" value="#{bundle.ListRestricciontiempoDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{restricciontiempoController.prepareCreate}" value="#{bundle.ListRestricciontiempoCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListRestricciontiempoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

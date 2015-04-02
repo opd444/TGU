@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateUsuarioTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_personacedula}" for="personacedula" />
+                    <h:inputText id="personacedula" value="#{usuarioController.selected.personacedula}" title="#{bundle.CreateUsuarioTitle_personacedula}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_personacedula}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_personanombres}" for="personanombres" />
+                    <h:inputText id="personanombres" value="#{usuarioController.selected.personanombres}" title="#{bundle.CreateUsuarioTitle_personanombres}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_personanombres}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_personaapellidos}" for="personaapellidos" />
+                    <h:inputText id="personaapellidos" value="#{usuarioController.selected.personaapellidos}" title="#{bundle.CreateUsuarioTitle_personaapellidos}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_personaapellidos}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_personacorreo}" for="personacorreo" />
+                    <h:inputText id="personacorreo" value="#{usuarioController.selected.personacorreo}" title="#{bundle.CreateUsuarioTitle_personacorreo}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_personacorreo}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_usuarionombre}" for="usuarionombre" />
+                    <h:inputText id="usuarionombre" value="#{usuarioController.selected.usuarionombre}" title="#{bundle.CreateUsuarioTitle_usuarionombre}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_usuarionombre}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_usuariocontrasena}" for="usuariocontrasena" />
+                    <h:inputText id="usuariocontrasena" value="#{usuarioController.selected.usuariocontrasena}" title="#{bundle.CreateUsuarioTitle_usuariocontrasena}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_usuariocontrasena}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_facultadid}" for="facultadid" />
+                    <h:selectOneMenu id="facultadid" value="#{usuarioController.selected.facultadid}" title="#{bundle.CreateUsuarioTitle_facultadid}" >
+                        <f:selectItems value="#{facultadController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{usuarioController.create}" value="#{bundle.CreateUsuarioSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{usuarioController.prepareList}" value="#{bundle.CreateUsuarioShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateUsuarioIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

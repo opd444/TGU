@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateUsuarioRolTrabajogradoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateUsuarioRolTrabajogradoLabel_usuarioroltrabajoid}" for="usuarioroltrabajoid" />
+                    <h:inputText id="usuarioroltrabajoid" value="#{usuarioRolTrabajogradoController.selected.usuarioroltrabajoid}" title="#{bundle.CreateUsuarioRolTrabajogradoTitle_usuarioroltrabajoid}" required="true" requiredMessage="#{bundle.CreateUsuarioRolTrabajogradoRequiredMessage_usuarioroltrabajoid}"/>
+                    <h:outputLabel value="#{bundle.CreateUsuarioRolTrabajogradoLabel_fechaasignacion}" for="fechaasignacion" />
+                    <h:inputText id="fechaasignacion" value="#{usuarioRolTrabajogradoController.selected.fechaasignacion}" title="#{bundle.CreateUsuarioRolTrabajogradoTitle_fechaasignacion}" required="true" requiredMessage="#{bundle.CreateUsuarioRolTrabajogradoRequiredMessage_fechaasignacion}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateUsuarioRolTrabajogradoLabel_personacedula}" for="personacedula" />
+                    <h:selectOneMenu id="personacedula" value="#{usuarioRolTrabajogradoController.selected.personacedula}" title="#{bundle.CreateUsuarioRolTrabajogradoTitle_personacedula}" required="true" requiredMessage="#{bundle.CreateUsuarioRolTrabajogradoRequiredMessage_personacedula}">
+                        <f:selectItems value="#{usuarioController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateUsuarioRolTrabajogradoLabel_trabajoid}" for="trabajoid" />
+                    <h:selectOneMenu id="trabajoid" value="#{usuarioRolTrabajogradoController.selected.trabajoid}" title="#{bundle.CreateUsuarioRolTrabajogradoTitle_trabajoid}" required="true" requiredMessage="#{bundle.CreateUsuarioRolTrabajogradoRequiredMessage_trabajoid}">
+                        <f:selectItems value="#{trabajodegradoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateUsuarioRolTrabajogradoLabel_rolid}" for="rolid" />
+                    <h:selectOneMenu id="rolid" value="#{usuarioRolTrabajogradoController.selected.rolid}" title="#{bundle.CreateUsuarioRolTrabajogradoTitle_rolid}" required="true" requiredMessage="#{bundle.CreateUsuarioRolTrabajogradoRequiredMessage_rolid}">
+                        <f:selectItems value="#{rolController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{usuarioRolTrabajogradoController.create}" value="#{bundle.CreateUsuarioRolTrabajogradoSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{usuarioRolTrabajogradoController.prepareList}" value="#{bundle.CreateUsuarioRolTrabajogradoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateUsuarioRolTrabajogradoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

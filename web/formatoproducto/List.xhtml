@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListFormatoproductoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListFormatoproductoEmpty}" rendered="#{formatoproductoController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{formatoproductoController.items.rowCount > 0}">
+                    <h:outputText value="#{formatoproductoController.pagination.pageFirstItem + 1}..#{formatoproductoController.pagination.pageLastItem + 1}/#{formatoproductoController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{formatoproductoController.previous}" value="#{bundle.Previous} #{formatoproductoController.pagination.pageSize}" rendered="#{formatoproductoController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{formatoproductoController.next}" value="#{bundle.Next} #{formatoproductoController.pagination.pageSize}" rendered="#{formatoproductoController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{formatoproductoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListFormatoproductoTitle_formatoid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.formatoid}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListFormatoproductoTitle_formatonombre}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.formatonombre}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListFormatoproductoTitle_formatoaprobable}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.formatoaprobable}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListFormatoproductoTitle_formatoobligatorio}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.formatoobligatorio}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListFormatoproductoTitle_formatocontenido}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.formatocontenido}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListFormatoproductoTitle_faseid}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.faseid}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{formatoproductoController.prepareView}" value="#{bundle.ListFormatoproductoViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{formatoproductoController.prepareEdit}" value="#{bundle.ListFormatoproductoEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{formatoproductoController.destroy}" value="#{bundle.ListFormatoproductoDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{formatoproductoController.prepareCreate}" value="#{bundle.ListFormatoproductoCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListFormatoproductoIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

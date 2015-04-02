@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditUsuarioRolTrabajogradoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditUsuarioRolTrabajogradoLabel_usuarioroltrabajoid}" for="usuarioroltrabajoid" />
+                    <h:inputText id="usuarioroltrabajoid" value="#{usuarioRolTrabajogradoController.selected.usuarioroltrabajoid}" title="#{bundle.EditUsuarioRolTrabajogradoTitle_usuarioroltrabajoid}" required="true" requiredMessage="#{bundle.EditUsuarioRolTrabajogradoRequiredMessage_usuarioroltrabajoid}"/>
+                    <h:outputLabel value="#{bundle.EditUsuarioRolTrabajogradoLabel_fechaasignacion}" for="fechaasignacion" />
+                    <h:inputText id="fechaasignacion" value="#{usuarioRolTrabajogradoController.selected.fechaasignacion}" title="#{bundle.EditUsuarioRolTrabajogradoTitle_fechaasignacion}" required="true" requiredMessage="#{bundle.EditUsuarioRolTrabajogradoRequiredMessage_fechaasignacion}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditUsuarioRolTrabajogradoLabel_personacedula}" for="personacedula" />
+                    <h:selectOneMenu id="personacedula" value="#{usuarioRolTrabajogradoController.selected.personacedula}" title="#{bundle.EditUsuarioRolTrabajogradoTitle_personacedula}" required="true" requiredMessage="#{bundle.EditUsuarioRolTrabajogradoRequiredMessage_personacedula}">
+                        <f:selectItems value="#{usuarioController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditUsuarioRolTrabajogradoLabel_trabajoid}" for="trabajoid" />
+                    <h:selectOneMenu id="trabajoid" value="#{usuarioRolTrabajogradoController.selected.trabajoid}" title="#{bundle.EditUsuarioRolTrabajogradoTitle_trabajoid}" required="true" requiredMessage="#{bundle.EditUsuarioRolTrabajogradoRequiredMessage_trabajoid}">
+                        <f:selectItems value="#{trabajodegradoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditUsuarioRolTrabajogradoLabel_rolid}" for="rolid" />
+                    <h:selectOneMenu id="rolid" value="#{usuarioRolTrabajogradoController.selected.rolid}" title="#{bundle.EditUsuarioRolTrabajogradoTitle_rolid}" required="true" requiredMessage="#{bundle.EditUsuarioRolTrabajogradoRequiredMessage_rolid}">
+                        <f:selectItems value="#{rolController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{usuarioRolTrabajogradoController.update}" value="#{bundle.EditUsuarioRolTrabajogradoSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditUsuarioRolTrabajogradoViewLink}"/>
+                <br />
+                <h:commandLink action="#{usuarioRolTrabajogradoController.prepareList}" value="#{bundle.EditUsuarioRolTrabajogradoShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditUsuarioRolTrabajogradoIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

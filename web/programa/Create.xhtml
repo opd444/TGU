@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateProgramaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateProgramaLabel_programaid}" for="programaid" />
+                    <h:inputText id="programaid" value="#{programaController.selected.programaid}" title="#{bundle.CreateProgramaTitle_programaid}" required="true" requiredMessage="#{bundle.CreateProgramaRequiredMessage_programaid}"/>
+                    <h:outputLabel value="#{bundle.CreateProgramaLabel_programanombre}" for="programanombre" />
+                    <h:inputText id="programanombre" value="#{programaController.selected.programanombre}" title="#{bundle.CreateProgramaTitle_programanombre}" required="true" requiredMessage="#{bundle.CreateProgramaRequiredMessage_programanombre}"/>
+                    <h:outputLabel value="#{bundle.CreateProgramaLabel_facultadid}" for="facultadid" />
+                    <h:selectOneMenu id="facultadid" value="#{programaController.selected.facultadid}" title="#{bundle.CreateProgramaTitle_facultadid}" required="true" requiredMessage="#{bundle.CreateProgramaRequiredMessage_facultadid}">
+                        <f:selectItems value="#{facultadController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{programaController.create}" value="#{bundle.CreateProgramaSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{programaController.prepareList}" value="#{bundle.CreateProgramaShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateProgramaIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
