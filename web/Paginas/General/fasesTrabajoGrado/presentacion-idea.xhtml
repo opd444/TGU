@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="../../../Plantillas/Plantilla.xhtml">
+        <p:panel id="pnlPresentacionIdea" header="1. Presentación de la Idea" style="display:none" widgetVar="pnlPresentacionIdea">
+            <!--<p:commandButton type="button" value="1. Presentación de la Idea" style="background-color:greenyellow">
+                <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
+                    <f:param name="mode" value="'show'" />
+                </p:effect>
+            </p:commandButton>-->
+            <p:panelGrid columns="3">
+                <p:commandButton value="Dilegenciar" icon="ui-icon-check"></p:commandButton>                        
+                <p:commandButton value="Ver" icon="ui-icon-check"></p:commandButton>                        
+                <p:commandButton value="Descargar" icon="ui-icon-check"></p:commandButton>                        
+            </p:panelGrid>
+        </p:panel>
+    </ui:composition>
+</html>

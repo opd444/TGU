@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../../Plantillas/Plantilla.xhtml">
+
+            <ui:define name="CuadroDeBotonesSesion">
+                CuadroDeBotonesSesion
+            </ui:define>
+
+            <ui:define name="menuprincipal">
+                menuprincipal
+            </ui:define>
+
+            <ui:define name="title">
+                <p:breadCrumb>
+                    <p:menuitem value="principal" url="Index.xhtml" />                                                            
+                    <p:menuitem value="Director" url="indexDirector.xhtml" />    
+                    <p:menuitem value="Trabajos de Grado" url="indexDirector.xhtml" />                        
+                    <p:menuitem value="Fases del Trabajo de Grado" url="fasesTrabajoGrado/index.xhtml" />                    
+                    <p:menuitem value="1. Presentación de la Idea" url="fasesTrabajoGrado/index.xhtml" />
+                    <p:menuitem value="Formato A" url="FormatoA.xhtml?faces-redirect=true" />
+                </p:breadCrumb>   
+                <br />
+                <br />
+            </ui:define>
+
+            <ui:define name="body">
+                <f:metadata>
+                    <f:viewParam name="trabajoid" value="#{trabajodegradoController.trabajoid}" />
+                </f:metadata>
+                <h3>#{trabajodegradoController.trabajo.trabajonombre}</h3>
+                <h:form id="frmListaTrabajosGrado">                    
+
+
+                    <p:menu styleClass="menuizqroles">
+                        <p:submenu label="Rol">
+                            <p:menuitem value="Director" outcome="indexDirector" style="background-color:graytext"/>
+                            <p:menuitem value="Jefe de Departamento"/>
+                        </p:submenu>
+                        <p:submenu></p:submenu>
+                    </p:menu>
+                    
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

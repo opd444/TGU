@@ -57,4 +57,15 @@ public class JsfUtil {
         return converter.getAsObject(FacesContext.getCurrentInstance(), component, theId);
     }
 
+    public static boolean isValidationFailed() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public static enum PersistAction {
+
+        CREATE,
+        DELETE,
+        UPDATE
+    }
+
 }

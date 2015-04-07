@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../Plantillas/Plantilla.xhtml">
+
+            <ui:define name="CuadroDeBotonesSesion">
+                CuadroDeBotonesSesion
+            </ui:define>
+
+            <ui:define name="menuprincipal">
+                menuprincipal
+            </ui:define>
+
+            <ui:define name="title">
+                <h:form>
+                    <p:breadCrumb>
+                        <p:menuitem value="principal" url="Index.xhtml" />                                                            
+                        <p:menuitem value="Director" url="indexDirector.xhtml" />    
+                        <p:menuitem value="Trabajos de Grado" url="indexDirector.xhtml" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" url="fasesTrabajoGrado/index.xhtml" />                    
+                        <p:menuitem value="1. Presentación de la Idea" url="fasesTrabajoGrado/index.xhtml" />
+                        <p:menuitem value="Ver Formato A" />
+                    </p:breadCrumb>   
+                    <br />
+                    <br />
+                </h:form>
+            </ui:define>
+
+            <ui:define name="body">
+                <f:metadata>
+                    <f:viewParam name="productoid" value="#{trabajodegradoController.trabajoid}" />
+                </f:metadata>
+                <h1>#{trabajodegradoController.trabajoid}</h1>
+                <h:form>                    
+                    <p:panel style="background-color: whitesmoke">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <p:graphicImage value="../../resources/img/logo-unicauca.png"/>                            
+                            <h:outputText value="Formato A" style="font-weight:bold; font-size: 20px; "/>
+
+                            <h:outputText value="Título del trabajo de grado:" style="font-weight:bold" />
+                            <h:outputText />
+
+                            <h:outputText value="Número de estudiantes:" style="font-weight:bold" />
+                            <h:outputText />
+
+                            <h:outputText value="Nombre de los estudiantes:" style="font-weight:bold" />
+                            <h:outputText />
+
+                            <h:outputText value="Director de trabajo:" style="font-weight:bold" />
+                            <h:outputText />
+
+                            <h:outputText value="Objetivos:" style="font-weight:bold" />
+                            <h:outputText />
+
+                            <h:outputText value="Aportes o contribución a las lineas de investigación y desarrollo o temas de interes del departamento:" style="font-weight:bold" />
+                            <h:outputText />
+                            
+                            <h:outputText />
+                            <h:outputText value="empty"/>
+
+                            <h:outputText value="Tiempo estimado de realización" style="font-weight:bold" />
+                            <h:outputText />
+
+                            <h:outputText value="Objetivos:" style="font-weight:bold" />
+                            <h:outputText />
+
+                            <h:outputText value="Condiciones de Entrega:" style="font-weight:bold" />
+                            <h:outputText />
+
+                            <h:outputText value="Recursos requeridos:" style="font-weight:bold" />
+                            <h:outputText />
+
+                            <h:outputText value="Definicion de fuentes de financiacion:" style="font-weight:bold" />
+                            <h:outputText />
+
+                            <h:outputText value="Observaciones:" style="font-weight:bold" />
+                            <h:outputText />
+
+                            <h:outputText value="Fecha:" style="font-weight:bold" />
+                            <h:outputText />
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+                <!--
+                <p:commandButton type="button" value="Exportar a PDF" icon="ui-icon-extlink" onclick="exportFormatoA()"/>
+                <script type="text/javascript">
+                    function exportFormatoA() {
+                        //export image
+                        $('#output').empty().append(PF('formatoA').exportAsImage());
+
+                        //show the dialog
+                        PF('dlg').show();
+                    }
+                </script>
+                -->
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

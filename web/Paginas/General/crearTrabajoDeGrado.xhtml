@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <p:dialog id="crearTrabajoDeGradoDlg" widgetVar="CrearTrabajoDeGradoDialog" modal="true" resizable="false" appendTo="@(body)" header="Crear Trabajo De Grado">
+            <h:form id="crearTrabajoDeGradoForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{trabajodegradoController.selected != null}">
+                        <p:outputLabel value="Id del Trabajo de Grado" for="trabajoid" />
+                        <p:inputText id="trabajoid" value="#{trabajodegradoController.selected.trabajoid}" title="#{bundle.CreateTrabajodegradoTitle_trabajoid}" required="true" requiredMessage="#{bundle.CreateTrabajodegradoRequiredMessage_trabajoid}" />                        
+                        <p:outputLabel value="Nombre del Trabajo de Grado" for="trabajonombre" />
+                        <p:inputTextarea rows="6" cols="33" id="trabajonombre" value="#{trabajodegradoController.selected.trabajonombre}" title="#{bundle.CreateTrabajodegradoTitle_trabajonombre}" required="true" requiredMessage="#{bundle.CreateTrabajodegradoRequiredMessage_trabajonombre}" />                        
+                    </p:panelGrid>                    
+                    <p:commandButton actionListener="#{trabajodegradoController.crearTrabajoDeGrado}" value="Guardar" update=":frmListaTrabajosGrado:dtTrabajosGrado" onclick="CrearTrabajoDeGradoDialog.hide()"/>
+                    <p:commandButton value="Cancelar" onclick="CrearTrabajoDeGradoDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+    </ui:composition>
+</html>
+

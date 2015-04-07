@@ -6,6 +6,8 @@ import com.unicauca.tgu.jsf.util.PaginationHelper;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -30,6 +32,32 @@ public class UsuarioRolTrabajogradoController implements Serializable {
     private int selectedItemIndex;
 
     public UsuarioRolTrabajogradoController() {
+    }
+    
+    public void trabajoGrado() {
+        String usuarionombre = "fp";
+        List<UsuarioRolTrabajogrado> urtgs = getFacade().findAll();
+        UsuarioRolTrabajogrado usuarioroltrabajoid;
+        for(int i=0 ; i < urtgs.size(); i++) {
+            if(urtgs.get(i).getPersonacedula().getUsuarionombre().equals(usuarionombre))
+                    current = usuarioroltrabajoid = urtgs.get(i);
+        }                
+    }
+    public void trabajoDeGrado(BigDecimal trabajoid) {
+        List<UsuarioRolTrabajogrado> urtgs = getFacade().findAll();
+        UsuarioRolTrabajogrado usuarioroltrabajoid;
+        for(int i=0 ; i < urtgs.size(); i++) {
+            if(urtgs.get(i).getTrabajoid().getTrabajoid().equals(trabajoid))
+                    current = urtgs.get(i);
+        }   
+    }
+    public UsuarioRolTrabajogrado getCurrent() {
+        trabajoGrado();
+        return current;
+    }
+
+    public void setCurrent(UsuarioRolTrabajogrado current) {
+        this.current = current;
     }
 
     public UsuarioRolTrabajogrado getSelected() {
@@ -72,7 +100,7 @@ public class UsuarioRolTrabajogradoController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
-
+    
     public String prepareCreate() {
         current = new UsuarioRolTrabajogrado();
         selectedItemIndex = -1;

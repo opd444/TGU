@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../Plantillas/Plantilla.xhtml">
+
+            <ui:define name="CuadroDeBotonesSesion">
+                CuadroDeBotonesSesion
+            </ui:define>
+
+            <ui:define name="menuprincipal">
+                menuprincipal
+            </ui:define>
+
+            <ui:define name="title">
+                <p:breadCrumb>
+                    <p:menuitem value="principal" outcome="Index" />                                    
+                    <p:menuitem value="Director" url="" />    
+                </p:breadCrumb>
+                <br />
+                <br />
+            </ui:define>
+
+            <ui:define name="body">
+                <h:form id="frmListaTrabajosGrado">                    
+                    <p:layout>
+                        <p:layoutUnit position="west">
+                            <p:menu styleClass="menuizqroles">
+                                <p:submenu label="Rol">
+                                    <p:menuitem value="Director" style="background-color:graytext"/>
+                                    <p:menuitem value="Jefe de Departamento"/>
+                                </p:submenu>
+                                <p:submenu></p:submenu>
+                            </p:menu>
+                        </p:layoutUnit>
+
+                        <p:layoutUnit position="center">
+                            <p:dataTable id="dtTrabajosGrado" var="trabajoGrado" value="#{trabajodegradoController.items}"                                         
+                                         >
+
+                                <f:facet name="header">
+                                    Lista de Trabajos de Grado                                    
+                                </f:facet>
+
+                                <p:column headerText="Nombre del Trabajo de Grado">
+                                    <p:link outcome="fasesTrabajoGrado/index" value="#{trabajoGrado.trabajonombre}">                                        
+                                        <f:param name="trabajoid" value="#{trabajoGrado.trabajoid}" />                                        
+                                    </p:link>                                    
+                                </p:column>
+
+                                <f:facet name="footer">
+                                    <p:commandButton id="btnCrear" icon="ui-icon-plus" value="Nuevo Trabajo de Grado" actionListener="#{trabajodegradoController.prepareCreate}" update=":crearTrabajoDeGradoForm" oncomplete="PF('CrearTrabajoDeGradoDialog').show()"/>
+                                </f:facet>
+                            </p:dataTable>                                                       
+                        </p:layoutUnit>
+                    </p:layout>
+                </h:form>
+                <ui:include src="crearTrabajoDeGrado.xhtml"/>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

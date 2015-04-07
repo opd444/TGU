@@ -1,13 +1,20 @@
 package com.unicauca.tgu.jsf;
 
+import com.unicauca.tgu.entities.FasesTrabajoDeGrado;
 import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.jsf.util.JsfUtil;
 import com.unicauca.tgu.jsf.util.PaginationHelper;
 import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
+import com.unicauca.tgu.jsf.util.JsfUtil.PersistAction;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -21,7 +28,45 @@ import javax.faces.model.SelectItem;
 @ManagedBean(name = "trabajodegradoController")
 @SessionScoped
 public class TrabajodegradoController implements Serializable {
+    private BigDecimal trabajoid;
+    private Trabajodegrado trabajo;
+    private FasesTrabajoDeGrado fases;
 
+    public Trabajodegrado getTrabajo() {
+        List<Trabajodegrado> tg = getFacade().findAll();
+        for(int i=0; i < tg.size(); i++) {
+            if(tg.get(i).getTrabajoid().equals(trabajoid)){
+                int fase = -1;
+                fases = new FasesTrabajoDeGrado(fase);
+                return tg.get(i);
+            }
+        }
+        
+        return null;
+    }
+
+    public void setTrabajo(Trabajodegrado trabajo) {
+        this.trabajo = trabajo;
+    }
+    
+    
+
+    public BigDecimal getTrabajoid() {
+        return trabajoid;
+    }
+
+    public FasesTrabajoDeGrado getFases() {
+        return fases;
+    }
+
+    public void setFases(FasesTrabajoDeGrado fases) {
+        this.fases = fases;
+    }
+    
+
+    public void setTrabajoid(BigDecimal trabajoid) {
+        this.trabajoid = trabajoid;
+    }
     private Trabajodegrado current;
     private DataModel items = null;
     @EJB
@@ -38,6 +83,9 @@ public class TrabajodegradoController implements Serializable {
             selectedItemIndex = -1;
         }
         return current;
+    }
+    public void setSelected(Trabajodegrado selected) {
+        this.current = selected;
     }
 
     private TrabajodegradoFacade getFacade() {
@@ -78,8 +126,42 @@ public class TrabajodegradoController implements Serializable {
         selectedItemIndex = -1;
         return "Create";
     }
+    protected void setEmbeddableKeys() {
+    }
+    private void persist(PersistAction persistAction, String successMessage) {
+        if (current != null) {
+            setEmbeddableKeys();
+            try {
+                if (persistAction != PersistAction.DELETE) {
+                    getFacade().edit(current);
+                } else {
+                    getFacade().remove(current);
+                }
+                JsfUtil.addSuccessMessage(successMessage);
+            } catch (EJBException ex) {
+                String msg = "";
+                Throwable cause = ex.getCause();
+                if (cause != null) {
+                    msg = cause.getLocalizedMessage();
+                }
+                if (msg.length() > 0) {
+                    JsfUtil.addErrorMessage(msg);
+                } else {
+                    JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+                JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            }
+        }
+    }
 
     public String create() {
+//        persist(PersistAction.CREATE, ResourceBundle.getBundle("/Bundle").getString("CiudadCreated"));
+//        if (!JsfUtil.isValidationFailed()) {
+//            items = null;    // Invalidate list of items to trigger re-query.
+//        }
+        
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoCreated"));
@@ -87,7 +169,19 @@ public class TrabajodegradoController implements Serializable {
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
-        }
+        }        
+    }
+    public void crearTrabajoDeGrado() {
+        
+        try {
+            getFacade().create(current);
+            getItems();
+            //JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoCreated"));
+            
+        } catch (Exception e) {
+            //JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            
+        }        
     }
 
     public String prepareEdit() {
