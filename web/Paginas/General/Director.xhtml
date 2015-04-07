@@ -73,7 +73,9 @@
                                     #{car.fecha}                                  
                                 </p:column>
                                 <p:column headerText="Nombre TG">
-                                    #{car.trabajoGrado}
+                                    <p:link outcome="fasesTrabajoGrado/index" value="#{car.trabajoGrado}">                                        
+                                        <f:param name="trabajoid" value="#{car.trabajoGradoId}" />                                        
+                                    </p:link>                                                                        
                                 </p:column>
                                 <p:column headerText="Estudiantes">
                                     #{car.est1} ,  #{car.est2}      
