@@ -1,0 +1,24 @@
+
+.paneltrabajo
+{
+    margin-top: 20px;
+    width: 730px;
+    float: left;
+}
+
+.tabladirector
+{
+    margin-top: 20px;
+    width: 100%;
+}
+
+.menuizqroles
+{
+    float : left;
+    margin-top: 20px;
+}
+
+.barraacciones
+{
+  width: 100%;
+}

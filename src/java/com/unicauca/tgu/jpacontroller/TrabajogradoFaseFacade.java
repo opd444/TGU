@@ -6,9 +6,12 @@
 package com.unicauca.tgu.jpacontroller;
 
 import com.unicauca.tgu.entities.TrabajogradoFase;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,5 +30,5 @@ public class TrabajogradoFaseFacade extends AbstractFacade<TrabajogradoFase> {
     public TrabajogradoFaseFacade() {
         super(TrabajogradoFase.class);
     }
-    
+   
 }

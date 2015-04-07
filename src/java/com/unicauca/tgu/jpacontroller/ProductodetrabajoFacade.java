@@ -9,6 +9,7 @@ import com.unicauca.tgu.entities.Productodetrabajo;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,4 +29,24 @@ public class ProductodetrabajoFacade extends AbstractFacade<Productodetrabajo> {
         super(Productodetrabajo.class);
     }
     
+    public int crearTrabajoGrado(String nombretg)
+          {
+            try
+        {
+            String queryString = "INSERT INTO Trabajodegrado(trabajoid,trabajonombre) values(null,'"+nombretg+"')";
+            Query query = getEntityManager().createNativeQuery(queryString);  
+            int k = query.executeUpdate();
+            
+            if(k>0)
+                 {
+                 
+                 }
+            //System.out.println("ERR"+Long.valueOf(usuid.intValue()+""));
+            //query.set("usuid", Long.valueOf(usuid.intValue()+""));
+            return 0;     
+        }finally 
+        {
+           // em.close();
+        } 
+          }   
 }
