@@ -1,5 +1,6 @@
 package com.unicauca.tgu.jsf;
 
+import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.entities.FasesTrabajoDeGrado;
 import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.jsf.util.JsfUtil;
@@ -38,6 +39,8 @@ public class TrabajodegradoController implements Serializable {
             if(tg.get(i).getTrabajoid().equals(trabajoid)){
                 int fase = -1;
                 fases = new FasesTrabajoDeGrado(fase);
+                TrabajodeGradoActual.id = tg.get(i).getTrabajoid().intValue();
+                TrabajodeGradoActual.nombreTg = tg.get(i).getTrabajonombre();
                 return tg.get(i);
             }
         }

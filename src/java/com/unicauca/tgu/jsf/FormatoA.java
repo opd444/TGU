@@ -219,6 +219,18 @@ public class FormatoA {
           
           ejbFacadeProdTrab.create(prod);
     }
+    public void verProductodetrabajo(BigDecimal productoid) {
+        List<Productodetrabajo> lst = ejbFacadeProdTrab.findAll();
+        Productodetrabajo producto;
+        for(int i = 0; i < lst.size(); i++) {
+            if(lst.get(i).getProductoid().equals(productoid)) 
+                producto = lst.get(i);
+        }
+        Map<String, String> map = new HashMap<String, String>();
+        Gson gson = new Gson();
+        String contenido;
+        //map = new ObjectMapper();
+    } 
     
     public List<Usuario> complete()
           {
