@@ -3,6 +3,8 @@ package com.unicauca.tgu.jsf;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.Auxiliares.UsuarioComun;
 import com.unicauca.tgu.FormatosTablas.FormatoTablaDirector;
+import com.unicauca.tgu.FormatosTablas.FormatoTablaJefe;
+import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Rol;
 import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.TrabajogradoFase;
@@ -51,6 +53,8 @@ public class UsuarioRolTrabajogradoController implements Serializable {
     private String titulotabla;
     private String nombrenuevoTG;
     private Date fecha;
+    private List<FormatoTablaJefe> trabs1;
+    private List<FormatoTablaJefe> trabs2;
    
 
     public UsuarioRolTrabajogradoController() {
@@ -263,7 +267,6 @@ public class UsuarioRolTrabajogradoController implements Serializable {
     
      public List<FormatoTablaDirector> getTrabs() {
          trabs = new ArrayList();
-         UsuarioLog = new Usuario();
         
        List<Trabajodegrado> trabstemp;
        
@@ -373,6 +376,93 @@ public class UsuarioRolTrabajogradoController implements Serializable {
           usuroltg.setPersonacedula(new Usuario(new BigDecimal(UsuarioComun.id)));
           
           ejbFacade.create(usuroltg);       
+    }
+    
+     public List<FormatoTablaJefe> getTrabsJefe() {
+        trabs1 = new ArrayList();
+
+
+        List<Productodetrabajo> lst1 = ejbFacade.obtenerFormatosporId(0, 2);
+
+        for (Productodetrabajo l : lst1) {
+            
+            List<UsuarioRolTrabajogrado> lst = ejbFacade.findbytrabajoId(l.getTrabajoid().getTrabajoid().intValue());
+
+            FormatoTablaJefe f = new FormatoTablaJefe();
+            if (lst.size() > 0) {
+                f.setFecha(lst.get(0).getFechaasignacion());
+                f.setTrabajoGradoId(lst.get(0).getTrabajoid().getTrabajoid().intValue());
+                f.setTrabajoGrado(lst.get(0).getTrabajoid().getTrabajonombre());
+                
+                int cont = 0;
+                for (UsuarioRolTrabajogrado x : lst) {
+                    
+                    if (x.getRolid().getRolid().intValue() == 1) {
+                        f.setDirector(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
+                    }
+
+                    else if (x.getRolid().getRolid().intValue() == 2 && cont == 0) {
+                        f.setEst1(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
+                        f.setEst1Id(x.getPersonacedula().getPersonacedula().intValue());
+                        cont++;
+                    }
+
+                    else if (x.getRolid().getRolid().intValue() == 2) {
+                        f.setEst2(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
+                        f.setEst2Id(x.getPersonacedula().getPersonacedula().intValue());
+                    }
+                }
+            }
+            trabs1.add(f);
+        }
+
+        return trabs1;
+    }
+
+    public void setTrabsJefe(List<FormatoTablaJefe> trabs1) {
+        this.trabs1 = trabs1;
+    }
+    
+    public List<FormatoTablaJefe> getHistorialRevisadas(){
+        trabs2 = new ArrayList();
+        
+        List<Productodetrabajo> lst2 = ejbFacade.obtenerFormatosporId(0, 0);
+         for (Productodetrabajo l : lst2) {
+            
+            List<UsuarioRolTrabajogrado> lst = ejbFacade.findbytrabajoId(l.getTrabajoid().getTrabajoid().intValue());
+            
+            
+
+            FormatoTablaJefe f = new FormatoTablaJefe();
+            if (lst2.size() > 0) {
+                f.setFecha(lst.get(0).getFechaasignacion());
+                f.setTrabajoGradoId(lst.get(0).getTrabajoid().getTrabajoid().intValue());
+                f.setTrabajoGrado(lst.get(0).getTrabajoid().getTrabajonombre());
+                f.setAprobado(lst2.get(0).getProductoaprobado().intValue());
+                
+                int cont = 0;
+                for (UsuarioRolTrabajogrado x : lst) {
+                    
+                    if (x.getRolid().getRolid().intValue() == 1) {
+                        f.setDirector(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
+                    }
+
+                    else if (x.getRolid().getRolid().intValue() == 2 && cont == 0) {
+                        f.setEst1(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
+                        f.setEst1Id(x.getPersonacedula().getPersonacedula().intValue());
+                        cont++;
+                    }
+
+                    else if (x.getRolid().getRolid().intValue() == 2) {
+                        f.setEst2(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
+                        f.setEst2Id(x.getPersonacedula().getPersonacedula().intValue());
+                    }
+                }
+            }
+            trabs2.add(f);
+        }
+
+        return trabs2;
     }
 
 }

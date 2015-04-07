@@ -5,6 +5,7 @@
  */
 package com.unicauca.tgu.jpacontroller;
 
+import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import java.util.List;
@@ -79,4 +80,65 @@ public class UsuarioRolTrabajogradoFacade extends AbstractFacade<UsuarioRolTraba
             //return null;
         }
     }
+    
+    
+    //cepeda
+    
+    public List<UsuarioRolTrabajogrado> findbyRolId(int idrol)
+       {      
+        try
+        {
+            String queryString = "SELECT t FROM UsuarioRolTrabajogrado t "+
+            "where t.rolid="+idrol;
+            Query query = getEntityManager().createQuery(queryString);  
+            //System.out.println("ERR"+Long.valueOf(usuid.intValue()+""));
+            //query.set("usuid", Long.valueOf(usuid.intValue()+""));
+            return query.getResultList();       
+        }catch(Exception e) 
+        {
+           // em.close();
+            return null;
+        } 
+       }
+    
+    public List<Productodetrabajo> obtenerFormatosporId(int idformato, int aprobado)//0 para obtener todos 1 obtener solo aprobados 2 obtener no aprobados
+       {      
+        try
+        {
+            String queryString;
+            if(aprobado==0)
+             queryString = "SELECT * FROM Productodetrabajo t "+
+            "where t.formatoid="+idformato;
+            else if(aprobado==1)queryString = "SELECT * FROM Productodetrabajo t "+
+            "where t.formatoid="+idformato+" and "+ "t.productoAprobado= 1";
+            else queryString = "SELECT * FROM Productodetrabajo t "+
+            "where t.formatoid="+idformato+" and "+ "t.productoAprobado= 0";
+            Query query = getEntityManager().createNativeQuery(queryString,Productodetrabajo.class);  
+            //System.out.println("ERR"+Long.valueOf(usuid.intValue()+""));
+            //query.set("usuid", Long.valueOf(usuid.intValue()+""));
+            return query.getResultList();
+            
+        }catch(Exception e) 
+        {
+           // em.close();
+            return null;
+        } 
+       }    
+    
+    public List<UsuarioRolTrabajogrado> findbytrabajoId(int trabajoid)
+       {      
+        try
+        {
+            String queryString = "SELECT t FROM UsuarioRolTrabajogrado t "+
+            "where t.trabajoid="+trabajoid;
+            Query query = getEntityManager().createQuery(queryString);  
+            //System.out.println("ERR"+Long.valueOf(usuid.intValue()+""));
+            //query.set("usuid", Long.valueOf(usuid.intValue()+""));
+            return query.getResultList();       
+        }catch(Exception e) 
+        {
+           // em.close();
+            return null;
+        } 
+       }
 }

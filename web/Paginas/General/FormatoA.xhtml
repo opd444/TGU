@@ -35,7 +35,7 @@
                         </p:submenu>
                     </p:menu>
                 </h:form>
-                    <p:panel styleClass="paneltrabajo" >
+                    <p:panel styleClass="paneltrabajo" > 
                         
                       <h:form>     
                     <p:growl id="growl" sticky="true" showDetail="true"/>
@@ -57,14 +57,13 @@
                                                     itemLabel="#{est.personanombres} #{est.personaapellidos}"
                                                     required="true"
                                                     >
-                                        <p:ajax event="itemSelect" update="lol" />
                                         <p:column>
                                             #{est.personanombres} #{est.personaapellidos}
                                         </p:column>
                                     </p:autoComplete> 
 
                                     <p:outputLabel value="Nombre de los Estudiante 2(opcional):"> </p:outputLabel>
-                                    <p:inputText id="lol" value="" required="false"/>   
+                                    <p:inputText id="lol" required="false"/>   
 
                                     <p:outputLabel value="Director del trabajo de grado:"> </p:outputLabel>
                                     <p:outputLabel value="#{formatoA.nombreDirector}"> </p:outputLabel>
@@ -111,7 +110,7 @@
                         </p:tab>
                     </p:wizard>
                     </h:form>
-                  </p:panel>
+                  </p:panel>  
              
             </ui:define>
 
