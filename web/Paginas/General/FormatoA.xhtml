@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../Plantillas/Plantilla.xhtml">
+
+            <ui:define name="CuadroDeBotonesSesion">
+                CuadroDeBotonesSesion
+            </ui:define>
+
+            <ui:define name="menuprincipal">
+                menuprincipal
+            </ui:define>
+
+            <ui:define name="title">
+                
+            </ui:define>
+
+            <ui:define name="body">
+
+                <h:form>
+                    <p:menu styleClass="menuizqroles">
+                        <p:submenu label="Perfiles">
+                            <p:menuitem value="Director" action="Director.xhtml?faces-redirect=true"/>
+                            <p:menuitem value="Jefe de Departamento"/>
+                        </p:submenu>
+                        <p:submenu label="...">
+                            <p:menuitem value="Otros Roles..." />
+                        </p:submenu>
+                    </p:menu>
+                </h:form>
+                    <p:panel styleClass="paneltrabajo" >
+                        
+                      <h:form>     
+                    <p:growl id="growl" sticky="true" showDetail="true"/>
+
+                    <p:wizard>
+                        <p:tab id="paso1" title="Paso 1">
+                            <p:panel header="Creacion de Formato A">
+                                <p:messages />
+                                <h:panelGrid columns="2" columnClasses="label, value">
+
+                                    
+                                    <p:outputLabel value="Nombre del Estudiante 1:"> </p:outputLabel>
+                                    <p:autoComplete value="#{formatoA.est1}" label="Estudiante # 1 "
+                                                    completeMethod="#{formatoA.complete()}"
+                                                    var="est"
+                                                    itemValue="#{est}" dropdown="true"
+                                                    converter="#{UsuarioController.UsuarioControllerConverter}"
+                                                    forceSelection="true"
+                                                    itemLabel="#{est.personanombres} #{est.personaapellidos}"
+                                                    required="true"
+                                                    >
+                                        <p:ajax event="itemSelect" update="lol" />
+                                        <p:column>
+                                            #{est.personanombres} #{est.personaapellidos}
+                                        </p:column>
+                                    </p:autoComplete> 
+
+                                    <p:outputLabel value="Nombre de los Estudiante 2(opcional):"> </p:outputLabel>
+                                    <p:inputText id="lol" value="" required="false"/>   
+
+                                    <p:outputLabel value="Director del trabajo de grado:"> </p:outputLabel>
+                                    <p:outputLabel value="#{formatoA.nombreDirector}"> </p:outputLabel>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="paso2" title="Paso 2">
+                            <p:panel header="Creacion de Formato A">
+                                <p:messages />
+                                <h:panelGrid columnClasses="label, value">
+                                    <p:outputLabel value="Objetivos:"> </p:outputLabel>
+                                    <p:inputTextarea value="#{formatoA.objetivos}" required="true" label="Objetivos"/>
+
+                                    <p:outputLabel value="Aportes o contribucion a las lineas de investigacion y desarrollo o temas de interes del departamento:"> </p:outputLabel>
+                                    <p:inputTextarea value="#{formatoA.aportes}" required="true" label="Aportes o Contribuciones"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:tab>
+
+                        <p:tab id="paso3" title="Paso 3">
+                            <p:panel header="Creacion de Formato A">
+                                <h:panelGrid columns="2">
+
+                                    <p:outputLabel value="Tiempo estimado de realizacion"> </p:outputLabel>
+                                    <p:inputText value="#{formatoA.tiempo}" required="true" label="Tiempo Estimado"/>
+
+                                    <p:outputLabel value="Recursos requeridos"> </p:outputLabel>
+                                    <p:inputTextarea value="#{formatoA.recursos}" required="true" label="Recursos"/>
+
+                                    <p:outputLabel value="Definicion de fuentes de financiacion"> </p:outputLabel>
+                                    <p:inputTextarea value="#{formatoA.financiacion}" required="true" label="Fuentes de Financiacion"/>
+
+                                    <p:outputLabel value="Observaciones"> </p:outputLabel>
+                                    <p:inputTextarea value="#{formatoA.observaciones}" label="Observaciones"/>
+
+                                    <p:outputLabel value="Fecha"> </p:outputLabel>
+                                    <p:calendar navigator="true" value="#{formatoA.fecha}" required="true" label="Fecha"/>
+
+                                </h:panelGrid>
+
+                                <p:commandButton value="Guardar" update="growl" process="@this" actionListener="#{formatoA.guardar()}" />
+                            </p:panel>
+                        </p:tab>
+                    </p:wizard>
+                    </h:form>
+                  </p:panel>
+             
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

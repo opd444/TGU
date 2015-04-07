@@ -7,6 +7,7 @@ import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -28,9 +29,15 @@ public class ProductodetrabajoController implements Serializable {
     private com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    
 
     public ProductodetrabajoController() {
     }
+    
+    @PostConstruct
+    public void inicializar()
+      {
+      }
 
     public Productodetrabajo getSelected() {
         if (current == null) {
@@ -227,5 +234,7 @@ public class ProductodetrabajoController implements Serializable {
         }
 
     }
-
+ 
+     
+          
 }

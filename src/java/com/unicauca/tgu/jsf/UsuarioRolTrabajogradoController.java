@@ -1,12 +1,24 @@
 package com.unicauca.tgu.jsf;
 
+import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
+import com.unicauca.tgu.Auxiliares.UsuarioComun;
+import com.unicauca.tgu.FormatosTablas.FormatoTablaDirector;
+import com.unicauca.tgu.entities.Rol;
+import com.unicauca.tgu.entities.Trabajodegrado;
+import com.unicauca.tgu.entities.TrabajogradoFase;
+import com.unicauca.tgu.entities.Usuario;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jsf.util.JsfUtil;
 import com.unicauca.tgu.jsf.util.PaginationHelper;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -26,12 +38,33 @@ public class UsuarioRolTrabajogradoController implements Serializable {
     private DataModel items = null;
     @EJB
     private com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade ejbFacade;
+    
+    @EJB
+    private com.unicauca.tgu.jpacontroller.TrabajodegradoFacade ejbFacadetrabgrad;
+    
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    
+    Usuario UsuarioLog;
+    private List<FormatoTablaDirector> trabs;
+    int modo;             // 0 para la seccion de trabajos en curso y 1 para trabajos terminados
+    private String titulotabla;
+    private String nombrenuevoTG;
+    private Date fecha;
+   
 
     public UsuarioRolTrabajogradoController() {
+         
     }
-
+    
+    @PostConstruct
+    public void init(){
+       modo = 0;    
+       titulotabla = "Trabajos de Grado en Curso";
+       fecha = new Date();
+    }
+            
+    
     public UsuarioRolTrabajogrado getSelected() {
         if (current == null) {
             current = new UsuarioRolTrabajogrado();
@@ -226,6 +259,120 @@ public class UsuarioRolTrabajogradoController implements Serializable {
             }
         }
 
+    }
+    
+     public List<FormatoTablaDirector> getTrabs() {
+         trabs = new ArrayList();
+         UsuarioLog = new Usuario();
+        
+       List<Trabajodegrado> trabstemp;
+       
+       if(modo==1)trabstemp= ejbFacadetrabgrad.getTrabajosTerminadosporDirectorId(UsuarioComun.id);
+       else trabstemp = ejbFacadetrabgrad.getTrabajosEnCursoPorDirectorId(UsuarioComun.id);
+
+       int cont;     
+       FormatoTablaDirector f = new FormatoTablaDirector();
+       
+       for(Trabajodegrado t : trabstemp)
+          { 
+                 cont = 0;
+                 f = new FormatoTablaDirector();                  //sacamos la informacion general tanto director y los estud.
+                 f.setFecha(t.getUsuarioRolTrabajogradoList().get(0).getFechaasignacion());
+                 f.setTrabajoGradoId(t.getUsuarioRolTrabajogradoList().get(0).getTrabajoid().getTrabajoid().intValue());
+                 f.setTrabajoGrado(t.getUsuarioRolTrabajogradoList().get(0).getTrabajoid().getTrabajonombre());
+         for(UsuarioRolTrabajogrado l : t.getUsuarioRolTrabajogradoList())
+         
+             {            
+                  if(l.getRolid().getRolid().intValue() == 1 && cont ==0)
+                      { 
+                       f.setEst1(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
+                       f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
+                       cont ++;
+                      }
+                  else if(l.getRolid().getRolid().intValue() == 1 && cont ==1)
+                   { 
+                       f.setEst2(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
+                       f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());                      
+                   }
+             }
+                if(modo==0) 
+                   { 
+                   List<TrabajogradoFase> tgfs =  t.getTrabajogradoFaseList();
+                   int x = 999;
+                   for(TrabajogradoFase tg: tgfs)
+                    {
+                      if(tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue()<x)
+                          {
+                            f.setEstado(tg.getFaseid().getFasenombre());
+                            x = tg.getFaseid().getFaseorden().intValue();
+                          }
+                    }   
+                   }
+                else f.setEstado("Finalizado");
+              trabs.add(f);
+          }
+         return trabs;
+    }
+
+    public void setTrabs(List<FormatoTablaDirector> trabs) {
+        this.trabs = trabs;
+    }
+
+    public String getTitulotabla() {
+        return titulotabla;
+    }
+
+    public void setTitulotabla(String titulotabla) {
+        this.titulotabla = titulotabla;
+    }
+    
+    
+    
+    public void trabajosenCurso()
+             {
+               modo = 0;
+               titulotabla = "Trabajos de Grado en Curso";
+             }
+    public void trabajosTerminados()
+             {
+               modo = 1;
+               titulotabla = "Trabajos de Grado Terminados";
+             }
+
+    public String getNombrenuevoTG() {
+        return nombrenuevoTG;
+    }
+
+    public void setNombrenuevoTG(String nombrenuevoTG) {
+        this.nombrenuevoTG = nombrenuevoTG;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    } 
+    
+    public void crearTG()
+       {
+          Trabajodegrado trab = new Trabajodegrado();
+          trab.setTrabajonombre(nombrenuevoTG);
+          trab.setTrabajoid(BigDecimal.ZERO);
+          ejbFacadetrabgrad.create(trab);
+          
+          trab = ejbFacadetrabgrad.findbyNombreTg(nombrenuevoTG);
+                 
+          TrabajodeGradoActual.id = trab.getTrabajoid().intValue();
+          TrabajodeGradoActual.nombreTg = trab.getTrabajonombre();
+          
+          UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);      //agregando director
+          usuroltg.setRolid(new Rol(BigDecimal.ZERO));  
+          usuroltg.setTrabajoid(trab);
+          usuroltg.setPersonacedula(new Usuario(new BigDecimal(UsuarioComun.id)));
+          
+          ejbFacade.create(usuroltg);       
     }
 
 }

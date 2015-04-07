@@ -6,6 +6,7 @@
 package com.unicauca.tgu.jpacontroller;
 
 import com.unicauca.tgu.entities.Usuario;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,9 +24,14 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     protected EntityManager getEntityManager() {
         return em;
     }
+    
 
     public UsuarioFacade() {
         super(Usuario.class);
     }
     
+    public List<Usuario> buscarEstudiantesDisponibles()
+        {
+           return findAll();
+        }
 }

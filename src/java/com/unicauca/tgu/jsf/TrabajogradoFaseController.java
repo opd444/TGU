@@ -6,6 +6,7 @@ import com.unicauca.tgu.jsf.util.PaginationHelper;
 import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -225,7 +226,7 @@ public class TrabajogradoFaseController implements Serializable {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + TrabajogradoFase.class.getName());
             }
         }
-
+        
     }
-
+ 
 }

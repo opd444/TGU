@@ -28,7 +28,7 @@ public class UsuarioController implements Serializable {
     private com.unicauca.tgu.jpacontroller.UsuarioFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-
+    
     public UsuarioController() {
     }
 
@@ -42,6 +42,7 @@ public class UsuarioController implements Serializable {
 
     private UsuarioFacade getFacade() {
         return ejbFacade;
+       
     }
 
     public PaginationHelper getPagination() {
@@ -227,5 +228,7 @@ public class UsuarioController implements Serializable {
         }
 
     }
+    
+    
 
 }

@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../../Plantillas/Plantilla.xhtml">
+
+            <ui:define name="CuadroDeBotonesSesion">
+                CuadroDeBotonesSesion
+            </ui:define>
+
+            <ui:define name="menuprincipal">
+                
+            </ui:define>
+
+            <ui:define name="title">
+                <p:breadCrumb>
+                        <p:menuitem value="Director" url="Director.xhtml?faces-redirect=true" />
+                    </p:breadCrumb>
+            </ui:define>
+
+            <ui:define name="body">
+               
+                   
+                   
+                   <p:dialog showEffect="fade" hideEffect="explode" position="center" widgetVar="agregartest" header="Agregar Nuevo Trabajo de Grado" modal="true">
+
+                    <h:form>
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p:outputLabel value="Nombre del Trabajo de Grado" />
+                            <p:inputText  id="nombre" value="#{usuarioRolTrabajogradoController.nombrenuevoTG}" label="nombre">
+                               <!-- <p:ajax update="btnnuevotg" /> -->
+                            </p:inputText>
+                            <f:facet name="footer">
+                                <p:commandButton id="btnnuevotg" actionListener="#{usuarioRolTrabajogradoController.crearTG}" value="Crear" icon="ui-icon-disk" update=":form:tablatg" />              
+                            </f:facet>                   
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+                
+                <h:form id="form">
+                    <p:menu styleClass="menuizqroles">
+                                <p:submenu label="Perfiles">
+                                    <p:menuitem value="Director" action="Director.xhtml?faces-redirect=true"/>
+                                    <p:menuitem value="Jefe de Departamento"/>
+                                </p:submenu>
+                                <p:submenu label="...">
+                                    <p:menuitem value="Otros Roles..." />
+                                </p:submenu>
+                            </p:menu>
+
+                    <p:panel styleClass="paneltrabajo" >
+                    <p:menubar styleClass="barraacciones">
+                                <p:menuitem value="Ver Trabajos en Curso" actionListener="#{usuarioRolTrabajogradoController.trabajosenCurso()}"
+                                            update="tablatg" icon="ui-icon-folder-open"/>
+                                <p:menuitem value="Ver Trabajos Terminados" actionListener="#{usuarioRolTrabajogradoController.trabajosTerminados()}"
+                                            update="tablatg" icon="ui-icon-folder-collapsed"/>
+                                <p:menuitem value="Crear Nuevo Trabajo de Grado" onclick="PF('agregartest').show();"
+                                            icon="ui-icon-plus"/>
+                            </p:menubar>
+                    
+                    <p:dataTable  styleClass="tabladirector" id="tablatg" var="car" value="#{usuarioRolTrabajogradoController.trabs}">
+                                <f:facet name="header">
+                                    <p:outputLabel value="#{usuarioRolTrabajogradoController.titulotabla}" />
+                                </f:facet>
+                                <p:column headerText="Fecha">
+
+                                    #{car.fecha}                                  
+                                </p:column>
+                                <p:column headerText="Nombre TG">
+                                    #{car.trabajoGrado}
+                                </p:column>
+                                <p:column headerText="Estudiantes">
+                                    #{car.est1} ,  #{car.est2}      
+                                </p:column>
+                                <p:column headerText="Estado">
+                                    #{car.estado}    
+                                </p:column>        
+                            </p:dataTable>
+                     </p:panel>
+                </h:form> 
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
