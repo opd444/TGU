@@ -2,7 +2,9 @@ package com.unicauca.tgu.jsf;
 
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.entities.FasesTrabajoDeGrado;
+import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Trabajodegrado;
+import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import com.unicauca.tgu.jsf.util.JsfUtil;
 import com.unicauca.tgu.jsf.util.PaginationHelper;
 import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
@@ -10,6 +12,7 @@ import com.unicauca.tgu.jsf.util.JsfUtil.PersistAction;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -32,6 +35,28 @@ public class TrabajodegradoController implements Serializable {
     private BigDecimal trabajoid;
     private Trabajodegrado trabajo;
     private FasesTrabajoDeGrado fases;
+    
+    @EJB
+    private ProductodetrabajoFacade ejbFacadePro;
+    
+    public boolean getBtnDiligenciarFormatoA() {
+        List<Productodetrabajo> lst = ejbFacadePro.findAll();
+        
+        for(int i=0; i<lst.size(); i++) {
+            if(lst.get(i).getTrabajoid().getTrabajoid().equals(trabajoid))
+                return true;            
+        }
+        return false;
+    }    
+    public boolean getBtnVerFormatoA() {
+        List<Productodetrabajo> lst = ejbFacadePro.findAll();
+        
+        for(int i=0; i<lst.size(); i++) {
+            if(lst.get(i).getTrabajoid().getTrabajoid().equals(trabajoid))
+                return false;            
+        }
+        return true;
+    }
 
     public Trabajodegrado getTrabajo() {
         List<Trabajodegrado> tg = getFacade().findAll();
@@ -70,6 +95,7 @@ public class TrabajodegradoController implements Serializable {
     public void setTrabajoid(BigDecimal trabajoid) {
         this.trabajoid = trabajoid;
     }
+    
     private Trabajodegrado current;
     private DataModel items = null;
     @EJB

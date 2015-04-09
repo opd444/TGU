@@ -6,6 +6,7 @@
 package com.unicauca.tgu.jsf;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.Auxiliares.UsuarioComun;
 import com.unicauca.tgu.entities.Formatoproducto;
@@ -24,6 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -35,24 +37,26 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean
 @SessionScoped
-public class FormatoA { 
-    
+public class FormatoA {
+
     @EJB
     private UsuarioRolTrabajogradoFacade ejbFacadeUsuroltrab;
-    
+
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
-    
+
     @EJB
     private TrabajodegradoFacade ejbFacadeTrabGrad;
-    
+
     @EJB
     private UsuarioFacade ejbFacadeUsuario;
-    
+
     private String nombretg;
     private String numstud;
     private Usuario est1;
+    private String nomEst1;
     private Usuario est2;
+    private String nomEst2;
     private int iddirector;
     private String nombreDirector;
     private String objetivos;
@@ -62,14 +66,18 @@ public class FormatoA {
     private String financiacion;
     private String observaciones;
     private Date fecha;
-    
-    
-    public FormatoA() { 
+
+    public FormatoA() {
         iddirector = UsuarioComun.id;
         nombreDirector = UsuarioComun.nombreComplet;
         fecha = new Date();
     }
-    
+
+    @PostConstruct
+    public void init() {
+        verProductodetrabajo();
+    }
+
     public String getNombretg() {
         return nombretg;
     }
@@ -101,7 +109,7 @@ public class FormatoA {
     public void setEst2(Usuario est2) {
         this.est2 = est2;
     }
-    
+
     public int getIddirector() {
         return iddirector;
     }
@@ -173,70 +181,128 @@ public class FormatoA {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
-    
-    public void guardar()
-       {
-          Map<String, String> map = new HashMap<String, String>();
-          
-          map.put("nombre", TrabajodeGradoActual.nombreTg);
-          map.put("idestud1", est1.getPersonacedula().intValue()+"");
-          map.put("nombreestud", est1.getPersonanombres()+" "+est1.getPersonaapellidos());
-          if(est2!=null && est2.getPersonacedula()!=null)
-          {    
-          map.put("idestud2", est2.getPersonacedula().intValue()+"");
-          map.put("nombreestud2", est2.getPersonanombres()+" "+est2.getPersonaapellidos());
-          }
-          map.put("iddirector", getIddirector()+"");
-          map.put("nombredirector", getNombreDirector());
-          map.put("objetivos", getObjetivos());
-          map.put("aportes", getAportes());
-          map.put("tiempo", getTiempo());
-          map.put("recursos", getRecursos());
-          map.put("financiacion", getFinanciacion());
-          map.put("observaciones", getObservaciones());
-          map.put("fecha", getFecha().toString());
-          
-          Gson gson = new Gson();
-          String contenido = gson.toJson(map, Map.class);
-          
-          Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
-          
-          UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);      //agregando director
-          usuroltg.setRolid(new Rol(BigDecimal.ZERO));  
-          usuroltg.setTrabajoid(trab);
-          usuroltg.setPersonacedula(new Usuario(new BigDecimal(getIddirector())));
-          
-          ejbFacadeUsuroltrab.create(usuroltg);
-          
-           usuroltg.setRolid(new Rol(BigDecimal.ONE));              //agregando primer estudiante
-           usuroltg.setPersonacedula(est1);
-           
-          ejbFacadeUsuroltrab.create(usuroltg);
-          
-          Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.ZERO, contenido);
-          prod.setFormatoid(new Formatoproducto(BigDecimal.ZERO));
-          prod.setTrabajoid(trab);
-          
-          ejbFacadeProdTrab.create(prod);
+
+    public String getNomEst1() {
+        return nomEst1;
     }
-    public void verProductodetrabajo(BigDecimal productoid) {
-        List<Productodetrabajo> lst = ejbFacadeProdTrab.findAll();
-        Productodetrabajo producto;
-        for(int i = 0; i < lst.size(); i++) {
-            if(lst.get(i).getProductoid().equals(productoid)) 
-                producto = lst.get(i);
-        }
+
+    public void setNomEst1(String nomEst1) {
+        this.nomEst1 = nomEst1;
+    }
+
+    public String getNomEst2() {
+        return nomEst2;
+    }
+
+    public void setNomEst2(String numEst2) {
+        this.nomEst2 = numEst2;
+    }
+
+    public void guardar() {
         Map<String, String> map = new HashMap<String, String>();
+
+        map.put("nombre", TrabajodeGradoActual.nombreTg);
+        map.put("idestud1", est1.getPersonacedula().intValue() + "");
+        map.put("nombreestud", est1.getPersonanombres() + " " + est1.getPersonaapellidos());
+        if (est2 != null && est2.getPersonacedula() != null) {
+            map.put("idestud2", est2.getPersonacedula().intValue() + "");
+            map.put("nombreestud2", est2.getPersonanombres() + " " + est2.getPersonaapellidos());
+        }
+        map.put("iddirector", getIddirector() + "");
+        map.put("nombredirector", getNombreDirector());
+        map.put("objetivos", getObjetivos());
+        map.put("aportes", getAportes());
+        map.put("tiempo", getTiempo());
+        map.put("recursos", getRecursos());
+        map.put("financiacion", getFinanciacion());
+        map.put("observaciones", getObservaciones());
+        map.put("fecha", getFecha().toString());
+
         Gson gson = new Gson();
-        String contenido;
-        //map = new ObjectMapper();
-    } 
-    
-    public List<Usuario> complete()
-          {
-              est1 = new Usuario();
-              est2 = new Usuario();
-              return ejbFacadeUsuario.buscarEstudiantesDisponibles();
-          }  
-    
+        String contenido = gson.toJson(map, Map.class);
+
+        Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
+
+        UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);      //agregando director
+        usuroltg.setRolid(new Rol(BigDecimal.ZERO));
+        usuroltg.setTrabajoid(trab);
+        usuroltg.setPersonacedula(new Usuario(new BigDecimal(getIddirector())));
+
+        ejbFacadeUsuroltrab.create(usuroltg);
+
+        usuroltg.setRolid(new Rol(BigDecimal.ONE));              //agregando primer estudiante
+        usuroltg.setPersonacedula(est1);
+
+        ejbFacadeUsuroltrab.create(usuroltg);
+
+        Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.ZERO, contenido);
+        prod.setFormatoid(new Formatoproducto(BigDecimal.ZERO));
+        prod.setTrabajoid(trab);
+
+        ejbFacadeProdTrab.create(prod);
+    }
+
+    public void verProductodetrabajo() {
+
+        BigDecimal productoid = BigDecimal.ZERO;
+        List<Productodetrabajo> lst = ejbFacadeProdTrab.findAll();
+        Productodetrabajo producto = null;
+        for (int i = 0; i < lst.size(); i++) {
+            if (lst.get(i).getProductoid().equals(productoid)) {
+                producto = lst.get(i);
+            }
+        }
+
+        String jsonContenido = producto.getProductocontenido();
+
+        Gson gson = new Gson();
+//        Map<String, String> decoded = new HashMap<String, String>();
+        Map<String, String> decoded = gson.fromJson(jsonContenido, new TypeToken<Map<String, String>>() {
+        }.getType());
+
+        if (decoded.get("nombre") != null) {
+            nombretg = decoded.get("nombre");
+        }
+//        //decoded.get("idestud1");
+        if (decoded.get("nombreestud") != null) {
+            nomEst1 = decoded.get("nombreestud");
+        }
+//        //decoded.get("idestud2");
+        if (decoded.get("nombreestud2") != null) {
+            nomEst2 = decoded.get("nombreestud2");
+        }
+//        //decoded.get("iddirector");
+        if (decoded.get("nombredirector") != null) {
+            nombreDirector = decoded.get("nombredirector");
+        }
+        if (decoded.get("objetivos") != null) {
+            objetivos = decoded.get("objetivos");
+        }
+        if (decoded.get("aportes") != null) {
+            aportes = decoded.get("aportes");
+        }
+        if (decoded.get("tiempo") != null) {
+            tiempo = decoded.get("tiempo");
+        }
+        if (decoded.get("recursos") != null) {
+            recursos = decoded.get("recursos");
+        }
+        if (decoded.get("financiacion") != null) {
+            financiacion = decoded.get("financiacion");
+        }
+        if (decoded.get("observaciones") != null) {
+            observaciones = decoded.get("observaciones");
+        }
+        if (decoded.get("fecha") != null) {
+            fecha = new Date();
+            //fecha.setTime(Date.parse(decoded.get("fecha")));
+        }
+    }
+
+    public List<Usuario> complete() {
+        est1 = new Usuario();
+        est2 = new Usuario();
+        return ejbFacadeUsuario.buscarEstudiantesDisponibles();
+    }
+
 }

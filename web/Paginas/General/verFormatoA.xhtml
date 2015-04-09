@@ -37,69 +37,86 @@
                 <f:metadata>
                     <f:viewParam name="productoid" value="#{trabajodegradoController.trabajoid}" />
                 </f:metadata>
-                <h1>#{trabajodegradoController.trabajoid}</h1>
-                <h:form>                    
+                
+                <h:form>
+                    <p:menu styleClass="menuizqroles">                            
+                        <p:submenu label="Perfiles">
+                            <p:menuitem value="Director" style="background-color:graytext" url="../Director.xhtml" />                                
+                            <p:menuitem value="Jefe de Departamento"/>
+                        </p:submenu>
+                        <p:submenu></p:submenu>                            
+                    </p:menu>
+                </h:form>
+                
+                <h:panelGroup styleClass="paneltrabajo">                    
+                    
+                    <h1>#{trabajodegradoController.trabajoid}</h1>
+                    
+                    
                     <p:panel style="background-color: whitesmoke">
                         <h:panelGrid columns="2" cellpadding="5">
                             <p:graphicImage value="../../resources/img/logo-unicauca.png"/>                            
-                            <h:outputText value="Formato A" style="font-weight:bold; font-size: 20px; "/>
-
-                            <h:outputText value="Título del trabajo de grado:" style="font-weight:bold" />
-                            <h:outputText />
-
-                            <h:outputText value="Número de estudiantes:" style="font-weight:bold" />
-                            <h:outputText />
-
-                            <h:outputText value="Nombre de los estudiantes:" style="font-weight:bold" />
-                            <h:outputText />
-
-                            <h:outputText value="Director de trabajo:" style="font-weight:bold" />
-                            <h:outputText />
-
-                            <h:outputText value="Objetivos:" style="font-weight:bold" />
-                            <h:outputText />
-
-                            <h:outputText value="Aportes o contribución a las lineas de investigación y desarrollo o temas de interes del departamento:" style="font-weight:bold" />
+                            <h:outputText value="Universidad del Cauca Facultad de Ingeniería Electrónica y Telecomunicaciones CI-FIET" style="font-weight:bold; "/>
+                            
+                            <h:outputText value="TRABAJOS DE GRADO" style="font-weight:bold; font-size: 20px; "/>
                             <h:outputText />
                             
-                            <h:outputText />
-                            <h:outputText value="empty"/>
+                            <h:outputText value="Formato A" style="font-weight:bold; "/>
+                            <h:outputText value="PRESENTACIÓN DE LA PROPUESTA DE TRABAJO DE GRADO AL DEPARTAMENTO" style="font-weight:bold; "/>
 
-                            <h:outputText value="Tiempo estimado de realización" style="font-weight:bold" />
-                            <h:outputText />
+                            <h:outputText value="TÍTULO:" style="font-weight:bold" />
+                            <h:outputText value="#{formatoA.nombretg}"/>
 
-                            <h:outputText value="Objetivos:" style="font-weight:bold" />
-                            <h:outputText />
+                            <h:outputText value="NÚMERO DE ESTUDIANTES:" style="font-weight:bold" />
+                            <h:outputText value="ToDo FALTA GUARDAR EN LA BD"/>
 
-                            <h:outputText value="Condiciones de Entrega:" style="font-weight:bold" />
-                            <h:outputText />
+                            <h:outputText value="DIRECTOR DEL TRABAJO:" style="font-weight:bold" />
+                            <h:outputText value="#{formatoA.nombreDirector}"/>
 
-                            <h:outputText value="Recursos requeridos:" style="font-weight:bold" />
+                            <h:outputText value="OBJETIVOS:" style="font-weight:bold" />
                             <h:outputText />
-
-                            <h:outputText value="Definicion de fuentes de financiacion:" style="font-weight:bold" />
-                            <h:outputText />
-
-                            <h:outputText value="Observaciones:" style="font-weight:bold" />
+                            <h:outputText value="#{formatoA.objetivos}"/>
                             <h:outputText />
 
-                            <h:outputText value="Fecha:" style="font-weight:bold" />
+                            <h:outputText value="APORTES O CONTRIBUCION A LAS LINEAS DE INVESTIGACIÓN Y DESARROLLO DE O TEMAS DE INTERES DEL DEPATAMENTO" style="font-weight:bold" />
                             <h:outputText />
+                            <h:outputText value="#{formatoA.aportes}"/>
+                            <h:outputText />
+
+                            <h:outputText value="TIEMPO ESTIMADO DE REALIZACIÓN:" style="font-weight:bold" />
+                            <h:outputText value="#{formatoA.tiempo}"/>
+                            
+                            <h:outputText value="CONDICIONES DE ENTREGA:" style="font-weight:bold" />
+                            <h:outputText />
+                            <h:outputText value="ToDo FALTA GUARDAR EN LA BD"/>
+                            <h:outputText />
+
+                            <h:outputText value="RECURSOS REQUERIDOS:" style="font-weight:bold" />
+                            <h:outputText />
+                            <h:outputText value="#{formatoA.recursos}"/>
+                            <h:outputText />
+                            
+                            <h:outputText value="DEFINICION DE FUENTES DE FINANCIACION:" style="font-weight:bold" />
+                            <h:outputText />
+                            <h:outputText value="#{formatoA.financiacion}"/>
+                            <h:outputText />
+                            
+                            <h:outputText value="OBSERVACIONES:" style="font-weight:bold" />
+                            <h:outputText />
+                            <h:outputText value="#{formatoA.observaciones}"/>
+                            <h:outputText />
+                            
+                            <h:outputText value="FECHA:" style="font-weight:bold" />
+                            <h:outputText value="#{formatoA.fecha}"/>
+                            
+                            <h:outputText value="FIRMA:" style="font-weight:bold" />
+                            <h:outputText />
+                            
+                            <h:outputText value="(Proponente(s) del trabajo de grado)" />
+                            <h:outputText />                            
                         </h:panelGrid>
                     </p:panel>
-                </h:form>
-                <!--
-                <p:commandButton type="button" value="Exportar a PDF" icon="ui-icon-extlink" onclick="exportFormatoA()"/>
-                <script type="text/javascript">
-                    function exportFormatoA() {
-                        //export image
-                        $('#output').empty().append(PF('formatoA').exportAsImage());
-
-                        //show the dialog
-                        PF('dlg').show();
-                    }
-                </script>
-                -->
+                </h:panelGroup>                
             </ui:define>
 
         </ui:composition>

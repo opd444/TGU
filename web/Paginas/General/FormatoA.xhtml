@@ -27,7 +27,7 @@
                 <h:form>
                     <p:menu styleClass="menuizqroles">
                         <p:submenu label="Perfiles">
-                            <p:menuitem value="Director" action="Director.xhtml?faces-redirect=true"/>
+                            <p:menuitem value="Director" action="Director.xhtml?faces-redirect=true" style="background-color:graytext"/>
                             <p:menuitem value="Jefe de Departamento"/>
                         </p:submenu>
                         <p:submenu label="...">
@@ -51,21 +51,6 @@
                                 <p:panel header="Creacion de Formato A">
                                     <p:messages />
                                     <h:panelGrid columns="2" columnClasses="label, value">
-
-                                        <p:outputLabel value="Nombre del Estudiante 1:"> </p:outputLabel>
-                                        <p:autoComplete value="#{formatoA.est1}" label="Estudiante # 1 "
-                                                        completeMethod="#{formatoA.complete()}"
-                                                        var="est"
-                                                        itemValue="#{est}" dropdown="true"
-                                                        converter="#{UsuarioController.UsuarioControllerConverter}"
-                                                        forceSelection="true"
-                                                        itemLabel="#{est.personanombres} #{est.personaapellidos}"
-                                                        required="true"
-                                                        >
-                                            <p:column>
-                                                #{est.personanombres} #{est.personaapellidos}
-                                            </p:column>
-                                        </p:autoComplete> 
                                         <p:outputLabel value="Nombre del Estudiante 1:"> </p:outputLabel>
                                         <p:autoComplete value="#{formatoA.est1}" label="Estudiante # 1 "
                                                         completeMethod="#{formatoA.complete()}"

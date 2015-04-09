@@ -20,29 +20,22 @@
             <ui:define name="title">
                 <p:breadCrumb>
                     <p:menuitem value="principal" outcome="Index" />                                                             
-                </p:breadCrumb>
-                <br />
-                <br />
+                </p:breadCrumb>                
             </ui:define>
 
             <ui:define name="body">
-                <h:form id="frmListaTrabajosGrado">                    
-                    <p:layout>
-                        <p:layoutUnit position="west">
-                            <p:menu>
-                                <p:submenu label="Rol">
-                                    <p:menuitem value="Director" outcome="indexDirector"/>
-                                    <p:menuitem value="Jefe de Departamento" outcome="vistaJefe"/>
-                                </p:submenu>
-                                <p:submenu></p:submenu>
-                            </p:menu>
-                        </p:layoutUnit>
-
-                        <p:layoutUnit position="center">
-
-                        </p:layoutUnit>
-                    </p:layout>
+                <h:form>                    
+                    <p:menu styleClass="menuizqroles" >
+                        <p:submenu label="Rol">
+                            <p:menuitem value="Director" outcome="Director"/>
+                            <p:menuitem value="Jefe de Departamento" outcome="vistaJefe"/>
+                        </p:submenu>
+                        <p:submenu></p:submenu>
+                    </p:menu>
                 </h:form>
+                <p:panel styleClass="paneltrabajo" >
+                    contenido vista princiapal para un usuario con varios roles.
+                </p:panel>                
             </ui:define>
 
         </ui:composition>
