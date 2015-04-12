@@ -5,6 +5,7 @@
  */
 package com.unicauca.tgu.entities;
 
+import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -73,7 +74,7 @@ public class Trabajodegrado implements Serializable {
         this.trabajoid = trabajoid;
     }
 
-    public String getTrabajonombre() {
+    public String getTrabajonombre() {        
         return trabajonombre;
     }
 

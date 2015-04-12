@@ -19,12 +19,14 @@ import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
+import com.unicauca.tgu.jsf.util.JsfUtil;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -51,7 +53,7 @@ public class FormatoA {
     @EJB
     private UsuarioFacade ejbFacadeUsuario;
 
-    private String nombretg;
+    private String nombretg; private BigDecimal trabajoid;
     private String numstud;
     private Usuario est1;
     private String nomEst1;
@@ -68,6 +70,8 @@ public class FormatoA {
     private Date fecha;
 
     public FormatoA() {
+        
+        trabajoid = BigDecimal.valueOf(-1);
         iddirector = UsuarioComun.id;
         nombreDirector = UsuarioComun.nombreComplet;
         fecha = new Date();
@@ -75,9 +79,20 @@ public class FormatoA {
 
     @PostConstruct
     public void init() {
-        verProductodetrabajo();
+        if(!trabajoid.equals(BigDecimal.valueOf(-1)))
+            verProductodetrabajo();
     }
 
+    public BigDecimal getTrabajoid() {
+        if(!trabajoid.equals(BigDecimal.valueOf(-1)))
+            verProductodetrabajo();
+        return trabajoid;
+    }
+
+    public void setTrabajoid(BigDecimal trabajoid) {
+        this.trabajoid = trabajoid;
+    }
+    
     public String getNombretg() {
         return nombretg;
     }
@@ -197,17 +212,36 @@ public class FormatoA {
     public void setNomEst2(String numEst2) {
         this.nomEst2 = numEst2;
     }
+    
+    public String editarFormatoA() {
+        try {
+            //getFacade().edit(current);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
+            return "fasesTrabajoGrado/index";
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            return null;
+        }        
+    }
 
-    public void guardar() {
+    public String guardar() {
         Map<String, String> map = new HashMap<String, String>();
 
         map.put("nombre", TrabajodeGradoActual.nombreTg);
-        map.put("idestud1", est1.getPersonacedula().intValue() + "");
-        map.put("nombreestud", est1.getPersonanombres() + " " + est1.getPersonaapellidos());
+        //
+        int numeroEstudiantes = 0;
+        if (est1 != null && est1.getPersonacedula() != null) {
+            map.put("idestud1", est1.getPersonacedula().intValue() + "");
+            map.put("nombreestud", est1.getPersonanombres() + " " + est1.getPersonaapellidos());
+            numeroEstudiantes += 1;
+        }
         if (est2 != null && est2.getPersonacedula() != null) {
             map.put("idestud2", est2.getPersonacedula().intValue() + "");
             map.put("nombreestud2", est2.getPersonanombres() + " " + est2.getPersonaapellidos());
+            numeroEstudiantes += 1;
         }
+        map.put("numeroEstudiantes", Integer.toString(numeroEstudiantes));
+        //
         map.put("iddirector", getIddirector() + "");
         map.put("nombredirector", getNombreDirector());
         map.put("objetivos", getObjetivos());
@@ -223,32 +257,39 @@ public class FormatoA {
 
         Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
 
-        UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);      //agregando director
-        usuroltg.setRolid(new Rol(BigDecimal.ZERO));
-        usuroltg.setTrabajoid(trab);
-        usuroltg.setPersonacedula(new Usuario(new BigDecimal(getIddirector())));
+        try {
+            UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);      //agregando director
+            usuroltg.setRolid(new Rol(BigDecimal.ZERO));
+            usuroltg.setTrabajoid(trab);
+            usuroltg.setPersonacedula(new Usuario(new BigDecimal(getIddirector())));
 
-        ejbFacadeUsuroltrab.create(usuroltg);
+            ejbFacadeUsuroltrab.create(usuroltg);
+            if (est1 != null) {
+                usuroltg.setRolid(new Rol(BigDecimal.ONE));              //agregando primer estudiante
+                usuroltg.setPersonacedula(est1);
 
-        usuroltg.setRolid(new Rol(BigDecimal.ONE));              //agregando primer estudiante
-        usuroltg.setPersonacedula(est1);
+                ejbFacadeUsuroltrab.create(usuroltg);
+            }
 
-        ejbFacadeUsuroltrab.create(usuroltg);
+            Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.ZERO, contenido);
+            prod.setFormatoid(new Formatoproducto(BigDecimal.ZERO));
+            prod.setTrabajoid(trab);
 
-        Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.ZERO, contenido);
-        prod.setFormatoid(new Formatoproducto(BigDecimal.ZERO));
-        prod.setTrabajoid(trab);
-
-        ejbFacadeProdTrab.create(prod);
+            ejbFacadeProdTrab.create(prod);
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
+            return "fasesTrabajoGrado/index";
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            return null;
+        }
     }
 
     public void verProductodetrabajo() {
-
-        BigDecimal productoid = BigDecimal.ZERO;
+        
         List<Productodetrabajo> lst = ejbFacadeProdTrab.findAll();
         Productodetrabajo producto = null;
         for (int i = 0; i < lst.size(); i++) {
-            if (lst.get(i).getProductoid().equals(productoid)) {
+            if (lst.get(i).getTrabajoid().getTrabajoid().equals(trabajoid)) {
                 producto = lst.get(i);
             }
         }

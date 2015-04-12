@@ -15,35 +15,33 @@
             </ui:define>
 
             <ui:define name="menuprincipal">
-
-            </ui:define>
-
-            <ui:define name="title">
-                <p:breadCrumb>
-                    <p:menuitem value="Director" url="D.xhtml?faces-redirect=true" />
+                <p:breadCrumb styleClass="migaDePan">
+                    <p:menuitem value="Director" url="Director.xhtml?faces-redirect=true" style="color:#FFFFFF;" />
+                    <p:menuitem value="Jefe de Departamento" url="vistaJefe.xhtml?faces-redirect=true" style="color:#FFFFFF;" />
                 </p:breadCrumb>
             </ui:define>
-
+            
+            <ui:define name="title">
+            </ui:define>
+            
             <ui:define name="body">
                 <h:form>
-                    <p:menu styleClass="menuizqroles">
-                                <p:submenu label="Perfiles">
-                                    <p:menuitem value="Director" action="FormatoA.xhtml?faces-redirect=true"/>
-                                    <p:menuitem value="Jefe de Departamento" action="vistaJefe?faces-redirect=true"/>
-                                </p:submenu>
-                                <p:submenu label="...">
-                                    <p:menuitem value="Otros Roles..." />
-                                </p:submenu>
-                            </p:menu>
+                    <p:menu styleClass="menuizqroles" style="background-color: white">
+                        <p:submenu label="Perfiles" style="background-color: white">
+                            <p:menuitem value="Director" action="Director.xhtml?faces-redirect=true"/>
+                            <p:menuitem value="Jefe de Departamento" action="vistaJefe.xhtml?faces-redirect=true" style="background-color: #c2dfef" />
+                        </p:submenu>                                
+                    </p:menu>
+                    
                     <p:panel styleClass="paneltrabajo" >
                         <p:menubar styleClass="barraacciones">
-                                <p:menuitem value="Lista de ideas por revisar" 
-                                            update="" icon="ui-icon-folder-collapsed"/>
-                                <p:menuitem value="Ver Historial" url="historialIdeasRevisadas.xhtml"
-                                            icon="ui-icon-plus"/>
-                            </p:menubar>
+                            <p:menuitem value="Lista de ideas por revisar" 
+                                        update="" icon="ui-icon-folder-collapsed"/>
+                            <p:menuitem value="Ver Historial" url="historialIdeasRevisadas.xhtml"
+                                        icon="ui-icon-plus"/>
+                        </p:menubar>
 
-                        <p:dataTable var="car" value="#{usuarioRolTrabajogradoController.trabsJefe}"
+                        <p:dataTable styleClass="tabladirector" var="car" value="#{usuarioRolTrabajogradoController.trabsJefe}"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="5,10,15">
@@ -53,8 +51,10 @@
                             <p:column headerText="Fecha">
                                 #{car.fecha}                                  
                             </p:column>
-                            <p:column headerText="Trabajo de Grado">
-                                #{car.trabajoGrado}
+                            <p:column headerText="Nombre del Trabajo de Grado">
+                                <p:link outcome="fasesTrabajoGrado/index-jefe-departamento" value="#{car.trabajoGrado}">                                        
+                                    <f:param name="trabajoid" value="#{car.trabajoGradoId}" />                                        
+                                </p:link>                                 
                             </p:column>
                             <p:column headerText="Director">
                                 #{car.director}    

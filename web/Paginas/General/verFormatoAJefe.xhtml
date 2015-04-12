@@ -32,20 +32,19 @@
 
             <ui:define name="body">
                 <f:metadata>
-                    <f:viewParam name="productoid" value="#{formatoA.trabajoid}" />
+                    <f:viewParam name="productoid" value="#{trabajodegradoController.trabajoid}" />
                 </f:metadata>
                 
                 <h:form>
                     <p:menu styleClass="menuizqroles" style="background-color: white">
                         <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" action="Director.xhtml?faces-redirect=true" style="background-color: #c2dfef" />
-                            <p:menuitem value="Jefe de Departamento" action="vistaJefe.xhtml?faces-redirect=true" />
+                            <p:menuitem value="Director" action="Director.xhtml?faces-redirect=true"/>
+                            <p:menuitem value="Jefe de Departamento" action="vistaJefe.xhtml?faces-redirect=true" style="background-color: #c2dfef" />
                         </p:submenu>                                
                     </p:menu>
                 </h:form>
 
                 <h:panelGroup styleClass="paneltrabajo">                    
-                    
                     <f:metadata>
                         <f:viewParam name="trabajoid" value="#{formatoA.trabajoid}" />
                     </f:metadata>
@@ -114,11 +113,11 @@
                             <h:outputText />                            
                         </h:panelGrid>
                         <h:panelGrid columns="2" cellpadding="10">
-                            <p:button value="Volver" href="fasesTrabajoGrado/index.xhtml" />                                
+                            <p:button value="Volver" href="fasesTrabajoGrado/index-jefe-departamento.xhtml" />                                
                             <p:button value="Descargar" />
                         </h:panelGrid>
                     </p:panel>
-                </h:panelGroup>                
+                </h:panelGroup>
             </ui:define>
 
         </ui:composition>
