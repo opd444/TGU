@@ -53,7 +53,9 @@ public class FormatoA {
     @EJB
     private UsuarioFacade ejbFacadeUsuario;
 
-    private String nombretg; private BigDecimal trabajoid;
+    private String nombretg;
+    private BigDecimal trabajoid;
+    private BigDecimal trabajoidVer;
     private String numstud;
     private Usuario est1;
     private String nomEst1;
@@ -70,8 +72,6 @@ public class FormatoA {
     private Date fecha;
 
     public FormatoA() {
-        
-        trabajoid = BigDecimal.valueOf(-1);
         iddirector = UsuarioComun.id;
         nombreDirector = UsuarioComun.nombreComplet;
         fecha = new Date();
@@ -79,20 +79,21 @@ public class FormatoA {
 
     @PostConstruct
     public void init() {
-        if(!trabajoid.equals(BigDecimal.valueOf(-1)))
-            verProductodetrabajo();
+
+//        trabajoid = BigDecimal.valueOf(Double.MAX_VALUE);
+//        if (!trabajoid.equals(BigDecimal.valueOf(Double.MAX_VALUE))) {
+//            verProductodetrabajo();
+//        }
     }
 
     public BigDecimal getTrabajoid() {
-        if(!trabajoid.equals(BigDecimal.valueOf(-1)))
-            verProductodetrabajo();
         return trabajoid;
     }
 
     public void setTrabajoid(BigDecimal trabajoid) {
         this.trabajoid = trabajoid;
     }
-    
+
     public String getNombretg() {
         return nombretg;
     }
@@ -212,7 +213,7 @@ public class FormatoA {
     public void setNomEst2(String numEst2) {
         this.nomEst2 = numEst2;
     }
-    
+
     public String editarFormatoA() {
         try {
             //getFacade().edit(current);
@@ -221,13 +222,21 @@ public class FormatoA {
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
-        }        
+        }
     }
 
     public String guardar() {
         Map<String, String> map = new HashMap<String, String>();
+        
+        List<Trabajodegrado> lst = ejbFacadeTrabGrad.findAll();
+        Trabajodegrado tg = null;
+        for (int i = 0; i < lst.size(); i++) {
+            if (lst.get(i).getTrabajoid().equals(trabajoid)) {
+                tg = lst.get(i);
+            }
+        }        
 
-        map.put("nombre", TrabajodeGradoActual.nombreTg);
+        map.put("nombre", tg.getTrabajonombre());
         //
         int numeroEstudiantes = 0;
         if (est1 != null && est1.getPersonacedula() != null) {
@@ -254,16 +263,18 @@ public class FormatoA {
 
         Gson gson = new Gson();
         String contenido = gson.toJson(map, Map.class);
-
-        Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
-
+        
         try {
+            
+            Trabajodegrado trab = new Trabajodegrado(tg.getTrabajoid(), tg.getTrabajonombre());
+            
             UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);      //agregando director
             usuroltg.setRolid(new Rol(BigDecimal.ZERO));
             usuroltg.setTrabajoid(trab);
             usuroltg.setPersonacedula(new Usuario(new BigDecimal(getIddirector())));
 
             ejbFacadeUsuroltrab.create(usuroltg);
+
             if (est1 != null) {
                 usuroltg.setRolid(new Rol(BigDecimal.ONE));              //agregando primer estudiante
                 usuroltg.setPersonacedula(est1);
@@ -276,6 +287,7 @@ public class FormatoA {
             prod.setTrabajoid(trab);
 
             ejbFacadeProdTrab.create(prod);
+            
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
             return "fasesTrabajoGrado/index";
         } catch (Exception e) {
@@ -284,12 +296,16 @@ public class FormatoA {
         }
     }
 
-    public void verProductodetrabajo() {
-        
+    public void setVerProductodetrabajo(BigDecimal trabajoidVer) {
+        this.trabajoidVer = trabajoidVer;
+    }
+
+    public void getVerProductodetrabajo() {
+
         List<Productodetrabajo> lst = ejbFacadeProdTrab.findAll();
         Productodetrabajo producto = null;
         for (int i = 0; i < lst.size(); i++) {
-            if (lst.get(i).getTrabajoid().getTrabajoid().equals(trabajoid)) {
+            if (lst.get(i).getTrabajoid().getTrabajoid().equals(trabajoidVer)) {
                 producto = lst.get(i);
             }
         }

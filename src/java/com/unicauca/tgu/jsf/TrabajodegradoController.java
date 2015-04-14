@@ -82,6 +82,10 @@ public class TrabajodegradoController implements Serializable {
     public BigDecimal getTrabajoid() {
         return trabajoid;
     }
+    
+    public void setTrabajoid(BigDecimal trabajoid) {
+        this.trabajoid = trabajoid;
+    }
 
     public FasesTrabajoDeGrado getFases() {
         return fases;
@@ -90,12 +94,7 @@ public class TrabajodegradoController implements Serializable {
     public void setFases(FasesTrabajoDeGrado fases) {
         this.fases = fases;
     }
-    
-
-    public void setTrabajoid(BigDecimal trabajoid) {
-        this.trabajoid = trabajoid;
-    }
-    
+        
     private Trabajodegrado current;
     private DataModel items = null;
     @EJB
