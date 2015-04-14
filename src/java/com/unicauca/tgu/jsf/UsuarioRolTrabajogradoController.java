@@ -16,11 +16,8 @@ import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-//<<<<<<< HEAD
-//=======
 import java.util.ArrayList;
 import java.util.Date;
-//>>>>>>> origin/master
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
