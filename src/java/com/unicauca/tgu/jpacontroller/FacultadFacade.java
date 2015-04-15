@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class FacultadFacade extends AbstractFacade<Facultad> {
-    @PersistenceContext(unitName = "jpawebPU")
+    @PersistenceContext(unitName = "tguPU")
     private EntityManager em;
 
     @Override

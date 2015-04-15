@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class NotificacionFacade extends AbstractFacade<Notificacion> {
-    @PersistenceContext(unitName = "jpawebPU")
+    @PersistenceContext(unitName = "tguPU")
     private EntityManager em;
 
     @Override

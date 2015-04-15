@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class RestricciontiempoFacade extends AbstractFacade<Restricciontiempo> {
-    @PersistenceContext(unitName = "jpawebPU")
+    @PersistenceContext(unitName = "tguPU")
     private EntityManager em;
 
     @Override

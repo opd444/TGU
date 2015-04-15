@@ -16,7 +16,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class ProductoRestriccionfrecuenciaFacade extends AbstractFacade<ProductoRestriccionfrecuencia> {
-    @PersistenceContext(unitName = "jpawebPU")
+    @PersistenceContext(unitName = "tguPU")
     private EntityManager em;
 
     @Override

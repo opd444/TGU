@@ -51,12 +51,12 @@
 
                     <h:form>     
                         <p:growl id="growl" sticky="true" showDetail="true"/>
-
-                        <p:wizard>
+                        
+                         <p:wizard backLabel="Anterior" nextLabel="Siguiente">
                             <p:tab id="paso1" title="Paso 1">
                                 <p:panel header="Creacion de Formato A">
                                     <p:messages />
-                                    <h:panelGrid columns="2" columnClasses="label, value">
+                                    <h:panelGrid columns="2" columnClasses="label, value" cellpadding="5">
                                         <p:outputLabel value="Nombre del Estudiante 1:"> </p:outputLabel>
                                         <p:autoComplete value="#{formatoA.est1}" label="Estudiante # 1 "
                                                         completeMethod="#{formatoA.complete()}"
@@ -65,17 +65,16 @@
                                                         converter="#{UsuarioController.UsuarioControllerConverter}"
                                                         forceSelection="true"
                                                         itemLabel="#{est.personanombres} #{est.personaapellidos}"
-
                                                         >
 
                                             <p:column>
                                                 #{est.personanombres} #{est.personaapellidos}
                                             </p:column>
                                         </p:autoComplete> 
-
+                                        <p:separator /> <p:separator />
                                         <p:outputLabel value="Nombre de los Estudiante 2(opcional):"> </p:outputLabel>
                                         <p:inputText id="lol" required="false"/>   
-
+                                        <p:separator /> <p:separator />
                                         <p:outputLabel value="Director del trabajo de grado:"> </p:outputLabel>
                                         <p:outputLabel value="#{formatoA.nombreDirector}"> </p:outputLabel>
                                     </h:panelGrid>
@@ -85,42 +84,108 @@
                             <p:tab id="paso2" title="Paso 2">
                                 <p:panel header="Creacion de Formato A">
                                     <p:messages />
-                                    <h:panelGrid columnClasses="label, value">
+                                    <h:panelGrid columnClasses="label, value" cellpadding="5">
                                         <p:outputLabel value="Objetivos:"> </p:outputLabel>
-                                        <p:inputTextarea value="#{formatoA.objetivos}" required="true" label="Objetivos"/>
+                                        <p:inputTextarea value="#{formatoA.objetivos}" required="true" label="Objetivos" styleClass="txtareaform"/>
 
+                                        <p:separator />
+                                        
                                         <p:outputLabel value="Aportes o contribucion a las lineas de investigacion y desarrollo o temas de interes del departamento:"> </p:outputLabel>
-                                        <p:inputTextarea value="#{formatoA.aportes}" required="true" label="Aportes o Contribuciones"/>
+                                        <p:inputTextarea value="#{formatoA.aportes}" required="true" label="Aportes o Contribuciones" styleClass="txtareaform"/>
                                     </h:panelGrid>
                                 </p:panel>
                             </p:tab>
 
                             <p:tab id="paso3" title="Paso 3">
                                 <p:panel header="Creacion de Formato A">
-                                    <h:panelGrid columns="2">
+                                     <p:messages />
+                                    <h:panelGrid cellpadding="5">
 
                                         <p:outputLabel value="Tiempo estimado de realizacion"> </p:outputLabel>
-                                        <p:inputText value="#{formatoA.tiempo}" required="true" label="Tiempo Estimado"/>
+                                        <p:inputText value="#{formatoA.tiempo}" required="true" label="Tiempo Estimado" 
+                                                     styleClass="txtareaform" />
 
+                                         <p:separator />
+                                         
                                         <p:outputLabel value="Recursos requeridos"> </p:outputLabel>
-                                        <p:inputTextarea value="#{formatoA.recursos}" required="true" label="Recursos"/>
+                                        <p:inputTextarea value="#{formatoA.recursos}" required="true" label="Recursos" styleClass="txtareaform"/>
 
+                                         <p:separator />
                                         <p:outputLabel value="Definicion de fuentes de financiacion"> </p:outputLabel>
-                                        <p:inputTextarea value="#{formatoA.financiacion}" required="true" label="Fuentes de Financiacion"/>
+                                        <p:inputTextarea value="#{formatoA.financiacion}" required="true" label="Fuentes de Financiacion" styleClass="txtareaform"/>
 
+                                         <p:separator />
                                         <p:outputLabel value="Observaciones"> </p:outputLabel>
-                                        <p:inputTextarea value="#{formatoA.observaciones}" label="Observaciones"/>
+                                        <p:inputTextarea value="#{formatoA.observaciones}" label="Observaciones" styleClass="txtareaform"/>
 
+                                         <p:separator />
                                         <p:outputLabel value="Fecha"> </p:outputLabel>
                                         <p:calendar navigator="true" value="#{formatoA.fecha}" required="true" label="Fecha"/>
 
                                     </h:panelGrid>
 
-                                    <p:button value="Cancelar" outcome="fases-trabajo-de-grado" />
-                                    <p:commandButton value="Editar" update="growl" process="@this" actionListener="#{formatoA.editarFormatoA()}" />
                                 </p:panel>
                             </p:tab>
+
+                            <p:tab id="paso4" title="Paso 4">
+                                <p:panel header="Confirmacion de Datos">
+                                    <h:panelGrid cellpadding="7">
+
+                                        <p:fieldset legend="Nombre del Estudiante 1:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoA.est1.personanombres} #{formatoA.est1.personaapellidos}"> </p:outputLabel>
+                                        </p:fieldset>
+                                      
+                                        
+                                        <p:fieldset legend="Director del trabajo de grado:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoA.nombreDirector}"> </p:outputLabel>
+                                        </p:fieldset>      
+                                        
+                                        
+                                        <p:fieldset legend="Objetivos:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoA.objetivos}"> </p:outputLabel>
+                                        </p:fieldset>   
+                                        
+                                        
+                                        <p:fieldset legend="Aportes o contribucion a las lineas de investigacion y desarrollo o temas de interes del departamento:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoA.aportes}"> </p:outputLabel>
+                                        </p:fieldset>   
+                                       
+                                        <p:fieldset legend="Tiempo estimado de realizacion" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoA.tiempo}"> </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Recursos requeridos" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoA.recursos}"> </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Definicion de fuentes de financiacion" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoA.financiacion}"> </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Observaciones" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoA.observaciones}"> </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Fecha" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoA.fecha}"> </p:outputLabel>
+                                        </p:fieldset>
+
+
+                                 
+
+                                    </h:panelGrid>
+
+                                     <p:separator />
+                                     
+                                     <p:commandButton value="Editar" update="growl" process="@this" actionListener="#{formatoA.editarFormatoA()}" />
+                                </p:panel>
+                            </p:tab>
+
+
                         </p:wizard>
+                        
+                        <p:button value="Cancelar" outcome="fases-trabajo-de-grado" style="margin-top: 20px"/>
+                       
                     </h:form>                    
                 </h:panelGroup>
             </ui:define>

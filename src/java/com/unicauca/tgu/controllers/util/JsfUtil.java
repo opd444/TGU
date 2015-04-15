@@ -1,4 +1,4 @@
-package com.unicauca.tgu.jsf.util;
+package com.unicauca.tgu.controllers.util;
 
 import java.util.List;
 import javax.faces.application.FacesMessage;

@@ -17,7 +17,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class ProductodetrabajoFacade extends AbstractFacade<Productodetrabajo> {
-    @PersistenceContext(unitName = "jpawebPU")
+    @PersistenceContext(unitName = "tguPU")
     private EntityManager em;
 
     @Override

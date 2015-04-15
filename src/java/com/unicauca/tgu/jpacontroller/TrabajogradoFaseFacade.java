@@ -19,7 +19,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class TrabajogradoFaseFacade extends AbstractFacade<TrabajogradoFase> {
-    @PersistenceContext(unitName = "jpawebPU")
+    @PersistenceContext(unitName = "tguPU")
     private EntityManager em;
 
     @Override

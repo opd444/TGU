@@ -1,9 +1,10 @@
 
 .paneltrabajo
 {
-    margin-top: 5px;
+    margin-top: 20px;
     width: 730px;
     float: left;
+    font-size: 15px;
 }
 
 .tabladirector
@@ -15,7 +16,23 @@
 .menuizqroles
 {
     float : left;
-    margin-top: 5px;
+    margin-top: 20px;
+}
+
+.barraacciones
+{
+  width: 100%;
+}
+
+.txtareaform
+{
+  margin-top: 10px;
+  width:  600px;
+}
+
+.inputform
+{
+  width:  350px;
 }
 
 .menubarstyleClass {

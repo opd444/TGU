@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.unicauca.tgu.jsf;
+package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,7 +19,7 @@ import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
-import com.unicauca.tgu.jsf.util.JsfUtil;
+import com.unicauca.tgu.controllers.util.JsfUtil;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
@@ -216,6 +216,9 @@ public class FormatoA {
 
     public String editarFormatoA() {
         try {
+            
+
+
             //getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
             return "fasesTrabajoGrado/index";

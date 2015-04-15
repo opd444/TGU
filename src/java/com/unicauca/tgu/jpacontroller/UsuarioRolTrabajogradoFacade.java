@@ -22,7 +22,7 @@ import javax.persistence.TypedQuery;
  */
 @Stateless
 public class UsuarioRolTrabajogradoFacade extends AbstractFacade<UsuarioRolTrabajogrado> {
-    @PersistenceContext(unitName = "jpawebPU")
+    @PersistenceContext(unitName = "tguPU")
     private EntityManager em;
 
     @Override

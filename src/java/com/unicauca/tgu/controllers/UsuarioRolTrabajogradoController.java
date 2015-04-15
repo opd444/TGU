@@ -1,4 +1,4 @@
-package com.unicauca.tgu.jsf;
+package com.unicauca.tgu.controllers;
 
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.Auxiliares.UsuarioComun;
@@ -10,8 +10,8 @@ import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.Usuario;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
-import com.unicauca.tgu.jsf.util.JsfUtil;
-import com.unicauca.tgu.jsf.util.PaginationHelper;
+import com.unicauca.tgu.controllers.util.JsfUtil;
+import com.unicauca.tgu.controllers.util.PaginationHelper;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 
 import java.io.Serializable;

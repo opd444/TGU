@@ -1,14 +1,14 @@
-package com.unicauca.tgu.jsf;
+package com.unicauca.tgu.controllers;
 
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.entities.FasesTrabajoDeGrado;
 import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
-import com.unicauca.tgu.jsf.util.JsfUtil;
-import com.unicauca.tgu.jsf.util.PaginationHelper;
+import com.unicauca.tgu.controllers.util.JsfUtil;
+import com.unicauca.tgu.controllers.util.PaginationHelper;
 import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
-import com.unicauca.tgu.jsf.util.JsfUtil.PersistAction;
+import com.unicauca.tgu.controllers.util.JsfUtil.PersistAction;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
