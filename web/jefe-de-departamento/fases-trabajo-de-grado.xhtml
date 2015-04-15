@@ -8,7 +8,7 @@
 
     <body>
 
-        <ui:composition template="./../../../Plantillas/Plantilla.xhtml">
+        <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="CuadroDeBotonesSesion">
                 CuadroDeBotonesSesion
@@ -16,11 +16,11 @@
 
             <ui:define name="menuprincipal">
                 <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Director" url="../Director.xhtml?faces-redirect=true" style="color:#FFFFFF;" />
-                    <p:menuitem value="Director" url="../Director.xhtml?faces-redirect=true" style="color:#FFFFFF;" />
-                    <p:menuitem value="Trabajos de Grado" url="../Director.xhtml?faces-redirect=true" style="color:#FFFFFF;" />                        
-                    <p:menuitem value="Fases del Trabajo de Grado" outcome="index" style="color:#FFFFFF;" />
-                    <p:menuitem value="1. Presentación de la Idea" outcome="index" style="color:#FFFFFF;" />
+                    <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />                                        
+                    <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
+                    <p:menuitem value="Trabajos de Grado" outcome="vista-jefe-de-departamento" />                        
+                    <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
+                    <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
                 </p:breadCrumb>              
             </ui:define>
 
@@ -37,8 +37,8 @@
                     <h:form>
                         <p:menu styleClass="menuizqroles" style="background-color: white">
                             <p:submenu label="Perfiles" style="background-color: white">
-                                <p:menuitem value="Director" url="../Director.xhtml?faces-redirect=true" />
-                                <p:menuitem value="Jefe de Departamento" url="../vistaJefe.xhtml?faces-redirect=true" style="background-color: #c2dfef" />
+                                <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />
+                                <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" style="background-color: #c2dfef" />
                             </p:submenu>                                
                         </p:menu>
                     </h:form>
@@ -50,14 +50,13 @@
                         <h:panelGrid columns="6" cellpadding="0">
                             <f:facet name="header">
                                 <h:outputText value="Fases del Trabajo de Grado" />
-                            </f:facet>
-
-                            <p:graphicImage value="../../../resources/img/1.png" style="width: 96px;" />
-                            <p:graphicImage value="../../../resources/img/2.png" style="width: 96px;" />
-                            <p:graphicImage value="../../../resources/img/3.png" style="width: 96px;" />
-                            <p:graphicImage value="../../../resources/img/4.png" style="width: 96px;" />
-                            <p:graphicImage value="../../../resources/img/5.png" style="width: 96px;" />
-                            <p:graphicImage value="../../../resources/img/6.png" style="width: 96px;" />                        
+                            </f:facet>                            
+                            <p:graphicImage value="../resources/img/1.png" style="width: 96px;" />
+                            <p:graphicImage value="../resources/img/2.png" style="width: 96px;" />
+                            <p:graphicImage value="../resources/img/3.png" style="width: 96px;" />
+                            <p:graphicImage value="../resources/img/4.png" style="width: 96px;" />
+                            <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
+                            <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
 
                             <p:commandButton type="button" value="Presentación de la Idea" style="background-color:greenyellow; height: 96px;" disabled="#{trabajodegradoController.fases.primeraFase}" >                            
                                 <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
@@ -65,15 +64,11 @@
                                 </p:effect>
                             </p:commandButton>
 
-                            <p:button value="Realización del Anteproyecto" outcome="2-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="height: 96px; width: 96;" />
-
-                            <p:button value="Evaluación del Anteproyecto" outcome="3-evaluacion-anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="height: 96px; width: 96;" />
-
-                            <p:button value="Ejecución del Proyecto de Grado" outcome="4-ejecucion-proyecto-grado" disabled="#{trabajodegradoController.fases.cuartaFase}" style="height: 96px; width: 96;" />
-
-                            <p:button value="Evaluación del Trabajo de Grado" outcome="5-evaluacion-trabajo-grado" disabled="#{trabajodegradoController.fases.quintaFase}" style="height: 96px; width: 96;" />
-
-                            <p:button value="Finalizado" outcome="6-finalizado" disabled="#{trabajodegradoController.fases.sextaFase}" style="height: 96px;" />
+                            <p:button value="Realización del Anteproyecto" href="2-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="height: 96px; " />
+                            <p:button value="Evaluación del Anteproyecto" href="3-evaluacion-anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="height: 96px; " />
+                            <p:button value="Ejecución del Proyecto de Grado" href="4-ejecucion-proyecto-grado" disabled="#{trabajodegradoController.fases.cuartaFase}" style="height: 96px; " />
+                            <p:button value="Evaluación del Trabajo de Grado" href="5-evaluacion-trabajo-grado" disabled="#{trabajodegradoController.fases.quintaFase}" style="height: 96px; " />
+                            <p:button value="Finalizado" href="6-finalizado" disabled="#{trabajodegradoController.fases.sextaFase}" style="height: 96px;" />
                         </h:panelGrid>        
                         <br />
                         <p:panel id="pnlPresentacionIdea" header="1. Presentación de la Idea" style="display:none" widgetVar="pnlPresentacionIdea">
@@ -85,7 +80,7 @@
                             <h:panelGrid columns="4" cellpadding="5" cellspacing="5" >
                                 
                                 <h:outputText value="Formato A:" style="font-weight: bold; " />
-                                <p:button icon="ui-icon-check" value="Ver" href="../verFormatoAJefe.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" />
+                                <p:button icon="ui-icon-check" value="Ver" href="ver-formato-A.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" />
                                 <h:outputText />
                                 <h:outputText />
                                 

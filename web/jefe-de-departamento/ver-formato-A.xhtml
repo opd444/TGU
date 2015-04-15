@@ -8,7 +8,7 @@
 
     <body>
 
-        <ui:composition template="./../../Plantillas/Plantilla.xhtml">
+        <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="CuadroDeBotonesSesion">
                 CuadroDeBotonesSesion
@@ -17,12 +17,12 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="principal" url="Index.xhtml" />                                                            
-                        <p:menuitem value="Director" url="indexDirector.xhtml" />    
-                        <p:menuitem value="Trabajos de Grado" url="indexDirector.xhtml" />                        
-                        <p:menuitem value="Fases del Trabajo de Grado" url="fasesTrabajoGrado/index.xhtml" />                    
-                        <p:menuitem value="1. Presentación de la Idea" url="fasesTrabajoGrado/index.xhtml" />
-                        <p:menuitem value="Ver Formato A" />
+                        <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />                                        
+                        <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
+                        <p:menuitem value="Trabajos de Grado" outcome="vista-jefe-de-departamento" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="Ver Formato A" outcome="ver-formato-A"/>
                     </p:breadCrumb>   
                 </h:form>
             </ui:define>
@@ -34,12 +34,12 @@
                 <f:metadata>
                     <f:viewParam name="productoid" value="#{trabajodegradoController.trabajoid}" />
                 </f:metadata>
-                
+
                 <h:form>
                     <p:menu styleClass="menuizqroles" style="background-color: white">
                         <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" action="Director.xhtml?faces-redirect=true"/>
-                            <p:menuitem value="Jefe de Departamento" action="vistaJefe.xhtml?faces-redirect=true" style="background-color: #c2dfef" />
+                            <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />
+                            <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" style="background-color: #c2dfef" />
                         </p:submenu>                                
                     </p:menu>
                 </h:form>
@@ -52,7 +52,7 @@
 
                     <p:panel style="background-color: whitesmoke">
                         <h:panelGrid columns="2" cellpadding="5">
-                            <p:graphicImage value="../../resources/img/logo-unicauca.png"/>                            
+                            <p:graphicImage value="../resources/img/logo-unicauca.png"/>                            
                             <h:outputText value="Universidad del Cauca Facultad de Ingeniería Electrónica y Telecomunicaciones CI-FIET" style="font-weight:bold; "/>
 
                             <h:outputText value="TRABAJOS DE GRADO" style="font-weight:bold; font-size: 20px; "/>
@@ -113,7 +113,7 @@
                             <h:outputText />                            
                         </h:panelGrid>
                         <h:panelGrid columns="2" cellpadding="10">
-                            <p:button value="Volver" href="fasesTrabajoGrado/index-jefe-departamento.xhtml" />                                
+                            <p:button value="Volver" outcome="fases-trabajo-de-grado" />                                
                             <p:button value="Descargar" />
                         </h:panelGrid>
                     </p:panel>

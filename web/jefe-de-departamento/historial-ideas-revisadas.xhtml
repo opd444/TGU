@@ -8,7 +8,7 @@
 
     <body>
 
-        <ui:composition template="./../../Plantillas/Plantilla.xhtml">
+        <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="CuadroDeBotonesSesion">
                 CuadroDeBotonesSesion
@@ -16,52 +16,57 @@
 
             <ui:define name="menuprincipal">
                 <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Director" url="Director.xhtml?faces-redirect=true" style="color:#FFFFFF;" />
-                    <p:menuitem value="Jefe de Departamento" url="vistaJefe.xhtml?faces-redirect=true" style="color:#FFFFFF;" />
+                    <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />                                        
+                    <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
+                    <p:menuitem value="Historial ideas revisadas" outcome="historial-ideas-revisadas" />                        
                 </p:breadCrumb>
             </ui:define>
-            
-            <ui:define name="title">
+
+            <ui:define name="title">                
             </ui:define>
-            
+
             <ui:define name="body">
                 <h:form>
                     <p:menu styleClass="menuizqroles" style="background-color: white">
                         <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" action="Director.xhtml?faces-redirect=true"/>
-                            <p:menuitem value="Jefe de Departamento" action="vistaJefe.xhtml?faces-redirect=true" style="background-color: #c2dfef" />
+                            <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />
+                            <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" style="background-color: #c2dfef" />
                         </p:submenu>                                
                     </p:menu>
-                    
-                    <p:panel styleClass="paneltrabajo" >
-                        <p:menubar styleClass="barraacciones">
-                            <p:menuitem value="Lista de ideas por revisar" 
-                                        update="" icon="ui-icon-folder-collapsed"/>
-                            <p:menuitem value="Ver Historial" url="historialIdeasRevisadas.xhtml"
-                                        icon="ui-icon-plus"/>
-                        </p:menubar>
+                </h:form>
 
-                        <p:dataTable styleClass="tabladirector" var="car" value="#{usuarioRolTrabajogradoController.trabsJefe}"
+                <h:form>
+                    <p:panel styleClass="paneltrabajo" >
+                        <p:menubar styleClass="menubarstyleClass" >
+                            <p:menuitem style="border-color: black" value="Lista de ideas por revisar" outcome="vista-jefe-de-departamento"
+                                        update="" icon="ui-icon-folder-collapsed"/>
+                            <p:menuitem style="border-color: black" value="Ver Historial" 
+                                        icon="ui-icon-less"/>
+                        </p:menubar>
+                        
+                        <p:dataTable styleClass="tabladirector" 
+                                     var="car" value="#{usuarioRolTrabajogradoController.historialRevisadas}"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="5,10,15">
                             <f:facet name="header">
-                                Lista de ideas por revisar
+                                Historial de Ideas Revisadas
                             </f:facet>
                             <p:column headerText="Fecha">
-                                #{car.fecha}                                  
+                                #{car.fecha}                                   
                             </p:column>
-                            <p:column headerText="Nombre del Trabajo de Grado">
-                                <p:link outcome="fasesTrabajoGrado/index-jefe-departamento" value="#{car.trabajoGrado}">                                        
+                            <p:column headerText="Trabajo de Grado">
+                                <p:link outcome="fases-trabajo-de-grado" value="#{car.trabajoGrado}">                                        
                                     <f:param name="trabajoid" value="#{car.trabajoGradoId}" />                                        
-                                </p:link>                                 
-                            </p:column>
-                            <p:column headerText="Director">
-                                #{car.director}    
+                                </p:link>                                                                 
                             </p:column>
                             <p:column headerText="Estudiantes">
-                                #{car.est1} ,  #{car.est2}      
+                                #{car.est1} ,  #{car.est2}  
                             </p:column>
+                            <p:column headerText="Aprobada">
+                                <input type="checkbox" name="chk" id="chk1" value="1" checked="#{car.getaprobacion()}" disabled="true"/>  
+                            </p:column>
+
                         </p:dataTable>
                     </p:panel>
                 </h:form>

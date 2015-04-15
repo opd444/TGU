@@ -18,7 +18,12 @@
     margin-top: 5px;
 }
 
-.barraacciones
-{
-  width: 100%;
+.menubarstyleClass {
+    width: 100%;
+    background-color: white; 
+    border-color: white;
+}
+.menubarstyleClass li {
+    background-color: whitesmoke; 
+    border-color: black;
 }

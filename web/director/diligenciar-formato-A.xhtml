@@ -8,7 +8,7 @@
 
     <body>
 
-        <ui:composition template="./../../Plantillas/Plantilla.xhtml">
+        <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="CuadroDeBotonesSesion">
                 CuadroDeBotonesSesion
@@ -17,30 +17,31 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="principal" url="Index.xhtml" />                                                            
-                        <p:menuitem value="Director" url="indexDirector.xhtml" />    
-                        <p:menuitem value="Trabajos de Grado" url="indexDirector.xhtml" />                        
-                        <p:menuitem value="Fases del Trabajo de Grado" url="fasesTrabajoGrado/index.xhtml" />                    
-                        <p:menuitem value="1. Presentación de la Idea" url="fasesTrabajoGrado/index.xhtml" />
-                        <p:menuitem value="Editar Formato A" />
-                    </p:breadCrumb>   
+                        <p:menuitem value="Director" outcome="vista-director" />
+                        <p:menuitem value="Director" outcome="vista-director" />
+                        <p:menuitem value="Trabajos de Grado" outcome="vista-director" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="Diligenciar Formato A" outcome="diligenciar-formato-A" />
+                    </p:breadCrumb>              
                 </h:form>
             </ui:define>
 
-            <ui:define name="title">                
+            <ui:define name="title">
             </ui:define>
 
             <ui:define name="body">
+
                 <h:form>
                     <p:menu styleClass="menuizqroles" style="background-color: white">
                         <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" action="Director.xhtml?faces-redirect=true" style="background-color: #c2dfef" />
-                            <p:menuitem value="Jefe de Departamento" action="vistaJefe.xhtml?faces-redirect=true" />
+                            <p:menuitem value="Director" action="vista-director" style="background-color: #c2dfef" />
+                            <p:menuitem value="Jefe de Departamento" action="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />                            
                         </p:submenu>                                
                     </p:menu>
                 </h:form>
 
-                <h:panelGroup styleClass="paneltrabajo">
+                <p:panel styleClass="paneltrabajo" >
                     <f:metadata>
                         <f:viewParam name="trabajoid" value="#{trabajodegradoController.trabajoid}" />
                     </f:metadata>
@@ -116,14 +117,17 @@
 
                                     </h:panelGrid>
 
-                                    <p:commandButton value="Editar" update="growl" process="@this" actionListener="#{formatoA.editarFormatoA()}" />
+                                    <h:panelGrid columns="2" cellpadding="10">
+                                        <p:commandButton value="Volver" action="fases-trabajo-de-grado" />
+                                        <p:commandButton value="Guardar" update="growl" process="@this" actionListener="#{formatoA.guardar()}" />
+                                    </h:panelGrid>
                                 </p:panel>
                             </p:tab>
                         </p:wizard>
-                    </h:form>                    
-                </h:panelGroup>
-            </ui:define>
+                    </h:form>
 
+                </p:panel>                          
+            </ui:define>
         </ui:composition>
 
     </body>

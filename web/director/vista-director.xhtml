@@ -8,16 +8,15 @@
 
     <body>
 
-        <ui:composition template="./../../Plantillas/Plantilla.xhtml">
-
+        <ui:composition template="./../plantillas/plantilla.xhtml">                        
             <ui:define name="CuadroDeBotonesSesion">
                 CuadroDeBotonesSesion
             </ui:define>
 
             <ui:define name="menuprincipal">
                 <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Director" url="Director.xhtml?faces-redirect=true" style="color:#FFFFFF;" />
-                    <p:menuitem value="Director" url="Director.xhtml?faces-redirect=true" style="color:#FFFFFF;" />
+                    <p:menuitem value="Director" outcome="vista-director" />
+                    <p:menuitem value="Director" outcome="vista-director" />
                 </p:breadCrumb>
             </ui:define>
 
@@ -44,18 +43,18 @@
                 <h:form id="form">
                     <p:menu styleClass="menuizqroles" style="background-color: white">
                         <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" action="Director.xhtml?faces-redirect=true" style="background-color: #c2dfef" />
-                            <p:menuitem value="Jefe de Departamento" action="vistaJefe.xhtml?faces-redirect=true" />
+                            <p:menuitem value="Director" outcome="vista-director" style="background-color: #c2dfef" />
+                            <p:menuitem value="Jefe de Departamento" outcome="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />                            
                         </p:submenu>                                
                     </p:menu>
 
                     <p:panel styleClass="paneltrabajo" >
-                        <p:menubar styleClass="barraacciones">
-                            <p:menuitem value="Ver Trabajos en Curso" actionListener="#{usuarioRolTrabajogradoController.trabajosenCurso()}"
+                        <p:menubar styleClass="menubarstyleClass" >
+                            <p:menuitem style="border-color: black" value="Ver Trabajos en Curso" actionListener="#{usuarioRolTrabajogradoController.trabajosenCurso()}"
                                         update="tablatg" icon="ui-icon-folder-open"/>
-                            <p:menuitem value="Ver Trabajos Terminados" actionListener="#{usuarioRolTrabajogradoController.trabajosTerminados()}"
+                            <p:menuitem style="border-color: black" value="Ver Trabajos Terminados" actionListener="#{usuarioRolTrabajogradoController.trabajosTerminados()}"
                                         update="tablatg" icon="ui-icon-folder-collapsed"/>
-                            <p:menuitem value="Crear Nuevo Trabajo de Grado" onclick="PF('agregartest').show();"
+                            <p:menuitem style="border-color: black" value="Crear Nuevo Trabajo de Grado" onclick="PF('agregartest').show();"
                                         icon="ui-icon-plus"/>
                         </p:menubar>
 
@@ -68,12 +67,12 @@
                                 #{car.fecha}                                  
                             </p:column>
                             <p:column headerText="Nombre del Trabajo de Grado">
-                                <p:link outcome="fasesTrabajoGrado/index" value="#{car.trabajoGrado}">                                        
+                                <p:link outcome="fases-trabajo-de-grado" value="#{car.trabajoGrado}">                                        
                                     <f:param name="trabajoid" value="#{car.trabajoGradoId}" />                                        
                                 </p:link>                                                                        
                             </p:column>
                             <p:column headerText="Estudiantes">
-                                #{car.est1} ,  #{car.est2}      
+                                #{car.est1} #{car.est2}      
                             </p:column>
                             <p:column headerText="Fase">
                                 #{car.estado}    
