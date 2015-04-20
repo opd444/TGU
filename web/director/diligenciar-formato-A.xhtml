@@ -60,21 +60,41 @@
                                     <h:panelGrid columns="2" columnClasses="label, value" cellpadding="5">
                                         <p:outputLabel value="Nombre del Estudiante 1:"> </p:outputLabel>
                                         <p:autoComplete value="#{formatoA.est1}" label="Estudiante # 1 "
-                                                        completeMethod="#{formatoA.complete()}"
+                                                        completeMethod="#{formatoA.complete}"
                                                         var="est"
                                                         itemValue="#{est}" dropdown="true"
-                                                        converter="#{UsuarioController.UsuarioControllerConverter}"
                                                         forceSelection="true"
                                                         itemLabel="#{est.personanombres} #{est.personaapellidos}"
+                                                        converter="usuarioConverter"
+                                                        cache="true"
+                                                        queryDelay="750"
+                                                        maxResults="8"
                                                         >
-
+                                            <p:ajax event="itemSelect" listener="#{formatoA.handlerSelectest1}"></p:ajax>
+                                            <p:ajax event="itemUnselect" listener="#{formatoA.handleUnSelectest1}"></p:ajax>
                                             <p:column>
                                                 #{est.personanombres} #{est.personaapellidos}
                                             </p:column>
                                         </p:autoComplete> 
                                         <p:separator /> <p:separator />
                                         <p:outputLabel value="Nombre de los Estudiante 2(opcional):"> </p:outputLabel>
-                                        <p:inputText id="lol" required="false"/>   
+                                         <p:autoComplete value="#{formatoA.est2}" label="Estudiante # 1 "
+                                                        completeMethod="#{formatoA.complete2}"
+                                                        var="est"
+                                                        itemValue="#{est}" dropdown="true"
+                                                        forceSelection="true"
+                                                        itemLabel="#{est.personanombres} #{est.personaapellidos}"
+                                                        converter="usuarioConverter"
+                                                        cache="true"
+                                                        queryDelay="750"
+                                                        maxResults="8"
+                                                        >
+                                             <p:ajax event="itemSelect" listener="#{formatoA.handlerSelectest2}"></p:ajax>
+                                            <p:ajax event="itemUnselect" listener="#{formatoA.handleUnSelectest2}"></p:ajax>
+                                            <p:column> 
+                                                #{est.personanombres} #{est.personaapellidos}
+                                            </p:column>
+                                        </p:autoComplete>  
                                         <p:separator /> <p:separator />
                                         <p:outputLabel value="Director del trabajo de grado:"> </p:outputLabel>
                                         <p:outputLabel value="#{formatoA.nombreDirector}"> </p:outputLabel>
@@ -86,13 +106,13 @@
                                 <p:panel header="Creacion de Formato A">
                                     <p:messages />
                                     <h:panelGrid columnClasses="label, value" cellpadding="5">
-                                        <p:outputLabel value="Objetivos:"> </p:outputLabel>
-                                        <p:inputTextarea value="#{formatoA.objetivos}" required="true" label="Objetivos" styleClass="txtareaform"/>
+                                        <p:outputLabel value="Objetivos:" for="obj"> </p:outputLabel>
+                                        <p:inputTextarea id="obj" value="#{formatoA.objetivos}" required="true" label="Objetivos" styleClass="txtareaform"/>
 
                                         <p:separator />
                                         
-                                        <p:outputLabel value="Aportes o contribucion a las lineas de investigacion y desarrollo o temas de interes del departamento:"> </p:outputLabel>
-                                        <p:inputTextarea value="#{formatoA.aportes}" required="true" label="Aportes o Contribuciones" styleClass="txtareaform"/>
+                                        <p:outputLabel for="aport" value="Aportes o contribucion a las lineas de investigacion y desarrollo o temas de interes del departamento:"> </p:outputLabel>
+                                        <p:inputTextarea id="aport" value="#{formatoA.aportes}" required="true" label="Aportes o Contribuciones" styleClass="txtareaform"/>
                                     </h:panelGrid>
                                 </p:panel>
                             </p:tab>
@@ -121,7 +141,7 @@
 
                                          <p:separator />
                                         <p:outputLabel value="Fecha"> </p:outputLabel>
-                                        <p:calendar navigator="true" value="#{formatoA.fecha}" required="true" label="Fecha"/>
+                                        <p:calendar navigator="true" value="#{formatoA.fecha}" required="true" label="Fecha" pattern="dd-MM-yyyy"/>
 
                                     </h:panelGrid>
 
@@ -129,7 +149,7 @@
                             </p:tab>
 
                             <p:tab id="paso4" title="Paso 4">
-                                <p:panel header="Confirmacion de Datos">
+                                 <p:panel header="Confirmacion de Datos">
                                     <h:panelGrid cellpadding="7">
 
                                         <p:fieldset legend="Nombre del Estudiante 1:" toggleable="true" styleClass="txtareaform"> 
@@ -170,15 +190,13 @@
                                         <p:fieldset legend="Fecha" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoA.fecha}"> </p:outputLabel>
                                         </p:fieldset>
-
-
-                                 
+                      
 
                                     </h:panelGrid>
 
                                      <p:separator />
                                      
-                                    <p:commandButton value="Guardar" update="growl" process="@this" actionListener="#{formatoA.guardar()}" />
+                                     <p:commandButton value="Guardar" update="growl" process="@this" actionListener="#{formatoA.guardar()}" />
                                 </p:panel>
                             </p:tab>
 

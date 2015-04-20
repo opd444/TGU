@@ -47,7 +47,26 @@ public class TrabajodegradoController implements Serializable {
                 return true;            
         }
         return false;
-    }    
+    } 
+    
+   public boolean verificarBtnDiligenciarRevisionFormatoA()   
+      {      
+      return !verificarProductodeTrabajo(trabajoid.intValue(),0);
+      }  
+    
+    public List<Productodetrabajo> obtenerProductodeTrabajoporFormato(int idtrabajo,int idformato){
+        return ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(idtrabajo, idformato);
+    }
+    
+    public boolean verificarProductodeTrabajo(int idtrabajo,int idformato){
+        List<Productodetrabajo> Lst = obtenerProductodeTrabajoporFormato(idtrabajo,idformato);
+        if(Lst.size()>0){
+            return true;
+        }
+        else
+            return false;
+    }
+    
     public boolean getBtnVerFormatoA() {
         List<Productodetrabajo> lst = ejbFacadePro.findAll();
         

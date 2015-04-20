@@ -5,13 +5,18 @@
  */
 package com.unicauca.tgu.Auxiliares;
 
+import com.unicauca.tgu.entities.Usuario;
+import java.math.BigDecimal;
+
 /**
  *
  * @author pcblanco
  */
 public class TrabajodeGradoActual {
     
-         public static int id;
-         public static String nombreTg;
-     
+         public static int id = 24;
+         public static String nombreTg = "TRAB2";
+         public static Usuario est1 = new Usuario(BigDecimal.valueOf(3),"Carlos","Paz","@","opd","123");
+         public static Usuario est2 = new Usuario(BigDecimal.valueOf(2),"Juan","Paz","@","opd","123");
+         public static Usuario director = new Usuario(BigDecimal.ZERO,"Orlando","Paz","@","opd","123");
 }

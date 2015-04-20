@@ -22,16 +22,22 @@ import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import com.unicauca.tgu.controllers.util.JsfUtil;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 /**
  *
@@ -71,19 +77,78 @@ public class FormatoA {
     private String observaciones;
     private Date fecha;
 
+    private Productodetrabajo formatoactual;
+
     public FormatoA() {
-        iddirector = UsuarioComun.id;
-        nombreDirector = UsuarioComun.nombreComplet;
-        fecha = new Date();
+
     }
 
     @PostConstruct
     public void init() {
 
-//        trabajoid = BigDecimal.valueOf(Double.MAX_VALUE);
-//        if (!trabajoid.equals(BigDecimal.valueOf(Double.MAX_VALUE))) {
-//            verProductodetrabajo();
-//        }
+        iddirector = UsuarioComun.id;
+        nombreDirector = UsuarioComun.nombreComplet;
+        fecha = new Date();
+
+        List<Productodetrabajo> lst = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 0);
+
+        if (lst.size() > 0) {               //verificar si ya hay guardardo un formato A para este trabajo de grado
+
+            formatoactual = lst.get(0);
+
+            Gson gson = new Gson();
+            Map<String, String> decoded = gson.fromJson(formatoactual.getProductocontenido(), new TypeToken<Map<String, String>>() {
+            }.getType());
+
+            if (decoded.get("nombre") != null) {
+                nombretg = decoded.get("nombre");
+            }
+//        //decoded.get("idestud1");
+            if (decoded.get("idestud1") != null) {
+                int x = Integer.parseInt(decoded.get("idestud1"));
+                est1 = ejbFacadeUsuario.find(BigDecimal.valueOf(x));
+            }
+//        //decoded.get("idestud2");
+            if (decoded.get("idestud2") != null) {
+                int x = Integer.parseInt(decoded.get("idestud2"));
+                est2 = ejbFacadeUsuario.find(BigDecimal.valueOf(x));
+            }
+//        //decoded.get("iddirector");
+            if (decoded.get("nombredirector") != null) {
+                nombreDirector = decoded.get("nombredirector");
+            }
+            if (decoded.get("objetivos") != null) {
+                objetivos = decoded.get("objetivos");
+            }
+            if (decoded.get("aportes") != null) {
+                aportes = decoded.get("aportes");
+            }
+            if (decoded.get("tiempo") != null) {
+                tiempo = decoded.get("tiempo");
+            }
+            if (decoded.get("recursos") != null) {
+                recursos = decoded.get("recursos");
+            }
+            if (decoded.get("financiacion") != null) {
+                financiacion = decoded.get("financiacion");
+            }
+            if (decoded.get("observaciones") != null) {
+                observaciones = decoded.get("observaciones");
+            }
+            if (decoded.get("fecha") != null) {
+                try {
+                    fecha = new SimpleDateFormat("dd-MM-yyyy").parse(decoded.get("fecha"));
+                } catch (ParseException ex) {
+                    Logger.getLogger(FormatoA.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        }
+
+    }
+
+    public UsuarioFacade getEjbFacadeUsuario() {
+        return ejbFacadeUsuario;
     }
 
     public BigDecimal getTrabajoid() {
@@ -216,69 +281,19 @@ public class FormatoA {
 
     public String editarFormatoA() {
         try {
-            
 
+            String contenido = obtenerDatos();
 
-            //getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
-            return "fasesTrabajoGrado/index";
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
-        }
-    }
-
-    public String guardar() {
-        Map<String, String> map = new HashMap<String, String>();
-        
-        List<Trabajodegrado> lst = ejbFacadeTrabGrad.findAll();
-        Trabajodegrado tg = null;
-        for (int i = 0; i < lst.size(); i++) {
-            if (lst.get(i).getTrabajoid().equals(trabajoid)) {
-                tg = lst.get(i);
-            }
-        }        
-
-        map.put("nombre", tg.getTrabajonombre());
-        //
-        int numeroEstudiantes = 0;
-        if (est1 != null && est1.getPersonacedula() != null) {
-            map.put("idestud1", est1.getPersonacedula().intValue() + "");
-            map.put("nombreestud", est1.getPersonanombres() + " " + est1.getPersonaapellidos());
-            numeroEstudiantes += 1;
-        }
-        if (est2 != null && est2.getPersonacedula() != null) {
-            map.put("idestud2", est2.getPersonacedula().intValue() + "");
-            map.put("nombreestud2", est2.getPersonanombres() + " " + est2.getPersonaapellidos());
-            numeroEstudiantes += 1;
-        }
-        map.put("numeroEstudiantes", Integer.toString(numeroEstudiantes));
-        //
-        map.put("iddirector", getIddirector() + "");
-        map.put("nombredirector", getNombreDirector());
-        map.put("objetivos", getObjetivos());
-        map.put("aportes", getAportes());
-        map.put("tiempo", getTiempo());
-        map.put("recursos", getRecursos());
-        map.put("financiacion", getFinanciacion());
-        map.put("observaciones", getObservaciones());
-        map.put("fecha", getFecha().toString());
-
-        Gson gson = new Gson();
-        String contenido = gson.toJson(map, Map.class);
-        
-        try {
-            
-            Trabajodegrado trab = new Trabajodegrado(tg.getTrabajoid(), tg.getTrabajonombre());
-            
-            UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);      //agregando director
-            usuroltg.setRolid(new Rol(BigDecimal.ZERO));
+            UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);
+            Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
             usuroltg.setTrabajoid(trab);
-            usuroltg.setPersonacedula(new Usuario(new BigDecimal(getIddirector())));
-
-            ejbFacadeUsuroltrab.create(usuroltg);
+            
+            Usuario est1ant = TrabajodeGradoActual.est1;
+            Usuario est2ant = TrabajodeGradoActual.est2;
 
             if (est1 != null) {
+                if((est1ant!=null && est1ant.getPersonacedula().intValue()!=est1.getPersonacedula().intValue())
+                        || est2ant!=null && est1ant.getPersonacedula().intValue()!=est1.getPersonacedula().intValue())
                 usuroltg.setRolid(new Rol(BigDecimal.ONE));              //agregando primer estudiante
                 usuroltg.setPersonacedula(est1);
 
@@ -299,70 +314,127 @@ public class FormatoA {
         }
     }
 
-    public void setVerProductodetrabajo(BigDecimal trabajoidVer) {
-        this.trabajoidVer = trabajoidVer;
-    }
+    public String obtenerDatos() {
+        Map<String, String> map = new HashMap<String, String>();
 
-    public void getVerProductodetrabajo() {
-
-        List<Productodetrabajo> lst = ejbFacadeProdTrab.findAll();
-        Productodetrabajo producto = null;
-        for (int i = 0; i < lst.size(); i++) {
-            if (lst.get(i).getTrabajoid().getTrabajoid().equals(trabajoidVer)) {
-                producto = lst.get(i);
-            }
+        map.put("nombre", TrabajodeGradoActual.nombreTg);
+        //
+        int numeroEstudiantes = 0;
+        if (est1 != null && est1.getPersonacedula() != null) {
+            map.put("idestud1", est1.getPersonacedula().intValue() + "");
+            map.put("nombreestud", est1.getPersonanombres() + " " + est1.getPersonaapellidos());
+            numeroEstudiantes += 1;
         }
-
-        String jsonContenido = producto.getProductocontenido();
+        if (est2 != null && est2.getPersonacedula() != null) {
+            map.put("idestud2", est2.getPersonacedula().intValue() + "");
+            map.put("nombreestud2", est2.getPersonanombres() + " " + est2.getPersonaapellidos());
+            numeroEstudiantes += 1;
+        }
+        map.put("numeroEstudiantes", Integer.toString(numeroEstudiantes));
+        //
+        map.put("iddirector", getIddirector() + "");
+        map.put("nombredirector", getNombreDirector());
+        map.put("objetivos", getObjetivos().trim());
+        map.put("aportes", getAportes().trim());
+        map.put("tiempo", getTiempo().trim());
+        map.put("recursos", getRecursos().trim());
+        map.put("financiacion", getFinanciacion().trim());
+        map.put("observaciones", getObservaciones().trim());
+        map.put("fecha", getFecha().toString());
 
         Gson gson = new Gson();
-//        Map<String, String> decoded = new HashMap<String, String>();
-        Map<String, String> decoded = gson.fromJson(jsonContenido, new TypeToken<Map<String, String>>() {
-        }.getType());
+        String contenido = gson.toJson(map, Map.class);
 
-        if (decoded.get("nombre") != null) {
-            nombretg = decoded.get("nombre");
-        }
-//        //decoded.get("idestud1");
-        if (decoded.get("nombreestud") != null) {
-            nomEst1 = decoded.get("nombreestud");
-        }
-//        //decoded.get("idestud2");
-        if (decoded.get("nombreestud2") != null) {
-            nomEst2 = decoded.get("nombreestud2");
-        }
-//        //decoded.get("iddirector");
-        if (decoded.get("nombredirector") != null) {
-            nombreDirector = decoded.get("nombredirector");
-        }
-        if (decoded.get("objetivos") != null) {
-            objetivos = decoded.get("objetivos");
-        }
-        if (decoded.get("aportes") != null) {
-            aportes = decoded.get("aportes");
-        }
-        if (decoded.get("tiempo") != null) {
-            tiempo = decoded.get("tiempo");
-        }
-        if (decoded.get("recursos") != null) {
-            recursos = decoded.get("recursos");
-        }
-        if (decoded.get("financiacion") != null) {
-            financiacion = decoded.get("financiacion");
-        }
-        if (decoded.get("observaciones") != null) {
-            observaciones = decoded.get("observaciones");
-        }
-        if (decoded.get("fecha") != null) {
-            fecha = new Date();
-            //fecha.setTime(Date.parse(decoded.get("fecha")));
+        return contenido;
+    }
+
+    public String guardar() {
+
+        try {
+            
+            String contenido = obtenerDatos();
+
+            Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
+
+            UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);
+            usuroltg.setTrabajoid(trab);
+
+            if (est1 != null) {
+                usuroltg.setRolid(new Rol(BigDecimal.ONE));              //agregando primer estudiante
+                usuroltg.setPersonacedula(est1);
+
+                ejbFacadeUsuroltrab.create(usuroltg);
+            }
+
+            Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.ZERO, contenido);
+            prod.setFormatoid(new Formatoproducto(BigDecimal.ZERO));
+            prod.setTrabajoid(trab);
+
+            ejbFacadeProdTrab.create(prod);
+
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
+            return "fasesTrabajoGrado/index";
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            return null;
         }
     }
 
-    public List<Usuario> complete() {
-        est1 = new Usuario();
-        est2 = new Usuario();
-        return ejbFacadeUsuario.buscarEstudiantesDisponibles();
+    public List<Usuario> complete(String query) {
+
+        query = query.trim();
+        query = query.toUpperCase();
+
+        List<Usuario> ls = ejbFacadeUsuario.buscarEstudiantesDisponibles(iddirector, query);
+        List<Usuario> usus = new ArrayList<Usuario>();
+        if (est2 != null) {
+            for (Usuario u : ls) {
+                if (u.getPersonacedula().intValue() == est2.getPersonacedula().intValue()) {
+                    continue;
+                }
+                usus.add(u);
+            }
+        } else {
+            return ls;
+        }
+        return usus;
+    }
+
+    public List<Usuario> complete2(String query) {
+
+        query = query.trim();
+        query = query.toUpperCase();
+        List<Usuario> ls = ejbFacadeUsuario.buscarEstudiantesDisponibles(iddirector, query);
+        List<Usuario> usus = new ArrayList<Usuario>();
+        if (est1 != null) {
+            for (Usuario u : ls) {
+                if (u.getPersonacedula().intValue() == est1.getPersonacedula().intValue()) {
+                    continue;
+                }
+                usus.add(u);
+
+            }
+        } else {
+            return ls;
+        }
+        return usus;
+    }
+
+    public void handlerSelectest1(SelectEvent e) {
+        //   est1 = (Usuario) e.getObject();
+    }
+
+    public void handlerSelectest2(SelectEvent e) {
+
+        //  est2 = (Usuario) e.getObject();
+    }
+
+    public void handleUnSelectest1(UnselectEvent e) {
+        est1 = null;
+    }
+
+    public void handleUnSelectest2(UnselectEvent e) {
+        est2 = null;
     }
 
 }

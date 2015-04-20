@@ -6,6 +6,7 @@
 package com.unicauca.tgu.jpacontroller;
 
 import com.unicauca.tgu.entities.Productodetrabajo;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +28,20 @@ public class ProductodetrabajoFacade extends AbstractFacade<Productodetrabajo> {
 
     public ProductodetrabajoFacade() {
         super(Productodetrabajo.class);
+    }
+    
+    
+     public List<Productodetrabajo>  ObtenerProdsTrabajoPor_trabajoID_formatoID(int idtrabajo, int formato){
+        try
+        {
+            String queryString = "SELECT t FROM Productodetrabajo t "+
+            "where t.trabajoid="+idtrabajo+ "and t.formatoid="+formato;
+            Query query = getEntityManager().createQuery(queryString);  
+            return query.getResultList();       
+        }finally 
+        {
+        } 
+    
     }
     
     public int crearTrabajoGrado(String nombretg)

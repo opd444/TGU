@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scene Scope="Project" version="2">
     <Scope Scope="Faces Configuration Only"/>
-    <Scope Scope="Project"/>
+    <Scope Scope="Project">
+        <Node id="jefe-de-departamento/fases-trabajo-de-grado.xhtml" x="650" y="300" zoom="true"/>
+        <Node id="director/ver-formato-A.xhtml" x="1150" y="150" zoom="true"/>
+        <Node id="director/diligenciar-formato-A.xhtml" x="400" y="300" zoom="true"/>
+        <Node id="director/editar-formato-A.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="jefe-de-departamento/vista-jefe-de-departamento.xhtml" x="650" y="150" zoom="true"/>
+        <Node id="jefe-de-departamento/ver-formato-A.xhtml" x="400" y="450" zoom="true"/>
+        <Node id="director/fases-trabajo-de-grado.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="director/diligenciar-anteproyecto.xhtml" x="150" y="600" zoom="true"/>
+        <Node id="welcomePrimefaces.xhtml" x="900" y="300" zoom="true"/>
+        <Node id="jefe-de-departamento/historial-ideas-revisadas.xhtml" x="150" y="450" zoom="true"/>
+        <Node id="director/vista-director.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="plantillas/plantilla.xhtml" x="150" y="300" zoom="true"/>
+    </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>

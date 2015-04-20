@@ -5,6 +5,7 @@
     width: 730px;
     float: left;
     font-size: 15px;
+    color: darkslategray;
 }
 
 .tabladirector
@@ -33,6 +34,25 @@
 .inputform
 {
   width:  350px;
+}
+
+.panelinterno
+{
+  width:  670px;
+}
+
+.panelinterno tr , .panelinterno td
+{
+  border-color:  darkred !important;
+  border-radius: 25px;
+  padding: 15px 10px !important;
+}
+
+.titulotabla
+{
+    color: #045491;
+    font-weight:  bold;
+    width: 300px;
 }
 
 .menubarstyleClass {

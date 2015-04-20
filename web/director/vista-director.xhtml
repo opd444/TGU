@@ -67,9 +67,15 @@
                                 #{car.fecha}                                  
                             </p:column>
                             <p:column headerText="Nombre del Trabajo de Grado">
-                                <p:link outcome="fases-trabajo-de-grado" value="#{car.trabajoGrado}">                                        
+                               <!--   <p:link outcome="fases-trabajo-de-grado" value="#{car.trabajoGrado}">                                        
                                     <f:param name="trabajoid" value="#{car.trabajoGradoId}" />                                        
-                                </p:link>                                                                        
+                                </p:link>  -->   
+                                <p:commandLink actionListener="#{usuarioRolTrabajogradoController.contenidoTg}" value="#{car.trabajoGrado}">                                     
+                                    <f:attribute name="idtrabajo" value="#{car.trabajoGradoId}" />    
+                                    <f:attribute name="nombretrab" value="#{car.trabajoGrado}" />
+                                    <f:attribute name="est1" value="#{car.est1Id}" />
+                                    <f:attribute name="est2" value="#{car.est2Id}" />
+                                </p:commandLink>
                             </p:column>
                             <p:column headerText="Estudiantes">
                                 #{car.est1} #{car.est2}      

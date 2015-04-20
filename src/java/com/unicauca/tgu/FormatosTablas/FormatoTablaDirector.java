@@ -24,6 +24,13 @@ public class FormatoTablaDirector {
     private int est1Id;
     private int est2Id;
 
+    public FormatoTablaDirector() {
+        est1Id = -1;
+        est2Id = -1;
+    }
+
+    
+    
     public Date getFecha() {
         return fecha;
     }

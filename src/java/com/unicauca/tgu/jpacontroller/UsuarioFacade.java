@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -30,8 +31,36 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         super(Usuario.class);
     }
     
-    public List<Usuario> buscarEstudiantesDisponibles()
+    public List<Usuario> buscarEstudiantesDisponibles(int iddirector,String consulta)
         {
-           return findAll();
+           try
+        {
+            String queryString = "SELECT * FROM Usuario "+
+            "where personacedula!="+iddirector+" and upper(personanombres)||' '||upper(personaapellidos)"
+                    + " like '%"+consulta+"%'";
+            Query query = getEntityManager().createNativeQuery(queryString,Usuario.class);  
+            //System.out.println("ERR"+Long.valueOf(usuid.intValue()+""));
+            //query.set("usuid", Long.valueOf(usuid.intValue()+""));
+            return query.getResultList();       
+        }finally 
+        {
+           // em.close();
+        } 
         }
+    
+    public List<Usuario> buscarporUsuid(int usuid)
+       {      
+        try
+        {
+            String queryString = "SELECT t FROM Usuario t "+
+            "where t.personacedula="+usuid;
+            Query query = getEntityManager().createQuery(queryString);  
+            //System.out.println("ERR"+Long.valueOf(usuid.intValue()+""));
+            //query.set("usuid", Long.valueOf(usuid.intValue()+""));
+            return query.getResultList();       
+        }finally 
+        {
+           // em.close();
+        } 
+       }
 }

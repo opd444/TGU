@@ -13,6 +13,7 @@ import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.controllers.util.JsfUtil;
 import com.unicauca.tgu.controllers.util.PaginationHelper;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
+import java.io.IOException;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -20,14 +21,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -43,6 +48,10 @@ public class UsuarioRolTrabajogradoController implements Serializable {
     
     @EJB
     private com.unicauca.tgu.jpacontroller.TrabajodegradoFacade ejbFacadetrabgrad;
+    
+    @EJB
+    private com.unicauca.tgu.jpacontroller.UsuarioFacade ejbFacadeusuario;
+    
     
     private PaginationHelper pagination;
     private int selectedItemIndex;
@@ -387,14 +396,11 @@ public class UsuarioRolTrabajogradoController implements Serializable {
     public void crearTG()
        {
           Trabajodegrado trab = new Trabajodegrado();
-          trab.setTrabajonombre(nombrenuevoTG);
+          trab.setTrabajonombre(nombrenuevoTG.trim());
           trab.setTrabajoid(BigDecimal.ZERO);
           ejbFacadetrabgrad.create(trab);
           
-          trab = ejbFacadetrabgrad.findbyNombreTg(nombrenuevoTG);
-                 
-          TrabajodeGradoActual.id = trab.getTrabajoid().intValue();
-          TrabajodeGradoActual.nombreTg = trab.getTrabajonombre();
+          trab = ejbFacadetrabgrad.findbyNombreTg(nombrenuevoTG.trim());
           
           UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);      //agregando director
           usuroltg.setRolid(new Rol(BigDecimal.ZERO));  
@@ -490,5 +496,27 @@ public class UsuarioRolTrabajogradoController implements Serializable {
 
         return trabs2;
     }
+    
+    public void contenidoTg(ActionEvent event)  //guardar informacion del trabajo de grado que se esta tratando
+            {
+            //Agregamos los datos del trabajo de grado para no enviar por url.                          
+          TrabajodeGradoActual.id = (Integer)event.getComponent().getAttributes().get("idtrabajo");
+          TrabajodeGradoActual.nombreTg = (String)event.getComponent().getAttributes().get("nombretrab");
+          
+          //Agregamos el primer estudiante a la clase estatica 
+          int idest = (Integer)event.getComponent().getAttributes().get("est1");
+          if(idest!=-1)TrabajodeGradoActual.est1 = ejbFacadeusuario.buscarporUsuid(idest).get(0);
+          
+          //Agregamos el segundo estudiante si hay uno
+          idest = (Integer)event.getComponent().getAttributes().get("est2");
+          if(idest!=-1)TrabajodeGradoActual.est2 = ejbFacadeusuario.buscarporUsuid(idest).get(0);
+          
+          ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            context.redirect("fases-trabajo-de-grado.xhtml?trabajoid="+TrabajodeGradoActual.id);
+        } catch (IOException ex) {
+            Logger.getLogger(UsuarioRolTrabajogradoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            }
 
 }
