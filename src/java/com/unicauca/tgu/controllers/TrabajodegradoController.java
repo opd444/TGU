@@ -17,10 +17,12 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -30,7 +32,7 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
 @ManagedBean(name = "trabajodegradoController")
-@SessionScoped
+@ViewScoped
 public class TrabajodegradoController implements Serializable {
     private BigDecimal trabajoid;
     private Trabajodegrado trabajo;
@@ -38,6 +40,12 @@ public class TrabajodegradoController implements Serializable {
     
     @EJB
     private ProductodetrabajoFacade ejbFacadePro;
+  
+    @PostConstruct
+    public void init()
+        {
+         trabajoid = BigDecimal.valueOf(TrabajodeGradoActual.id);      //se Recupera el Id del trabajo actual
+        }    
     
     public boolean getBtnDiligenciarFormatoA() {
         List<Productodetrabajo> lst = ejbFacadePro.findAll();

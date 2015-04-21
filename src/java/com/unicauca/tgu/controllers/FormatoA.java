@@ -36,6 +36,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -44,7 +45,7 @@ import org.primefaces.event.UnselectEvent;
  * @author pcblanco
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class FormatoA {
 
     @EJB
@@ -286,26 +287,51 @@ public class FormatoA {
 
             UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);
             Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
-            usuroltg.setTrabajoid(trab);
             
-            Usuario est1ant = TrabajodeGradoActual.est1;
+            usuroltg.setTrabajoid(trab);
+            usuroltg.setRolid(new Rol(BigDecimal.ONE));      //Agregamos rol 1 para estudiantes
+
+            Usuario est1ant = TrabajodeGradoActual.est1;    //estudiantes anteriores
             Usuario est2ant = TrabajodeGradoActual.est2;
 
             if (est1 != null) {
-                if((est1ant!=null && est1ant.getPersonacedula().intValue()!=est1.getPersonacedula().intValue())
-                        || est2ant!=null && est1ant.getPersonacedula().intValue()!=est1.getPersonacedula().intValue())
-                usuroltg.setRolid(new Rol(BigDecimal.ONE));              //agregando primer estudiante
-                usuroltg.setPersonacedula(est1);
 
-                ejbFacadeUsuroltrab.create(usuroltg);
+             //agregando primer estudiante
+                usuroltg.setPersonacedula(est1);
+                
+                if (est1ant == null) {
+                     ejbFacadeUsuroltrab.create(usuroltg);
+                    
+                } else if (est1ant.getPersonacedula().intValue() != est1.getPersonacedula().intValue()) 
+                {
+                      List<UsuarioRolTrabajogrado> tmp = ejbFacadeUsuroltrab.findbyUsuid(est1ant.getPersonacedula().intValue());
+                      ejbFacadeUsuroltrab.remove(tmp.get(0));
+                      ejbFacadeUsuroltrab.create(usuroltg);
+                }
             }
 
-            Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.ZERO, contenido);
-            prod.setFormatoid(new Formatoproducto(BigDecimal.ZERO));
-            prod.setTrabajoid(trab);
+             if (est2 != null) {
+                                                                          //agregando primer estudiante
+                usuroltg.setPersonacedula(est2);
+                
+                if (est2ant == null) {
+                     ejbFacadeUsuroltrab.create(usuroltg);
+                    
+                } else if (est2ant.getPersonacedula().intValue() != est2.getPersonacedula().intValue()) 
+                {
+                      List<UsuarioRolTrabajogrado> tmp = ejbFacadeUsuroltrab.findbyUsuid(est2ant.getPersonacedula().intValue());
+                      ejbFacadeUsuroltrab.remove(tmp.get(0));
+                      ejbFacadeUsuroltrab.create(usuroltg);
+                }
+            }
 
-            ejbFacadeProdTrab.create(prod);
+             TrabajodeGradoActual.est1 = est1;
+             TrabajodeGradoActual.est2 = est2;
+             
+            formatoactual.setProductocontenido(contenido);
             
+            ejbFacadeProdTrab.edit(formatoactual);
+
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
             return "fasesTrabajoGrado/index";
         } catch (Exception e) {
@@ -351,7 +377,7 @@ public class FormatoA {
     public String guardar() {
 
         try {
-            
+
             String contenido = obtenerDatos();
 
             Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);

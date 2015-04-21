@@ -56,7 +56,6 @@ public class UsuarioRolTrabajogradoController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
     
-    Usuario UsuarioLog;
     private List<FormatoTablaDirector> trabs;
     int modo;             // 0 para la seccion de trabajos en curso y 1 para trabajos terminados
     private String titulotabla;
@@ -431,6 +430,7 @@ public class UsuarioRolTrabajogradoController implements Serializable {
                     
                     if (x.getRolid().getRolid().intValue() == 1) {
                         f.setDirector(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
+                        f.setDirectorId(x.getPersonacedula().getPersonacedula().intValue());
                     }
 
                     else if (x.getRolid().getRolid().intValue() == 2 && cont == 0) {
@@ -497,23 +497,51 @@ public class UsuarioRolTrabajogradoController implements Serializable {
         return trabs2;
     }
     
-    public void contenidoTg(ActionEvent event)  //guardar informacion del trabajo de grado que se esta tratando
+    
+    public void contenidoTgDirector(ActionEvent event)  //guardar informacion del trabajo de grado que se esta tratando
+            {
+            //Agregamos los datos del trabajo de grado para no enviar por url.                          
+          TrabajodeGradoActual.id = (Integer)event.getComponent().getAttributes().get("idtrabajo");
+          TrabajodeGradoActual.nombreTg = (String)event.getComponent().getAttributes().get("nombretrab");
+          
+           //Agregamos el primer estudiante a la clase estatica 
+          int idusu = (Integer)event.getComponent().getAttributes().get("est1");
+          if(idusu!=-1)TrabajodeGradoActual.est1 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
+          
+          //Agregamos el segundo estudiante si hay uno
+          idusu = (Integer)event.getComponent().getAttributes().get("est2");
+          if(idusu!=-1)TrabajodeGradoActual.est2 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
+          
+          TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(UsuarioComun.id).get(0);
+          
+          ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            context.redirect("fases-trabajo-de-grado.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(UsuarioRolTrabajogradoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            }
+    
+    public void contenidoTgJefe(ActionEvent event)  //guardar informacion del trabajo de grado que se esta tratando
             {
             //Agregamos los datos del trabajo de grado para no enviar por url.                          
           TrabajodeGradoActual.id = (Integer)event.getComponent().getAttributes().get("idtrabajo");
           TrabajodeGradoActual.nombreTg = (String)event.getComponent().getAttributes().get("nombretrab");
           
           //Agregamos el primer estudiante a la clase estatica 
-          int idest = (Integer)event.getComponent().getAttributes().get("est1");
-          if(idest!=-1)TrabajodeGradoActual.est1 = ejbFacadeusuario.buscarporUsuid(idest).get(0);
+          int idusu = (Integer)event.getComponent().getAttributes().get("est1");
+          if(idusu!=-1)TrabajodeGradoActual.est1 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
           
           //Agregamos el segundo estudiante si hay uno
-          idest = (Integer)event.getComponent().getAttributes().get("est2");
-          if(idest!=-1)TrabajodeGradoActual.est2 = ejbFacadeusuario.buscarporUsuid(idest).get(0);
+          idusu = (Integer)event.getComponent().getAttributes().get("est2");
+          if(idusu!=-1)TrabajodeGradoActual.est2 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
+          
+          idusu = (Integer)event.getComponent().getAttributes().get("iddirector");
+          if(idusu!=-1)TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
           
           ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
-            context.redirect("fases-trabajo-de-grado.xhtml?trabajoid="+TrabajodeGradoActual.id);
+            context.redirect("fases-trabajo-de-grado.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(UsuarioRolTrabajogradoController.class.getName()).log(Level.SEVERE, null, ex);
         }

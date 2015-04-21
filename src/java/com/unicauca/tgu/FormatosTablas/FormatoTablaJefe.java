@@ -23,6 +23,13 @@ public class FormatoTablaJefe {
     private int est2Id;
     private int directorId;
     private int aprobado;
+    
+    
+    public FormatoTablaJefe() {
+        est1Id = -1;
+        est2Id = -1;
+        directorId = -1;
+    }
 
     public int getAprobado() {
         return aprobado;

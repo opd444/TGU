@@ -29,6 +29,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
@@ -42,7 +43,7 @@ import org.primefaces.model.UploadedFile;
  * @author pcblanco
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class Anteproyecto {
 
     private String nombretg;
