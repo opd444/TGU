@@ -59,7 +59,7 @@ public class TrabajodegradoController implements Serializable {
     
    public boolean verificarBtnDiligenciarRevisionFormatoA()   
       {      
-      return !verificarProductodeTrabajo(trabajoid.intValue(),0);
+      return verificarProductodeTrabajo(trabajoid.intValue(),1);
       }  
     
     public List<Productodetrabajo> obtenerProductodeTrabajoporFormato(int idtrabajo,int idformato){

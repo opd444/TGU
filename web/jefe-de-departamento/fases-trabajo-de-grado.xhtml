@@ -82,7 +82,8 @@
                                 
                                 <h:outputText value="Revisión de la idea:" style="font-weight: bold; " />
                                  <p:button value="Dilegenciar" icon="ui-icon-check" href="Diligenciar-formato-revision-idea.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.verificarBtnDiligenciarRevisionFormatoA()}" style="width: 110px;" />
-                                <p:button icon="ui-icon-check" value="Ver" disabled="true" />
+                                  <p:button value="Editar" icon="ui-icon-check" href="editar-formato-A.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 110px;" />
+                                 <p:button icon="ui-icon-check" value="Ver" disabled="true" />
                                 <p:button icon="ui-icon-check" value="Descargar" disabled="true" />                                
                             </h:panelGrid>
                         </p:panel>

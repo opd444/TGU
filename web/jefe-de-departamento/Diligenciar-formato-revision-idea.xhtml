@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="CuadroDeBotonesSesion">
+                CuadroDeBotonesSesion
+            </ui:define>
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />                                        
+                        <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
+                        <p:menuitem value="Trabajos de Grado" outcome="vista-jefe-de-departamento" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="Revisión de la idea" outcome="Diligenciar-formato-revision-idea" />
+                    </p:breadCrumb>              
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">               
+            </ui:define>
+
+            <ui:define name="body">
+
+
+                <h:form>
+                    <p:menu styleClass="menuizqroles" style="background-color: white">
+                        <p:submenu label="Perfiles" style="background-color: white">
+                            <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />
+                            <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" style="background-color: #c2dfef" />                            
+                        </p:submenu>                                
+                    </p:menu>
+                </h:form>
+
+                <p:panel styleClass="paneltrabajo" >
+
+
+                    <div class="tituloContenido">                        
+                        <h:outputText value="Formato: Resultado de la revisión de la idea"/> <br/>
+                    </div>                 
+
+                    <h:form enctype="multipart/form-data">   
+
+                        <p:panel style="width: 100%;" >
+                            <p:growl id="growl" sticky="true" showDetail="true" for="msg"/>
+                            <p:messages/>
+
+                            <p:panelGrid styleClass="panelinterno">
+                                <p:row>
+                                    <p:column styleClass="titulotabla">
+                                        <p:outputLabel  value="Numero de acta de la reunión:"> </p:outputLabel>
+                                    </p:column>
+                                    <p:column>
+                                        <p:autoComplete dropdown="true" value="#{revisionIdeaController.numActa}" completeMethod="#{autoCompleteView.completeText}" />
+                                    </p:column>
+                                </p:row>
+
+
+                                <p:row>
+                                    <p:column styleClass="titulotabla">
+                                        <p:outputLabel  value="Nombre del trabajo de grado:"> </p:outputLabel>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{revisionIdeaController.nombretg}"> </p:outputLabel>
+                                    </p:column>
+                                </p:row>
+
+
+
+                                <p:row>
+                                    <p:column styleClass="titulotabla">
+                                        <p:outputLabel  value="Nombre de los estudiantes:"> </p:outputLabel>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="- #{revisionIdeaController.est1}"> </p:outputLabel> <br />
+                                        <p:outputLabel value="- #{revisionIdeaController.est2}"> </p:outputLabel> 
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column styleClass="titulotabla">
+                                        <p:outputLabel  value="Director del trabajo de grado:"> </p:outputLabel>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{revisionIdeaController.directortg}"> </p:outputLabel>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row> 
+                                    <p:column styleClass="titulotabla">
+                                        <p:outputLabel  value="Resultado:"> </p:outputLabel>
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneRadio id="aprobado" value="#{revisionIdeaController.resultado}">
+                                            <f:selectItem itemLabel="Aprobado" itemValue="1" />
+                                            <f:selectItem itemLabel="No aprobado" itemValue="0" />
+                                        </p:selectOneRadio>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column styleClass="titulotabla" colspan="2">
+                                        <p:outputLabel  value="Observaciones:"> </p:outputLabel>
+                                        <p:inputTextarea rows="10" cols="50" value="#{revisionIdeaController.observaciones}" queryDelay="750" minQueryLength="4" />
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column >
+                                        <p:commandButton value="Guardar" ajax="false" actionListener="#{revisionIdeaController.guardar()}" style="margin-top: 20px;"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:button value="Cancelar"  icon="ui-icon-cancel" style="margin-top: 20px;"/>
+                                    </p:column>
+                                </p:row>
+
+                            </p:panelGrid>
+
+
+                        </p:panel>
+                    </h:form>
+
+                </p:panel>       
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -410,10 +410,11 @@ public class UsuarioRolTrabajogradoController implements Serializable {
     }
     
      public List<FormatoTablaJefe> getTrabsJefe() {
+         
         trabs1 = new ArrayList();
 
 
-        List<Productodetrabajo> lst1 = ejbFacade.obtenerFormatosporId(0, 2);
+        List<Productodetrabajo> lst1 = ejbFacade.obtenerFormatosporId(0, 0);
 
         for (Productodetrabajo l : lst1) {
             
@@ -428,18 +429,18 @@ public class UsuarioRolTrabajogradoController implements Serializable {
                 int cont = 0;
                 for (UsuarioRolTrabajogrado x : lst) {
                     
-                    if (x.getRolid().getRolid().intValue() == 1) {
+                    if (x.getRolid().getRolid().intValue() == 0) {
                         f.setDirector(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
                         f.setDirectorId(x.getPersonacedula().getPersonacedula().intValue());
                     }
 
-                    else if (x.getRolid().getRolid().intValue() == 2 && cont == 0) {
+                    else if (x.getRolid().getRolid().intValue() == 1 && cont == 0) {
                         f.setEst1(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
                         f.setEst1Id(x.getPersonacedula().getPersonacedula().intValue());
                         cont++;
                     }
 
-                    else if (x.getRolid().getRolid().intValue() == 2) {
+                    else if (x.getRolid().getRolid().intValue() == 1) {
                         f.setEst2(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
                         f.setEst2Id(x.getPersonacedula().getPersonacedula().intValue());
                     }
@@ -538,6 +539,8 @@ public class UsuarioRolTrabajogradoController implements Serializable {
           
           idusu = (Integer)event.getComponent().getAttributes().get("iddirector");
           if(idusu!=-1)TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
+          
+          TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(UsuarioComun.id).get(0);
           
           ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
