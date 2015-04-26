@@ -7,6 +7,7 @@ package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.unicauca.tgu.Auxiliares.Servicio_Email;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
@@ -57,8 +58,8 @@ public class Anteproyecto {
     private String rutaarch;
     private boolean archivomodificado = false;
     private Productodetrabajo anteproyactual;
-    private String directorioanteproyectos = "D:\\Archivos_TGU\\Anteproyectos\\"; 
-    
+    private String directorioanteproyectos = "D:\\Archivos_TGU\\Anteproyectos\\";
+
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
 
@@ -203,6 +204,14 @@ public class Anteproyecto {
                 prod.setTrabajoid(new Trabajodegrado(BigDecimal.valueOf(TrabajodeGradoActual.id)));
 
                 ejbFacadeProdTrab.create(prod);
+                
+                Servicio_Email se = new Servicio_Email();
+                se.setSubject("Anteproyecto del Trabajo de Grado" + nombretg + " Diligenciado");
+
+            if (TrabajodeGradoActual.director != null) {
+                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
+                se.enviarDiligenciadoAnteproyecto(nombretg);
+            }          
                 context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Anteproyecto Diligenciado con Exito", ""));
 
                 /*  Para redireccionar despues de guardar
@@ -221,44 +230,53 @@ public class Anteproyecto {
 
     public void editar() {
         FacesContext context = FacesContext.getCurrentInstance();
-        
-            try {
 
-                Gson gson = new Gson();
-                Map<String, String> mapedicion
-                        = gson.fromJson(anteproyactual.getProductocontenido(), new TypeToken<Map<String, String>>() {
-                        }.getType());
+        try {
 
-                if (archivomodificado) {
-                    File f = new File(rutaarch);
-                    boolean g = f.delete();
-                    copiarArchivo();
-                    mapedicion.put("rutaarch", directorioanteproyectos + file.getFileName());
-                    mapedicion.put("nombarch", file.getFileName());
-                }
+            Gson gson = new Gson();
+            Map<String, String> mapedicion
+                    = gson.fromJson(anteproyactual.getProductocontenido(), new TypeToken<Map<String, String>>() {
+                    }.getType());
 
-                mapedicion.put("obj", objetivos);
-
-                String contenido = gson.toJson(mapedicion, Map.class);
-
-                anteproyactual.setProductocontenido(contenido);
-
-                ejbFacadeProdTrab.edit(anteproyactual);
-                
-                context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Anteproyecto Editado con Exito", ""));
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "Ocurrio algun error al intentar  efectuar la operacion"));
+            if (archivomodificado) {
+                File f = new File(rutaarch);
+                f.delete();
+                copiarArchivo();
+                mapedicion.put("rutaarch", directorioanteproyectos + file.getFileName());
+                mapedicion.put("nombarch", file.getFileName());
             }
 
-        
+            mapedicion.put("obj", objetivos);
+
+            String contenido = gson.toJson(mapedicion, Map.class);
+
+            anteproyactual.setProductocontenido(contenido);
+
+            ejbFacadeProdTrab.edit(anteproyactual);
+
+            Servicio_Email se = new Servicio_Email();
+            se.setSubject("Anteproyecto del Trabajo de Grado" + nombretg + " Editado");
+
+            if (TrabajodeGradoActual.director != null) {
+                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
+                se.enviarEditadoAnteproyecto(nombretg);
+            }
+
+            context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Anteproyecto Editado con Exito", ""));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "Ocurrio algun error al intentar  efectuar la operacion"));
+        }
+
     }
 
     public void handleFileUpload(FileUploadEvent event) {
         file = event.getFile();
         nombarch = file.getFileName();
         archivomodificado = true;
-        if(filedown!=null)preparardescarga();
+        if (filedown != null) {
+            preparardescarga();
+        }
     }
 
     public void preparardescarga() {

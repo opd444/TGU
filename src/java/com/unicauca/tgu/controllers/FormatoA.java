@@ -7,6 +7,7 @@ package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.unicauca.tgu.Auxiliares.Servicio_Email;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.Auxiliares.UsuarioComun;
 import com.unicauca.tgu.entities.Formatoproducto;
@@ -308,7 +309,11 @@ public class FormatoA {
                       ejbFacadeUsuroltrab.remove(tmp.get(0));
                       ejbFacadeUsuroltrab.create(usuroltg);
                 }
-            }
+            } else if(est1ant!=null)
+                {
+                    List<UsuarioRolTrabajogrado> tmp = ejbFacadeUsuroltrab.findbyUsuid(est1ant.getPersonacedula().intValue());
+                    ejbFacadeUsuroltrab.remove(tmp.get(0));
+                }
 
              if (est2 != null) {
                                                                           //agregando primer estudiante
@@ -324,6 +329,11 @@ public class FormatoA {
                       ejbFacadeUsuroltrab.create(usuroltg);
                 }
             }
+             else if(est2ant!=null)
+                {
+                    List<UsuarioRolTrabajogrado> tmp = ejbFacadeUsuroltrab.findbyUsuid(est2ant.getPersonacedula().intValue());
+                    ejbFacadeUsuroltrab.remove(tmp.get(0));
+                }
 
              TrabajodeGradoActual.est1 = est1;
              TrabajodeGradoActual.est2 = est2;
@@ -331,6 +341,20 @@ public class FormatoA {
             formatoactual.setProductocontenido(contenido);
             
             ejbFacadeProdTrab.edit(formatoactual);
+            
+            Servicio_Email se = new Servicio_Email();
+            se.setSubject("Formato A del Trabajo de Grado "+nombretg+" Editado");
+
+            if(est1!=null)
+              {  
+            se.setTo(est1.getPersonacorreo());
+            se.enviarEditadoFormatoA(nombretg);
+              }
+            if(est2!=null)
+             {
+             se.setTo(est2.getPersonacorreo());
+             se.enviarEditadoFormatoA(nombretg);
+             }
 
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
             return "fasesTrabajoGrado/index";
@@ -368,6 +392,7 @@ public class FormatoA {
         map.put("observaciones", getObservaciones().trim());
         map.put("fecha", getFecha().toString());
 
+        
         Gson gson = new Gson();
         String contenido = gson.toJson(map, Map.class);
 
@@ -397,6 +422,20 @@ public class FormatoA {
             prod.setTrabajoid(trab);
 
             ejbFacadeProdTrab.create(prod);
+            
+            Servicio_Email se = new Servicio_Email();
+            se.setSubject("Formato A del Trabajo de Grado"+nombretg+" Diligenciado");
+            
+            if(est1!=null)
+              {  
+            se.setTo(est1.getPersonacorreo());
+            se.enviarDiligenciadoFormatoA(nombretg);
+              }
+            if(est2!=null)
+             {
+             se.setTo(est2.getPersonacorreo());
+             se.enviarDiligenciadoFormatoA(nombretg);
+             }
 
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
             return "fasesTrabajoGrado/index";

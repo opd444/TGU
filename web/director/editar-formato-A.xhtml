@@ -145,7 +145,7 @@
                             </p:tab>
 
                             <p:tab id="paso4" title="Paso 4">
-                                <p:panel header="Confirmacion de Datos">
+                                <p:panel header="Confirmacion de Datos" style="overflow: hidden;">
                                     <h:panelGrid cellpadding="7">
 
                                         <p:fieldset legend="Nombre del Estudiante 1:" toggleable="true" styleClass="txtareaform"> 
@@ -192,7 +192,7 @@
 
                                      <p:separator />
                                      
-                                     <p:commandButton value="Editar" update="growl" process="@this" actionListener="#{formatoA.editarFormatoA()}" />
+                                     <p:commandButton style="float: right; margin-right: 60px; margin-bottom: 15px;" value="Editar" update="growl" process="@this" actionListener="#{formatoA.editarFormatoA()}" />
                                 </p:panel>
                             </p:tab>
 
