@@ -17,6 +17,7 @@ import java.io.IOException;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -45,47 +46,54 @@ public class UsuarioRolTrabajogradoController implements Serializable {
     private DataModel items = null;
     @EJB
     private com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade ejbFacade;
-    
+
     @EJB
     private com.unicauca.tgu.jpacontroller.TrabajodegradoFacade ejbFacadetrabgrad;
-    
+
     @EJB
     private com.unicauca.tgu.jpacontroller.UsuarioFacade ejbFacadeusuario;
-    
-    
+
     private PaginationHelper pagination;
     private int selectedItemIndex;
-    
+
     private List<FormatoTablaDirector> trabs;
-    int modo;             // 0 para la seccion de trabajos en curso y 1 para trabajos terminados
+    //int modo;             // 0 para la seccion de trabajos en curso y 1 para trabajos terminados
+    private boolean modo;             // 0 para la seccion de trabajos en curso y 1 para trabajos terminados
+    private String titulotablaDirector;
+    private String titulotablaJefe;
     private String titulotabla;
     private String nombrenuevoTG;
     private Date fecha;
     private List<FormatoTablaJefe> trabs1;
     private List<FormatoTablaJefe> trabs2;
-   
+    private int filas;
+    private boolean numMaxTrabPermitidos;
 
     public UsuarioRolTrabajogradoController() {
 
     }
-    
+
     public void trabajoGrado() {
         String usuarionombre = "fp";
         List<UsuarioRolTrabajogrado> urtgs = getFacade().findAll();
         UsuarioRolTrabajogrado usuarioroltrabajoid;
-        for(int i=0 ; i < urtgs.size(); i++) {
-            if(urtgs.get(i).getPersonacedula().getUsuarionombre().equals(usuarionombre))
-                    current = usuarioroltrabajoid = urtgs.get(i);
-        }                
+        for (int i = 0; i < urtgs.size(); i++) {
+            if (urtgs.get(i).getPersonacedula().getUsuarionombre().equals(usuarionombre)) {
+                current = usuarioroltrabajoid = urtgs.get(i);
+            }
+        }
     }
+
     public void trabajoDeGrado(BigDecimal trabajoid) {
         List<UsuarioRolTrabajogrado> urtgs = getFacade().findAll();
         UsuarioRolTrabajogrado usuarioroltrabajoid;
-        for(int i=0 ; i < urtgs.size(); i++) {
-            if(urtgs.get(i).getTrabajoid().getTrabajoid().equals(trabajoid))
-                    current = urtgs.get(i);
-        }   
+        for (int i = 0; i < urtgs.size(); i++) {
+            if (urtgs.get(i).getTrabajoid().getTrabajoid().equals(trabajoid)) {
+                current = urtgs.get(i);
+            }
+        }
     }
+
     public UsuarioRolTrabajogrado getCurrent() {
         trabajoGrado();
         return current;
@@ -94,15 +102,15 @@ public class UsuarioRolTrabajogradoController implements Serializable {
     public void setCurrent(UsuarioRolTrabajogrado current) {
         this.current = current;
     }
-    
+
     @PostConstruct
-    public void init(){
-       modo = 0;    
-       titulotabla = "Trabajos de Grado en Curso";
-       fecha = new Date();
+    public void init() {
+        modo = false;
+        titulotablaDirector = "Trabajos de Grado en Curso";
+        titulotablaJefe = "Lista de ideas por revisar";
+        fecha = new Date();
     }
-            
-    
+
     public UsuarioRolTrabajogrado getSelected() {
         if (current == null) {
             current = new UsuarioRolTrabajogrado();
@@ -143,7 +151,7 @@ public class UsuarioRolTrabajogradoController implements Serializable {
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
-    
+
     public String prepareCreate() {
         current = new UsuarioRolTrabajogrado();
         selectedItemIndex = -1;
@@ -298,57 +306,52 @@ public class UsuarioRolTrabajogradoController implements Serializable {
         }
 
     }
-    
-     public List<FormatoTablaDirector> getTrabs() {
-         trabs = new ArrayList();
-        
-       List<Trabajodegrado> trabstemp;
-       
-       if(modo==1)trabstemp= ejbFacadetrabgrad.getTrabajosTerminadosporDirectorId(UsuarioComun.id);
-       else trabstemp = ejbFacadetrabgrad.getTrabajosEnCursoPorDirectorId(UsuarioComun.id);
 
-       int cont;     
-       FormatoTablaDirector f = new FormatoTablaDirector();
-       
-       for(Trabajodegrado t : trabstemp)
-          { 
-                 cont = 0;
-                 f = new FormatoTablaDirector();                  //sacamos la informacion general tanto director y los estud.
-                 f.setFecha(t.getUsuarioRolTrabajogradoList().get(0).getFechaasignacion());
-                 f.setTrabajoGradoId(t.getUsuarioRolTrabajogradoList().get(0).getTrabajoid().getTrabajoid().intValue());
-                 f.setTrabajoGrado(t.getUsuarioRolTrabajogradoList().get(0).getTrabajoid().getTrabajonombre());
-         for(UsuarioRolTrabajogrado l : t.getUsuarioRolTrabajogradoList())
-         
-             {            
-                  if(l.getRolid().getRolid().intValue() == 1 && cont ==0)
-                      { 
-                       f.setEst1(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
-                       f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
-                       cont ++;
-                      }
-                  else if(l.getRolid().getRolid().intValue() == 1 && cont ==1)
-                   { 
-                       f.setEst2(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
-                       f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());                      
-                   }
-             }
-                if(modo==0) 
-                   { 
-                   List<TrabajogradoFase> tgfs =  t.getTrabajogradoFaseList();
-                   int x = 999;
-                   for(TrabajogradoFase tg: tgfs)
-                    {
-                      if(tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue()<x)
-                          {
-                            f.setEstado(tg.getFaseid().getFasenombre());
-                            x = tg.getFaseid().getFaseorden().intValue();
-                          }
-                    }   
-                   }
-                else f.setEstado("Finalizado");
-              trabs.add(f);
-          }
-         return trabs;
+    public List<FormatoTablaDirector> getTrabs() {
+        trabs = new ArrayList();
+
+        List<Trabajodegrado> trabstemp;
+
+        if (modo == true) {
+            trabstemp = ejbFacadetrabgrad.getTrabajosTerminadosporDirectorId(UsuarioComun.id);
+        } else {
+            trabstemp = ejbFacadetrabgrad.getTrabajosEnCursoPorDirectorId(UsuarioComun.id);
+        }
+
+        int cont;
+        FormatoTablaDirector f = new FormatoTablaDirector();
+
+        for (Trabajodegrado t : trabstemp) {
+            cont = 0;
+            f = new FormatoTablaDirector();                  //sacamos la informacion general tanto director y los estud.
+            f.setFecha(t.getUsuarioRolTrabajogradoList().get(0).getFechaasignacion());
+            f.setTrabajoGradoId(t.getUsuarioRolTrabajogradoList().get(0).getTrabajoid().getTrabajoid().intValue());
+            f.setTrabajoGrado(t.getUsuarioRolTrabajogradoList().get(0).getTrabajoid().getTrabajonombre());
+            for (UsuarioRolTrabajogrado l : t.getUsuarioRolTrabajogradoList()) {
+                if (l.getRolid().getRolid().intValue() == 1 && cont == 0) {
+                    f.setEst1(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
+                    f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
+                    cont++;
+                } else if (l.getRolid().getRolid().intValue() == 1 && cont == 1) {
+                    f.setEst2(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
+                    f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());
+                }
+            }
+            if (modo == false) {
+                List<TrabajogradoFase> tgfs = t.getTrabajogradoFaseList();
+                int x = 999;
+                for (TrabajogradoFase tg : tgfs) {
+                    if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x) {
+                        f.setEstado(tg.getFaseid().getFasenombre());
+                        x = tg.getFaseid().getFaseorden().intValue();
+                    }
+                }
+            } else {
+                f.setEstado("Finalizado");
+            }
+            trabs.add(f);
+        }
+        return trabs;
     }
 
     public void setTrabs(List<FormatoTablaDirector> trabs) {
@@ -362,19 +365,16 @@ public class UsuarioRolTrabajogradoController implements Serializable {
     public void setTitulotabla(String titulotabla) {
         this.titulotabla = titulotabla;
     }
-    
-    
-    
-    public void trabajosenCurso()
-             {
-               modo = 0;
-               titulotabla = "Trabajos de Grado en Curso";
-             }
-    public void trabajosTerminados()
-             {
-               modo = 1;
-               titulotabla = "Trabajos de Grado Terminados";
-             }
+
+    public void trabajosenCurso() {
+        modo = false;
+        titulotablaDirector = "Trabajos de Grado en Curso";
+    }
+
+    public void trabajosTerminados() {
+        modo = true;
+        titulotablaDirector = "Trabajos de Grado Terminados";
+    }
 
     public String getNombrenuevoTG() {
         return nombrenuevoTG;
@@ -390,81 +390,98 @@ public class UsuarioRolTrabajogradoController implements Serializable {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
-    } 
-    
-    public void crearTG()
-       {
-          Trabajodegrado trab = new Trabajodegrado();
-          trab.setTrabajonombre(nombrenuevoTG.trim());
-          trab.setTrabajoid(BigDecimal.ZERO);
-          ejbFacadetrabgrad.create(trab);
-          
-          trab = ejbFacadetrabgrad.findbyNombreTg(nombrenuevoTG.trim());
-          
-          UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);      //agregando director
-          usuroltg.setRolid(new Rol(BigDecimal.ZERO));  
-          usuroltg.setTrabajoid(trab);
-          usuroltg.setPersonacedula(new Usuario(new BigDecimal(UsuarioComun.id)));
-          
-          ejbFacade.create(usuroltg);       
     }
-    
-     public List<FormatoTablaJefe> getTrabsJefe() {
-         
+
+    public void crearTG() {
+        Trabajodegrado trab = new Trabajodegrado();
+        trab.setTrabajonombre(nombrenuevoTG.trim());
+        trab.setTrabajoid(BigDecimal.ZERO);
+        ejbFacadetrabgrad.create(trab);
+
+        trab = ejbFacadetrabgrad.findbyNombreTg(nombrenuevoTG.trim());
+
+        UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);      //agregando director
+        usuroltg.setRolid(new Rol(BigDecimal.ZERO));
+        usuroltg.setTrabajoid(trab);
+        usuroltg.setPersonacedula(new Usuario(new BigDecimal(UsuarioComun.id)));
+
+        ejbFacade.create(usuroltg);
+    }
+
+    public boolean isModo() {
+        return modo;
+    }
+
+    public void setModo(boolean modo) {
+        this.modo = modo;
+    }
+
+    public List<FormatoTablaJefe> getTrabsJefe() {
+
         trabs1 = new ArrayList();
 
+        List<Trabajodegrado> trabstemp;
 
-        List<Productodetrabajo> lst1 = ejbFacade.obtenerFormatosporId(0, 0);
+        if (true == modo) {
+            trabstemp = ejbFacadetrabgrad.getIdeasRevisadasJefe();
+        } else {
+            trabstemp = ejbFacadetrabgrad.getIdeasPorRevisarJefe();
+        }
 
-        for (Productodetrabajo l : lst1) {
-            
-            List<UsuarioRolTrabajogrado> lst = ejbFacade.findbytrabajoId(l.getTrabajoid().getTrabajoid().intValue());
+        int cont;
+        FormatoTablaJefe f;
 
-            FormatoTablaJefe f = new FormatoTablaJefe();
+        for (Trabajodegrado t : trabstemp) {
+            cont = 0;
+            f = new FormatoTablaJefe();                  //sacamos la informacion general tanto jefe depto, director y los estud.
+
+            List<UsuarioRolTrabajogrado> lst = ejbFacade.findbytrabajoId(t.getTrabajoid().intValue());
+
             if (lst.size() > 0) {
                 f.setFecha(lst.get(0).getFechaasignacion());
                 f.setTrabajoGradoId(lst.get(0).getTrabajoid().getTrabajoid().intValue());
                 f.setTrabajoGrado(lst.get(0).getTrabajoid().getTrabajonombre());
-                
-                int cont = 0;
-                for (UsuarioRolTrabajogrado x : lst) {
-                    
-                    if (x.getRolid().getRolid().intValue() == 0) {
-                        f.setDirector(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
-                        f.setDirectorId(x.getPersonacedula().getPersonacedula().intValue());
-                    }
 
-                    else if (x.getRolid().getRolid().intValue() == 1 && cont == 0) {
-                        f.setEst1(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
-                        f.setEst1Id(x.getPersonacedula().getPersonacedula().intValue());
+                for (UsuarioRolTrabajogrado l : lst) {
+                    if (l.getRolid().getRolid().intValue() == 0) //director
+                    {
+                        f.setDirector(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
+                        f.setDirectorId(l.getPersonacedula().getPersonacedula().intValue());
+                    } else if (l.getRolid().getRolid().intValue() == 1 && cont == 0) //Estudiante 1
+                    {
+                        f.setEst1(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
+                        f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
                         cont++;
-                    }
-
-                    else if (x.getRolid().getRolid().intValue() == 1) {
-                        f.setEst2(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
-                        f.setEst2Id(x.getPersonacedula().getPersonacedula().intValue());
+                    } else if (l.getRolid().getRolid().intValue() == 1 && cont == 1) //estudiante 2
+                    {
+                        f.setEst2(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
+                        f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());
                     }
                 }
-            }
-            trabs1.add(f);
-        }
 
+                for (TrabajogradoFase tf : t.getTrabajogradoFaseList()) {
+                    if (tf.getFaseid().getFaseid().equals(BigDecimal.ONE)) {
+                        f.setAprobado(tf.getEstado().intValue());
+                        break;
+                    }
+                }
+                trabs1.add(f);
+            }
+        }
         return trabs1;
     }
 
     public void setTrabsJefe(List<FormatoTablaJefe> trabs1) {
         this.trabs1 = trabs1;
     }
-    
-    public List<FormatoTablaJefe> getHistorialRevisadas(){
+
+    public List<FormatoTablaJefe> getHistorialRevisadas() {
         trabs2 = new ArrayList();
-        
+
         List<Productodetrabajo> lst2 = ejbFacade.obtenerFormatosporId(0, 0);
-         for (Productodetrabajo l : lst2) {
-            
+        for (Productodetrabajo l : lst2) {
+
             List<UsuarioRolTrabajogrado> lst = ejbFacade.findbytrabajoId(l.getTrabajoid().getTrabajoid().intValue());
-            
-            
 
             FormatoTablaJefe f = new FormatoTablaJefe();
             if (lst2.size() > 0) {
@@ -472,21 +489,17 @@ public class UsuarioRolTrabajogradoController implements Serializable {
                 f.setTrabajoGradoId(lst.get(0).getTrabajoid().getTrabajoid().intValue());
                 f.setTrabajoGrado(lst.get(0).getTrabajoid().getTrabajonombre());
                 f.setAprobado(lst2.get(0).getProductoaprobado().intValue());
-                
+
                 int cont = 0;
                 for (UsuarioRolTrabajogrado x : lst) {
-                    
+
                     if (x.getRolid().getRolid().intValue() == 1) {
                         f.setDirector(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
-                    }
-
-                    else if (x.getRolid().getRolid().intValue() == 2 && cont == 0) {
+                    } else if (x.getRolid().getRolid().intValue() == 2 && cont == 0) {
                         f.setEst1(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
                         f.setEst1Id(x.getPersonacedula().getPersonacedula().intValue());
                         cont++;
-                    }
-
-                    else if (x.getRolid().getRolid().intValue() == 2) {
+                    } else if (x.getRolid().getRolid().intValue() == 2) {
                         f.setEst2(x.getPersonacedula().getPersonanombres() + " " + x.getPersonacedula().getPersonaapellidos());
                         f.setEst2Id(x.getPersonacedula().getPersonacedula().intValue());
                     }
@@ -497,57 +510,158 @@ public class UsuarioRolTrabajogradoController implements Serializable {
 
         return trabs2;
     }
-    
-    
-    public void contenidoTgDirector(ActionEvent event)  //guardar informacion del trabajo de grado que se esta tratando
-            {
-            //Agregamos los datos del trabajo de grado para no enviar por url.                          
-          TrabajodeGradoActual.id = (Integer)event.getComponent().getAttributes().get("idtrabajo");
-          TrabajodeGradoActual.nombreTg = (String)event.getComponent().getAttributes().get("nombretrab");
-          
-           //Agregamos el primer estudiante a la clase estatica 
-          int idusu = (Integer)event.getComponent().getAttributes().get("est1");
-          if(idusu!=-1)TrabajodeGradoActual.est1 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
-          
-          //Agregamos el segundo estudiante si hay uno
-          idusu = (Integer)event.getComponent().getAttributes().get("est2");
-          if(idusu!=-1)TrabajodeGradoActual.est2 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
-          
-          TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(UsuarioComun.id).get(0);
-          
-          ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-        try {
-            context.redirect("fases-trabajo-de-grado.xhtml");
-        } catch (IOException ex) {
-            Logger.getLogger(UsuarioRolTrabajogradoController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            }
-    
-    public void contenidoTgJefe(ActionEvent event)  //guardar informacion del trabajo de grado que se esta tratando
-            {
-            //Agregamos los datos del trabajo de grado para no enviar por url.                          
-          TrabajodeGradoActual.id = (Integer)event.getComponent().getAttributes().get("idtrabajo");
-          TrabajodeGradoActual.nombreTg = (String)event.getComponent().getAttributes().get("nombretrab");
-          
-          //Agregamos el primer estudiante a la clase estatica 
-          int idusu = (Integer)event.getComponent().getAttributes().get("est1");
-          if(idusu!=-1)TrabajodeGradoActual.est1 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
-          
-          //Agregamos el segundo estudiante si hay uno
-          idusu = (Integer)event.getComponent().getAttributes().get("est2");
-          if(idusu!=-1)TrabajodeGradoActual.est2 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
-          
-          idusu = (Integer)event.getComponent().getAttributes().get("iddirector");
-          if(idusu!=-1)TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
-          
-          TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(UsuarioComun.id).get(0);
-          
-          ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-        try {
-            context.redirect("fases-trabajo-de-grado.xhtml");
-        } catch (IOException ex) {
-            Logger.getLogger(UsuarioRolTrabajogradoController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            }
 
+    public void contenidoTgDirector(ActionEvent event) //guardar informacion del trabajo de grado que se esta tratando
+    {
+        //Agregamos los datos del trabajo de grado para no enviar por url.                          
+        TrabajodeGradoActual.id = (Integer) event.getComponent().getAttributes().get("idtrabajo");
+        TrabajodeGradoActual.nombreTg = (String) event.getComponent().getAttributes().get("nombretrab");
+
+        //Agregamos el primer estudiante a la clase estatica 
+        int idusu = (Integer) event.getComponent().getAttributes().get("est1");
+        if (idusu != -1) {
+            TrabajodeGradoActual.est1 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
+        }
+
+        //Agregamos el segundo estudiante si hay uno
+        idusu = (Integer) event.getComponent().getAttributes().get("est2");
+        if (idusu != -1) {
+            TrabajodeGradoActual.est2 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
+        }
+
+        TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(UsuarioComun.id).get(0);
+
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            context.redirect("fases-trabajo-de-grado.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(UsuarioRolTrabajogradoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void contenidoTgJefe(ActionEvent event) //guardar informacion del trabajo de grado que se esta tratando
+    {
+        //Agregamos los datos del trabajo de grado para no enviar por url.                          
+        TrabajodeGradoActual.id = (Integer) event.getComponent().getAttributes().get("idtrabajo");
+        TrabajodeGradoActual.nombreTg = (String) event.getComponent().getAttributes().get("nombretrab");
+
+        //Agregamos el primer estudiante a la clase estatica 
+        int idusu = (Integer) event.getComponent().getAttributes().get("est1");
+        if (idusu != -1) {
+            TrabajodeGradoActual.est1 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
+        }
+
+        //Agregamos el segundo estudiante si hay uno
+        idusu = (Integer) event.getComponent().getAttributes().get("est2");
+        if (idusu != -1) {
+            TrabajodeGradoActual.est2 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
+        }
+
+        idusu = (Integer) event.getComponent().getAttributes().get("iddirector");
+        if (idusu != -1) {
+            TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
+        }
+
+        TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(UsuarioComun.id).get(0);
+
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            context.redirect("fases-trabajo-de-grado.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(UsuarioRolTrabajogradoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public int getFilas() {
+        return filas;
+    }
+
+    public void setFilas(int filas) {
+        this.filas = filas;
+    }
+
+    public void numTrabajos() {
+        if (modo == true) {
+            filas = 8;
+        } else {
+            filas = 3;
+        }
+    }
+
+    public boolean isNumMaxTrabPermitidos() {
+        return numMaxTrabPermitidos;
+    }
+
+    public void setNumMaxTrabPermitidos(boolean numTrabajosPermitidos) {
+        this.numMaxTrabPermitidos = numTrabajosPermitidos;
+    }
+
+    public String getTitulotablaDirector() {
+        return titulotablaDirector;
+    }
+
+    public String getTitulotablaJefe() {
+        return titulotablaJefe;
+    }
+
+    public List<FormatoTablaDirector> getTrabsDirector() {
+        trabs = new ArrayList();
+
+        List<Trabajodegrado> trabstemp;
+
+        if (modo == true) {
+            trabstemp = ejbFacadetrabgrad.getTrabajosTerminadosporDirectorId(UsuarioComun.id);
+        } else {
+            trabstemp = ejbFacadetrabgrad.getTrabajosEnCursoPorDirectorId(UsuarioComun.id);
+
+            if (trabstemp.size() <= 3) {
+                numMaxTrabPermitidos = false;
+            } else {
+                numMaxTrabPermitidos = true;
+            }
+        }
+
+        int cont;
+        FormatoTablaDirector f;
+
+        for (Trabajodegrado t : trabstemp) {
+            cont = 0;
+            f = new FormatoTablaDirector();                  //sacamos la informacion general tanto director y los estud.
+            f.setFecha(t.getUsuarioRolTrabajogradoList().get(0).getFechaasignacion());
+            f.setTrabajoGradoId(t.getUsuarioRolTrabajogradoList().get(0).getTrabajoid().getTrabajoid().intValue());
+            f.setTrabajoGrado(t.getUsuarioRolTrabajogradoList().get(0).getTrabajoid().getTrabajonombre());
+            for (UsuarioRolTrabajogrado l : t.getUsuarioRolTrabajogradoList()) {
+                if (l.getRolid().getRolid().intValue() == 1 && cont == 0) {
+                    f.setEst1(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
+                    f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
+                    cont++;
+                } else if (l.getRolid().getRolid().intValue() == 1 && cont == 1) {
+                    f.setEst2(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
+                    f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());
+                }
+            }
+            if (modo == false) {
+                List<TrabajogradoFase> tgfs = t.getTrabajogradoFaseList();
+                int x = 999;
+                boolean ban = false;
+                for (TrabajogradoFase tg : tgfs) {
+                    if((tg.getEstado()==BigInteger.ONE) && tg.getFaseid().getFaseorden().intValue()<x) {
+                    //if (tg.getFaseid().getFaseorden().intValue() < x) {
+                        ban = true;
+                        f.setEstado(tg.getFaseid().getFasenombre());
+                        x = tg.getFaseid().getFaseorden().intValue();
+                    }
+                }
+
+                if (!ban) {
+                    f.setEstado("Presentación de la idea");
+                }
+
+            } else {
+                f.setEstado("Finalizado");
+            }
+            trabs.add(f);
+        }
+        return trabs;
+    }
 }

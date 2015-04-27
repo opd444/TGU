@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="./plantillas/plantillaIndex.xhtml">
+
+            <ui:define name="menuprincipal">                
+            </ui:define>
+
+            <ui:define name="title">                
+            </ui:define>
+
+            <ui:define name="body" >
+                <h:form id="formLogin">                    
+                    <p:messages id="messages" showDetail="true"/>
+
+                    <p:panel header="Iniciar Sesión" style=" width: 250px; text-align: center; margin: 140px 140px 140px 340px; m">
+                        <h:panelGrid columns="1" cellpadding="5" cellspacing="0">
+                            <p:row>
+                                <p:graphicImage value="resources/img/ico-usuario.png" />                            
+                                <p:inputText id="nombreUsuario" value="#{serviciosSimcaController.nombreUsuario}" label="Nombre de usuario" required="true" />
+                                <p:watermark for="nombreUsuario" value="Nombre de usuario" />
+                            </p:row>
+
+                            <p:row>
+                                <p:graphicImage value="resources/img/ico-pass.png" />                                                        
+                                <p:password id="contrasenia" value="#{serviciosSimcaController.contrasenia}" label="Contraseña" required="true" />
+                                <p:watermark for="contrasenia" value="Contraseña" />                           
+                            </p:row>
+
+                            <p:row>                                
+                                <p:commandButton style=" border: 25px; " value="Ingresar" action="#{serviciosSimcaController.login}" update="formLogin messages" />                                                                                                
+                            </p:row>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

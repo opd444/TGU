@@ -2,45 +2,40 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <body>
 
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
-            <ui:define name="CuadroDeBotonesSesion">
-                CuadroDeBotonesSesion
-            </ui:define>
-
             <ui:define name="menuprincipal">
                 <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />                                        
-                    <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
-                    <p:menuitem value="Trabajos de Grado" outcome="vista-jefe-de-departamento" />                        
-                    <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
-                    <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
-                </p:breadCrumb>              
+                    <p:menuitem value="Estudiante" outcome="vista-estudiante" />                                        
+                    <p:menuitem value="Estudiante" outcome="vista-estudiante" />
+                </p:breadCrumb>
             </ui:define>
 
-            <ui:define name="title">                
+            <ui:define name="title">                                
             </ui:define>
 
-            <ui:define name="body">           
-
+            <ui:define name="body">                
+                #{estudianteViewController.nombresApellidos(serviciosSimcaController.nombreUsuario)}
+                #{trabajodegradoController.trabajoAsignado(estudianteViewController.entityTrabajo.trabajoid)}
+                #{trabajodegradoController.incializar()}                
+                #{estudianteViewController.loadTrabajoDeGrado()}
                 <h:form>                                                           
-                    <h:form>
-                        <p:menu styleClass="menuizqroles" style="background-color: white">
-                            <p:submenu label="Perfiles" style="background-color: white">
-                                <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />
-                                <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" style="background-color: #c2dfef" />
-                            </p:submenu>                                
-                        </p:menu>
-                    </h:form>
+
+                    <p:menu styleClass="menuizqroles" style="background-color: white">
+                        <p:submenu label="Perfiles" style="background-color: white">
+                            <p:menuitem value="Estudiante" outcome="vista-estudiante" style="background-color: #c2dfef" />                            
+                        </p:submenu>                                
+                    </p:menu>
+
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
-                            #{trabajodegradoController.trabajo.trabajonombre}
+                            #{estudianteViewController.entityTrabajo.trabajonombre}
                         </div>                                         
                         <p:spacer height="25"/>
                         <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado">
@@ -58,13 +53,13 @@
                                     </p:effect>
                                 </p:commandButton>
 
-                                <p:button value="Realización del Anteproyecto" href="2-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:button value="Realización del Anteproyecto" outcome="2-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
                                 <p:button value="Evaluación del Anteproyecto" href="3-evaluacion-anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Ejecución del Trabajo de Grado" href="4-ejecucion-trabajo-grado" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Evaluación del Trabajo de Grado" href="5-evaluacion-trabajo-grado" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Finalizado" href="6-finalizado" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                             </h:panelGrid>
-                        </p:panel>
+                        </p:panel>      
                         <p:spacer height="25"/>
                         <p:panel id="pnlPresentacionIdea" header="1. Presentación de la Idea" style="display:none; font-size: 14px;" widgetVar="pnlPresentacionIdea">
                             <!--<p:commandButton type="button" value="1. Presentación de la Idea" style="background-color:greenyellow">
@@ -72,24 +67,21 @@
                                     <f:param name="mode" value="'show'" />
                                 </p:effect>
                             </p:commandButton>-->
-                            <h:panelGrid columns="5" cellpadding="5" cellspacing="5">
-                                <h:outputText value="Formato A:" style="font-weight: bold;" />
+                            <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
+                                <h:outputText value="Formato A:" style="font-weight: bold;" />                                
                                 <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-A.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
                                 <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
-                                <h:outputText value="" />
-                                <h:outputText value="" />
-                                <h:outputText value="Revisión de la idea:" style="font-weight: bold;" />
-                                <p:button value="Diligenciar" icon="ui-icon-document" href="diligenciar-formato-revision-idea.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnDiligenciarRevisionFormatoA}" style="width: 120px;" />
-                                <p:button value="Editar" icon="ui-icon-pencil" href="editar-formato-revision-idea.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnEditarRevisionFormatoA}" style="width: 120px;" />
-                                <p:button value="Ver" icon="ui-icon-comment" href="#" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
-                                <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
                                 
-                            
+                                <h:outputText value="Revisión de la idea:" style="font-weight: bold;" />
+                                <p:button value="Ver" icon="ui-icon-comment" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
+                                <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />                                
                             </h:panelGrid>
                         </p:panel>
                     </p:panel>
-                </h:form>                
+                </h:form>
             </ui:define>
+
         </ui:composition>
+
     </body>
 </html>

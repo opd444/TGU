@@ -451,6 +451,7 @@ public class FormatoA {
         query = query.toUpperCase();
 
         List<Usuario> ls = ejbFacadeUsuario.buscarEstudiantesDisponibles(iddirector, query);
+//        List<Usuario> ls = ejbFacadeUsuario.buscarEstudiantesDisponibles(2, query);
         List<Usuario> usus = new ArrayList<Usuario>();
         if (est2 != null) {
             for (Usuario u : ls) {
@@ -470,6 +471,7 @@ public class FormatoA {
         query = query.trim();
         query = query.toUpperCase();
         List<Usuario> ls = ejbFacadeUsuario.buscarEstudiantesDisponibles(iddirector, query);
+//        List<Usuario> ls = ejbFacadeUsuario.buscarEstudiantesDisponibles(2, query);
         List<Usuario> usus = new ArrayList<Usuario>();
         if (est1 != null) {
             for (Usuario u : ls) {

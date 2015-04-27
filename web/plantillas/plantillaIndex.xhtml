@@ -15,6 +15,7 @@
     </h:head>
 
     <h:body>
+
         <header id="mainHeader">
             <div class="contenedor">
                 <div class="top">
@@ -22,30 +23,14 @@
                         <a href="http://www.unicauca.edu.co/"></a>
                     </div>
                     <div class="borde-redondo"></div>
-                    <a href="#" class="titulo">#{bundle.AppName}</a>
-                    <div class="CuadroDeBotonesSesion">                        
-                        <ui:insert name="CuadroDeBotonesSesion"> 
-                            <h:form>
-                                <h:outputText value="#{serviciosSimcaController.nombreUsuario}" style=" font-size: 20px; font-weight: bold; " />
-                                <p:separator />
-                                <p:commandLink value="Cerrar sesión" actionListener="#{serviciosSimcaController.logout()}" style=" font-weight: bold; font-size: 16px; color: white; "/>
-                            </h:form>
-                        </ui:insert>                       
-                    </div>
+                    <a href="#" class="titulo">#{bundle.AppName}</a>                    
                     <div class="clear"></div>
                 </div>
                 <div class="bottom">
 
                 </div>                
                 <nav id="mainNav">                       
-                    <ui:insert name="menuprincipal">
-                        <!--<ul> 
-                            <li><span class="punta"></span><p:link outcome="/administrador/contenidos/principal" value="inicio"/></li>
-                            <li><span class="punta"></span><p:link outcome="/administrador/usuarios/gestionUsuarios" value="Gestión Usuarios"/></li>
-                            <li><span class="punta"></span><p:link outcome="/administrador/medidas/consultaTest" value="Gestión de Medidas"/></li>
-                            <li><span class="punta"></span><p:link outcome="/administrador/asistencia/indexAsistencia" value="Control Asistencia"/></li>
-                            <li><span class="punta"></span><p:link outcome="/administrador/contenidos/gestionContenidos" value="Gestión Contenidos"/></li>                                               
-                        </ul>-->
+                    <ui:insert name="menuprincipal">                        
                     </ui:insert>           
                 </nav>                
             </div>
@@ -69,6 +54,7 @@
                 </div>
             </div>
         </footer>
+
     </h:body>
 
 </html>

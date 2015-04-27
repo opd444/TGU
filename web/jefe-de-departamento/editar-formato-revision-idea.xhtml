@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="CuadroDeBotonesSesion">
+                CuadroDeBotonesSesion
+            </ui:define>
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />                                        
+                        <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
+                        <p:menuitem value="Trabajos de Grado" outcome="vista-jefe-de-departamento" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="Editar Revisión de la idea" outcome="editar-formato-revision-idea" />
+                    </p:breadCrumb>              
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">               
+            </ui:define>
+
+            <ui:define name="body">
+                <h:form>
+                    <p:menu styleClass="menuizqroles" style="background-color: white">
+                        <p:submenu label="Perfiles" style="background-color: white">
+                            <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />
+                            <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" style="background-color: #c2dfef" />                            
+                        </p:submenu>                                
+                    </p:menu>
+                </h:form>
+
+                <p:panel styleClass="paneltrabajo" >
+                    <div class="tituloContenido">                        
+                        <h:outputText value="Formato: Revisión de la idea"/> <br/>
+                    </div>                 
+                    <p:spacer height="30"/>                 
+
+                    <h:form enctype="multipart/form-data">
+                        <p:panel header="Campos con * son obligatorios" style="width: 100%;" >
+                            <p:growl id="growl" sticky="true" showDetail="true" />
+                            <p:messages/>
+
+                            <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="15" >
+                                
+                                <p:outputLabel styleClass="subtitulosFormato" value="Número de acta de la reunión: *" />
+                                <p:inputText value="#{revisionIdeaController.numActa}" required="true" label="Numero de acta" validatorMessage="Este número de acta ya existe." size="4" requiredMessage="Debe ingresar el número de acta.">
+                                    <f:convertNumber integerOnly="true" type="number" />
+                                </p:inputText >
+                                
+                                <p:outputLabel styleClass="subtitulosFormato" value="Titulo del trabajo de grado: *" />
+                                <p:outputLabel value="#{revisionIdeaController.nombretg}" style="font-weight: bold;" />
+
+                                <p:outputLabel styleClass="subtitulosFormato" value="Nombre de los estudiantes: *"/>
+                                
+                                <p:column>
+                                    <p:outputLabel value="#{revisionIdeaController.est1.personanombres} #{revisionIdeaController.est1.personaapellidos}" /> <br />
+                                    <p:outputLabel value="#{revisionIdeaController.est2.personanombres} #{revisionIdeaController.est2.personaapellidos}" />
+                                </p:column>
+                                                                
+                                <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado: *" />
+                                <p:outputLabel value="#{revisionIdeaController.nombreDirector}"/>
+                                
+                                <p:outputLabel styleClass="subtitulosFormato" value="Resultado: *"/>
+                                <p:selectOneRadio id="aprobado" value="#{revisionIdeaController.resultado}">
+                                    <f:selectItem itemLabel="Aprobado" itemValue="1" />
+                                    <f:selectItem itemLabel="No aprobado" itemValue="0" />
+                                </p:selectOneRadio>
+                                <p:outputLabel styleClass="subtitulosFormato" value="Observaciones:" />
+                                <p:inputTextarea cols="25" rows="3" value="#{revisionIdeaController.observaciones}"/>
+                            </h:panelGrid>
+                            
+                            <h:panelGrid columns="2" style="margin: 0 auto;" cellpadding="8">
+                                <p:commandButton ajax="false" update="growl" value="Editar" actionListener="#{revisionIdeaController.editar()}" icon="ui-icon-pencil"/>
+                                <p:button value="Cancelar"  icon="ui-icon-cancel" outcome="fases-trabajo-de-grado"/>
+                            </h:panelGrid>
+                        </p:panel>
+                    </h:form>
+                </p:panel>       
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

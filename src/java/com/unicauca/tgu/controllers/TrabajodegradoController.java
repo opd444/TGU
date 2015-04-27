@@ -9,10 +9,12 @@ import com.unicauca.tgu.controllers.util.JsfUtil;
 import com.unicauca.tgu.controllers.util.PaginationHelper;
 import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.controllers.util.JsfUtil.PersistAction;
+import com.unicauca.tgu.entities.TrabajogradoFase;
+import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Iterator;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -21,7 +23,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -34,83 +35,157 @@ import javax.faces.model.SelectItem;
 @ManagedBean(name = "trabajodegradoController")
 @ViewScoped
 public class TrabajodegradoController implements Serializable {
+
     private BigDecimal trabajoid;
     private Trabajodegrado trabajo;
     private FasesTrabajoDeGrado fases;
-    
+
     @EJB
     private ProductodetrabajoFacade ejbFacadePro;
-  
+    @EJB
+    private TrabajogradoFaseFacade ejbFacadeTrabFase;
+
     @PostConstruct
-    public void init()
-        {
-         trabajoid = BigDecimal.valueOf(TrabajodeGradoActual.id);      //se Recupera el Id del trabajo actual
-        }    
-    
+    public void init() {
+        trabajoid = BigDecimal.valueOf(TrabajodeGradoActual.id);      //se Recupera el Id del trabajo actual
+    }
+
     public boolean getBtnDiligenciarFormatoA() {
         List<Productodetrabajo> lst = ejbFacadePro.findAll();
-        
-        for(int i=0; i<lst.size(); i++) {
-            if(lst.get(i).getTrabajoid().getTrabajoid().equals(trabajoid))
-                return true;            
+
+        for (int i = 0; i < lst.size(); i++) {
+            if (lst.get(i).getTrabajoid().getTrabajoid().equals(trabajoid)) {
+                return true;
+            }
         }
         return false;
-    } 
-    
-   public boolean verificarBtnDiligenciarRevisionFormatoA()   
-      {      
-      return verificarProductodeTrabajo(trabajoid.intValue(),1);
-      }  
-    
-    public List<Productodetrabajo> obtenerProductodeTrabajoporFormato(int idtrabajo,int idformato){
-        return ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(idtrabajo, idformato);
     }
-    
-    public boolean verificarProductodeTrabajo(int idtrabajo,int idformato){
-        List<Productodetrabajo> Lst = obtenerProductodeTrabajoporFormato(idtrabajo,idformato);
-        if(Lst.size()>0){
+
+    public boolean getBtnDiligenciarRevisionFormatoA() {
+        List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(TrabajodeGradoActual.id, 1);
+
+        if (lstProd.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean getBtnVerRevisionFormatoA() {
+        List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(trabajoid.intValue(), 1);
+
+        if (lstProd.size() > 0) {
+            return false;
+        } else {
             return true;
         }
-        else
-            return false;
     }
-    
-    public boolean getBtnVerFormatoA() {
+
+    public List<Productodetrabajo> obtenerProductodeTrabajoporFormato(int idtrabajo, int idformato) {
+        return ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(idtrabajo, idformato);
+    }
+
+    public boolean verificarProductodeTrabajo(int idtrabajo, int idformato) {
+        List<Productodetrabajo> Lst = obtenerProductodeTrabajoporFormato(idtrabajo, idformato);
+        if (Lst.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean getBtnEditarFormatoA() {
         List<Productodetrabajo> lst = ejbFacadePro.findAll();
-        
-        for(int i=0; i<lst.size(); i++) {
-            if(lst.get(i).getTrabajoid().getTrabajoid().equals(trabajoid))
-                return false;            
+        List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(trabajoid.intValue(), 0);
+        List<Productodetrabajo> lstProd2 = obtenerProductodeTrabajoporFormato(trabajoid.intValue(), 1);
+
+        for (int i = 0; i < lst.size(); i++) {
+            if (lst.get(i).getTrabajoid().getTrabajoid().equals(trabajoid)) {
+                if (lstProd.size() > 0) {
+                    if (lstProd2.size() > 0) {
+                        return getBtnEditarRevisionFormatoA();
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return true;
+                }
+            }
         }
         return true;
     }
 
+    public boolean getBtnVerFormatoA() {
+        List<Productodetrabajo> lst = ejbFacadePro.findAll();
+
+        for (int i = 0; i < lst.size(); i++) {
+            if (lst.get(i).getTrabajoid().getTrabajoid().equals(trabajoid)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean getBtnEditarRevisionFormatoA() {
+        List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(trabajoid.intValue(), 1);
+
+        if (lstProd.size() > 0) {
+            if (lstProd.get(0).getProductoaprobado() == BigInteger.ONE) //Si ha sido aprobado el prod del formato 1
+            {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+    
+    public void incializar() {  
+        TrabajodeGradoActual.id = trabajoid.intValue();
+        getTrabajo();        
+    }
+
     public Trabajodegrado getTrabajo() {
         List<Trabajodegrado> tg = getFacade().findAll();
-        for(int i=0; i < tg.size(); i++) {
-            if(tg.get(i).getTrabajoid().equals(trabajoid)){
+        for (int i = 0; i < tg.size(); i++) {
+            if (tg.get(i).getTrabajoid().equals(trabajoid)) {
                 int fase = -1;
+                
+                List<TrabajogradoFase> traFase = ejbFacadeTrabFase.findAll();
+                
+                for(int j=0; j<traFase.size(); j++) {
+                    if(traFase.get(j).getTrabajoid().getTrabajoid().equals(trabajoid)) {
+                        if(traFase.get(j).getEstado().equals(BigInteger.ONE)) {
+                            fase = traFase.get(j).getFaseid().getFaseid().intValue();
+                        }
+                    }
+                }
+                
                 fases = new FasesTrabajoDeGrado(fase);
                 TrabajodeGradoActual.id = tg.get(i).getTrabajoid().intValue();
                 TrabajodeGradoActual.nombreTg = tg.get(i).getTrabajonombre();
                 return tg.get(i);
             }
         }
-        
+
         return null;
     }
 
     public void setTrabajo(Trabajodegrado trabajo) {
+        
         this.trabajo = trabajo;
     }
-    
-    
 
     public BigDecimal getTrabajoid() {
         return trabajoid;
     }
-    
+
     public void setTrabajoid(BigDecimal trabajoid) {
+        this.trabajoid = trabajoid;
+    }
+    
+    public void trabajoAsignado(BigDecimal trabajoid) {
         this.trabajoid = trabajoid;
     }
 
@@ -121,7 +196,7 @@ public class TrabajodegradoController implements Serializable {
     public void setFases(FasesTrabajoDeGrado fases) {
         this.fases = fases;
     }
-        
+
     private Trabajodegrado current;
     private DataModel items = null;
     @EJB
@@ -139,6 +214,7 @@ public class TrabajodegradoController implements Serializable {
         }
         return current;
     }
+
     public void setSelected(Trabajodegrado selected) {
         this.current = selected;
     }
@@ -181,8 +257,10 @@ public class TrabajodegradoController implements Serializable {
         selectedItemIndex = -1;
         return "Create";
     }
+
     protected void setEmbeddableKeys() {
     }
+
     private void persist(PersistAction persistAction, String successMessage) {
         if (current != null) {
             setEmbeddableKeys();
@@ -216,7 +294,7 @@ public class TrabajodegradoController implements Serializable {
 //        if (!JsfUtil.isValidationFailed()) {
 //            items = null;    // Invalidate list of items to trigger re-query.
 //        }
-        
+
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoCreated"));
@@ -224,19 +302,20 @@ public class TrabajodegradoController implements Serializable {
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
-        }        
+        }
     }
+
     public void crearTrabajoDeGrado() {
-        
+
         try {
             getFacade().create(current);
             getItems();
             //JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoCreated"));
-            
+
         } catch (Exception e) {
             //JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            
-        }        
+
+        }
     }
 
     public String prepareEdit() {
@@ -374,7 +453,9 @@ public class TrabajodegradoController implements Serializable {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Trabajodegrado.class.getName());
             }
         }
-
     }
 
+    public boolean verificarBtnDiligenciarRevisionFormatoA() {
+        return verificarProductodeTrabajo(trabajoid.intValue(), 1);
+    }
 }

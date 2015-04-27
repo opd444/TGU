@@ -11,8 +11,8 @@ package com.unicauca.tgu.Auxiliares;
  */
 public class UsuarioComun  {
   
-     public static int id = 0;
+     public static int id = 2;
      public static String login;
      public static String pass; 
-     public static String nombreComplet = "Francisco Pino";
+     public static String nombreComplet = "Julio Ariel Hurtado Alegría";
 }

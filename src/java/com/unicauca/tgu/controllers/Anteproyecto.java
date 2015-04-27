@@ -45,8 +45,8 @@ import org.primefaces.model.UploadedFile;
  */
 @ManagedBean
 @ViewScoped
-public class Anteproyecto {
-
+public class Anteproyecto {    
+    
     private String nombretg;
     private String directortg;
     private String est1;
@@ -118,7 +118,7 @@ public class Anteproyecto {
     }
 
     public String getEst1() {
-        if (TrabajodeGradoActual.est2 != null) {
+        if (TrabajodeGradoActual.est1 != null) {
             est1 = TrabajodeGradoActual.est1.getPersonanombres() + " " + TrabajodeGradoActual.est1.getPersonaapellidos();
             return est1;
         } else {
@@ -205,13 +205,13 @@ public class Anteproyecto {
 
                 ejbFacadeProdTrab.create(prod);
                 
-                Servicio_Email se = new Servicio_Email();
-                se.setSubject("Anteproyecto del Trabajo de Grado" + nombretg + " Diligenciado");
-
-            if (TrabajodeGradoActual.director != null) {
-                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
-                se.enviarDiligenciadoAnteproyecto(nombretg);
-            }          
+//                Servicio_Email se = new Servicio_Email();
+//                se.setSubject("Anteproyecto del Trabajo de Grado" + nombretg + " Diligenciado");
+//
+//            if (TrabajodeGradoActual.director != null) {
+//                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
+//                se.enviarDiligenciadoAnteproyecto(nombretg);
+//            }          
                 context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Anteproyecto Diligenciado con Exito", ""));
 
                 /*  Para redireccionar despues de guardar

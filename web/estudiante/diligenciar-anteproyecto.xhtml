@@ -4,8 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
-          
-      xmlns:f="http://java.sun.com/jsf/core">
+      >
 
     <body>
 
@@ -14,12 +13,11 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Director" outcome="vista-director" />
-                        <p:menuitem value="Director" outcome="vista-director" />
-                        <p:menuitem value="Trabajos de Grado" outcome="vista-director" />                        
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="Diligenciar Formato A" outcome="diligenciar-formato-A" />
+                        <p:menuitem value="Estudiante" outcome="vista-estudiante" />                                        
+                        <p:menuitem value="Estudiante" outcome="vista-estudiante" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="vista-estudiante" />
+                        <p:menuitem value="2. Realización del Anteproyecto" outcome="vista-estudiante" />
+                        <p:menuitem value="Diligenciar Anteproyecto" outcome="vista-estudiante" />
                     </p:breadCrumb>              
                 </h:form>
             </ui:define>
@@ -30,12 +28,11 @@
             <ui:define name="body">
                 #{estudianteViewController.nombresApellidos(serviciosSimcaController.nombreUsuario)}
                 #{trabajodegradoController.trabajoAsignado(estudianteViewController.entityTrabajo.trabajoid)}
-                #{trabajodegradoController.incializar()} 
+                #{trabajodegradoController.incializar()}                                
                 <h:form>
                     <p:menu styleClass="menuizqroles" style="background-color: white">
                         <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" action="vista-director" style="background-color: #c2dfef" />
-                            <p:menuitem value="Jefe de Departamento" action="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />                            
+                            <p:menuitem value="Estudiante" outcome="vista-estudiante" style="background-color: #c2dfef" />                            
                         </p:submenu>                                
                     </p:menu>
                 </h:form>
@@ -85,31 +82,31 @@
                                 <p:row> 
                                     <p:column colspan="2" styleClass="titulotabla">
                                         <p:outputLabel value="Objetivos:" for="obj"> </p:outputLabel>
-                                        </p:column>
+                                    </p:column>
                                 </p:row>
-                                
+
                                 <p:row>
                                     <p:column colspan="2">
                                         <p:inputTextarea id="obj" value="#{anteproyecto.objetivos}" required="true" styleClass="txtareaform" />
                                     </p:column>
                                 </p:row>
-                                 
+
                                 <p:row>
                                     <p:column colspan="2" styleClass="titulotabla">
-                                    <p:outputLabel value="Adjuntar anteproyecto:" for="ant"> </p:outputLabel>
+                                        <p:outputLabel value="Adjuntar anteproyecto:" for="ant"> </p:outputLabel>
                                     </p:column>
-                                    </p:row>
+                                </p:row>
                                 <p:row>
                                     <p:column>
-                                    <p:fileUpload id="ant" required="true" fileUploadListener="#{anteproyecto.handleFileUpload}" auto="true"
-                                                  allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf)$/" sizeLimit="31457280" label="Adjuntar Archivo" update="nombarch"
-                                                  invalidFileMessage="Tipo de Archivo no Valido, Agregue un archivo word o pdf" 
-                                                  invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" />
+                                        <p:fileUpload id="ant" required="true" fileUploadListener="#{anteproyecto.handleFileUpload}" auto="true"
+                                                      allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf)$/" sizeLimit="31457280" label="Adjuntar Archivo" update="nombarch"
+                                                      invalidFileMessage="Tipo de Archivo no Valido, Agregue un archivo word o pdf" 
+                                                      invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" />
                                     </p:column>
                                     <p:column>
                                         <p:outputLabel id="nombarch" value="#{anteproyecto.nombarch}"> </p:outputLabel>
                                     </p:column>
-                                 </p:row>
+                                </p:row>
                                 <p:row>
                                     <p:column >
                                         <p:button value="Cancelar"  icon="ui-icon-cancel" style="margin-top: 20px;"/>
@@ -118,18 +115,18 @@
                                         <p:commandButton value="Guardar" ajax="false" actionListener="#{anteproyecto.guardar}" style="margin-top: 20px;"/>
                                     </p:column>
                                 </p:row>
-                                    
-                                    </p:panelGrid>
+
+                            </p:panelGrid>
 
 
-                                    </p:panel>
-                                    </h:form>
+                        </p:panel>
+                    </h:form>
 
-                                    </p:panel>       
+                </p:panel>       
 
-                                        </ui:define>
+            </ui:define>
 
-                                        </ui:composition>
+        </ui:composition>
 
-                             </body>
-                             </html>
+    </body>
+</html>

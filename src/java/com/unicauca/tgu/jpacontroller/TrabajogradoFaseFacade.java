@@ -30,5 +30,17 @@ public class TrabajogradoFaseFacade extends AbstractFacade<TrabajogradoFase> {
     public TrabajogradoFaseFacade() {
         super(TrabajogradoFase.class);
     }
-   
+    
+    public List<TrabajogradoFase> ObtenerTrabajoFrasePor_trabajoID_faseID(int idtrabajo, int idfase){
+        try
+        {
+            String queryString = "SELECT t FROM TrabajogradoFase t " +
+            "WHERE t.trabajofaseid=" + idfase + " and t.trabajoid=" + idtrabajo;
+            Query query = getEntityManager().createQuery(queryString);  
+            return query.getResultList();       
+        }finally 
+        {
+        } 
+    
+    }
 }
