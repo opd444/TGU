@@ -16,7 +16,7 @@
                         <p:menuitem value="Estudiante" outcome="vista-estudiante" />                                        
                         <p:menuitem value="Estudiante" outcome="vista-estudiante" />
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="vista-estudiante" />
-                        <p:menuitem value="2. Realización del Anteproyecto" outcome="vista-estudiante" />
+                        <p:menuitem value="2. Realización del Anteproyecto" outcome="2-realizacion-anteproyecto" />
                         <p:menuitem value="Diligenciar Anteproyecto" outcome="vista-estudiante" />
                     </p:breadCrumb>              
                 </h:form>
@@ -109,7 +109,7 @@
                                 </p:row>
                                 <p:row>
                                     <p:column >
-                                        <p:button value="Cancelar"  icon="ui-icon-cancel" style="margin-top: 20px;"/>
+                                        <p:button outcome="2-realizacion-anteproyecto" value="Cancelar"  icon="ui-icon-cancel" style="margin-top: 20px;"/>
                                     </p:column>
                                     <p:column>
                                         <p:commandButton value="Guardar" ajax="false" actionListener="#{anteproyecto.guardar}" style="margin-top: 20px;"/>

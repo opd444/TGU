@@ -13,7 +13,10 @@
             <ui:define name="menuprincipal">
                 <p:breadCrumb styleClass="migaDePan">
                     <p:menuitem value="Estudiante" outcome="vista-estudiante" />                                        
-                    <p:menuitem value="Estudiante" outcome="vista-estudiante" />
+                    <p:menuitem value="Estudiante" outcome="vista-estudiante" />                    
+                    <p:menuitem value="Trabajos de Grado" outcome="vista-estudiante" />                        
+                    <p:menuitem value="Fases del Trabajo de Grado" outcome="vista-estudiante" />
+                    <p:menuitem value="2. Realización del Anteproyecto" outcome="2-realizacion-anteproyecto" />
                 </p:breadCrumb>
             </ui:define>
 
@@ -61,15 +64,16 @@
                             </h:panelGrid>
                         </p:panel>      
                         <p:spacer height="25"/>
-                        <p:panel id="pnlPresentacionIdea" header="2. Realización del Anteproyecto" style="display:none; font-size: 14px;" widgetVar="pnlPresentacionIdea">
+                        <p:panel id="pnlPresentacionIdea" header="2. Realización del Anteproyecto" style=" font-size: 14px;" widgetVar="pnlPresentacionIdea">
                             <!--<p:commandButton type="button" value="1. Presentación de la Idea" style="background-color:greenyellow">
                                 <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
                                     <f:param name="mode" value="'show'" />
                                 </p:effect>
                             </p:commandButton>-->
-                            <h:panelGrid columns="4" cellpadding="5" cellspacing="5">
+                            <h:panelGrid columns="5" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Anteproyecto:" style="font-weight: bold;" />                                
                                 <p:button value="Diligenciar" icon="ui-icon-document" href="diligenciar-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />                                 
+                                <p:button value="Ver" icon="ui-icon-comment" href="ver-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
                                 <p:button value="Editar" icon="ui-icon-comment" href="editar-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
                                 <p:commandButton id="btndesc" value="Descargar" rendered="#{anteproyecto.filedown != null}"
                                                  ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 

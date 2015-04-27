@@ -31,6 +31,9 @@
             </ui:define>
 
             <ui:define name="body">
+                #{estudianteViewController.nombresApellidos(serviciosSimcaController.nombreUsuario)}
+                #{trabajodegradoController.trabajoAsignado(estudianteViewController.entityTrabajo.trabajoid)}
+                #{trabajodegradoController.incializar()}                
                 <h:form>
                     <p:menu styleClass="menuizqroles" style="background-color: white">
                         <p:submenu label="Perfiles" style="background-color: white">
@@ -52,25 +55,25 @@
                             <p:messages/>
 
                             <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="15" >
-                                
+
                                 <p:outputLabel styleClass="subtitulosFormato" value="Número de acta de la reunión: *" />
                                 <p:inputText value="#{revisionIdeaController.numActa}" required="true" label="Numero de acta" validatorMessage="Este número de acta ya existe." size="4" requiredMessage="Debe ingresar el número de acta.">
                                     <f:convertNumber integerOnly="true" type="number" />
                                 </p:inputText >
-                                
+
                                 <p:outputLabel styleClass="subtitulosFormato" value="Titulo del trabajo de grado: *" />
                                 <p:outputLabel value="#{revisionIdeaController.nombretg}" style="font-weight: bold;" />
 
                                 <p:outputLabel styleClass="subtitulosFormato" value="Nombre de los estudiantes: *"/>
-                                
+
                                 <p:column>
                                     <p:outputLabel value="#{revisionIdeaController.est1.personanombres} #{revisionIdeaController.est1.personaapellidos}" /> <br />
                                     <p:outputLabel value="#{revisionIdeaController.est2.personanombres} #{revisionIdeaController.est2.personaapellidos}" />
                                 </p:column>
-                                                                
+
                                 <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado: *" />
                                 <p:outputLabel value="#{revisionIdeaController.nombreDirector}"/>
-                                
+
                                 <p:outputLabel styleClass="subtitulosFormato" value="Resultado: *"/>
                                 <p:selectOneRadio id="aprobado" value="#{revisionIdeaController.resultado}">
                                     <f:selectItem itemLabel="Aprobado" itemValue="1" />
@@ -79,7 +82,7 @@
                                 <p:outputLabel styleClass="subtitulosFormato" value="Observaciones:" />
                                 <p:inputTextarea cols="40" rows="3" value="#{revisionIdeaController.observaciones}"/>
                             </h:panelGrid>
-                            
+
                             <h:panelGrid columns="2" style="margin: 0 auto;" cellpadding="8">
                                 <p:commandButton ajax="false" update="growl" value="Guardar" actionListener="#{revisionIdeaController.guardar()}" icon="ui-icon-disk"/>
                                 <p:button value="Cancelar"  icon="ui-icon-cancel" outcome="fases-trabajo-de-grado"/>

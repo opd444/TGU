@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <body>
 
@@ -13,7 +14,10 @@
             <ui:define name="menuprincipal">
                 <p:breadCrumb styleClass="migaDePan">
                     <p:menuitem value="Estudiante" outcome="vista-estudiante" />                                        
-                    <p:menuitem value="Estudiante" outcome="vista-estudiante" />
+                    <p:menuitem value="Estudiante" outcome="vista-estudiante" />                    
+                    <p:menuitem value="Trabajos de Grado" outcome="vista-estudiante" />                        
+                    <p:menuitem value="Fases del Trabajo de Grado" outcome="vista-estudiante" />
+                    <p:menuitem value="1. Presentación de la Idea" outcome="vista-estudiante" />
                 </p:breadCrumb>
             </ui:define>
 
@@ -25,7 +29,7 @@
                 #{trabajodegradoController.trabajoAsignado(estudianteViewController.entityTrabajo.trabajoid)}
                 #{trabajodegradoController.incializar()}                
                 #{estudianteViewController.loadTrabajoDeGrado()}
-                <h:form>                                                           
+                <h:form id="fases">                                                           
 
                     <p:menu styleClass="menuizqroles" style="background-color: white">
                         <p:submenu label="Perfiles" style="background-color: white">
@@ -61,7 +65,7 @@
                             </h:panelGrid>
                         </p:panel>      
                         <p:spacer height="25"/>
-                        <p:panel id="pnlPresentacionIdea" header="1. Presentación de la Idea" style="display:none; font-size: 14px;" widgetVar="pnlPresentacionIdea">
+                        <p:panel id="pnlPresentacionIdea" header="1. Presentación de la Idea" style=" font-size: 14px;" widgetVar="pnlPresentacionIdea">
                             <!--<p:commandButton type="button" value="1. Presentación de la Idea" style="background-color:greenyellow">
                                 <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
                                     <f:param name="mode" value="'show'" />
@@ -70,14 +74,23 @@
                             <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Formato A:" style="font-weight: bold;" />                                
                                 <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-A.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
-                                <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
-                                
+                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" actionListener="#{pDFBean.generarPDF()}" oncomplete="PF('dlgVerRutina').show();" />
+
                                 <h:outputText value="Revisión de la idea:" style="font-weight: bold;" />
                                 <p:button value="Ver" icon="ui-icon-comment" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
                                 <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />                                
                             </h:panelGrid>
                         </p:panel>
                     </p:panel>
+                </h:form>
+                <h:form id="frmDescargarFormatoA">
+                    <p:dialog id="dlgVerRutina" header="Descargar Formato A" widgetVar="dlgVerRutina" modal="true" position="top" resizable="false">                            
+                        <c:if test="#{pDFBean.pdfFileName != 'sin-cargar'}">
+                            <object type="application/pdf" data="#{request.contextPath}/PDFServlet/#{pDFBean.pdfFileName}" height="600px" width="820px">
+                                Your browser can't display pdf, <a href="#{request.contextPath}/PDFServlet/#{pDFBean.pdfFileName}">click</a> to download pdf instead.
+                            </object>   
+                        </c:if>
+                    </p:dialog>        
                 </h:form>
             </ui:define>
 

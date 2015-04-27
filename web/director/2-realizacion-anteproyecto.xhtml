@@ -43,6 +43,7 @@
                         <div class="tituloContenido">                        
                             #{estudianteViewController.entityTrabajo.trabajonombre}
                         </div>                                         
+                        <p:growl id="growl" sticky="true" showDetail="true" for="msg"/>
                         <p:spacer height="25"/>
                         <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado">
                             <h:panelGrid columns="6" cellpadding="1" style="margin: 0 auto;">
@@ -68,15 +69,16 @@
                             </h:panelGrid>
                         </p:panel>      
                         <p:spacer height="25"/>
-                        <p:panel id="pnlPresentacionIdea" header="2. Realización del Anteproyecto" style="display:none; font-size: 14px;" widgetVar="pnlPresentacionIdea">
+                        <p:panel id="pnlPresentacionIdea" header="2. Realización del Anteproyecto" style=" font-size: 14px;" widgetVar="pnlPresentacionIdea">
                             <!--<p:commandButton type="button" value="1. Presentación de la Idea" style="background-color:greenyellow">
                                 <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
                                     <f:param name="mode" value="'show'" />
                                 </p:effect>
                             </p:commandButton>-->
-                            <h:panelGrid columns="4" cellpadding="5" cellspacing="5">
+                            <h:panelGrid columns="5" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Anteproyecto:" style="font-weight: bold;" />                                                                
                                 <p:button value="Editar" icon="ui-icon-comment" href="editar-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="ver-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
                                 <p:commandButton id="btndesc" value="Descargar" rendered="#{anteproyecto.filedown != null}"
                                                  ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
                                                  icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">

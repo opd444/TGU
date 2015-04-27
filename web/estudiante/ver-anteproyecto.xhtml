@@ -26,12 +26,12 @@
                 </p:dialog>
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Director" outcome="vista-director" />
-                        <p:menuitem value="Director" outcome="vista-director" />
-                        <p:menuitem value="Trabajos de Grado" outcome="vista-director" />                        
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="Diligenciar Formato A" outcome="diligenciar-formato-A" />
+                        <p:menuitem value="Estudiante" outcome="vista-estudiante" />                                        
+                        <p:menuitem value="Estudiante" outcome="vista-estudiante" />                    
+                        <p:menuitem value="Trabajos de Grado" outcome="vista-estudiante" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="vista-estudiante" />
+                        <p:menuitem value="2. Realización del Anteproyecto" outcome="2-realizacion-anteproyecto" />
+                        <p:menuitem value="Ver Anteproyecto" outcome="ver-anteproyecto" />
                     </p:breadCrumb>              
                 </h:form>
             </ui:define>
@@ -45,8 +45,7 @@
                 <h:form>
                     <p:menu styleClass="menuizqroles" style="background-color: white">
                         <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" action="vista-director" style="background-color: #c2dfef" />
-                            <p:menuitem value="Jefe de Departamento" action="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />                            
+                            <p:menuitem value="Estudiante" outcome="vista-estudiante" style="background-color: #c2dfef" />                            
                         </p:submenu>                                
                     </p:menu>
                 </h:form>
@@ -109,10 +108,10 @@
                                     <p:column  styleClass="titulotabla">
                                         <p:outputLabel value="Documento de Anteproyecto"> </p:outputLabel>
                                     </p:column>
-                                     <p:column>
+                                    <p:column>
                                         <p:commandLink id="btndesc" style="margin-top: 20px; color: #D20005" value="#{anteproyecto.nombarch}" rendered="#{anteproyecto.filedown != null}"
-                                                         ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
-                                                         action="#{anteproyecto.preparardescarga()}">
+                                                       ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
+                                                       action="#{anteproyecto.preparardescarga()}">
                                             <p:fileDownload value="#{anteproyecto.filedown}" />
                                             <p:graphicImage value="descargar.png" library="img" />
                                         </p:commandLink>
@@ -120,7 +119,7 @@
                                 </p:row>
                                 <p:row>
                                     <p:column colspan="2" >
-                                        <p:button value="Volver"  icon="ui-icon-arrowthick-1-w" style="margin-top: 20px;"/>
+                                        <p:button value="Volver" outcome="2-realizacion-anteproyecto" icon="ui-icon-arrowthick-1-w" style="margin-top: 20px;"/>
                                     </p:column>
                                 </p:row>
 
