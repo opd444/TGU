@@ -8,14 +8,16 @@
 
     <body>
 
-        <ui:composition template="./../plantillas/plantilla.xhtml">                        
+        <ui:composition template="./../plantillas/plantilla.xhtml">
             
-            <ui:define id="menuprincipal" name="menuprincipal">
-                <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Director" outcome="vista-director" />
-                    <p:menuitem value="Director" outcome="vista-director" />
-                    <p:menuitem value="Trabajos de Grado en curso" outcome="vista-director" />
-                </p:breadCrumb>
+            <ui:define name="menuprincipal">
+                <h:form id="formMigaDirector">
+                    <p:breadCrumb id="migaDirector" styleClass="migaDePan">
+                        <p:menuitem value="Director" outcome="vista-director" />
+                        <p:menuitem value="Director" outcome="vista-director" />
+                        <p:menuitem value="#{usuarioRolTrabajogradoController.titulotablaDirector}" outcome="vista-director" />
+                    </p:breadCrumb>
+                </h:form>
             </ui:define>
 
             <ui:define name="title">                
@@ -23,11 +25,11 @@
 
             <ui:define name="body">
                 
-                <p:dialog showEffect="fade" hideEffect="explode" position="center" widgetVar="agregartest" header="Crear nuevo Trabajo de Grado" modal="true">
+                <p:dialog showEffect="fade" hideEffect="explode" position="center" widgetVar="agregartest" header="Crear nuevo Trabajo de Grado" modal="true" resizable="false" >
                     <h:form>
-                        <h:panelGrid columns="2" cellpadding="2">
+                        <h:panelGrid columns="2" cellpadding="10">
                             <p:outputLabel value="Nombre del Trabajo de Grado:" />
-                            <p:inputTextarea id="nombre" style="width: 253px" value="#{usuarioRolTrabajogradoController.nombrenuevoTG}" label="nombre" />
+                            <p:inputTextarea id="nombre" cols="45" rows="3" value="#{usuarioRolTrabajogradoController.nombrenuevoTG}" label="nombre" />
                             <f:facet name="footer">
                                 <p:commandButton id="btnnuevotg" style="display: block; margin: 0 auto;" actionListener="#{usuarioRolTrabajogradoController.crearTG}" value="Crear" icon="ui-icon-disk" update=":form:tablatgDirector" onclick="agregartest.hide()"/>              
                             </f:facet>                   
@@ -47,9 +49,9 @@
                         <h:panelGrid style="margin: 0 auto;">
                             <p:menubar styleClass="menubarstyleClass">
                                 <p:menuitem style="border-color: #808080" value="Ver Trabajos en Curso" actionListener="#{usuarioRolTrabajogradoController.trabajosenCurso()}"
-                                            update="tablatgDirector tituloVistaDirector" icon="ui-icon-folder-open"/>
+                                            update="tablatgDirector tituloVistaDirector :formMigaDirector:migaDirector" icon="ui-icon-folder-open"/>
                                 <p:menuitem style="border-color: #808080" value="Ver Trabajos Terminados" actionListener="#{usuarioRolTrabajogradoController.trabajosTerminados()}"
-                                            update="tablatgDirector tituloVistaDirector" icon="ui-icon-folder-collapsed"/>
+                                            update="tablatgDirector tituloVistaDirector :formMigaDirector:migaDirector" icon="ui-icon-folder-collapsed"/>
                                 <p:menuitem style="border-color: #808080" value="Crear Nuevo Trabajo de Grado" disabled="#{usuarioRolTrabajogradoController.numMaxTrabPermitidos}" onclick="PF('agregartest').show();"
                                             icon="ui-icon-plus"/>
                             </p:menubar>
@@ -68,7 +70,6 @@
                                 <p:commandLink actionListener="#{usuarioRolTrabajogradoController.contenidoTgDirector}" value="#{car.trabajoGrado}" style="color: #045491;">                                     
                                     <f:attribute name="idtrabajo" value="#{car.trabajoGradoId}" />    
                                     <f:attribute name="nombretrab" value="#{car.trabajoGrado}" />
-                                    <f:attribute name="iddirector" value="#{car.directorId}" />
                                     <f:attribute name="est1" value="#{car.est1Id}" />
                                     <f:attribute name="est2" value="#{car.est2Id}" />
                                 </p:commandLink>

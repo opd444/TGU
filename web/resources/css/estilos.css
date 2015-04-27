@@ -264,12 +264,12 @@ body {
 
 .tituloContenido
 {
-    font-size: 25px;
+    font-size: 20px;
     text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
     color:#22419A;
     font-weight: bold;
+    display: block;
+    margin: 0 auto;
 }
 
 .CampoLabel

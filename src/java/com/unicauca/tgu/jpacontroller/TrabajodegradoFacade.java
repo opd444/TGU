@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,7 +25,10 @@ import javax.persistence.TypedQuery;
  */
 @Stateless
 public class TrabajodegradoFacade extends AbstractFacade<Trabajodegrado> {
-
+    
+    @EJB
+    private com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade ejbFacade;
+    
     @PersistenceContext(unitName = "tguPU")
     private EntityManager em;
 
@@ -121,23 +125,30 @@ public class TrabajodegradoFacade extends AbstractFacade<Trabajodegrado> {
         return getIdeasPorRevisarRevisadas(1);
     }
     
-    public List<Trabajodegrado> getIdeasPorRevisarRevisadas(int modo) {
-        List<Trabajodegrado> lst = findTrabajos();
+    public List<Trabajodegrado> getIdeasPorRevisarRevisadas(int modo)
+    {
+        List<Trabajodegrado> lstTrabajos = findTrabajos();
         List<Trabajodegrado> revisadas = new ArrayList<Trabajodegrado>();
         List<Trabajodegrado> porRevisar = new ArrayList<Trabajodegrado>();
-        boolean band;
-        for (Trabajodegrado t : lst) {
-            band = false;
-            for (TrabajogradoFase f : t.getTrabajogradoFaseList()) {
-                if (f.getFaseid().getFaseid().equals(BigDecimal.valueOf(2)) && f.getEstado().equals(BigInteger.ONE)) //Si el formato 'Revision Formato A' ha sido aprobado.
+        int aux;
+        for (Trabajodegrado t : lstTrabajos) {
+            aux = 0;
+            List<UsuarioRolTrabajogrado> lstUsuRol = ejbFacade.findbytrabajoId(t.getTrabajoid().intValue());
+            for (UsuarioRolTrabajogrado f : lstUsuRol) {
+                if (f.getRolid().getRolid().equals(BigDecimal.valueOf(2)))  //Si dicho trabajo ya fue diligenciado por el jefe depto.
                 {
-                    band = true;
+                   aux = 1;
+                }
+                if(f.getRolid().getRolid().equals(BigDecimal.valueOf(1)))   //Si ya tiene asignado estudiantes.
+                {
+                    aux = 2;
                 }
             }
-            if (!band) {
-                porRevisar.add(t);
-            } else {
+            if (aux == 1) {
                 revisadas.add(t);
+            }
+            else if (aux == 2) {
+                porRevisar.add(t);
             }
         }
         if (modo == 0) {

@@ -1,4 +1,3 @@
-
 .paneltrabajo
 {
     margin-top: 20px;
@@ -43,9 +42,8 @@
 
 .panelinterno tr , .panelinterno td
 {
-  border-color:  darkred !important;
-  border-radius: 25px;
-  padding: 15px 10px !important;
+    border-style: none !important;
+    border-color: gray;
 }
 
 .titulotabla
@@ -55,6 +53,11 @@
     width: 300px;
 }
 
+.subtitulosFormato
+{
+    font-weight:  bold;
+}
+
 .menubarstyleClass {
     width: 100%;
     background-color: white; 
@@ -62,5 +65,5 @@
 }
 .menubarstyleClass li {
     background-color: whitesmoke; 
-    border-color: black;
+    border-color: #808080;
 }

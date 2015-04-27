@@ -10,12 +10,18 @@
 
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
+            <ui:define name="CuadroDeBotonesSesion">
+                CuadroDeBotonesSesion
+            </ui:define>
+
             <ui:define name="menuprincipal">
-                <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />                                        
-                    <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
-                    <p:menuitem value="Lista de ideas por revisar" outcome="vista-jefe-de-departamento" />
-                </p:breadCrumb>
+                <h:form id="formMigaJefe">
+                    <p:breadCrumb id="migaJefe" styleClass="migaDePan">
+                        <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />                                        
+                        <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
+                        <p:menuitem value="#{usuarioRolTrabajogradoController.titulotablaJefe}" outcome="vista-jefe-de-departamento" />
+                    </p:breadCrumb>
+                </h:form>
             </ui:define>
 
             <ui:define name="title">
@@ -34,9 +40,9 @@
                         <h:panelGrid style="margin: 0 auto;">
                             <p:menubar styleClass="menubarstyleClass">
                                 <p:menuitem style="border-color: #808080" value="Lista de ideas por revisar" actionListener="#{usuarioRolTrabajogradoController.ideasPorRevisar()}"
-                                            update="tablatgJefe tituloVistaJefe" icon="ui-icon-folder-open"/>
+                                            update="tablatgJefe tituloVistaJefe :formMigaJefe:migaJefe" icon="ui-icon-folder-open"/>
                                 <p:menuitem style="border-color: #808080" value="Lista de ideas revisadas" actionListener="#{usuarioRolTrabajogradoController.ideasRevisadas()}"
-                                            update="tablatgJefe tituloVistaJefe" icon="ui-icon-folder-collapsed"/>
+                                            update="tablatgJefe tituloVistaJefe :formMigaJefe:migaJefe" icon="ui-icon-folder-collapsed"/>
                             </p:menubar>
                         </h:panelGrid>
                         <p:spacer height="25"/>
@@ -49,7 +55,7 @@
                                     <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
                                 </h:outputText>                                 
                             </p:column>
-                            <p:column style="width: 230px;" headerText="Trabajo de Grado">
+                            <p:column style="width: 250px;" headerText="Trabajo de Grado">
                                 <p:commandLink actionListener="#{usuarioRolTrabajogradoController.contenidoTgJefe}" value="#{car.trabajoGrado}" style="color: #045491;">                                     
                                     <f:attribute name="idtrabajo" value="#{car.trabajoGradoId}" />    
                                     <f:attribute name="nombretrab" value="#{car.trabajoGrado}" />
@@ -64,8 +70,8 @@
                             <p:column style="width: 140px;" headerText="Estudiantes">
                                 #{car.est1} <br /> #{car.est2}    
                             </p:column>
-                            <p:column rendered="#{usuarioRolTrabajogradoController.modo}" style="width: 140px; text-align: center;" headerText="Aprobada">
-                                #{car.aprobado}
+                            <p:column rendered="#{usuarioRolTrabajogradoController.modo}" style="width: 70px; text-align: center;" headerText="Aprobada">
+                                <h:selectBooleanCheckbox id="checkbox" value="#{car.aprobado}" disabled="true" />
                             </p:column>
                         </p:dataTable>
                     </p:panel>

@@ -3,51 +3,48 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package com.unicauca.tgu.FormatosTablas;
+import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
+import com.unicauca.tgu.entities.Productodetrabajo;
+import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import java.util.Date;
+import java.util.List;
+import javax.ejb.EJB;
 /**
  *
  * @author Daniel
  */
 public class FormatoTablaJefe {
+    
     private Date fecha;
     private String trabajoGrado;
     private String director;
     private String est1;
     private String est2;
     
-
-   
     private int trabajoGradoId;
     private int est1Id;
     private int est2Id;
     private int directorId;
-    private int aprobado;
+    private boolean aprobado;
     
     
     public FormatoTablaJefe() {
         est1Id = -1;
         est2Id = -1;
         directorId = -1;
+        aprobado = false;
     }
 
-    public int getAprobado() {
+    public boolean getAprobado() {
         return aprobado;
     }
-
-    public boolean getaprobacion(){
-        if(aprobado==0)
-            return true;
-        else return false;
-    }
     
-    
-    public void setAprobado(int aprobado) {
+    public void setAprobado(boolean aprobado) {
         this.aprobado = aprobado;
     }
     
-    
-
     public Date getFecha() {
         return fecha;
     }
@@ -119,8 +116,4 @@ public class FormatoTablaJefe {
     public void setDirectorId(int directorId) {
         this.directorId = directorId;
     }
-    
-    
-    
-    
 }

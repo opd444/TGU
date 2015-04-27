@@ -150,7 +150,7 @@ public class TrabajodegradoController implements Serializable {
         List<Trabajodegrado> tg = getFacade().findAll();
         for (int i = 0; i < tg.size(); i++) {
             if (tg.get(i).getTrabajoid().equals(trabajoid)) {
-                int fase = -1;
+                int fase = 0;
                 
                 List<TrabajogradoFase> traFase = ejbFacadeTrabFase.findAll();
                 
@@ -162,7 +162,7 @@ public class TrabajodegradoController implements Serializable {
                     }
                 }
                 
-                fases = new FasesTrabajoDeGrado(fase);
+                fases = new FasesTrabajoDeGrado(fase+1);
                 TrabajodeGradoActual.id = tg.get(i).getTrabajoid().intValue();
                 TrabajodeGradoActual.nombreTg = tg.get(i).getTrabajonombre();
                 return tg.get(i);

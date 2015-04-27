@@ -9,6 +9,10 @@
     <body>
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
+            <ui:define name="CuadroDeBotonesSesion">
+                CuadroDeBotonesSesion
+            </ui:define>
+
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
@@ -37,10 +41,7 @@
                 </h:form>
 
                 <p:panel styleClass="paneltrabajo" >
-                    <f:metadata>
-                        <f:viewParam name="trabajoid" value="#{trabajodegradoController.trabajoid}" />
-                    </f:metadata>
-
+                    
                     <div class="tituloContenido">                        
                         <h:outputText value="Formato A: Presentación de la idea"/> <br/>
                     </div>
@@ -55,7 +56,7 @@
                                         
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
                                         <p:outputLabel styleClass="subtitulosFormato" value="Titulo del trabajo de grado: *"> </p:outputLabel>
-                                        <p:outputLabel style="font-weight: bold;" value="#{formatoA.nombretg}"> </p:outputLabel>
+                                        <p:inputText style="font-weight: bold;" value="#{formatoA.nombretg}" required="true" requiredMessage="Por favor ingrese el titulo del Trabajo de Grado." size="26"> </p:inputText>
                                         
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
                                         
@@ -72,7 +73,7 @@
                                                         maxResults="8"
                                                         required="true"
                                                         requiredMessage="Por favor ingrese el nombre del estudiante 1."
-                                                        size="22"
+                                                        size="24"
                                                         >
                                             <p:ajax event="itemSelect" listener="#{formatoA.handlerSelectest1}"></p:ajax>
                                             <p:ajax event="itemUnselect" listener="#{formatoA.handleUnSelectest1}"></p:ajax>
@@ -94,7 +95,7 @@
                                                         cache="true"
                                                         queryDelay="750"
                                                         maxResults="8"
-                                                        size="22"
+                                                        size="24"
                                                         >
                                              <p:ajax event="itemSelect" listener="#{formatoA.handlerSelectest2}"></p:ajax>
                                             <p:ajax event="itemUnselect" listener="#{formatoA.handleUnSelectest2}"></p:ajax>

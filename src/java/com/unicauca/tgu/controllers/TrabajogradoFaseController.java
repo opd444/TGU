@@ -35,10 +35,15 @@ public class TrabajogradoFaseController {
         
         for(int i = 0; i < lst.size(); i++) {
             if(lst.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
-                if(lst.get(i).getFaseid().getFaseid().equals(BigDecimal.valueOf(3))) {
+                if(lst.get(i).getFaseid().getFaseid().equals(BigDecimal.valueOf(2))) {
                     lst.get(i).setEstado(BigInteger.ONE);
                     ejbFacadeTraFase.edit(lst.get(i));
-                    return;
+                    
+                }
+                if(lst.get(i).getFaseid().getFaseid().equals(BigDecimal.valueOf(3))) {
+                    lst.get(i).setEstado(BigInteger.ZERO);
+                    ejbFacadeTraFase.edit(lst.get(i));
+                    
                 }
             }
         }        

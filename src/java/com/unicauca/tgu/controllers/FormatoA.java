@@ -35,9 +35,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -73,7 +75,7 @@ public class FormatoA {
     private String nombreDirector;
     private String objetivos;
     private String aportes;
-    private String tiempo;
+    private int tiempo;
     private String recursos;
     private String financiacion;
     private String observaciones;
@@ -91,7 +93,14 @@ public class FormatoA {
         iddirector = UsuarioComun.id;
         nombreDirector = UsuarioComun.nombreComplet;
         fecha = new Date();
-
+        tiempo = 9;
+        
+        if (!TrabajodeGradoActual.nombreTg.isEmpty()) {
+            nombretg = TrabajodeGradoActual.nombreTg;
+        } else {
+            nombretg = "";
+        }
+        
         List<Productodetrabajo> lst = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 0);
 
         if (lst.size() > 0) {               //verificar si ya hay guardardo un formato A para este trabajo de grado
@@ -126,7 +135,7 @@ public class FormatoA {
                 aportes = decoded.get("aportes");
             }
             if (decoded.get("tiempo") != null) {
-                tiempo = decoded.get("tiempo");
+                tiempo = Integer.parseInt(decoded.get("tiempo"));
             }
             if (decoded.get("recursos") != null) {
                 recursos = decoded.get("recursos");
@@ -146,7 +155,6 @@ public class FormatoA {
             }
 
         }
-
     }
 
     public UsuarioFacade getEjbFacadeUsuario() {
@@ -225,11 +233,11 @@ public class FormatoA {
         this.aportes = aportes;
     }
 
-    public String getTiempo() {
+    public int getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(String tiempo) {
+    public void setTiempo(int tiempo) {
         this.tiempo = tiempo;
     }
 
@@ -281,13 +289,14 @@ public class FormatoA {
         this.nomEst2 = numEst2;
     }
 
-    public String editarFormatoA() {
+    public String editar() {
         try {
 
             String contenido = obtenerDatos();
 
             UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);
             Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
+            ejbFacadeTrabGrad.edit(trab);
             
             usuroltg.setTrabajoid(trab);
             usuroltg.setRolid(new Rol(BigDecimal.ONE));      //Agregamos rol 1 para estudiantes
@@ -309,11 +318,7 @@ public class FormatoA {
                       ejbFacadeUsuroltrab.remove(tmp.get(0));
                       ejbFacadeUsuroltrab.create(usuroltg);
                 }
-            } else if(est1ant!=null)
-                {
-                    List<UsuarioRolTrabajogrado> tmp = ejbFacadeUsuroltrab.findbyUsuid(est1ant.getPersonacedula().intValue());
-                    ejbFacadeUsuroltrab.remove(tmp.get(0));
-                }
+            }
 
              if (est2 != null) {
                                                                           //agregando primer estudiante
@@ -329,11 +334,6 @@ public class FormatoA {
                       ejbFacadeUsuroltrab.create(usuroltg);
                 }
             }
-             else if(est2ant!=null)
-                {
-                    List<UsuarioRolTrabajogrado> tmp = ejbFacadeUsuroltrab.findbyUsuid(est2ant.getPersonacedula().intValue());
-                    ejbFacadeUsuroltrab.remove(tmp.get(0));
-                }
 
              TrabajodeGradoActual.est1 = est1;
              TrabajodeGradoActual.est2 = est2;
@@ -342,22 +342,24 @@ public class FormatoA {
             
             ejbFacadeProdTrab.edit(formatoactual);
             
+            /*
             Servicio_Email se = new Servicio_Email();
-            se.setSubject("Formato A del Trabajo de Grado "+nombretg+" Editado");
+            se.setSubject("El Formato A del Trabajo de Grado: '"+nombretg+"' ha sido editado.");
 
             if(est1!=null)
               {  
-            se.setTo(est1.getPersonacorreo());
-            se.enviarEditadoFormatoA(nombretg);
+                se.setTo(est1.getPersonacorreo());
+                se.enviarEditadoFormatoA(nombretg);
               }
             if(est2!=null)
              {
-             se.setTo(est2.getPersonacorreo());
-             se.enviarEditadoFormatoA(nombretg);
+                se.setTo(est2.getPersonacorreo());
+                se.enviarEditadoFormatoA(nombretg);
              }
-
+            */
+                    
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
-            return "fasesTrabajoGrado/index";
+            return "fases-trabajo-de-grado";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -367,7 +369,9 @@ public class FormatoA {
     public String obtenerDatos() {
         Map<String, String> map = new HashMap<String, String>();
 
-        map.put("nombre", TrabajodeGradoActual.nombreTg);
+        map.put("nombre", getNombretg());
+        TrabajodeGradoActual.nombreTg = getNombretg();
+        
         //
         int numeroEstudiantes = 0;
         if (est1 != null && est1.getPersonacedula() != null) {
@@ -386,13 +390,12 @@ public class FormatoA {
         map.put("nombredirector", getNombreDirector());
         map.put("objetivos", getObjetivos().trim());
         map.put("aportes", getAportes().trim());
-        map.put("tiempo", getTiempo().trim());
+        map.put("tiempo", getTiempo() + "");
         map.put("recursos", getRecursos().trim());
         map.put("financiacion", getFinanciacion().trim());
         map.put("observaciones", getObservaciones().trim());
         map.put("fecha", getFecha().toString());
 
-        
         Gson gson = new Gson();
         String contenido = gson.toJson(map, Map.class);
 
@@ -404,15 +407,23 @@ public class FormatoA {
         try {
 
             String contenido = obtenerDatos();
-
+            
             Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
-
+            ejbFacadeTrabGrad.edit(trab);
+            
             UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);
             usuroltg.setTrabajoid(trab);
 
             if (est1 != null) {
                 usuroltg.setRolid(new Rol(BigDecimal.ONE));              //agregando primer estudiante
                 usuroltg.setPersonacedula(est1);
+
+                ejbFacadeUsuroltrab.create(usuroltg);
+            }
+            
+            if (est2 != null) {
+                usuroltg.setRolid(new Rol(BigDecimal.ONE));              //agregando segundo estudiante
+                usuroltg.setPersonacedula(est2);
 
                 ejbFacadeUsuroltrab.create(usuroltg);
             }
@@ -423,25 +434,35 @@ public class FormatoA {
 
             ejbFacadeProdTrab.create(prod);
             
+            /*
             Servicio_Email se = new Servicio_Email();
-            se.setSubject("Formato A del Trabajo de Grado"+nombretg+" Diligenciado");
-            
-            if(est1!=null)
-              {  
-            se.setTo(est1.getPersonacorreo());
-            se.enviarDiligenciadoFormatoA(nombretg);
-              }
-            if(est2!=null)
-             {
-             se.setTo(est2.getPersonacorreo());
-             se.enviarDiligenciadoFormatoA(nombretg);
-             }
+            se.setSubject("El Formato A del Trabajo de Grado: '"+nombretg+"' ha sido diligenciado.");
 
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
-            return "fasesTrabajoGrado/index";
+            if(est1!=null)
+            {  
+                se.setTo(est1.getPersonacorreo());
+                se.enviarDiligenciadoFormatoA(nombretg);
+            }
+            if(est2!=null)
+            {
+                se.setTo(est2.getPersonacorreo());
+                se.enviarDiligenciadoFormatoA(nombretg);
+            }*/
+            
+            //JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoCreated"));
+            
+            //FacesContext facesContext = FacesContext.getCurrentInstance();
+            //Flash flash = facesContext.getExternalContext();
+            //flash.setKeepMessages(true);
+            //flash.setRedirect(true);
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"¡Formato A diligenciado con éxito!", "Se le ha enviado un correo notificando dicha operación."));
+            return "fases-trabajo-de-grado";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"¡Error!", "Lo sentimos, no se pudo guardar el formato A."));
+            //JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            return "";
         }
     }
 
@@ -451,7 +472,6 @@ public class FormatoA {
         query = query.toUpperCase();
 
         List<Usuario> ls = ejbFacadeUsuario.buscarEstudiantesDisponibles(iddirector, query);
-//        List<Usuario> ls = ejbFacadeUsuario.buscarEstudiantesDisponibles(2, query);
         List<Usuario> usus = new ArrayList<Usuario>();
         if (est2 != null) {
             for (Usuario u : ls) {
@@ -471,7 +491,6 @@ public class FormatoA {
         query = query.trim();
         query = query.toUpperCase();
         List<Usuario> ls = ejbFacadeUsuario.buscarEstudiantesDisponibles(iddirector, query);
-//        List<Usuario> ls = ejbFacadeUsuario.buscarEstudiantesDisponibles(2, query);
         List<Usuario> usus = new ArrayList<Usuario>();
         if (est1 != null) {
             for (Usuario u : ls) {
@@ -503,5 +522,4 @@ public class FormatoA {
     public void handleUnSelectest2(UnselectEvent e) {
         est2 = null;
     }
-
 }
