@@ -7,6 +7,7 @@ package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.unicauca.tgu.Auxiliares.Servicio_Email;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.Auxiliares.UsuarioComun;
 import com.unicauca.tgu.controllers.util.JsfUtil;
@@ -104,6 +105,7 @@ public class RevisionIdeaController {
         numActa = 1;
         resultado = 1;
         
+        
         List<Productodetrabajo> lst = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 1);
 
         if (lst.size() > 0) {               //verificar si ya hay guardardo el formato de revisión del formato A para este trabajo de grado
@@ -145,7 +147,8 @@ public class RevisionIdeaController {
         Calendar c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.SECOND, 0); 
+                
         fecha = c.getTime();
     }
 
@@ -328,6 +331,25 @@ public class RevisionIdeaController {
                 ejbFacadeTrabajoGradFase.edit(trabfase);
             }
             
+            Servicio_Email se = new Servicio_Email();
+            se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido editado.");
+
+            if(est1!=null)
+              {  
+                se.setTo(est1.getPersonacorreo());
+                se.enviarDiligenciadoRevisionIdea(nombretg);
+              }
+            if(est2!=null)
+             {
+                se.setTo(est2.getPersonacorreo());
+                se.enviarDiligenciadoRevisionIdea(nombretg);
+             }
+            if(TrabajodeGradoActual.director!=null)
+             {
+                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
+                se.enviarDiligenciadoRevisionIdea(nombretg);
+             }
+            
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProductodetrabajoCreated"));
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"¡Revisión diligenciada con éxito!", "Se le ha enviado un correo notificando dicha operación."));
             return "fasesTrabajoGrado/index";
@@ -353,6 +375,25 @@ public class RevisionIdeaController {
                 trabfase.setEstado(BigInteger.ONE);
                 ejbFacadeTrabajoGradFase.edit(trabfase);                
             }
+            
+            Servicio_Email se = new Servicio_Email();
+            se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido editado.");
+
+            if(est1!=null)
+              {  
+                se.setTo(est1.getPersonacorreo());
+                se.enviarEditadoRevisionIdea(nombretg);
+              }
+            if(est2!=null)
+             {
+                se.setTo(est2.getPersonacorreo());
+                se.enviarEditadoRevisionIdea(nombretg);
+             }
+            if(TrabajodeGradoActual.director!=null)
+             {
+                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
+                se.enviarEditadoRevisionIdea(nombretg);
+             }
             
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
             return "fasesTrabajoGrado/index";
