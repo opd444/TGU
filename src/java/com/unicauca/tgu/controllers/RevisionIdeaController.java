@@ -91,6 +91,7 @@ public class RevisionIdeaController {
     private int resultado;
     private String observaciones;
     private Date fecha;
+    private String aprobado;
     
     private Productodetrabajo formatoactual;
     
@@ -104,7 +105,6 @@ public class RevisionIdeaController {
         nombreDirector = UsuarioComun.nombreComplet;
         numActa = 1;
         resultado = 1;
-        
         
         List<Productodetrabajo> lst = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 1);
 
@@ -147,8 +147,7 @@ public class RevisionIdeaController {
         Calendar c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0); 
-                
+        c.set(Calendar.SECOND, 0);
         fecha = c.getTime();
     }
 
@@ -267,6 +266,17 @@ public class RevisionIdeaController {
         this.observaciones = observaciones;
     }
 
+    public String getAprobado() {
+        if(resultado == 1)
+            return "Aprobado";
+        else
+            return "No aprobado";
+    }
+
+    public void setAprobado(String aprobado) {
+        this.aprobado = aprobado;
+    }
+
     public Productodetrabajo getFormatoactual() {
         return formatoactual;
     }
@@ -320,7 +330,6 @@ public class RevisionIdeaController {
             Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.valueOf(getResultado()), contenido);
             prod.setFormatoid(new Formatoproducto(BigDecimal.ONE));
             prod.setTrabajoid(trab);
-            
             ejbFacadeProdTrab.create(prod);
             
             if(getResultado() == 1) //Si fue aprobado
@@ -331,8 +340,10 @@ public class RevisionIdeaController {
                 ejbFacadeTrabajoGradFase.edit(trabfase);
             }
             
+            
+            /*
             Servicio_Email se = new Servicio_Email();
-            se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido editado.");
+            se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido diligenciada.");
 
             if(est1!=null)
               {  
@@ -349,10 +360,11 @@ public class RevisionIdeaController {
                 se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
                 se.enviarDiligenciadoRevisionIdea(nombretg);
              }
+            */
             
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProductodetrabajoCreated"));
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"¡Revisión diligenciada con éxito!", "Se le ha enviado un correo notificando dicha operación."));
-            return "fasesTrabajoGrado/index";
+            return "fases-trabajo-de-grado";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -365,6 +377,7 @@ public class RevisionIdeaController {
             String contenido = obtenerDatos();
             
             formatoactual.setProductocontenido(contenido);
+            formatoactual.setProductoaprobado(BigInteger.valueOf(getResultado()));
             
             ejbFacadeProdTrab.edit(formatoactual);
             
@@ -376,6 +389,7 @@ public class RevisionIdeaController {
                 ejbFacadeTrabajoGradFase.edit(trabfase);                
             }
             
+            /*
             Servicio_Email se = new Servicio_Email();
             se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido editado.");
 
@@ -394,9 +408,10 @@ public class RevisionIdeaController {
                 se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
                 se.enviarEditadoRevisionIdea(nombretg);
              }
+            */
             
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
-            return "fasesTrabajoGrado/index";
+            return "fases-trabajo-de-grado";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;

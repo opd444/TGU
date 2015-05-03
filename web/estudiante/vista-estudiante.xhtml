@@ -15,7 +15,7 @@
                 <p:breadCrumb styleClass="migaDePan">
                     <p:menuitem value="Estudiante" outcome="vista-estudiante" />                                        
                     <p:menuitem value="Estudiante" outcome="vista-estudiante" />                    
-                    <p:menuitem value="Trabajos de Grado" outcome="vista-estudiante" />                        
+                    <p:menuitem value="Trabajo de Grado" outcome="vista-estudiante" />                        
                     <p:menuitem value="Fases del Trabajo de Grado" outcome="vista-estudiante" />
                     <p:menuitem value="1. Presentación de la Idea" outcome="vista-estudiante" />
                 </p:breadCrumb>
@@ -25,11 +25,10 @@
             </ui:define>
 
             <ui:define name="body">                
-                #{estudianteViewController.nombresApellidos(serviciosSimcaController.nombreUsuario)}
+                <!--#{estudianteViewController.nombresApellidos(serviciosSimcaController.nombreUsuario)}
                 #{trabajodegradoController.trabajoAsignado(estudianteViewController.entityTrabajo.trabajoid)}
                 #{trabajodegradoController.incializar()}                
-                #{estudianteViewController.loadTrabajoDeGrado()}
-                #{formatoA.setTrabajoid(estudianteViewController.entityTrabajo.trabajoid)}
+                #{estudianteViewController.loadTrabajoDeGrado()}-->
                 <h:form id="fases">                                                           
 
                     <p:menu styleClass="menuizqroles" style="background-color: white">
@@ -74,11 +73,11 @@
                             </p:commandButton>-->
                             <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Formato A:" style="font-weight: bold;" />                                
-                                <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-A.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-A.xhtml" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
                                 <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" actionListener="#{pDFBean.generarPDF()}" oncomplete="PF('dlgVerRutina').show();" />
 
                                 <h:outputText value="Revisión de la idea:" style="font-weight: bold;" />
-                                <p:button value="Ver" icon="ui-icon-comment" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-revision-idea.xhtml" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
                                 <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />                                
                             </h:panelGrid>
                         </p:panel>

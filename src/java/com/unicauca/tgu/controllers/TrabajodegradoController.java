@@ -130,12 +130,39 @@ public class TrabajodegradoController implements Serializable {
         List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(trabajoid.intValue(), 1);
 
         if (lstProd.size() > 0) {
-            if (lstProd.get(0).getProductoaprobado() == BigInteger.ONE) //Si ha sido aprobado el prod del formato 1
+            if (lstProd.get(0).getProductoaprobado().equals(BigInteger.ONE)) //Si ha sido aprobado el prod del formato 1
             {
                 return true;
             } else {
                 return false;
             }
+        } else {
+            return true;
+        }
+    }
+    
+    public boolean getBtnDiligenciarAnteproyecto() {
+        List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(TrabajodeGradoActual.id, 2);
+        if (lstProd.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public boolean getBtnEditarAnteproyecto() {
+        List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(TrabajodeGradoActual.id, 2);
+        if (lstProd.size() > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    public boolean getBtnVerAnteproyecto() {
+        List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(TrabajodeGradoActual.id, 2);
+        if (lstProd.size() > 0) {
+            return false;
         } else {
             return true;
         }

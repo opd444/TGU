@@ -29,7 +29,8 @@
             <ui:define name="body">          
                 #{estudianteViewController.nombresApellidos(serviciosSimcaController.nombreUsuario)}
                 #{trabajodegradoController.trabajoAsignado(estudianteViewController.entityTrabajo.trabajoid)}
-                #{trabajodegradoController.incializar()}                
+                #{trabajodegradoController.incializar()}
+                
                 <h:form id="fases">                                                           
 
                     <p:menu styleClass="menuizqroles" style="background-color: white">
@@ -80,7 +81,7 @@
                                 <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-A.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />                                
                                 <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" actionListener="#{pDFBean.generarPDF()}" oncomplete="PF('dlgVerRutina').show();" />
                                 <h:outputText value="Revisión de la idea:" style="font-weight: bold;" />
-                                <p:button value="Ver" icon="ui-icon-comment" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
+                                <p:button value="Ver" href="ver-formato-revision-idea.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" icon="ui-icon-comment" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
                                 <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />                                                                
                             </h:panelGrid>
 
@@ -90,7 +91,7 @@
 
                 </h:form>                
                 <h:form id="frmDescargarFormatoA">
-                    <p:dialog id="dlgVerRutina" header="Descargar Formato A" widgetVar="dlgVerRutina" modal="true" position="top" resizable="false">                            
+                    <p:dialog id="dlgVerRutina" header="Descargar Formato A" widgetVar="dlgVerRutina" modal="true" position="top" resizable="false" closeOnEscape="true">                            
                         <c:if test="#{pDFBean.pdfFileName != 'sin-cargar'}">
                             <object type="application/pdf" data="#{request.contextPath}/PDFServlet/#{pDFBean.pdfFileName}" height="600px" width="820px">
                                 Your browser can't display pdf, <a href="#{request.contextPath}/PDFServlet/#{pDFBean.pdfFileName}">click</a> to download pdf instead.

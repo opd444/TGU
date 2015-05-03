@@ -10,10 +10,6 @@
 
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
-            <ui:define name="CuadroDeBotonesSesion">
-                CuadroDeBotonesSesion
-            </ui:define>
-
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
@@ -50,7 +46,7 @@
                     <p:spacer height="30"/>                 
 
                     <h:form enctype="multipart/form-data">
-                        <p:panel header="Campos con * son obligatorios" style="width: 100%;" >
+                        <p:panel header="Campos con * son obligatorios" style="width: 100%; font-size: 14px;" >
                             <p:growl id="growl" sticky="true" showDetail="true" />
                             <p:messages/>
 
@@ -84,7 +80,7 @@
                             </h:panelGrid>
 
                             <h:panelGrid columns="2" style="margin: 0 auto;" cellpadding="8">
-                                <p:commandButton ajax="false" update="growl" value="Guardar" actionListener="#{revisionIdeaController.guardar()}" icon="ui-icon-disk"/>
+                                <p:commandButton ajax="false" update="growl" value="Guardar" action="#{revisionIdeaController.guardar()}" icon="ui-icon-disk"/>
                                 <p:button value="Cancelar"  icon="ui-icon-cancel" outcome="fases-trabajo-de-grado"/>
                             </h:panelGrid>
                         </p:panel>

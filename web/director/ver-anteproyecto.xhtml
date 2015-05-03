@@ -41,7 +41,6 @@
 
             <ui:define name="body">
 
-
                 <h:form>
                     <p:menu styleClass="menuizqroles" style="background-color: white">
                         <p:submenu label="Perfiles" style="background-color: white">
@@ -52,89 +51,59 @@
                 </h:form>
 
                 <p:panel styleClass="paneltrabajo" >
-
-
+                    
                     <div class="tituloContenido">                        
                         <h:outputText value="Ver Anteproyecto"/> <br/>
-                    </div>                 
-
+                    </div>
+                    <p:spacer height="30"/>
+                    
                     <h:form enctype="multipart/form-data">   
-
-                        <p:panel header="Informacion Actual">
-                            <p:growl id="growl" sticky="true" showDetail="true" for="msg"/>
-                            <p:messages/>
-
-                            <p:panelGrid styleClass="panelinterno">
-                                <p:row>
-                                    <p:column styleClass="titulotabla">
-                                        <p:outputLabel  value="Nombre del trabajo de grado:"> </p:outputLabel>
-                                    </p:column>
-                                    <p:column>
-                                        <p:outputLabel value="#{anteproyecto.nombretg}"> </p:outputLabel>
-                                    </p:column>
-                                </p:row>
-
-                                <p:row>
-                                    <p:column styleClass="titulotabla">
-                                        <p:outputLabel  value="Director del trabajo de grado:"> </p:outputLabel>
-                                    </p:column>
-                                    <p:column>
-                                        <p:outputLabel value="#{anteproyecto.directortg}"> </p:outputLabel>
-                                    </p:column>
-                                </p:row>
-
-                                <p:row>
-                                    <p:column styleClass="titulotabla">
-                                        <p:outputLabel  value="Nombre de los estudiantes:"> </p:outputLabel>
-                                    </p:column>
-                                    <p:column>
-                                        <p:outputLabel value="- #{anteproyecto.est1}"> </p:outputLabel> <br />
-                                        <p:outputLabel value="- #{anteproyecto.est2}"> </p:outputLabel> 
-                                    </p:column>
-                                </p:row>
-
-                                <p:row> 
-                                    <p:column colspan="2" styleClass="titulotabla">
-                                        <p:outputLabel value="Objetivos:" for="obj"> </p:outputLabel>
-                                    </p:column>
-                                </p:row>
-
-                                <p:row>
-                                    <p:column colspan="2">
-                                        <p:outputLabel id="obj" value="#{anteproyecto.objetivos}" />
-                                    </p:column>
-                                </p:row>
-
-                                <p:row>
-                                    <p:column  styleClass="titulotabla">
-                                        <p:outputLabel value="Documento de Anteproyecto"> </p:outputLabel>
-                                    </p:column>
-                                     <p:column>
-                                        <p:commandLink id="btndesc" style="margin-top: 20px; color: #D20005" value="#{anteproyecto.nombarch}" rendered="#{anteproyecto.filedown != null}"
-                                                         ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
-                                                         action="#{anteproyecto.preparardescarga()}">
-                                            <p:fileDownload value="#{anteproyecto.filedown}" />
-                                            <p:graphicImage value="descargar.png" library="img" />
-                                        </p:commandLink>
-                                    </p:column>
-                                </p:row>
-                                <p:row>
-                                    <p:column colspan="2" >
-                                        <p:button value="Volver"  outcome="fases-trabajo-de-grado" icon="ui-icon-arrowthick-1-w" style="margin-top: 20px;"/>
-                                    </p:column>
-                                </p:row>
-
-                            </p:panelGrid>
-
-
+                        <p:panel header="Información Actual" style="color: #181818;">
+                            <br />
+                            <h:panelGrid columns="2" style="margin: 0 auto">
+                                <p:graphicImage value="../resources/img/logo-unicauca-negro.png" style="width: 96px; margin-right: 50px" />
+                                <p:column>
+                                    <div align="center">
+                                         <p:outputLabel value="Universidad del Cauca" styleClass="subtitulosFormato" /><br />
+                                        <p:outputLabel value="Facultad de Ingeniería Electrónica y" styleClass="subtitulosFormato" /><br />
+                                        <p:outputLabel value="Telecomunicaciones" styleClass="subtitulosFormato" />
+                                    </div>
+                                </p:column>
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid style="margin: 0 auto;">
+                                <p:outputLabel value="TRABAJO DE GRADO" styleClass="subtitulosFormato" />
+                            </h:panelGrid>
+                            <br /><br />
+                            <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="15" >
+                                <p:outputLabel styleClass="subtitulosFormato" value="Nombre del trabajo de grado:" />
+                                <p:outputLabel value="#{anteproyecto.nombretg}" />
+                                <p:outputLabel styleClass="subtitulosFormato" value="Nombre de los estudiantes:" />
+                                <p:column>
+                                    <p:outputLabel value="#{anteproyecto.est1}" /> <br />
+                                    <p:outputLabel value="#{anteproyecto.est2}" />
+                                </p:column>
+                                <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado:" />
+                                <p:outputLabel value="#{anteproyecto.directortg}" />
+                                <p:outputLabel styleClass="subtitulosFormato" value="Objetivos:" />
+                                <p:outputLabel value="#{anteproyecto.objetivos}" />
+                                
+                                <p:outputLabel styleClass="subtitulosFormato" value="Doc. de Anteproyecto:" />
+                                <p:commandLink id="btndesc" style="margin-top: 20px; color: #045491;" value="#{anteproyecto.nombarch}" rendered="#{anteproyecto.filedown != null}"
+                                                       ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
+                                                       action="#{anteproyecto.preparardescarga()}">
+                                    <p:fileDownload value="#{anteproyecto.filedown}" />
+                                    <p:graphicImage value="descargar.png" library="img" />
+                                </p:commandLink>
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid style="margin: 0 auto;">  
+                                <p:button value="Volver" outcome="2-realizacion-anteproyecto" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>
+                            </h:panelGrid> 
                         </p:panel>
                     </h:form>
-
-                </p:panel>       
-
+                </p:panel>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

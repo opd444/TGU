@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />                                        
+                        <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
+                        <p:menuitem value="Trabajos de Grado" outcome="vista-jefe-de-departamento" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="Ver Revisión de la idea" />
+                    </p:breadCrumb>   
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">                
+            </ui:define>
+
+            <ui:define name="body">
+                <f:metadata>
+                    <f:viewParam name="productoid" value="#{trabajodegradoController.trabajoid}" />
+                </f:metadata>
+
+                <h:form>
+                    <p:menu styleClass="menuizqroles" style="background-color: white">
+                        <p:submenu label="Perfiles" style="background-color: white">
+                            <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />
+                            <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" style="background-color: #c2dfef" />
+                        </p:submenu>                                
+                    </p:menu>
+                </h:form>
+                
+                <p:panel styleClass="paneltrabajo" >
+                    <div class="tituloContenido">                        
+                        <h:outputText value="Formato: Revisión de la idea"/> <br/>
+                    </div>
+                    <p:spacer height="30"/>
+                    
+                    <h:form enctype="multipart/form-data">   
+                        <p:panel header="Información Actual" style="color: #181818;">
+                            <br />
+                            <h:panelGrid columns="2" style="margin: 0 auto">
+                                <p:graphicImage value="../resources/img/logo-unicauca-negro.png" style="width: 96px; margin-right: 60px" />
+                                <p:column>
+                                    <div align="center">
+                                         <p:outputLabel value="Universidad del Cauca" styleClass="subtitulosFormato" /><br />
+                                        <p:outputLabel value="Facultad de Ingeniería Electrónica y" styleClass="subtitulosFormato" /><br />
+                                        <p:outputLabel value="Telecomunicaciones" styleClass="subtitulosFormato" />
+                                    </div>
+                                </p:column>
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid style="margin: 0 auto;">
+                                <p:outputLabel value="TRABAJO DE GRADO" styleClass="subtitulosFormato" />
+                            </h:panelGrid>
+                            <br /><br />
+                            <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="10">
+                                <p:outputLabel value="Acta de la reunión:" styleClass="subtitulosFormato" />
+                                <p:outputLabel value="#{revisionIdeaController.numActa}" />
+                                <p:outputLabel value="Titulo del trabajo:" styleClass="subtitulosFormato" />
+                                <p:outputLabel value="#{revisionIdeaController.nombretg}" />
+                                <p:outputLabel value="Estudiante(s):" styleClass="subtitulosFormato"/>
+                                <p:column>
+                                    <p:outputLabel value="#{revisionIdeaController.est1.personanombres} #{revisionIdeaController.est1.personaapellidos}" /> <br />
+                                    <p:outputLabel value="#{revisionIdeaController.est2.personanombres} #{revisionIdeaController.est2.personaapellidos}" />
+                                </p:column>
+                                <p:outputLabel value="Director del trabajo:" styleClass="subtitulosFormato" />
+                                <p:outputLabel value="#{revisionIdeaController.nombreDirector}" />
+                                <p:outputLabel value="Resultado:" styleClass="subtitulosFormato" />
+                                <p:outputLabel value="#{revisionIdeaController.aprobado}" />
+                                <p:outputLabel value="Observaciones:" styleClass="subtitulosFormato" />
+                                <p:outputLabel value="#{revisionIdeaController.observaciones}" />
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid columns="2" cellpadding="12" style="margin: 0 auto">
+                                <p:button value="Volver" outcome="fases-trabajo-de-grado" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>                                
+                                <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px; width: 120px;" />
+                            </h:panelGrid>
+                        </p:panel>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

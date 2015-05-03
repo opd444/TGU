@@ -17,7 +17,7 @@
                         <p:menuitem value="Estudiante" outcome="vista-estudiante" />
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="vista-estudiante" />
                         <p:menuitem value="2. Realización del Anteproyecto" outcome="2-realizacion-anteproyecto" />
-                        <p:menuitem value="Diligenciar Anteproyecto" outcome="vista-estudiante" />
+                        <p:menuitem value="Diligenciar Anteproyecto" />
                     </p:breadCrumb>              
                 </h:form>
             </ui:define>
@@ -38,95 +38,45 @@
                 </h:form>
 
                 <p:panel styleClass="paneltrabajo" >
-
-
                     <div class="tituloContenido">                        
                         <h:outputText value="Diligenciar Anteproyecto"/> <br/>
                     </div>                 
-
+                    <p:spacer height="30"/>
                     <h:form enctype="multipart/form-data">   
-
-                        <p:panel style="width: 100%;" header="Campos con * son Obligatorios">
-                            <p:growl id="growl" sticky="true" showDetail="true" for="msg"/>
+                        <p:panel style="width: 100%; font-size: 14px;" header="Campos con * son obligatorios">
+                            <p:growl id="growl" sticky="true" showDetail="true" />
                             <p:messages/>
-
-                            <p:panelGrid styleClass="panelinterno">
-                                <p:row>
-                                    <p:column styleClass="titulotabla">
-                                        <p:outputLabel  value="Nombre del trabajo de grado:"> </p:outputLabel>
-                                    </p:column>
-                                    <p:column>
-                                        <p:outputLabel value="#{anteproyecto.nombretg}"> </p:outputLabel>
-                                    </p:column>
-                                </p:row>
-
-                                <p:row>
-                                    <p:column styleClass="titulotabla">
-                                        <p:outputLabel  value="Director del trabajo de grado:"> </p:outputLabel>
-                                    </p:column>
-                                    <p:column>
-                                        <p:outputLabel value="#{anteproyecto.directortg}"> </p:outputLabel>
-                                    </p:column>
-                                </p:row>
-
-                                <p:row>
-                                    <p:column styleClass="titulotabla">
-                                        <p:outputLabel  value="Nombre de los estudiantes:"> </p:outputLabel>
-                                    </p:column>
-                                    <p:column>
-                                        <p:outputLabel value="- #{anteproyecto.est1}"> </p:outputLabel> <br />
-                                        <p:outputLabel value="- #{anteproyecto.est2}"> </p:outputLabel> 
-                                    </p:column>
-                                </p:row>
-
-                                <p:row> 
-                                    <p:column colspan="2" styleClass="titulotabla">
-                                        <p:outputLabel value="Objetivos:" for="obj"> </p:outputLabel>
-                                    </p:column>
-                                </p:row>
-
-                                <p:row>
-                                    <p:column colspan="2">
-                                        <p:inputTextarea id="obj" value="#{anteproyecto.objetivos}" required="true" styleClass="txtareaform" />
-                                    </p:column>
-                                </p:row>
-
-                                <p:row>
-                                    <p:column colspan="2" styleClass="titulotabla">
-                                        <p:outputLabel value="Adjuntar anteproyecto:" for="ant"> </p:outputLabel>
-                                    </p:column>
-                                </p:row>
-                                <p:row>
-                                    <p:column>
-                                        <p:fileUpload id="ant" required="true" fileUploadListener="#{anteproyecto.handleFileUpload}" auto="true"
-                                                      allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf)$/" sizeLimit="31457280" label="Adjuntar Archivo" update="nombarch"
-                                                      invalidFileMessage="Tipo de Archivo no Valido, Agregue un archivo word o pdf" 
-                                                      invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" />
-                                    </p:column>
-                                    <p:column>
-                                        <p:outputLabel id="nombarch" value="#{anteproyecto.nombarch}"> </p:outputLabel>
-                                    </p:column>
-                                </p:row>
-                                <p:row>
-                                    <p:column >
-                                        <p:button outcome="2-realizacion-anteproyecto" value="Cancelar"  icon="ui-icon-cancel" style="margin-top: 20px;"/>
-                                    </p:column>
-                                    <p:column>
-                                        <p:commandButton value="Guardar" ajax="false" actionListener="#{anteproyecto.guardar}" style="margin-top: 20px;"/>
-                                    </p:column>
-                                </p:row>
-
-                            </p:panelGrid>
-
-
+                            
+                            <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="15" >
+                                <p:outputLabel styleClass="subtitulosFormato" value="Nombre del trabajo de grado: *" />
+                                <p:outputLabel style="font-weight: bold" value="#{anteproyecto.nombretg}" />
+                                <p:outputLabel styleClass="subtitulosFormato" value="Nombre de los estudiantes: *" />
+                                <p:column>
+                                    <p:outputLabel value="#{anteproyecto.est1}" /> <br />
+                                    <p:outputLabel value="#{anteproyecto.est2}" />
+                                </p:column>
+                                <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado: *" />
+                                <p:outputLabel value="#{anteproyecto.directortg}" />
+                                <p:outputLabel styleClass="subtitulosFormato" value="Objetivos: *" />
+                                <p:inputTextarea cols="50" rows="3" value="#{anteproyecto.objetivos}" required="true" validatorMessage="Debe ingresar los objetivos." style="display: block; margin: 0 auto;" />
+                                <p:outputLabel styleClass="subtitulosFormato" value="Adjuntar anteproyecto: *" />
+                                <p:column>
+                                    <p:fileUpload required="true" fileUploadListener="#{anteproyecto.handleFileUpload}" auto="true"
+                                                  allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf)$/" sizeLimit="31457280" label="Examinar..." update="nombarch"
+                                                  invalidFileMessage="Tipo de Archivo no Valido, Agregue un archivo word o pdf" 
+                                                  invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" validatorMessage="Debe adjuntar su documento de anteproyecto." />
+                                    <p:outputLabel style="display: block; margin: 0 auto;" id="nombarch" value="#{anteproyecto.nombarch}"/>
+                                </p:column>
+                            </h:panelGrid>
+                            <p:spacer height="10"/>
+                            <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="13">
+                                <p:commandButton ajax="false" update="growl" value="Guardar" actionListener="#{anteproyecto.guardar()}" icon="ui-icon-disk" style="font-size: 13px; width: 120px;" />
+                                <p:button value="Cancelar" icon="ui-icon-cancel" outcome="2-realizacion-anteproyecto" style="font-size: 13px; width: 120px;"/>
+                            </h:panelGrid>
                         </p:panel>
                     </h:form>
-
                 </p:panel>       
-
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

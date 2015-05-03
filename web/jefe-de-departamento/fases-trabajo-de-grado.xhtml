@@ -71,17 +71,15 @@
                             </p:commandButton>-->
                             <h:panelGrid columns="5" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Formato A:" style="font-weight: bold;" />
-                                <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-A.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-A.xhtml" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
                                 <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" actionListener="#{pDFBean.generarPDF()}" oncomplete="PF('dlgVerRutina').show();" />                                
                                 <h:outputText value="" />
                                 <h:outputText value="" />
                                 <h:outputText value="Revisión de la idea:" style="font-weight: bold;" />
-                                <p:button value="Diligenciar" icon="ui-icon-document" href="diligenciar-formato-revision-idea.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnDiligenciarRevisionFormatoA}" style="width: 120px;" />
-                                <p:button value="Editar" icon="ui-icon-pencil" href="editar-formato-revision-idea.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnEditarRevisionFormatoA}" style="width: 120px;" />
-                                <p:button value="Ver" icon="ui-icon-comment" href="#" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
+                                <p:button value="Diligenciar" icon="ui-icon-document" href="diligenciar-formato-revision-idea.xhtml" disabled="#{trabajodegradoController.btnDiligenciarRevisionFormatoA}" style="width: 120px;" />
+                                <p:button value="Editar" icon="ui-icon-pencil" href="editar-formato-revision-idea.xhtml" disabled="#{trabajodegradoController.btnEditarRevisionFormatoA}" style="width: 120px;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-revision-idea.xhtml" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
                                 <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
-
-
                             </h:panelGrid>
                         </p:panel>
                     </p:panel>

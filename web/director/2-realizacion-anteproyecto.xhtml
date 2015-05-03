@@ -62,10 +62,10 @@
                                     </p:effect>
                                 </p:commandButton>
 
-                                <p:button value="Evaluación del Anteproyecto" href="3-evaluacion-anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
-                                <p:button value="Ejecución del Trabajo de Grado" href="4-ejecucion-trabajo-grado" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
-                                <p:button value="Evaluación del Trabajo de Grado" href="5-evaluacion-trabajo-grado" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
-                                <p:button value="Finalizado" href="6-finalizado" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Anteproyecto" href="#" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Ejecución del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Finalizado" href="#" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                             </h:panelGrid>
                         </p:panel>      
                         <p:spacer height="25"/>
@@ -77,21 +77,19 @@
                             </p:commandButton>-->
                             <h:panelGrid columns="5" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Anteproyecto:" style="font-weight: bold;" />                                                                
-                                <p:button value="Editar" icon="ui-icon-comment" href="editar-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
-                                <p:button value="Ver" icon="ui-icon-comment" href="ver-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
+                                <p:button value="Editar" icon="ui-icon-pencil" href="editar-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnEditarAnteproyecto}" style="width: 120px;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="ver-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerAnteproyecto}" style="width: 120px;" />
                                 <p:commandButton id="btndesc" value="Descargar" rendered="#{anteproyecto.filedown != null}"
                                                  ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
                                                  icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">
                                     <p:fileDownload value="#{anteproyecto.filedown}" />
                                 </p:commandButton>
-                                <p:commandButton id="btnAval" value="Avalar" icon="ui-icon-arrowthick-1-s" action="#{trabajogradoFaseController.btnAvalar()}" />
+                                <p:commandButton id="btnAval" value="Avalar" icon="ui-icon-check" action="#{trabajogradoFaseController.btnAvalar()}" style="width: 120px;" />
                             </h:panelGrid>
                         </p:panel>
                     </p:panel>
                 </h:form>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

@@ -26,11 +26,15 @@
                     <div class="CuadroDeBotonesSesion">                        
                         <ui:insert name="CuadroDeBotonesSesion"> 
                             <h:form>
-                                <h:outputText value="#{serviciosSimcaController.nombreUsuario}" style=" font-size: 20px; font-weight: bold; " />
-                                <p:separator />
-                                <p:commandLink value="Cerrar sesión" actionListener="#{serviciosSimcaController.logout()}" style=" font-weight: bold; font-size: 16px; color: white; "/>
+                                <h:panelGrid columns="2">
+                                    <h:outputText value="#{serviciosSimcaController.nombreUsuario}" style=" font-size: 14px; font-weight: bold; color: white;" />
+                                    <p:graphicImage value="../resources/img/icon-person.png" style="width: 20px; height: 20px;" />
+                                </h:panelGrid>
+                                <h:panelGrid style="margin: 0 auto;">
+                                    <p:commandLink value="Cerrar sesión" actionListener="#{serviciosSimcaController.logout()}" style=" font-weight: bold; font-size: 11px; color: white; "/>
+                                </h:panelGrid>
                             </h:form>
-                        </ui:insert>                       
+                        </ui:insert>
                     </div>
                     <div class="clear"></div>
                 </div>
