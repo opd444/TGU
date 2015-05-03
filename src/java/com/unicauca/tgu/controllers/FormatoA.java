@@ -7,6 +7,7 @@ package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.unicauca.tgu.Auxiliares.ContenidoFormatoA;
 import com.unicauca.tgu.Auxiliares.Servicio_Email;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.Auxiliares.UsuarioComun;
@@ -106,7 +107,7 @@ public class FormatoA {
         if (lst.size() > 0) {               //verificar si ya hay guardardo un formato A para este trabajo de grado
 
             formatoactual = lst.get(0);
-
+            ContenidoFormatoA.contenido = formatoactual.getProductocontenido();
             Gson gson = new Gson();
             Map<String, String> decoded = gson.fromJson(formatoactual.getProductocontenido(), new TypeToken<Map<String, String>>() {
             }.getType());
