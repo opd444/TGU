@@ -10,6 +10,7 @@ import com.unicauca.tgu.serviciosSimca.ServiciosSimca_Service;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -25,20 +26,22 @@ import javax.xml.ws.WebServiceRef;
 public class ServiciosSimcaController {
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/proyectoII/ServiciosSimca.wsdl")
     private ServiciosSimca_Service service;
-
-    
-
-    /**
-     * Creates a new instance of ServiciosSimcaController
-     */
-    public ServiciosSimcaController() {
-    }
-    
-    
+    private  com.unicauca.tgu.entities.Usuario usulog;
+    @EJB
+    private com.unicauca.tgu.jpacontroller.UsuarioFacade ejbFacadeusuario;
 
     private String nombreUsuario;
     private String contrasenia;
 
+       public ServiciosSimcaController() {
+    }
+
+    public com.unicauca.tgu.entities.Usuario getUsulog() {
+        return usulog;
+    }
+       
+       
+       
     public String getNombreUsuario() {
         return nombreUsuario;
     }
@@ -69,10 +72,13 @@ public class ServiciosSimcaController {
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getSessionMap().put("login", nombreUsuario);
 
+            
             //logout();
 
             try {
 
+                usulog = ejbFacadeusuario.buscarPorUsuarionombre(nombreUsuario);
+                
                 if (usu.getRol().equals("Docente")) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("director/vista-director.xhtml");
                 }

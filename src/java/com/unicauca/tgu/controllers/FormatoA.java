@@ -7,10 +7,11 @@ package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sun.org.apache.xalan.internal.xsltc.dom.DOMWSFilter;
 import com.unicauca.tgu.Auxiliares.ContenidoFormatoA;
 import com.unicauca.tgu.Auxiliares.Servicio_Email;
+import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
-import com.unicauca.tgu.Auxiliares.UsuarioComun;
 import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Rol;
@@ -91,8 +92,10 @@ public class FormatoA {
     @PostConstruct
     public void init() {
 
-        iddirector = UsuarioComun.id;
-        nombreDirector = UsuarioComun.nombreComplet;
+        FacesContext context = FacesContext.getCurrentInstance();
+        ServiciosSimcaController s =  (ServiciosSimcaController)context.getApplication().evaluateExpressionGet(context, "#{serviciosSimcaController}", ServiciosSimcaController.class);
+        iddirector = s.getUsulog().getPersonacedula().intValue();
+        nombreDirector = s.getUsulog().getPersonanombres()+" "+s.getUsulog().getPersonaapellidos();
         fecha = new Date();
         tiempo = 9;
         
@@ -406,7 +409,7 @@ public class FormatoA {
     public String guardar() {
 
         try {
-
+            
             String contenido = obtenerDatos();
             
             Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);

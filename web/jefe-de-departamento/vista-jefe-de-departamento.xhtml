@@ -15,7 +15,7 @@
                     <p:breadCrumb id="migaJefe" styleClass="migaDePan">
                         <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />                                        
                         <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
-                        <p:menuitem value="#{usuarioRolTrabajogradoController.titulotablaJefe}" outcome="vista-jefe-de-departamento" />
+                        <p:menuitem value="#{jefeDepController.titulotablaJefe}" outcome="vista-jefe-de-departamento" />
                     </p:breadCrumb>
                 </h:form>
             </ui:define>
@@ -31,20 +31,20 @@
                             <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" style="background-color: #c2dfef"/>
                         </p:submenu>                                
                     </p:menu>
-
+                    
                     <p:panel styleClass="paneltrabajo" >
                         <h:panelGrid style="margin: 0 auto;">
                             <p:menubar styleClass="menubarstyleClass">
-                                <p:menuitem style="border-color: #808080" value="Lista de ideas por revisar" actionListener="#{usuarioRolTrabajogradoController.ideasPorRevisar()}"
+                                <p:menuitem style="border-color: #808080" value="Lista de ideas por revisar" actionListener="#{jefeDepController.ideasPorRevisar()}"
                                             update="tablatgJefe tituloVistaJefe :formMigaJefe:migaJefe" icon="ui-icon-folder-open"/>
-                                <p:menuitem style="border-color: #808080" value="Lista de ideas revisadas" actionListener="#{usuarioRolTrabajogradoController.ideasRevisadas()}"
+                                <p:menuitem style="border-color: #808080" value="Lista de ideas revisadas" actionListener="#{jefeDepController.ideasRevisadas()}"
                                             update="tablatgJefe tituloVistaJefe :formMigaJefe:migaJefe" icon="ui-icon-folder-collapsed"/>
                             </p:menubar>
                         </h:panelGrid>
                         <p:spacer height="25"/>
-                        <h:outputLabel id="tituloVistaJefe" class="tituloContenido" value="#{usuarioRolTrabajogradoController.titulotablaJefe}" />  
+                        <h:outputLabel id="tituloVistaJefe" class="tituloContenido" value="#{jefeDepController.titulotablaJefe}" />  
                         <p:spacer height="10"/>
-                        <p:dataTable styleClass="tabladirector" id="tablatgJefe" var="car" value="#{usuarioRolTrabajogradoController.trabsJefe}"
+                        <p:dataTable styleClass="tabladirector" id="tablatgJefe" var="car" value="#{jefeDepController.trabsJefe}"
                                      paginator="true" rows="8" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24" style="font-size: 14px;" emptyMessage="Lo sentimos, no se encontraron ideas.">
                             <p:column style="width: 80px;" headerText="Fecha">
                                 <h:outputText value="#{car.fecha}">
@@ -52,7 +52,7 @@
                                 </h:outputText>                                 
                             </p:column>
                             <p:column style="width: 250px;" headerText="Trabajo de Grado">
-                                <p:commandLink actionListener="#{usuarioRolTrabajogradoController.contenidoTgJefe}" value="#{car.trabajoGrado}" style="color: #045491;">                                     
+                                <p:commandLink actionListener="#{jefeDepController.contenidoTgJefe}" value="#{car.trabajoGrado}" style="color: #045491;">                                     
                                     <f:attribute name="idtrabajo" value="#{car.trabajoGradoId}" />    
                                     <f:attribute name="nombretrab" value="#{car.trabajoGrado}" />
                                     <f:attribute name="iddirector" value="#{car.directorId}" />
@@ -60,13 +60,13 @@
                                     <f:attribute name="est2" value="#{car.est2Id}" />
                                 </p:commandLink>
                             </p:column>
-                            <p:column rendered="#{!usuarioRolTrabajogradoController.modo}" style="width: 140px;" headerText="Director">
+                            <p:column rendered="#{!jefeDepController.modo}" style="width: 140px;" headerText="Director">
                                 #{car.director}    
                             </p:column>
                             <p:column style="width: 140px;" headerText="Estudiantes">
                                 #{car.est1} <br /> #{car.est2}    
                             </p:column>
-                            <p:column rendered="#{usuarioRolTrabajogradoController.modo}" style="width: 70px; text-align: center;" headerText="Aprobada">
+                            <p:column rendered="#{jefeDepController.modo}" style="width: 70px; text-align: center;" headerText="Aprobada">
                                 <h:selectBooleanCheckbox id="checkbox" value="#{car.aprobado}" disabled="true" />
                             </p:column>
                         </p:dataTable>

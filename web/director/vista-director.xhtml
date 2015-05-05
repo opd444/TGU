@@ -15,7 +15,7 @@
                     <p:breadCrumb id="migaDirector" styleClass="migaDePan">
                         <p:menuitem value="Director" outcome="vista-director" />
                         <p:menuitem value="Director" outcome="vista-director" />
-                        <p:menuitem value="#{usuarioRolTrabajogradoController.titulotablaDirector}" outcome="vista-director" />
+                        <p:menuitem value="#{directorController.titulotablaDirector}" outcome="vista-director" />
                     </p:breadCrumb>
                 </h:form>
             </ui:define>
@@ -29,9 +29,9 @@
                     <h:form>
                         <h:panelGrid columns="2" cellpadding="10">
                             <p:outputLabel value="Nombre del Trabajo de Grado:" />
-                            <p:inputTextarea id="nombre" cols="45" rows="3" value="#{usuarioRolTrabajogradoController.nombrenuevoTG}" label="nombre" />
+                            <p:inputTextarea id="nombre" cols="45" rows="3" value="#{directorController.nombrenuevoTG}" label="nombre" />
                             <f:facet name="footer">
-                                <p:commandButton id="btnnuevotg" style="display: block; margin: 0 auto;" actionListener="#{usuarioRolTrabajogradoController.crearTG}" value="Crear" icon="ui-icon-disk" update=":form:tablatgDirector" onclick="agregartest.hide()"/>              
+                                <p:commandButton id="btnnuevotg" style="display: block; margin: 0 auto;" actionListener="#{directorController.crearTG}" value="Crear" icon="ui-icon-disk" update=":form:tablatgDirector" onclick="agregartest.hide()"/>              
                             </f:facet>                   
                         </h:panelGrid>
                     </h:form>
@@ -48,26 +48,26 @@
                     <p:panel styleClass="paneltrabajo" >
                         <h:panelGrid style="margin: 0 auto;">
                             <p:menubar styleClass="menubarstyleClass">
-                                <p:menuitem style="border-color: #808080" value="Ver Trabajos en Curso" actionListener="#{usuarioRolTrabajogradoController.trabajosenCurso()}"
+                                <p:menuitem style="border-color: #808080" value="Ver Trabajos en Curso" actionListener="#{directorController.trabajosenCurso()}"
                                             update="tablatgDirector tituloVistaDirector :formMigaDirector:migaDirector" icon="ui-icon-folder-open"/>
-                                <p:menuitem style="border-color: #808080" value="Ver Trabajos Terminados" actionListener="#{usuarioRolTrabajogradoController.trabajosTerminados()}"
+                                <p:menuitem style="border-color: #808080" value="Ver Trabajos Terminados" actionListener="#{directorController.trabajosTerminados()}"
                                             update="tablatgDirector tituloVistaDirector :formMigaDirector:migaDirector" icon="ui-icon-folder-collapsed"/>
-                                <p:menuitem style="border-color: #808080" value="Crear Nuevo Trabajo de Grado" disabled="#{usuarioRolTrabajogradoController.numMaxTrabPermitidos}" onclick="PF('agregartest').show();"
+                                <p:menuitem style="border-color: #808080" value="Crear Nuevo Trabajo de Grado" disabled="#{directorController.numMaxTrabPermitidos}" onclick="PF('agregartest').show();"
                                             icon="ui-icon-plus"/>
                             </p:menubar>
                         </h:panelGrid>
                         <p:spacer height="25"/>
-                        <h:outputLabel id="tituloVistaDirector" class="tituloContenido" value="#{usuarioRolTrabajogradoController.titulotablaDirector}" />        
+                        <h:outputLabel id="tituloVistaDirector" class="tituloContenido" value="#{directorController.titulotablaDirector}" />        
                         <p:spacer height="10"/>
-                        <p:dataTable  styleClass="tabladirector" id="tablatgDirector" var="car" value="#{usuarioRolTrabajogradoController.trabsDirector}"
-                                      paginator="#{usuarioRolTrabajogradoController.modo}" rows="#{usuarioRolTrabajogradoController.filas}" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24" emptyMessage="Lo sentimos, no hay trabajos registrados." style="font-size: 14px;">
+                        <p:dataTable  styleClass="tabladirector" id="tablatgDirector" var="car" value="#{directorController.trabsDirector}"
+                                      paginator="#{directorController.modo}" rows="#{directorController.filas}" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24" emptyMessage="Lo sentimos, no hay trabajos registrados." style="font-size: 14px;">
                             <p:column style="width: 80px;" headerText="Fecha">
                                 <h:outputText value="#{car.fecha}">
                                     <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
                                 </h:outputText>
                             </p:column>
                             <p:column style="width: 275px;" headerText="Trabajo de Grado"> <!--filterBy="{car.trabajoGrado}"-->
-                                <p:commandLink actionListener="#{usuarioRolTrabajogradoController.contenidoTgDirector}" value="#{car.trabajoGrado}" style="color: #045491;">                                     
+                                <p:commandLink actionListener="#{directorController.contenidoTgDirector}" value="#{car.trabajoGrado}" style="color: #045491;">                                     
                                     <f:attribute name="idtrabajo" value="#{car.trabajoGradoId}" />    
                                     <f:attribute name="nombretrab" value="#{car.trabajoGrado}" />
                                     <f:attribute name="est1" value="#{car.est1Id}" />

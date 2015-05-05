@@ -8,8 +8,8 @@ package com.unicauca.tgu.controllers;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.unicauca.tgu.Auxiliares.Servicio_Email;
+import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
-import com.unicauca.tgu.Auxiliares.UsuarioComun;
 import com.unicauca.tgu.controllers.util.JsfUtil;
 import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
@@ -86,12 +86,12 @@ public class RevisionIdeaController {
     private BigDecimal trabajoid;
     private Usuario est1;
     private Usuario est2;
-    private int iddirector;
     private String nombreDirector;
     private int resultado;
     private String observaciones;
     private Date fecha;
     private String aprobado;
+    private int idjefe;
     
     private Productodetrabajo formatoactual;
     
@@ -101,8 +101,10 @@ public class RevisionIdeaController {
     @PostConstruct
     public void init() {
                 
-        iddirector = UsuarioComun.id;
-        nombreDirector = UsuarioComun.nombreComplet;
+        FacesContext context = FacesContext.getCurrentInstance();
+        ServiciosSimcaController s =  (ServiciosSimcaController)context.getApplication().evaluateExpressionGet(context, "#{serviciosSimcaController}", ServiciosSimcaController.class);
+        idjefe = s.getUsulog().getPersonacedula().intValue();
+                
         numActa = 1;
         resultado = 1;
         
@@ -232,17 +234,10 @@ public class RevisionIdeaController {
 
     public void setEst2(Usuario est2) {
         this.est2 = est2;
-    }
-    
-    public int getIddirector() {
-        return iddirector;
-    }
-
-    public void setIddirector(int iddirector) {
-        this.iddirector = iddirector;
-    }
+    } 
 
     public String getNombreDirector() {
+        nombreDirector = TrabajodeGradoActual.director.getPersonanombres()+" "+TrabajodeGradoActual.director.getPersonaapellidos();
         return nombreDirector;
     }
 
@@ -304,7 +299,7 @@ public class RevisionIdeaController {
             numeroEstudiantes += 1;
         }
         map.put("numeroEstudiantes", Integer.toString(numeroEstudiantes));
-        map.put("iddirector", Integer.toString(getIddirector()));
+        map.put("iddirector", Integer.toString(TrabajodeGradoActual.director.getPersonacedula().intValue()));
         map.put("nombredirector", getNombreDirector());
         map.put("resultado", Integer.toString(getResultado()));
         map.put("observaciones", getObservaciones());
@@ -324,7 +319,7 @@ public class RevisionIdeaController {
             UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);
             usuroltg.setRolid(new Rol(BigDecimal.valueOf(2)));                            //agregando al jefe depto
             usuroltg.setTrabajoid(trab);
-            usuroltg.setPersonacedula(new Usuario(new BigDecimal(UsuarioComun.id)));
+            usuroltg.setPersonacedula(new Usuario(new BigDecimal(idjefe)));
             ejbFacadeUsuroltrab.create(usuroltg);
             
             Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.valueOf(getResultado()), contenido);
