@@ -40,10 +40,6 @@ public class DirectorController implements Serializable {
 
     @EJB
     private com.unicauca.tgu.jpacontroller.UsuarioFacade ejbFacadeusuario;
-    
-     @EJB
-    private com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade ejbFacadeTrabFase;
-    
 
     private List<FormatoTablaDirector> trabs;
     //int modo;             // 0 para la seccion de trabajos en curso y 1 para trabajos terminados

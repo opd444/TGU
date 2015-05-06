@@ -41,27 +41,17 @@ public class ProductodetrabajoFacade extends AbstractFacade<Productodetrabajo> {
         }finally 
         {
         } 
-    
-    }
-    
-    public int crearTrabajoGrado(String nombretg)
-          {
-            try
+    }  
+     
+     public List<Productodetrabajo>  ObtenerProdsTrabajoPor_formatoID(int formato){
+        try
         {
-            String queryString = "INSERT INTO Trabajodegrado(trabajoid,trabajonombre) values(null,'"+nombretg+"')";
-            Query query = getEntityManager().createNativeQuery(queryString);  
-            int k = query.executeUpdate();
-            
-            if(k>0)
-                 {
-                 
-                 }
-            //System.out.println("ERR"+Long.valueOf(usuid.intValue()+""));
-            //query.set("usuid", Long.valueOf(usuid.intValue()+""));
-            return 0;     
+            String queryString = "SELECT t FROM Productodetrabajo t "+
+            "where t.formatoid="+formato;
+            Query query = getEntityManager().createQuery(queryString);  
+            return query.getResultList();       
         }finally 
         {
-           // em.close();
         } 
-          }   
+    }
 }

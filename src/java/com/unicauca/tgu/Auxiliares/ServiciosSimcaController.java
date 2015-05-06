@@ -72,9 +72,6 @@ public class ServiciosSimcaController {
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getSessionMap().put("login", nombreUsuario);
 
-            
-            //logout();
-
             try {
 
                 usulog = ejbFacadeusuario.buscarPorUsuarionombre(nombreUsuario);

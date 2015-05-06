@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="CuadroDeBotonesSesion">
+                CuadroDeBotonesSesion
+            </ui:define>
+
+            <ui:define name="menuprincipal">
+               <h:form id="formMigaDirector">
+                    <p:breadCrumb id="migaDirector" styleClass="migaDePan">
+                        <p:menuitem value="Coordinador" outcome="vista-coordinador" />
+                        <p:menuitem value="Coordinador" outcome="vista-coordinador" />
+                    </p:breadCrumb>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">
+                
+            </ui:define>
+
+            <ui:define name="body">
+                  <h:form id="form">
+                    <p:menu styleClass="menuizqroles" style="background-color: white">
+                        <p:submenu label="Perfiles" style="background-color: white">
+                            <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />
+                            <p:menuitem value="Jefe de Departamento" outcome="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />   
+                            <p:menuitem value="Coordinador" outcome="vista-coordinador.xhtml"  style="background-color: #c2dfef"/>
+                        </p:submenu>                                
+                    </p:menu>
+                     
+                  <p:panel styleClass="paneltrabajo" >
+                        <h:panelGrid style="margin: 0 auto;">
+                            <p:menubar styleClass="menubarstyleClass">
+                                <p:menuitem style="border-color: #808080" value="Ver Anteproyecto sin asignacion de evaluadores" icon="ui-icon-folder-open"/>
+                            </p:menubar>
+                        </h:panelGrid>
+                        <p:spacer height="25"/>
+                        <h:outputLabel id="tituloVistaDirector" class="tituloContenido" value="anteprot" />        
+                        <p:spacer height="10"/>
+                        <p:dataTable  styleClass="tabladirector" id="tablacoord" var="car" value="#{coordinadorController.anteproys}"
+                                      paginator="true" rows="5" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24" emptyMessage="Lo sentimos, no hay trabajos registrados." style="font-size: 14px;">
+                            
+                            <p:column style="width: 275px;" headerText="Trabajo de Grado"> <!--filterBy="{car.trabajoGrado}"-->
+                                <p:commandLink value="#{car.trabajoid.trabajonombre}" style="color: #045491;">                                     
+                             
+                                </p:commandLink>
+                            </p:column>
+       
+                        </p:dataTable>   
+                        
+                  </p:panel>
+                      
+                  </h:form>
+                 
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
