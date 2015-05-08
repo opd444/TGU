@@ -266,10 +266,15 @@ body {
 {
     font-size: 20px;
     text-align: center;
-    color:#22419A;
+    color:#D20005;
     font-weight: bold;
     display: block;
     margin: 0 auto;
+    background-color: #dddddd;
+    border: 1px solid #C8CDD6;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
 }
 
 .CampoLabel
