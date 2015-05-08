@@ -1,10 +1,18 @@
 .paneltrabajo
 {
     margin-top: 20px;
+    margin-left: 8px;
     width: 730px;
     float: left;
     font-size: 15px;
     color: darkslategray;
+    background: honeydew;
+    
+}
+
+body
+{
+    background: whitesmoke;
 }
 
 .tabladirector
@@ -17,6 +25,7 @@
 {
     float : left;
     margin-top: 20px;
+    background-color: azure;
 }
 
 .barraacciones

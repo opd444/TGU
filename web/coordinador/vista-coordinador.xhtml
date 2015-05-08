@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <body>
 
@@ -47,11 +48,25 @@
                         <p:spacer height="10"/>
                         <p:dataTable  styleClass="tabladirector" id="tablacoord" var="car" value="#{coordinadorController.anteproys}"
                                       paginator="true" rows="5" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24" emptyMessage="Lo sentimos, no hay trabajos registrados." style="font-size: 14px;">
-                            
+                            <p:column style="width: 80px;" headerText="Fecha">
+                                <h:outputText value="#{car.fecha}">
+                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                </h:outputText>
+                            </p:column>
                             <p:column style="width: 275px;" headerText="Trabajo de Grado"> <!--filterBy="{car.trabajoGrado}"-->
-                                <p:commandLink value="#{car.trabajoid.trabajonombre}" style="color: #045491;">                                     
-                             
-                                </p:commandLink>
+                                <p:commandLink value="#{car.trabajoGrado}" actionListener="#{coordinadorController.contenidoTgCoordinador}" style="color: #045491;">                                     
+                                    <f:attribute name="idtrabajo" value="#{car.trabajoGradoId}" />    
+                                    <f:attribute name="nombretrab" value="#{car.trabajoGrado}" />
+                                    <f:attribute name="iddirector" value="#{car.directorId}" />
+                                    <f:attribute name="est1" value="#{car.est1Id}" />
+                                    <f:attribute name="est2" value="#{car.est2Id}" />
+                                </p:commandLink>             
+                            </p:column>
+                             <p:column style="width: 150px;" headerText="Estudiantes" > 
+                                #{car.est1} <br /> #{car.est2}      
+                            </p:column>
+                            <p:column headerText="Director"> 
+                                #{car.director}  
                             </p:column>
        
                         </p:dataTable>   

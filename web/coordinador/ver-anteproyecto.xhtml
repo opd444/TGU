@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="CuadroDeBotonesSesion">
+                CuadroDeBotonesSesion
+            </ui:define>
+
+            <ui:define name="menuprincipal">
+                <script type="text/javascript">
+                    function mostrarestado() {
+                        PF('statusDialog').show();
+                    }
+                    function ocultarestado() {
+                        PF('statusDialog').hide();
+                    }
+                </script>
+
+                <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
+                    <p:graphicImage library="img" name="ajax-loader.gif" />
+                </p:dialog>
+                <h:form>
+                   <p:breadCrumb styleClass="migaDePan">
+                    <p:menuitem value="Coordinador" outcome="vista-coordinador" />
+                    <p:menuitem value="Coordinador" outcome="vista-coordinador" />                      
+                    <p:menuitem value="Fases del Trabajo de Grado" 
+                                outcome="fases-trabajo-de-grado" />
+                    <p:menuitem value="Ver Anteproyecto" 
+                                outcome="ver-anteproyecto" />
+                </p:breadCrumb>              
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">
+                
+            </ui:define>
+
+            <ui:define name="body">
+                <h:form>
+                    <p:menu styleClass="menuizqroles" style="background-color: azure;">
+                        <p:submenu label="Perfiles">
+                            <p:menuitem value="Director" action="vista-director" style="background-color: #c2dfef" />
+                            <p:menuitem value="Jefe de Departamento" action="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />                            
+                        </p:submenu>                                
+                    </p:menu>
+                </h:form>
+                <p:panel styleClass="paneltrabajo" >
+                    
+                    <div class="tituloContenido">                        
+                        <h:outputText value="Ver Anteproyecto"/> <br/>
+                    </div>
+                    <p:spacer height="30"/>
+                    
+                    <h:form enctype="multipart/form-data"> 
+                        <p:growl id="growl" sticky="true" showDetail="true"/>
+                        <p:panel header="Información Actual" style="color: #181818;">
+                            <br />
+                            <h:panelGrid columns="2" style="margin: 0 auto">
+                                <p:graphicImage value="../resources/img/logo-unicauca-negro.png" style="width: 96px; margin-right: 50px" />
+                                <p:column>
+                                    <div align="center">
+                                         <p:outputLabel value="Universidad del Cauca" styleClass="subtitulosFormato" /><br />
+                                        <p:outputLabel value="Facultad de Ingeniería Electrónica y" styleClass="subtitulosFormato" /><br />
+                                        <p:outputLabel value="Telecomunicaciones" styleClass="subtitulosFormato" />
+                                    </div>
+                                </p:column>
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid style="margin: 0 auto;">
+                                <p:outputLabel value="TRABAJO DE GRADO" styleClass="subtitulosFormato" />
+                            </h:panelGrid>
+                            <br /><br />
+                            <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="15" >
+                                <p:outputLabel styleClass="subtitulosFormato" value="Nombre del trabajo de grado:" />
+                                <p:outputLabel value="#{anteproyecto.nombretg}" />
+                                <p:outputLabel styleClass="subtitulosFormato" value="Nombre de los estudiantes:" />
+                                <p:column>
+                                    <p:outputLabel value="#{anteproyecto.est1}" /> <br />
+                                    <p:outputLabel value="#{anteproyecto.est2}" />
+                                </p:column>
+                                <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado:" />
+                                <p:outputLabel value="#{anteproyecto.directortg}" />
+                                <p:outputLabel styleClass="subtitulosFormato" value="Objetivos:" />
+                                <p:outputLabel value="#{anteproyecto.objetivos}" />
+                                
+                                <p:outputLabel styleClass="subtitulosFormato" value="Doc. de Anteproyecto:" />
+                                <p:commandLink id="btndesc" style="margin-top: 20px; color: #045491;" value="#{anteproyecto.nombarch}" rendered="#{anteproyecto.filedown != null}"
+                                                       ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
+                                                       action="#{anteproyecto.preparardescarga()}">
+                                    <p:fileDownload value="#{anteproyecto.filedown}" />
+                                    <p:graphicImage value="descargar.png" library="img" />
+                                </p:commandLink>
+                                <p:outputLabel styleClass="subtitulosFormato" value="Docente Evaluador 1:" />
+                                <p:autoComplete value="#{anteproyecto.doc1}" label="Docente 1"
+                                                        completeMethod="#{anteproyecto.complete}"
+                                                        var="est"
+                                                        itemValue="#{est}" dropdown="true"
+                                                        forceSelection="true"
+                                                        itemLabel="#{est.personanombres} #{est.personaapellidos}"
+                                                        converter="usuarioConverter"
+                                                        cache="true"
+                                                        queryDelay="750"
+                                                        maxResults="8"
+                                                        required="true"
+                                                        requiredMessage="Por favor ingrese el nombre del primer evaluador"
+                                                        size="24"
+                                                        >
+                                            <p:column>
+                                                #{est.personanombres} #{est.personaapellidos}
+                                            </p:column>
+                                        </p:autoComplete> 
+                                <p:outputLabel styleClass="subtitulosFormato" value="Docente Evaluador 2:" />
+                                <p:autoComplete value="#{anteproyecto.doc2}" label="Docente 2"
+                                                        completeMethod="#{anteproyecto.complete}"
+                                                        var="est"
+                                                        itemValue="#{est}" dropdown="true"
+                                                        forceSelection="true"
+                                                        itemLabel="#{est.personanombres} #{est.personaapellidos}"
+                                                        converter="usuarioConverter"
+                                                        cache="true"
+                                                        queryDelay="750"
+                                                        maxResults="8"
+                                                        required="true"
+                                                        requiredMessage="Por favor ingrese el nombre del segundo evaluador."
+                                                        size="24"
+                                                        >                                  
+                                            <p:column>
+                                                #{est.personanombres} #{est.personaapellidos}
+                                            </p:column>
+                                        </p:autoComplete> 
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid  columns="2" style="margin: 0 auto;" cellpadding="5">  
+                                <p:button value="Cancelar" outcome="fases-trabajo-de-grado" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>
+                                <p:commandButton value="Guardar"  actionListener="#{anteproyecto.guardarevaluadores()}" icon="ui-icon-disk" style="font-size: 13px; width: 120px;"
+                                                 update="growl"/>
+                            </h:panelGrid> 
+                        </p:panel>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

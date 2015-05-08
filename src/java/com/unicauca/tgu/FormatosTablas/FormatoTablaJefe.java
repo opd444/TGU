@@ -5,12 +5,7 @@
  */
 
 package com.unicauca.tgu.FormatosTablas;
-import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
-import com.unicauca.tgu.entities.Productodetrabajo;
-import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import java.util.Date;
-import java.util.List;
-import javax.ejb.EJB;
 /**
  *
  * @author Daniel

@@ -46,6 +46,20 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             // em.close();
         }
     }
+    
+    public List<Usuario> buscarEvaluadores(String consulta) {
+        try {
+            String queryString = "SELECT * FROM Usuario "
+                    + "where upper(personanombres)||' '||upper(personaapellidos)"
+                    + " like '%" + consulta + "%'";
+            Query query = getEntityManager().createNativeQuery(queryString, Usuario.class);
+            //System.out.println("ERR"+Long.valueOf(usuid.intValue()+""));
+            //query.set("usuid", Long.valueOf(usuid.intValue()+""));
+            return query.getResultList();
+        } finally {
+            // em.close();
+        }
+    }
 
     public List<Usuario> buscarporUsuid(int usuid) {
         try {

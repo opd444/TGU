@@ -12,7 +12,9 @@ import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Trabajodegrado;
+import com.unicauca.tgu.entities.Usuario;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,6 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +48,11 @@ import org.primefaces.model.UploadedFile;
  */
 @ManagedBean
 @ViewScoped
-public class Anteproyecto {    
-    
+public class Anteproyecto {
+
+    @EJB
+    private UsuarioFacade ejbFacadeUsuario;
+
     private String nombretg;
     private String directortg;
     private String est1;
@@ -58,7 +64,9 @@ public class Anteproyecto {
     private String rutaarch;
     private boolean archivomodificado = false;
     private Productodetrabajo anteproyactual;
-    private String directorioanteproyectos = "D:\\Archivos_TGU\\Anteproyectos\\";
+    private final String directorioanteproyectos = "D:\\Archivos_TGU\\Anteproyectos\\";
+    private Usuario doc1;
+    private Usuario doc2;
 
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
@@ -77,7 +85,16 @@ public class Anteproyecto {
 
             nombarch = map.get("nombarch");
             objetivos = map.get("obj");
-            rutaarch = map.get("rutaarch");
+            rutaarch = map.get("rutaarch");         
+            
+            if(map.containsKey("iddoc1"))
+                {
+                    doc1 = ejbFacadeUsuario.find(new BigDecimal(map.get("iddoc1")));
+                }
+            if(map.containsKey("iddoc2"))
+                {
+                    doc2 = ejbFacadeUsuario.find(new BigDecimal(map.get("iddoc2")));
+                }
 
             anteproyactual = lst.get(0);
 
@@ -159,6 +176,22 @@ public class Anteproyecto {
         this.file = file;
     }
 
+    public Usuario getDoc1() {
+        return doc1;
+    }
+
+    public void setDoc1(Usuario doc1) {
+        this.doc1 = doc1;
+    }
+
+    public Usuario getDoc2() {
+        return doc2;
+    }
+
+    public void setDoc2(Usuario doc2) {
+        this.doc2 = doc2;
+    }
+
     public StreamedContent getFiledown() {
         return filedown;
     }
@@ -204,7 +237,7 @@ public class Anteproyecto {
                 prod.setTrabajoid(new Trabajodegrado(BigDecimal.valueOf(TrabajodeGradoActual.id)));
 
                 ejbFacadeProdTrab.create(prod);
-                
+
 //                Servicio_Email se = new Servicio_Email();
 //                se.setSubject("Anteproyecto del Trabajo de Grado" + nombretg + " Diligenciado");
 //
@@ -289,5 +322,74 @@ public class Anteproyecto {
             }
         } catch (Exception e) {
         }
+
+    }
+
+    public List<Usuario> complete(String query) {
+
+        query = query.trim();
+        query = query.toUpperCase();
+
+        List<Usuario> ls = ejbFacadeUsuario.buscarEvaluadores(query);
+
+        return ls;
+    }
+
+    public void guardarevaluadores() {
+         
+       FacesContext context = FacesContext.getCurrentInstance();
+        try {          
+        Gson gson = new Gson();
+        Map<String, String> mapedicion
+                = gson.fromJson(anteproyactual.getProductocontenido(), new TypeToken<Map<String, String>>() {
+                }.getType());
+
+        if (doc1 == null) {
+            if (mapedicion.containsKey("iddoc1")) {
+                mapedicion.remove("iddoc1");
+                mapedicion.remove("nombredoc1");
+            }
+        } else {
+             mapedicion.put("iddoc1", doc1.getPersonacedula().intValue()+"");
+             mapedicion.put("nombredoc1", doc1.getPersonanombres()+" "+doc1.getPersonaapellidos());
+        }
+        
+        if (doc2 == null) {
+            if (mapedicion.containsKey("iddoc2")) {
+                mapedicion.remove("iddoc2");
+                mapedicion.remove("nombredoc2");
+            }
+        } else {
+             mapedicion.put("iddoc2", doc2.getPersonacedula().intValue()+"");
+             mapedicion.put("nombredoc2", doc2.getPersonanombres()+" "+doc2.getPersonaapellidos());
+        }
+        
+        String contenido = gson.toJson(mapedicion, Map.class);
+
+        anteproyactual.setProductocontenido(contenido);
+
+        ejbFacadeProdTrab.edit(anteproyactual);
+        
+        Servicio_Email se = new Servicio_Email();
+        se.setSubject("Asignacion como evaluador de anteproyecto");
+
+            if (doc1 != null) {
+                se.setTo(doc1.getPersonacorreo());
+                se.enviarAsignacionEvaluacionanteproyecto(nombretg);
+            }
+        
+            if (doc2 != null) {
+                se.setTo(doc2.getPersonacorreo());
+                se.enviarAsignacionEvaluacionanteproyecto(nombretg);
+            }
+            
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Evaluadores Asignados correctamente"));
+        //ExternalContext extcontext = context.getExternalContext();
+        // extcontext.redirect("fases-trabajo-de-grado.xhtml");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "Ocurrio algun error al intentar  efectuar la operacion"));
+        }
+
     }
 }

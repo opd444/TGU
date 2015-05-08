@@ -30,16 +30,16 @@ public class TrabajodegradoController implements Serializable {
     private ProductodetrabajoFacade ejbFacadePro;
     @EJB
     private TrabajogradoFaseFacade ejbFacadeTrabFase;
-    
+
     @EJB
     private com.unicauca.tgu.jpacontroller.TrabajodegradoFacade ejbFacade;
 
     @PostConstruct
     public void init() {
         trabajoid = BigDecimal.valueOf(TrabajodeGradoActual.id);      //se Recupera el Id del trabajo actual
+        habilitarfases();
     }
 
-    
     //Formato A
     public boolean getBtnDiligenciarFormatoA() {
         return verificarProductodeTrabajo(trabajoid.intValue(), 0);
@@ -48,13 +48,13 @@ public class TrabajodegradoController implements Serializable {
     public boolean getBtnDiligenciarRevisionFormatoA() {
         return verificarProductodeTrabajo(trabajoid.intValue(), 1);
     }
-    
-        public boolean getBtnVerFormatoA() {
-         return !verificarProductodeTrabajo(trabajoid.intValue(), 0);
+
+    public boolean getBtnVerFormatoA() {
+        return !verificarProductodeTrabajo(trabajoid.intValue(), 0);
     }
 
     public boolean getBtnEditarFormatoA() {
-        
+
         List<Productodetrabajo> lst = ejbFacadePro.findAll();
         List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(trabajoid.intValue(), 0);
         List<Productodetrabajo> lstProd2 = obtenerProductodeTrabajoporFormato(trabajoid.intValue(), 1);
@@ -74,7 +74,7 @@ public class TrabajodegradoController implements Serializable {
         }
         return true;
     }
-        
+
     public boolean getBtnVerRevisionFormatoA() {
         return !verificarProductodeTrabajo(trabajoid.intValue(), 1);
     }
@@ -87,7 +87,7 @@ public class TrabajodegradoController implements Serializable {
         List<Productodetrabajo> Lst = obtenerProductodeTrabajoporFormato(idtrabajo, idformato);
         return Lst.size() > 0;
     }
-    
+
     public boolean getBtnEditarRevisionFormatoA() {
         List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(trabajoid.intValue(), 1);
 
@@ -102,7 +102,7 @@ public class TrabajodegradoController implements Serializable {
             return true;
         }
     }
-    
+
     public boolean getBtnDiligenciarAnteproyecto() {
         List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(TrabajodeGradoActual.id, 2);
         if (lstProd.size() > 0) {
@@ -111,7 +111,7 @@ public class TrabajodegradoController implements Serializable {
             return false;
         }
     }
-    
+
     public boolean getBtnEditarAnteproyecto() {
         List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(TrabajodeGradoActual.id, 2);
         if (lstProd.size() > 0) {
@@ -120,7 +120,7 @@ public class TrabajodegradoController implements Serializable {
             return true;
         }
     }
-    
+
     public boolean getBtnVerAnteproyecto() {
         List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(TrabajodeGradoActual.id, 2);
         if (lstProd.size() > 0) {
@@ -129,34 +129,17 @@ public class TrabajodegradoController implements Serializable {
             return true;
         }
     }
-    
-    public void incializar() {  
-        TrabajodeGradoActual.id = trabajoid.intValue();
-        getTrabajo();        
+
+    public void incializar() {
+        habilitarfases();
     }
 
     public Trabajodegrado getTrabajo() {
-        Trabajodegrado tg = getFacade().find(trabajoid);
-            if (tg !=null) {
-                int fase = 0;
-                List<TrabajogradoFase> traFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(trabajoid.intValue());
-                for (TrabajogradoFase traFase1 : traFase) {
-                    if (traFase1.getTrabajoid().getTrabajoid().equals(trabajoid)) {
-                        if (traFase1.getEstado().equals(BigInteger.ONE)) {
-                            fase = traFase1.getFaseid().getFaseid().intValue();
-                        }
-                    }
-                }
-                fases = new FasesTrabajoDeGrado(fase+1);
-                TrabajodeGradoActual.id = tg.getTrabajoid().intValue();
-                TrabajodeGradoActual.nombreTg = tg.getTrabajonombre();
-                return tg;
-            }
-       return null;      
+        return new Trabajodegrado(trabajoid, TrabajodeGradoActual.nombreTg);
     }
 
     public void setTrabajo(Trabajodegrado trabajo) {
-        
+
         this.trabajo = trabajo;
     }
 
@@ -167,7 +150,7 @@ public class TrabajodegradoController implements Serializable {
     public void setTrabajoid(BigDecimal trabajoid) {
         this.trabajoid = trabajoid;
     }
-    
+
     public void trabajoAsignado(BigDecimal trabajoid) {
         this.trabajoid = trabajoid;
     }
@@ -186,5 +169,18 @@ public class TrabajodegradoController implements Serializable {
     private TrabajodegradoFacade getFacade() {
         return ejbFacade;
     }
-  
+
+    private void habilitarfases() {
+        int fase = 0;
+        List<TrabajogradoFase> traFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(trabajoid.intValue());
+        for (TrabajogradoFase traFase1 : traFase) {
+            if (traFase1.getTrabajoid().getTrabajoid().equals(trabajoid)) {
+                if (traFase1.getEstado().equals(BigInteger.ONE)) {
+                    fase = traFase1.getFaseid().getFaseid().intValue();
+                }
+            }
+        }
+        fases = new FasesTrabajoDeGrado(fase + 1);
+    }
+
 }

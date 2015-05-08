@@ -42,7 +42,7 @@ public class JefeDepController {
     @EJB
     private com.unicauca.tgu.jpacontroller.UsuarioFacade ejbFacadeusuario;
     
-     @EJB
+    @EJB
     private com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade ejbFacadeTrabFase;
     
     private boolean modo;           
