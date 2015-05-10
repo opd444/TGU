@@ -26,7 +26,7 @@ public class Servicio_Email {
     private String motpasse; // password
     private final String bodyformat = "<div style='background-color:#18457C; width:459px;'><img src='http://imageshack.com/a/img537/148/ODwI2A.png'>"
        + "<div style='color:black; font-size:16px;padding:15px'><br><h4 style='color:white;'>Cordial Saludo,</h4><br>"
-       + "<p> %s </p><br>"
+       + "<p style='color:white; font-family: sans-serif; font-size: 14px;'> %s </p><br>"
        + "</div> <div style='color:white;font-size:11px; padding:15px'> <i>Por favor no responda a este correo electrónico.</i>" 
        + " <p>Este correo y sus anexos contienen información confidencial de la Universidad del Cauca, la cual solo está dirigida "
        + "a la persona o entidad listada arriba. Cualquier uso indebido de la información contenida en este correo por personas "
@@ -35,7 +35,7 @@ public class Servicio_Email {
 
 
     public Servicio_Email() {
-        to = "jjmosquera@unicauca.edu.co";
+        to = "orlandopaz@unicauca.edu.co";
         from = "proyectospopasoft@gmail.com";
         messagebody = "hello";
         subject = "HELLO";
@@ -119,38 +119,45 @@ public class Servicio_Email {
     }
 
     public void enviarDiligenciadoFormatoA(String nombretg) {
-       messagebody = String.format(bodyformat,  "<div style='color:white; font-family: sans-serif; font-size: 14px;'>La presentación de la idea del "
-                     + "Trabajo de Grado: '<strong>"+nombretg+"</strong>' ha sido diligenciada con éxito.</div>");
+       messagebody = String.format(bodyformat,  "La presentación de la idea del "
+                     + "Trabajo de Grado: '<strong>"+nombretg+"</strong>' ha sido diligenciada con éxito.");
              sendEmail();
     }
     
     public void enviarEditadoFormatoA(String nombretg) {
-        messagebody = String.format(bodyformat,  "<div style='color:white; font-family: sans-serif; font-size: 14px;'>La presentación de la idea del "
-                    + "Trabajo de Grado: '<strong>"+nombretg+"</strong>' ha sido editada con éxito.</div>");
+        messagebody = String.format(bodyformat,  "La presentación de la idea del "
+                    + "Trabajo de Grado: '<strong>"+nombretg+"</strong>' ha sido editada con éxito.");
         sendEmail();
     }
     
     public void enviarDiligenciadoAnteproyecto(String nombretg) {
-          messagebody = String.format(bodyformat,  "<div style='color:white; font-family: sans-serif; font-size: 14px;'>El anteproyecto del "
-                     + "Trabajo de Grado: '<strong>"+nombretg+"</strong>' ha sido diligenciado con éxito.</div>");
+          messagebody = String.format(bodyformat,  "El anteproyecto del "
+                     + "Trabajo de Grado: '<strong>"+nombretg+"</strong>' ha sido diligenciado con éxito.");
              sendEmail();
     }
     
     public void enviarEditadoAnteproyecto(String nombretg) {
-          messagebody = String.format(bodyformat,  "<div style='color:white; font-family: sans-serif; font-size: 14px;'>El anteproyecto del "
-                     + "Trabajo de Grado: '<strong>"+nombretg+"</strong>' ha sido editado con éxito.</div>");
+          messagebody = String.format(bodyformat,  "El anteproyecto del "
+                     + "Trabajo de Grado: '<strong>"+nombretg+"</strong>' ha sido editado con éxito.");
              sendEmail();
     }
     
     public void enviarDiligenciadoRevisionIdea(String nombretg) {
-          messagebody = String.format(bodyformat,  "<div style='color:white; font-family: sans-serif; font-size: 14px;'>La revisión de la idea del "
-                     + "Trabajo de Grado: '<strong>"+nombretg+"</strong>' ha sido diligenciada con éxito.</div>");
+          messagebody = String.format(bodyformat,  "La revisión de la idea del "
+                     + "Trabajo de Grado: '<strong>"+nombretg+"</strong>' ha sido diligenciada con éxito.");
              sendEmail();
     }
     
     public void enviarEditadoRevisionIdea(String nombretg) {
-          messagebody = String.format(bodyformat,  "<div style='color:white; font-family: sans-serif; font-size: 14px;'>La revisión de la idea del "
-                     + "Trabajo de Grado: '<strong>"+nombretg+"</strong>' ha sido editada con éxito.</div>");
+          messagebody = String.format(bodyformat,  "La revisión de la idea del "
+                     + "Trabajo de Grado: '<strong>"+nombretg+"</strong>' ha sido editada con éxito.");
+             sendEmail();
+    }
+    
+    public void enviarAsignacionEvaluacionanteproyecto(String nombretg) {
+          messagebody = String.format(bodyformat,  "Usted fue asignado como evaluador "
+                     + "del anteproyecto del trabajo de grado '<strong>"+nombretg+"</strong>'. A partir de la "
+                  + "fecha tiene un plazo máximo  de 15 días para realizar la evaluación del mismo.");
              sendEmail();
     }
 }
