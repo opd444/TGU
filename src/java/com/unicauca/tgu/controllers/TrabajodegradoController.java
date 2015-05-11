@@ -183,4 +183,18 @@ public class TrabajodegradoController implements Serializable {
         fases = new FasesTrabajoDeGrado(fase + 1);
     }
 
+    // Formato B
+
+    public boolean getBtnDiligenciarFormatoB() {
+        return verificarProductodeTrabajo(trabajoid.intValue(), 3);
+    }
+
+    public boolean getBtnEditarFormatoB() {
+        return true;
+    }
+
+    public boolean getBtnVerFormatoB() {
+        return true;
+    }
+    // Formato B
 }

@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <body>
 
@@ -29,28 +30,109 @@
                             <p:tab id="paso1" title="Paso 1">
                                 <p:panel header="Campos con * son obligatorios">
                                     <p:messages />
-                                    
+                                    <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="5">
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Titulo del trabajo de grado:"> </p:outputLabel>
+                                        <p:outputLabel styleClass="subtitulosFormato" value="#{formatoB.titulo}"> </p:outputLabel>                                        
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Número de estudiantes:"> </p:outputLabel>
+                                        <p:outputLabel styleClass="subtitulosFormato" value="#{formatoB.numEstudiantes}"> </p:outputLabel>                                        
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Nombre de los estudiantes:"> </p:outputLabel>
+                                        <p:outputLabel styleClass="subtitulosFormato" value="#{formatoB.est1est2}"> </p:outputLabel>                                        
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Director de trabajo:"> </p:outputLabel>
+                                        <p:outputLabel styleClass="subtitulosFormato" value="#{formatoB.director}"> </p:outputLabel>                                        
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                    </h:panelGrid>
                                 </p:panel>
                             </p:tab>
 
                             <p:tab id="paso2" title="Paso 2">
                                 <p:panel header="Campos con * son obligatorios">
                                     <p:messages />
-                                    
+                                    <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="5">
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Presentación y aportes (¿Están indicados con claridad?): *"/>
+                                        <p:selectOneRadio id="aprobadoA" value="#{formatoB.isElementoConsideradoA}">                                        
+                                            <f:selectItem itemLabel="Si" itemValue="1" />
+                                            <f:selectItem itemLabel="No" itemValue="0" />
+                                        </p:selectOneRadio>
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Objetivos (¿Establecidos claramente?): *"/>
+                                        <p:selectOneRadio id="aprobadoB" value="#{formatoB.isElementoConsideradoB}">                                        
+                                            <f:selectItem itemLabel="Si" itemValue="1" />
+                                            <f:selectItem itemLabel="No" itemValue="0" />
+                                        </p:selectOneRadio>
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Metodología (¿Se indica expilícitamente?): *"/>
+                                        <p:selectOneRadio id="aprobadoC" value="#{formatoB.isElementoConsideradoC}">                                        
+                                            <f:selectItem itemLabel="Si" itemValue="1" />
+                                            <f:selectItem itemLabel="No" itemValue="0" />
+                                        </p:selectOneRadio>
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Condiciones de entrega (¿Se establecen claramente?): *"/>
+                                        <p:selectOneRadio id="aprobadoD" value="#{formatoB.isElementoConsideradoD}">                                        
+                                            <f:selectItem itemLabel="Si" itemValue="1" />
+                                            <f:selectItem itemLabel="No" itemValue="0" />
+                                        </p:selectOneRadio>
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Monografía (¿Tiene una estructura adecuada?): *"/>
+                                        <p:selectOneRadio id="aprobadoE" value="#{formatoB.isElementoConsideradoE}">                                        
+                                            <f:selectItem itemLabel="Si" itemValue="1" />
+                                            <f:selectItem itemLabel="No" itemValue="0" />
+                                        </p:selectOneRadio>
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Cronograma (¿Se expresa en forma clara y completa?): *"/>
+                                        <p:selectOneRadio id="aprobadoF" value="#{formatoB.isElementoConsideradoF}">                                        
+                                            <f:selectItem itemLabel="Si" itemValue="1" />
+                                            <f:selectItem itemLabel="No" itemValue="0" />
+                                        </p:selectOneRadio>
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Patrocinio (¿Existe?): *"/>
+                                        <p:selectOneRadio id="aprobadoG" value="#{formatoB.isElementoConsideradoG}">                                        
+                                            <f:selectItem itemLabel="Si" itemValue="1" />
+                                            <f:selectItem itemLabel="No" itemValue="0" />
+                                        </p:selectOneRadio>
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                    </h:panelGrid>
                                 </p:panel>
                             </p:tab>
 
                             <p:tab id="paso3" title="Paso 3">
                                 <p:panel header="Campos con * son obligatorios">
-                                     <p:messages />
-                                    
+                                    <p:messages />
+
                                 </p:panel>
                             </p:tab>
 
                             <p:tab id="paso4" title="Paso 4">
-                                 <p:panel header="Confirmación de Datos">
-                                    
-                                     <p:commandButton style="display: block; margin: 0 auto;" value="Guardar" update="growl" icon="ui-icon-disk"/>
+                                <p:panel header="Confirmación de Datos">
+
+                                    <p:commandButton style="display: block; margin: 0 auto;" value="Guardar" update="growl" icon="ui-icon-disk"/>
                                 </p:panel>
                             </p:tab>
                         </p:wizard>

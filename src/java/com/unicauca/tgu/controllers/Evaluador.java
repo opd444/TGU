@@ -99,7 +99,7 @@ public class Evaluador {
     public void detalleTrabajoDeGrado(ActionEvent event) {
         
         TrabajodeGradoActual.id = 0;
-        TrabajodeGradoActual.nombreTg = "Prueba 1";
+        TrabajodeGradoActual.nombreTg = "nuevo Trabajo de Grado";
         
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
