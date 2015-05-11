@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                menuprincipal
+            </ui:define>
+
+            <ui:define name="title">
+                title
+            </ui:define>
+
+            <ui:define name="body">
+                <h:form>
+                    <p:menu model="#{menuView.model}" styleClass="menuizqroles" />                                        
+                    <p:panel styleClass="paneltrabajo" >
+                        
+                        <p:dataTable styleClass="tabladirector" 
+                                     id="tableEvaluador" 
+                                     var="tabajoGrado" 
+                                     value="#{evaluador.trabajosDeGrado(serviciosSimcaController.nombreUsuario)}" 
+                                     paginator="true" 
+                                     rows="8" 
+                                     paginatorPosition="bottom" 
+                                     rowsPerPageTemplate="8,16,24"
+                                     style="font-size: 14px;" 
+                                     emptyMessage="Lo sentimos, no se encontraron trabjos de grado asignados para evaluar."
+                                     >                            
+                            <p:column style="width: 250px;" headerText="Trabajo de Grado">
+                                <p:commandLink  value="#{tabajoGrado.trabajonombre}" actionListener="#{evaluador.detalleTrabajoDeGrado}" style="color: #045491;">                                                                     
+                                    <f:attribute name="idtrabajo" value="#{tabajoGrado.trabajoid}" />    
+                                    <f:attribute name="nombretrab" value="#{tabajoGrado.trabajonombre}" />
+                                </p:commandLink>
+                            </p:column>                            
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>                
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

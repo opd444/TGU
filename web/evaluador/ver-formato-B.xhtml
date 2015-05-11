@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                menuprincipal
+            </ui:define>
+
+            <ui:define name="title">
+                title
+            </ui:define>
+
+            <ui:define name="body">
+                <p:panel styleClass="paneltrabajo" >
+                    <div class="tituloContenido">                        
+                        <h:outputText value="FORMATO B: EVALUACIÓN DEL ANTEPROYECTO"/> <br/>
+                    </div>
+                    <p:spacer height="30"/>
+                    <h:form>
+                        <p:growl id="growl" sticky="true" showDetail="true"/>
+                        <p:wizard backLabel="Anterior" nextLabel="Siguiente" style="font-size: 14px;">
+                            <p:tab id="paso1" title="Paso 1">
+                                <p:panel header="Campos con * son obligatorios">
+                                    <p:messages />
+                                    
+                                </p:panel>
+                            </p:tab>
+
+                            <p:tab id="paso2" title="Paso 2">
+                                <p:panel header="Campos con * son obligatorios">
+                                    <p:messages />
+                                    
+                                </p:panel>
+                            </p:tab>
+
+                            <p:tab id="paso3" title="Paso 3">
+                                <p:panel header="Campos con * son obligatorios">
+                                     <p:messages />
+                                    
+                                </p:panel>
+                            </p:tab>
+
+                            <p:tab id="paso4" title="Paso 4">
+                                 <p:panel header="Confirmación de Datos">
+                                    
+                                     <p:commandButton style="display: block; margin: 0 auto;" value="Guardar" update="growl" icon="ui-icon-disk"/>
+                                </p:panel>
+                            </p:tab>
+                        </p:wizard>
+                        <p:button value="Cancelar" outcome="fases-trabajo-de-grado" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
