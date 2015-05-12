@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+        
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Coordinador" outcome="vista-coordinador" />
+                        <p:menuitem value="Coordinador" outcome="vista-coordinador" />
+                        <p:menuitem value="Trabajos de Grado" outcome="vista-coordinador" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="Ver Formato A" />
+                    </p:breadCrumb>   
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">                
+            </ui:define>
+
+            <ui:define name="body">
+                <f:metadata>
+                    <f:viewParam name="productoid" value="#{formatoA.trabajoid}" />
+                </f:metadata>
+                
+                <h:form>
+                    <p:menu styleClass="menuizqroles" style="background-color: white">
+                        <p:submenu label="Perfiles" style="background-color: white">
+                            <p:menuitem value="Jefe de Departamento" outcome="../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />
+                            <p:menuitem value="Coordinador" outcome="vista-coordinador" style="background-color: #c2dfef" />
+                        </p:submenu>
+                    </p:menu>
+                </h:form>
+
+                <p:panel styleClass="paneltrabajo" >
+                    <div class="tituloContenido">                        
+                        <h:outputText value="Formato A: Presentación de la idea"/> <br/>
+                    </div>
+                    <p:spacer height="30"/>
+                    
+                    <h:form enctype="multipart/form-data">   
+                        <p:panel header="Información Actual" style="color: #181818;">
+                            <br />
+                            <h:panelGrid columns="2" style="margin: 0 auto">
+                                <p:graphicImage value="../resources/img/logo-unicauca-negro.png" style="width: 96px; margin-right: 60px" />
+                                <p:column>
+                                    <div align="center">
+                                         <p:outputLabel value="Universidad del Cauca" styleClass="subtitulosFormato" /><br />
+                                        <p:outputLabel value="Facultad de Ingeniería Electrónica y" styleClass="subtitulosFormato" /><br />
+                                        <p:outputLabel value="Telecomunicaciones" styleClass="subtitulosFormato" />
+                                    </div>
+                                </p:column>
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid style="margin: 0 auto">
+                                <p:outputLabel value="TRABAJO DE GRADO" styleClass="subtitulosFormato" />
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid style="margin-left: 10px;">
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="FORMATO A: " styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="Presentación de la propuesta de Trabajo de Grado al Departamento" style="margin-left: 5px" />
+                                </h:panelGrid>
+                                <br />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Titulo:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{formatoA.nombretg}" style="margin-left: 5px"/>
+                                </h:panelGrid>
+                                <br />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Número de estudiantes:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{formatoA.numstud}" style="margin-left: 5px"/>
+                                </h:panelGrid>
+                                <br />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Director del trabajo:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{formatoA.nombreDirector}" style="margin-left: 5px"/>
+                                </h:panelGrid>
+                                <br />
+                                <p:outputLabel value="Objetivos:" styleClass="subtitulosFormato" />
+                                <p:outputLabel value="#{formatoA.objetivos}"/>
+                                <br />
+                                <p:outputLabel value="Aportes o contribución a las lineas de investigación y desarrollo o temas de interes del departamento:" styleClass="subtitulosFormato"  />
+                                <p:outputLabel value="#{formatoA.aportes}"/>
+                                <br />
+                                <h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+                                    <p:outputLabel value="Tiempo: " styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{formatoA.tiempo} meses." style="margin-left: 5px" />
+                                </h:panelGrid>
+                                <br />
+                                <!--<p:outputLabel value="Condiciones de entrega:" style="font-weight:bold" />-->
+                                <p:outputLabel value="Recursos requeridos:" styleClass="subtitulosFormato"  />
+                                <p:outputLabel value="#{formatoA.recursos}"/>
+                                <br />
+                                <p:outputLabel value="Definición de fuentes de financiación:" styleClass="subtitulosFormato"  />
+                                <p:outputLabel value="#{formatoA.financiacion}"/>
+                                <br />
+                                <p:outputLabel value="Observaciones:" styleClass="subtitulosFormato"  />
+                                <p:outputLabel value="#{formatoA.observaciones}"/>
+                                <br />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Fecha:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{formatoA.fecha}" style="margin-left: 5px" >
+                                        <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                    </p:outputLabel>
+                                </h:panelGrid>
+                                <br />
+                                <h:panelGrid columns="2" cellpadding="12" style="margin: 0 auto">
+                                    <p:button value="Volver" outcome="fase-presentacion-de-la-idea" icon="ui-icon-arrowthick-1-w" style="font-size: 13px;"/>                                
+                                    <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px;" />
+                                </h:panelGrid>
+                            </h:panelGrid>
+                        </p:panel>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

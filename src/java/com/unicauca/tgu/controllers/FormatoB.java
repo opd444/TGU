@@ -7,17 +7,31 @@ package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.unicauca.tgu.Auxiliares.Servicio_Email;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
+import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
+import com.unicauca.tgu.entities.Rol;
+import com.unicauca.tgu.entities.Trabajodegrado;
+import com.unicauca.tgu.entities.Usuario;
+import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
+import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -47,9 +61,21 @@ public class FormatoB {
     private String observaciones;
     private Date fecha;
     private String evaluador;
+    // Adicionales
+    private String usunomEvaluador;
+
+    private Productodetrabajo prodtrab;
+
+    private String aprobado;
 
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
+    @EJB
+    private UsuarioFacade ejbFacadeUsu;
+    @EJB
+    private TrabajodegradoFacade ejbFacadeTrabGrad;
+    @EJB
+    private UsuarioRolTrabajogradoFacade ejbFacadeUsuroltrab;
 
     public FormatoB() {
     }
@@ -57,20 +83,20 @@ public class FormatoB {
     @PostConstruct
     public void init() {
         List<Productodetrabajo> lstProdTrab = ejbFacadeProdTrab.findAll();
-        
+
         Productodetrabajo prodTrab = null;
-        
-        for(int i = 0; i < lstProdTrab.size(); i++) {
-            if(lstProdTrab.get(i).getFormatoid().getFormatoid().equals(BigDecimal.valueOf(1)) &&
-                    lstProdTrab.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+
+        for (int i = 0; i < lstProdTrab.size(); i++) {
+            if (lstProdTrab.get(i).getFormatoid().getFormatoid().equals(BigDecimal.valueOf(1))
+                    && lstProdTrab.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
                 prodTrab = lstProdTrab.get(i);
             }
         }
-        if(prodTrab != null) {
+        if (prodTrab != null) {
             Gson gson = new Gson();
             Map<String, String> decoded = gson.fromJson(prodTrab.getProductocontenido(), new TypeToken<Map<String, String>>() {
             }.getType());
-            
+
             if (decoded.get("nombre") != null) {
                 titulo = decoded.get("nombre");
             }
@@ -89,10 +115,19 @@ public class FormatoB {
                 est1est2 += (" y " + estudiante2);
             }
             if (decoded.get("nombredirector") != null) {
-                director = decoded.get("nombredirector");                
-            }            
+                director = decoded.get("nombredirector");
+            }
+            elementoConsideradoA = 0;
+            elementoConsideradoB = 0;
+            elementoConsideradoC = 0;
+            elementoConsideradoD = 0;
+            elementoConsideradoE = 0;
+            elementoConsideradoF = 0;
+            elementoConsideradoG = 0;
+            elementoConsideradoH = 0;
+            fecha = new Date();
         }
-        
+
     }
 
     public int getElementoConsideradoA() {
@@ -159,8 +194,6 @@ public class FormatoB {
         this.elementoConsideradoH = elementoConsideradoH;
     }
 
-    
-
     public String getTitulo() {
         return titulo;
     }
@@ -192,6 +225,314 @@ public class FormatoB {
     public void setEst1est2(String est1est2) {
         this.est1est2 = est1est2;
     }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getEvaluador() {
+        return evaluador;
+    }
+
+    public void setEvaluador(String evaluador) {
+        this.evaluador = evaluador;
+    }
+
+    public String getAprobado() {
+        if(elementoConsideradoH == 1) {
+            aprobado = "Aprobado";
+        }
+        if(elementoConsideradoH == 0) {
+            aprobado = "No Aprobado";
+        }
+        return aprobado;
+    }
     
-    
+    public String elementocosiderado(int elemento) {
+        if(elemento == 1) {
+            return "Si";
+        }
+        if(elemento == 0) {
+            return "No";
+        }
+        return null;
+    }
+
+    public void buscarEvaluador(String evaluador) {
+        usunomEvaluador = evaluador;
+        Usuario usu = ejbFacadeUsu.buscarPorUsuarionombre(evaluador);
+        String nombres = usu.getPersonanombres();
+        String apellidos = usu.getPersonaapellidos();
+        this.evaluador = nombres + " " + apellidos;
+    }
+
+    public String obtenerDatos() {
+        Map<String, String> map = new HashMap<String, String>();
+
+        map.put("titulo", titulo);
+        map.put("estudiante1", estudiante1);
+        if (estudiante2 != null) {
+            map.put("estudiante2", estudiante2);
+        }
+        map.put("director", director);
+        map.put("elementoConsideradoA", String.valueOf(elementoConsideradoA));
+        map.put("elementoConsideradoB", String.valueOf(elementoConsideradoB));
+        map.put("elementoConsideradoC", String.valueOf(elementoConsideradoC));
+        map.put("elementoConsideradoD", String.valueOf(elementoConsideradoD));
+        map.put("elementoConsideradoE", String.valueOf(elementoConsideradoE));
+        map.put("elementoConsideradoF", String.valueOf(elementoConsideradoF));
+        map.put("elementoConsideradoG", String.valueOf(elementoConsideradoG));
+        map.put("elementoConsideradoH", String.valueOf(elementoConsideradoH));
+        map.put("observaciones", observaciones);
+        map.put("fecha", fecha.toString());
+        map.put("evaluador", evaluador);
+
+        Gson gson = new Gson();
+        String contenido = gson.toJson(map, Map.class);
+
+        return contenido;
+    }
+
+    public String btnGuardar() {
+        try {
+
+            String contenido = obtenerDatos();
+            Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
+
+            UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);
+            Usuario usuEvaluador = null;
+
+            if (usunomEvaluador != null) {
+                usuEvaluador = ejbFacadeUsu.buscarPorUsuarionombre(usunomEvaluador);
+
+                usuroltg.setRolid(new Rol(BigDecimal.valueOf(4)));                            //agregando al Evaluador
+                usuroltg.setTrabajoid(trab);
+                usuroltg.setPersonacedula(new Usuario(usuEvaluador.getPersonacedula()));
+
+                ejbFacadeUsuroltrab.create(usuroltg);
+            }
+
+            Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.ZERO, contenido);
+            prod.setFormatoid(new Formatoproducto(BigDecimal.valueOf(3)));
+            prod.setTrabajoid(trab);
+            ejbFacadeProdTrab.create(prod);
+
+//             Servicio_Email se = new Servicio_Email();
+//             se.setSubject("Formato B del Trabajo de Grado: '"+titulo+"' ha sido diligenciada.");
+//
+//             if(est1!=null)
+//             {  
+//             se.setTo(est1.getPersonacorreo());
+//             se.enviarDiligenciadoRevisionIdea(nombretg);
+//             }
+//             if(est2!=null)
+//             {
+//             se.setTo(est2.getPersonacorreo());
+//             se.enviarDiligenciadoRevisionIdea(nombretg);
+//             }
+//             if(TrabajodeGradoActual.director!=null)
+//             {
+//             se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
+//             se.enviarDiligenciadoRevisionIdea(nombretg);
+//             }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡Formato B diligenciado con éxito!", "Se le ha enviado un correo notificando dicha operación."));
+            return "fases-trabajo-de-grado";
+        } catch (Exception e) {
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡Error!", "Lo sentimos, no se pudo guardar el formato B."));
+            //JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            return "";
+        }
+    }
+
+    public String btnEditar() {
+        try {
+            String contenido = obtenerDatos();
+
+            prodtrab.setProductocontenido(contenido);
+//            formatoactual.setProductoaprobado(BigInteger.valueOf(getResultado()));
+
+            ejbFacadeProdTrab.edit(prodtrab);
+
+//            if (getResultado() == 1) //Si fue aprobado
+//            {
+//                List<TrabajogradoFase> lstTrabfase = ejbFacadeTrabajoGradFase.ObtenerTrabajoFrasePor_trabajoID_faseID(TrabajodeGradoActual.id, 1);
+//                TrabajogradoFase trabfase = lstTrabfase.get(0);
+//                trabfase.setEstado(BigInteger.ONE);
+//                ejbFacadeTrabajoGradFase.edit(trabfase);
+//            }
+
+            /*
+             Servicio_Email se = new Servicio_Email();
+             se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido editado.");
+
+             if(est1!=null)
+             {  
+             se.setTo(est1.getPersonacorreo());
+             se.enviarEditadoRevisionIdea(nombretg);
+             }
+             if(est2!=null)
+             {
+             se.setTo(est2.getPersonacorreo());
+             se.enviarEditadoRevisionIdea(nombretg);
+             }
+             if(TrabajodeGradoActual.director!=null)
+             {
+             se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
+             se.enviarEditadoRevisionIdea(nombretg);
+             }
+             */
+//            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
+            return "fases-trabajo-de-grado";
+        } catch (Exception e) {
+//            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            return null;
+        }
+    }
+
+    public void prepararEdicion() {
+        List<Productodetrabajo> lstProdTrab = ejbFacadeProdTrab.findAll();
+
+        for (int i = 0; i < lstProdTrab.size(); i++) {
+            if (lstProdTrab.get(i).getFormatoid().getFormatoid().equals(BigDecimal.valueOf(3))
+                    && lstProdTrab.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+
+                prodtrab = lstProdTrab.get(i);
+                Gson gson = new Gson();
+                Map<String, String> decoded = gson.fromJson(prodtrab.getProductocontenido(), new TypeToken<Map<String, String>>() {
+                }.getType());
+
+                if (decoded.get("evaluador") != null && decoded.get("evaluador").equals(evaluador)) {
+                    if (decoded.get("titulo") != null) {
+                        titulo = decoded.get("titulo");
+                    }
+                    if (decoded.get("estudiante1") != null) {
+                        estudiante1 = decoded.get("estudiante1");
+                    }
+                    if (decoded.get("estudiante2") != null) {
+                        estudiante1 = decoded.get("estudiante2");
+                    }
+                    if (decoded.get("director") != null) {
+                        director = decoded.get("director");
+                    }
+                    if (decoded.get("elementoConsideradoA") != null) {
+                        elementoConsideradoA = Integer.valueOf(decoded.get("elementoConsideradoA"));
+                    }
+                    if (decoded.get("elementoConsideradoB") != null) {
+                        elementoConsideradoB = Integer.valueOf(decoded.get("elementoConsideradoB"));
+                    }
+                    if (decoded.get("elementoConsideradoC") != null) {
+                        elementoConsideradoC = Integer.valueOf(decoded.get("elementoConsideradoC"));
+                    }
+                    if (decoded.get("elementoConsideradoD") != null) {
+                        elementoConsideradoD = Integer.valueOf(decoded.get("elementoConsideradoD"));
+                    }
+                    if (decoded.get("elementoConsideradoE") != null) {
+                        elementoConsideradoE = Integer.valueOf(decoded.get("elementoConsideradoE"));
+                    }
+                    if (decoded.get("elementoConsideradoF") != null) {
+                        elementoConsideradoF = Integer.valueOf(decoded.get("elementoConsideradoF"));
+                    }
+                    if (decoded.get("elementoConsideradoG") != null) {
+                        elementoConsideradoG = Integer.valueOf(decoded.get("elementoConsideradoG"));
+                    }
+                    if (decoded.get("elementoConsideradoH") != null) {
+                        elementoConsideradoH = Integer.valueOf(decoded.get("elementoConsideradoH"));
+                    }
+                    if (decoded.get("observaciones") != null) {
+                        observaciones = decoded.get("observaciones");
+                    }
+                    if (decoded.get("fecha") != null) {
+                        fecha = new Date();
+                    }
+                    if (decoded.get("evaluador") != null) {
+                        evaluador = decoded.get("evaluador");
+                    }
+
+                    return;
+                }
+            }
+
+        }
+    }
+    public void btnVerFormatoB(int numFormatoB) {
+        List<Productodetrabajo> lstProdTrab = ejbFacadeProdTrab.findAll();
+        
+        int num = 0;
+
+        for (int i = 0; i < lstProdTrab.size(); i++) {
+            if (lstProdTrab.get(i).getFormatoid().getFormatoid().equals(BigDecimal.valueOf(3))
+                    && lstProdTrab.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+                num += 1;
+                prodtrab = lstProdTrab.get(i);
+                Gson gson = new Gson();
+                Map<String, String> decoded = gson.fromJson(prodtrab.getProductocontenido(), new TypeToken<Map<String, String>>() {
+                }.getType());
+
+                if (decoded.get("evaluador") != null && decoded.get("evaluador").equals(evaluador)) {
+                    if (decoded.get("titulo") != null) {
+                        titulo = decoded.get("titulo");
+                    }
+                    if (decoded.get("estudiante1") != null) {
+                        estudiante1 = decoded.get("estudiante1");
+                    }
+                    if (decoded.get("estudiante2") != null) {
+                        estudiante1 = decoded.get("estudiante2");
+                    }
+                    if (decoded.get("director") != null) {
+                        director = decoded.get("director");
+                    }
+                    if (decoded.get("elementoConsideradoA") != null) {
+                        elementoConsideradoA = Integer.valueOf(decoded.get("elementoConsideradoA"));
+                    }
+                    if (decoded.get("elementoConsideradoB") != null) {
+                        elementoConsideradoB = Integer.valueOf(decoded.get("elementoConsideradoB"));
+                    }
+                    if (decoded.get("elementoConsideradoC") != null) {
+                        elementoConsideradoC = Integer.valueOf(decoded.get("elementoConsideradoC"));
+                    }
+                    if (decoded.get("elementoConsideradoD") != null) {
+                        elementoConsideradoD = Integer.valueOf(decoded.get("elementoConsideradoD"));
+                    }
+                    if (decoded.get("elementoConsideradoE") != null) {
+                        elementoConsideradoE = Integer.valueOf(decoded.get("elementoConsideradoE"));
+                    }
+                    if (decoded.get("elementoConsideradoF") != null) {
+                        elementoConsideradoF = Integer.valueOf(decoded.get("elementoConsideradoF"));
+                    }
+                    if (decoded.get("elementoConsideradoG") != null) {
+                        elementoConsideradoG = Integer.valueOf(decoded.get("elementoConsideradoG"));
+                    }
+                    if (decoded.get("elementoConsideradoH") != null) {
+                        elementoConsideradoH = Integer.valueOf(decoded.get("elementoConsideradoH"));
+                    }
+                    if (decoded.get("observaciones") != null) {
+                        observaciones = decoded.get("observaciones");
+                    }
+                    if (decoded.get("fecha") != null) {
+                        fecha = new Date();
+                    }
+                    if (decoded.get("evaluador") != null) {
+                        evaluador = decoded.get("evaluador");
+                    }
+                    if(num == numFormatoB) {
+                        return;
+                    }                    
+                }
+            }
+
+        }
+    }
 }

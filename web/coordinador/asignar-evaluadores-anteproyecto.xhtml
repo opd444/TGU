@@ -42,8 +42,9 @@
                 <h:form>
                     <p:menu styleClass="menuizqroles" style="background-color: azure;">
                         <p:submenu label="Perfiles">
-                            <p:menuitem value="Director" action="vista-director" style="background-color: #c2dfef" />
-                            <p:menuitem value="Jefe de Departamento" action="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />                            
+                            <p:menuitem value="Director" action="vista-director"/>
+                            <p:menuitem value="Jefe de Departamento" action="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />
+                            <p:menuitem value="Coordinador" outcome="vista-coordinador.xhtml"  style="background-color: #c2dfef"/>
                         </p:submenu>                                
                     </p:menu>
                 </h:form>
@@ -54,7 +55,8 @@
                     </div>
                     <p:spacer height="30"/>
                     
-                    <h:form enctype="multipart/form-data">   
+                    <h:form enctype="multipart/form-data"> 
+                        <p:growl id="growl" sticky="true" showDetail="true"/>
                         <p:panel header="Información Actual" style="color: #181818;">
                             <br />
                             <h:panelGrid columns="2" style="margin: 0 auto">
@@ -92,10 +94,50 @@
                                     <p:fileDownload value="#{anteproyecto.filedown}" />
                                     <p:graphicImage value="descargar.png" library="img" />
                                 </p:commandLink>
+                                <p:outputLabel styleClass="subtitulosFormato" value="Docente Evaluador 1:" />
+                                <p:autoComplete value="#{anteproyecto.doc1}" label="Docente 1"
+                                                        completeMethod="#{anteproyecto.complete}"
+                                                        var="est"
+                                                        itemValue="#{est}" dropdown="true"
+                                                        forceSelection="true"
+                                                        itemLabel="#{est.personanombres} #{est.personaapellidos}"
+                                                        converter="usuarioConverter"
+                                                        cache="true"
+                                                        queryDelay="750"
+                                                        maxResults="8"
+                                                        required="true"
+                                                        requiredMessage="Por favor ingrese el nombre del primer evaluador"
+                                                        size="24"
+                                                        >
+                                            <p:column>
+                                                #{est.personanombres} #{est.personaapellidos}
+                                            </p:column>
+                                        </p:autoComplete> 
+                                <p:outputLabel styleClass="subtitulosFormato" value="Docente Evaluador 2:" />
+                                <p:autoComplete value="#{anteproyecto.doc2}" label="Docente 2"
+                                                        completeMethod="#{anteproyecto.complete}"
+                                                        var="est"
+                                                        itemValue="#{est}" dropdown="true"
+                                                        forceSelection="true"
+                                                        itemLabel="#{est.personanombres} #{est.personaapellidos}"
+                                                        converter="usuarioConverter"
+                                                        cache="true"
+                                                        queryDelay="750"
+                                                        maxResults="8"
+                                                        required="true"
+                                                        requiredMessage="Por favor ingrese el nombre del segundo evaluador."
+                                                        size="24"
+                                                        >                                  
+                                            <p:column>
+                                                #{est.personanombres} #{est.personaapellidos}
+                                            </p:column>
+                                        </p:autoComplete> 
                             </h:panelGrid>
                             <br />
-                            <h:panelGrid style="margin: 0 auto;">  
-                                <p:button value="Volver" outcome="fase-realizacion-anteproyecto" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>
+                            <h:panelGrid  columns="2" style="margin: 0 auto;" cellpadding="5">  
+                                <p:button value="Cancelar" outcome="fases-trabajo-de-grado" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>
+                                <p:commandButton value="Guardar"  actionListener="#{anteproyecto.guardarevaluadores()}" icon="ui-icon-disk" style="font-size: 13px; width: 120px;"
+                                                 update="growl"/>
                             </h:panelGrid> 
                         </p:panel>
                     </h:form>

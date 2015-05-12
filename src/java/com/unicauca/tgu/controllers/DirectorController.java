@@ -9,6 +9,7 @@ import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.Usuario;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
+import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.io.IOException;
 
@@ -22,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
@@ -40,6 +42,9 @@ public class DirectorController implements Serializable {
 
     @EJB
     private com.unicauca.tgu.jpacontroller.UsuarioFacade ejbFacadeusuario;
+    
+    @EJB
+    private TrabajogradoFaseFacade ejbFacadeTraFase;
 
     private List<FormatoTablaDirector> trabs;
     //int modo;             // 0 para la seccion de trabajos en curso y 1 para trabajos terminados
@@ -234,5 +239,36 @@ public class DirectorController implements Serializable {
     public String getTitulotablaDirector() {
         return titulotablaDirector;
     }
+    public void btnAvalar() { // TODO Refactorizar con cosulta directa en el facade
+        List<TrabajogradoFase> lst = ejbFacadeTraFase.findAll();
+        
+        for(int i = 0; i < lst.size(); i++) {
+            if(lst.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+                if(lst.get(i).getFaseid().getFaseid().equals(BigDecimal.valueOf(2))) {
+                    lst.get(i).setEstado(BigInteger.ONE);
+                    ejbFacadeTraFase.edit(lst.get(i));
+                    
+                }
+                if(lst.get(i).getFaseid().getFaseid().equals(BigDecimal.valueOf(3))) {
+                    lst.get(i).setEstado(BigInteger.ZERO);
+                    ejbFacadeTraFase.edit(lst.get(i));
+                    
+                }
+            }
+        }     
+        //enviar correo al coordinador
+        
+        /*Servicio_Email se = new Servicio_Email();
+            se.setSubject("El Anteproyecto del trabajo de grado: '"+TrabajodeGradoActual.nombreTg+"' ha sido avalado.");
 
+            if(director!=null)
+            {  
+                se.setTo(director.getPersonacorreo());
+                se.enviarAvaladoAnteproyecto(TrabajodeGradoActual.nombreTg);
+            }
+        */
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Anteproyecto Avalado con Exito", ""));
+        
+    }
 }

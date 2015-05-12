@@ -1,5 +1,8 @@
 package com.unicauca.tgu.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.unicauca.tgu.Auxiliares.FormatoBActual;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.entities.FasesTrabajoDeGrado;
 import com.unicauca.tgu.entities.Productodetrabajo;
@@ -7,12 +10,17 @@ import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.entities.TrabajogradoFase;
+import com.unicauca.tgu.entities.Usuario;
+import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -26,10 +34,15 @@ public class TrabajodegradoController implements Serializable {
     private Trabajodegrado trabajo;
     private FasesTrabajoDeGrado fases;
 
+    private String usunomEval;
+    @EJB
+    private UsuarioFacade ejbFacadeUsu;
     @EJB
     private ProductodetrabajoFacade ejbFacadePro;
     @EJB
     private TrabajogradoFaseFacade ejbFacadeTrabFase;
+    @EJB
+    private UsuarioRolTrabajogradoFacade ejbFacadeUsuRolTrab;
 
     @EJB
     private com.unicauca.tgu.jpacontroller.TrabajodegradoFacade ejbFacade;
@@ -184,17 +197,85 @@ public class TrabajodegradoController implements Serializable {
     }
 
     // Formato B
-
     public boolean getBtnDiligenciarFormatoB() {
-        return verificarProductodeTrabajo(trabajoid.intValue(), 3);
+        List<Productodetrabajo> lstProdTrab = ejbFacadePro.findAll();
+
+        for (int i = 0; i < lstProdTrab.size(); i++) {
+            if (lstProdTrab.get(i).getFormatoid().getFormatoid().equals(BigDecimal.valueOf(3))
+                    && lstProdTrab.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+
+                Productodetrabajo prodtrab = lstProdTrab.get(i);
+                Gson gson = new Gson();
+                Map<String, String> decoded = gson.fromJson(prodtrab.getProductocontenido(), new TypeToken<Map<String, String>>() {
+                }.getType());
+
+                Usuario usu = ejbFacadeUsu.buscarPorUsuarionombre(usunomEval);
+                String nombres = usu.getPersonanombres();
+                String apellidos = usu.getPersonaapellidos();
+                String evaluador = nombres + " " + apellidos;
+
+                if (decoded.get("evaluador") != null && decoded.get("evaluador").equals(evaluador)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public boolean getBtnEditarFormatoB() {
-        return true;
+        return !getBtnDiligenciarFormatoB();
     }
 
     public boolean getBtnVerFormatoB() {
+        return !getBtnDiligenciarFormatoB();
+    }
+
+    public boolean getBtnDescargarFormatoB() {
+        return !getBtnDiligenciarFormatoB();
+    }
+
+    public String getUsunomEval() {
+        return usunomEval;
+    }
+
+    public void setUsunomEval(String usunomEval) {
+        this.usunomEval = usunomEval;
+    }
+    
+    public int numFormatosB() {
+        List<UsuarioRolTrabajogrado> lst = ejbFacadeUsuRolTrab.findAll();
+        
+        int num = 0;
+        
+        for(int i = 0; i < lst.size(); i++) {
+            if(lst.get(i).getRolid().getRolid().equals(BigDecimal.valueOf(4)) && 
+                    lst.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+                num += 1;
+            }
+        }
+        return num;
+    }
+    
+    public boolean btnVerFormatoB1() {
+        if(numFormatosB() == 1) {
+            
+            return false;
+        }
         return true;
     }
+
+    public boolean btnVerFormatoB2() {
+        if(numFormatosB() == 2) {            
+            return false;
+        }
+        return true;
+    }
+    public void btnVerFotmatoBnum1() {
+        FormatoBActual.numFormatoB = 1;
+    }
+    public void btnVerFotmatoBnum2() {
+        FormatoBActual.numFormatoB = 2;
+    }
+
     // Formato B
 }

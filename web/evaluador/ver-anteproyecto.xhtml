@@ -24,12 +24,11 @@
                 </p:dialog>
                 <h:form>
                    <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Coordinador" outcome="vista-coordinador" />
-                    <p:menuitem value="Coordinador" outcome="vista-coordinador" />                      
-                    <p:menuitem value="Fases del Trabajo de Grado" 
-                                outcome="fases-trabajo-de-grado" />
-                    <p:menuitem value="Ver Anteproyecto" 
-                                outcome="ver-anteproyecto" />
+                    <p:menuitem value="Evaluador" outcome="index" />
+                    <p:menuitem value="Evaluador" outcome="index" />                      
+                    <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-realizacion-anteproyecto" />
+                    <p:menuitem value="2. Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" />
+                    <p:menuitem value="Ver Anteproyecto" />
                 </p:breadCrumb>              
                 </h:form>
             </ui:define>
@@ -40,17 +39,13 @@
 
             <ui:define name="body">
                 <h:form>
-                    <p:menu styleClass="menuizqroles" style="background-color: azure;">
-                        <p:submenu label="Perfiles">
-                            <p:menuitem value="Director" action="vista-director" style="background-color: #c2dfef" />
-                            <p:menuitem value="Jefe de Departamento" action="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />                            
-                        </p:submenu>                                
-                    </p:menu>
+                    <p:menu model="#{menuView.model}" styleClass="menuizqroles" />
                 </h:form>
+                
                 <p:panel styleClass="paneltrabajo" >
                     
                     <div class="tituloContenido">                        
-                        <h:outputText value="Ver Anteproyecto"/> <br/>
+                        <h:outputText value="Formato: Ver Anteproyecto"/> <br/>
                     </div>
                     <p:spacer height="30"/>
                     
@@ -101,8 +96,6 @@
                     </h:form>
                 </p:panel>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

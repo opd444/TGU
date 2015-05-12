@@ -13,10 +13,11 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Evaluador" outcome="index" />
-                        <p:menuitem value="Evaluador" outcome="index" />                        
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="Estudiante" outcome="vista-estudiante" />                                        
+                        <p:menuitem value="Estudiante" outcome="vista-estudiante" />                    
+                        <p:menuitem value="Trabajos de Grado" outcome="vista-estudiante" />                                               
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="vista-estudiante" />
+                        <p:menuitem value="3. Evaluación del Anteproyecto" outcome="vista-estudiante" />
                         <p:menuitem value="Ver Formato B" outcome="ver-formato-B" />
                     </p:breadCrumb>              
                 </h:form>
@@ -26,10 +27,14 @@
             </ui:define>
 
             <ui:define name="body">
-                #{formatoB.buscarEvaluador(serviciosSimcaController.nombreUsuario)}
-                #{formatoB.prepararEdicion()}
+
+                #{formatoB.btnVerFormatoB(1)}
                 <h:form>
-                    <p:menu model="#{menuView.model}" styleClass="menuizqroles" />                                        
+                    <p:menu styleClass="menuizqroles" style="background-color: white">
+                        <p:submenu label="Perfiles" style="background-color: white">
+                            <p:menuitem value="Estudiante" outcome="vista-estudiante" style="background-color: #c2dfef" />                            
+                        </p:submenu>                                
+                    </p:menu>                         
                 </h:form>
 
                 <p:panel styleClass="paneltrabajo" >
@@ -146,7 +151,7 @@
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2" cellpadding="12" style="margin: 0 auto">
-                                    <p:button value="Volver" outcome="fases-trabajo-de-grado" icon="ui-icon-arrowthick-1-w" style="font-size: 13px;"/>                                
+                                    <p:button value="Volver" outcome="3-evaluacion-anteproyecto" icon="ui-icon-arrowthick-1-w" style="font-size: 13px;"/>                                
                                     <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px;" />
                                 </h:panelGrid>
                             </h:panelGrid>

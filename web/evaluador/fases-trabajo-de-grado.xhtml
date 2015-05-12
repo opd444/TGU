@@ -12,14 +12,20 @@
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
-                menuprincipal
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Evaluador" outcome="index" />
+                        <p:menuitem value="Evaluador" outcome="index" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />                        
+                    </p:breadCrumb>              
+                </h:form>
             </ui:define>
 
-            <ui:define name="title">
-                title
+            <ui:define name="title">                
             </ui:define>
 
             <ui:define name="body">
+                #{trabajodegradoController.setUsunomEval(serviciosSimcaController.nombreUsuario)}
                 <h:form>
                     <p:menu model="#{menuView.model}" styleClass="menuizqroles" />                                        
                     <p:panel styleClass="paneltrabajo" >
@@ -37,8 +43,8 @@
                                 <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
 
 
-                                <p:button value="Presentación de la Idea" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
-                                <p:button value="Realización del Anteproyecto"  disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:button value="Presentación de la Idea" outcome="fase-presentacion-de-la-idea" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:button value="Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
                                 <p:commandButton type="button" value="Evaluación del Anteproyecto" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" disabled="#{trabajodegradoController.fases.primeraFase}" >                            
                                     <p:effect type="highlight" event="click" for="pnlEvaluacion">
                                         <f:param name="mode" value="'show'" />
@@ -57,7 +63,7 @@
                                 <p:button value="Diligenciar" icon="ui-icon-document" href="diligenciar-formato-B.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnDiligenciarFormatoB}" style="width: 120px;" />          
                                 <p:button value="Editar" icon="ui-icon-pencil" href="editar-formato-B.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnEditarFormatoB}" style="width: 120px;" />
                                 <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-B.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoB}" style="width: 120px;" />                                
-                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
+                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnDescargarFormatoB}" style="width: 120px;" />
                             </h:panelGrid>
                         </p:panel>
                     </p:panel>

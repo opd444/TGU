@@ -2,8 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
 
     <body>
@@ -11,31 +11,24 @@
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
-                <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Director" outcome="vista-director" />
-                    <p:menuitem value="Director" outcome="vista-director" />
-                    <p:menuitem value="Trabajos de Grado" 
-                                outcome="vista-director" />                        
-                    <p:menuitem value="Fases del Trabajo de Grado" 
-                                outcome="2-realizacion-anteproyecto" />
-                    <p:menuitem value="2. Realizacion del Anteproyecto" 
-                                outcome="2-realizacion-anteproyecto" />
-                </p:breadCrumb>
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Evaluador" outcome="index" />
+                        <p:menuitem value="Evaluador" outcome="index" />
+                        <p:menuitem value="Trabajo de Grado" outcome="index" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-realizacion-anteproyecto" />
+                        <p:menuitem value="2. Realización del Anteproyecto" />
+                    </p:breadCrumb>
+                </h:form>
             </ui:define>
 
-            <ui:define name="title">                                
+            <ui:define name="title">
             </ui:define>
 
-            <ui:define name="body">                                               
-                               
+            <ui:define name="body">
                 <h:form>                                                           
 
-                    <p:menu styleClass="menuizqroles" style="background-color: white">
-                        <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" outcome="vista-director" style="background-color: #c2dfef" />
-                            <p:menuitem value="Jefe de Departamento" outcome="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />
-                        </p:submenu>                                
-                    </p:menu>
+                    <p:menu model="#{menuView.model}" styleClass="menuizqroles" />  
 
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
@@ -52,7 +45,7 @@
                                 <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
                                 <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
 
-                                <p:button value="Presentación de la Idea" outcome="fases-trabajo-de-grado" style="width: 105px;height: 96px; font-size: 13px;" disabled="#{trabajodegradoController.fases.primeraFase}" />                            
+                                <p:button value="Presentación de la Idea" outcome="fase-presentacion-de-la-idea" style="width: 105px;height: 96px; font-size: 13px;" disabled="#{trabajodegradoController.fases.primeraFase}" />                            
 
                                 <p:commandButton type="button" value="Realización del Anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" >
                                     <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
@@ -60,7 +53,7 @@
                                     </p:effect>
                                 </p:commandButton>
 
-                                <p:button value="Evaluación del Anteproyecto" outcome="3-evaluacion-anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Anteproyecto" outcome="fases-trabajo-de-grado" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Ejecución del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Evaluación del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Finalizado" href="#" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
@@ -75,19 +68,19 @@
                             </p:commandButton>-->
                             <h:panelGrid columns="5" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Anteproyecto:" style="font-weight: bold;" />                                                                
-                                <p:button value="Editar" icon="ui-icon-pencil" href="editar-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnEditarAnteproyecto}" style="width: 120px;" />
                                 <p:button value="Ver" icon="ui-icon-comment" href="ver-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerAnteproyecto}" style="width: 120px;" />
                                 <p:commandButton id="btndesc" value="Descargar" rendered="#{anteproyecto.filedown != null}"
                                                  ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
                                                  icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">
                                     <p:fileDownload value="#{anteproyecto.filedown}" />
                                 </p:commandButton>
-                                <p:commandButton id="btnAval" value="Avalar" icon="ui-icon-check" action="#{trabajogradoFaseController.btnAvalar()}" style="width: 120px;" />
                             </h:panelGrid>
                         </p:panel>
                     </p:panel>
                 </h:form>
             </ui:define>
+
         </ui:composition>
+
     </body>
 </html>

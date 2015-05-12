@@ -11,11 +11,16 @@
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
-                menuprincipal
+                <h:form>
+                    <p:breadCrumb id="migaDirector" styleClass="migaDePan">
+                        <p:menuitem value="Evaluador" outcome="index" />
+                        <p:menuitem value="Evaluador" outcome="index" />
+                        <p:menuitem value="Anteproyectos" />
+                    </p:breadCrumb>
+                </h:form>
             </ui:define>
 
             <ui:define name="title">
-                title
             </ui:define>
 
             <ui:define name="body">
@@ -23,6 +28,14 @@
                     <p:menu model="#{menuView.model}" styleClass="menuizqroles" />                                        
                     <p:panel styleClass="paneltrabajo" >
                         
+                        <h:panelGrid style="margin: 0 auto;">
+                            <p:menubar styleClass="menubarstyleClass">
+                                <p:menuitem style="border-color: #808080" value="Ver Anteproyectos por evaluar" icon="ui-icon-folder-open"/>
+                            </p:menubar>
+                        </h:panelGrid>
+                        <p:spacer height="25"/>
+                        <h:outputLabel id="tituloVistaDirector" class="tituloContenido" value="Anteproyectos por evaluar" />        
+                        <p:spacer height="10"/>                        
                         <p:dataTable styleClass="tabladirector" 
                                      id="tableEvaluador" 
                                      var="tabajoGrado" 
@@ -32,7 +45,7 @@
                                      paginatorPosition="bottom" 
                                      rowsPerPageTemplate="8,16,24"
                                      style="font-size: 14px;" 
-                                     emptyMessage="Lo sentimos, no se encontraron trabjos de grado asignados para evaluar."
+                                     emptyMessage="Lo sentimos, no se encontraron trabajos de grado asignados para evaluar."
                                      >                            
                             <p:column style="width: 250px;" headerText="Trabajo de Grado">
                                 <p:commandLink  value="#{tabajoGrado.trabajonombre}" actionListener="#{evaluador.detalleTrabajoDeGrado}" style="color: #045491;">                                                                     

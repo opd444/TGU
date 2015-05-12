@@ -160,4 +160,10 @@ public class Servicio_Email {
                   + "fecha tiene un plazo máximo  de 15 días para realizar la evaluación del mismo.");
              sendEmail();
     }
+    
+    public void enviarAvaladoAnteproyecto(String nombreTg) {
+         messagebody = String.format(bodyformat,  "El anteproyecto del trabajo de grado '<strong>"+nombreTg+"</strong>' ha sido avalado,"
+                  + " y ya se encuentra disponible para la asignacion de evaluadores.");
+             sendEmail();
+    }
 }

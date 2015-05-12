@@ -9,22 +9,18 @@
     <body>
 
         <ui:composition template="./../plantillas/plantilla.xhtml">
-
-            <ui:define name="CuadroDeBotonesSesion">
-                CuadroDeBotonesSesion
-            </ui:define>
-
+            
             <ui:define name="menuprincipal">
                <h:form id="formMigaDirector">
                     <p:breadCrumb id="migaDirector" styleClass="migaDePan">
                         <p:menuitem value="Coordinador" outcome="vista-coordinador" />
                         <p:menuitem value="Coordinador" outcome="vista-coordinador" />
+                        <p:menuitem value="Anteproyectos" />
                     </p:breadCrumb>
                 </h:form>
             </ui:define>
 
             <ui:define name="title">
-                
             </ui:define>
 
             <ui:define name="body">
@@ -44,7 +40,7 @@
                             </p:menubar>
                         </h:panelGrid>
                         <p:spacer height="25"/>
-                        <h:outputLabel id="tituloVistaDirector" class="tituloContenido" value="anteprot" />        
+                        <h:outputLabel id="tituloVistaDirector" class="tituloContenido" value="Anteproyectos" />        
                         <p:spacer height="10"/>
                         <p:dataTable  styleClass="tabladirector" id="tablacoord" var="car" value="#{coordinadorController.anteproys}"
                                       paginator="true" rows="5" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24" emptyMessage="Lo sentimos, no hay trabajos registrados." style="font-size: 14px;">
