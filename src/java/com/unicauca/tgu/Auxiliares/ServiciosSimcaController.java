@@ -73,13 +73,14 @@ public class ServiciosSimcaController {
             context.getExternalContext().getSessionMap().put("login", nombreUsuario);
 
             try {
+                
+                usulog = ejbFacadeusuario.buscarPorUsuarionombre(nombreUsuario);
+                
                 if(nombreUsuario.equals("pmage") || nombreUsuario.equals("wpantoja") || nombreUsuario.equals("cgonzals")) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("evaluador/index.xhtml");
                     return null;
                 }
-                
-                usulog = ejbFacadeusuario.buscarPorUsuarionombre(nombreUsuario);
-                
+            
                 if (usu.getRol().equals("Docente")) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("director/vista-director.xhtml");
                 }

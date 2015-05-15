@@ -142,7 +142,23 @@ public class TrabajodegradoController implements Serializable {
             return true;
         }
     }
-
+    
+    public String getTituloBtnAsignacionEval()
+          {
+        List<Productodetrabajo> lst = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 2);
+    
+        if (lst.size() > 0) {
+            Gson gson = new Gson();
+            Map<String, String> map = gson.fromJson(lst.get(0).getProductocontenido(), new TypeToken<Map<String, String>>() {
+            }.getType());        
+            
+            if(map.containsKey("iddoc1") || map.containsKey("iddoc2"))
+                {
+                    return "Editar Asignación de Evaluadores";
+                }
+          } 
+        return "Asignación de Evaluadores";
+          }
     public void incializar() {
         habilitarfases();
     }

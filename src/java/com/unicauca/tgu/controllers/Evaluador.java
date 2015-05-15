@@ -7,19 +7,24 @@ package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
+import com.unicauca.tgu.FormatosTablas.FormatoTablaJefe;
 import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.Usuario;
+import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -36,29 +41,28 @@ import javax.faces.event.ActionEvent;
 public class Evaluador {
 
     @EJB
-    ProductodetrabajoFacade ejbFacadeProdTrab;
+    private ProductodetrabajoFacade ejbFacadeProdTrab;
     @EJB
-    UsuarioFacade ejbFacadeUsu;
-
+    private UsuarioFacade ejbFacadeUsu;
+    
+    @EJB
+    private com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade ejbFacadeUsuRolTg;
+    
+    List<FormatoTablaJefe> trabajosporeval;
+    
+    private Usuario evaluador;
     /**
      * Creates a new instance of CoordinadorProg
      */
     public Evaluador() {
     }
 
-    private List<Productodetrabajo> productosDeTrabajo() {
-        List<Productodetrabajo> lst = ejbFacadeProdTrab.findAll();
-
-        List<Productodetrabajo> lstProdTrab = new ArrayList();
-
-        for (int i = 0; i < lst.size(); i++) {
-            // ToDo la logica puede cambiar
-            if (lst.get(i).getFormatoid().getFormatoid().equals(BigDecimal.valueOf(2))) {
-                lstProdTrab.add(lst.get(i));
-            }
-        }
-        return lstProdTrab;
-    }
+     @PostConstruct
+    public void init() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ServiciosSimcaController s =  (ServiciosSimcaController)context.getApplication().evaluateExpressionGet(context, "#{serviciosSimcaController}", ServiciosSimcaController.class);
+        evaluador = s.getUsulog();       
+    }   
 
     private boolean trabajoDeGradoAsignado(String usuNombre, String productoContenido) {
         Gson gson = new Gson();
@@ -82,24 +86,86 @@ public class Evaluador {
         return false;
     }
 
-    public List<Trabajodegrado> trabajosDeGrado(String usuNombre) {
-        List<Productodetrabajo> lst = productosDeTrabajo();
+    public List<FormatoTablaJefe> getTrabajosporeval() {
+       
+        trabajosporeval = new ArrayList();
+        
+        List<Productodetrabajo> tem = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_formatoID(2);
+        
+         if (tem.size() > 0) {               
+             
+         int cont = 0;
+         FormatoTablaJefe f;
+             
+             for(Productodetrabajo t : tem)
+        {
+            if(trabajoDeGradoAsignado(evaluador.getUsuarionombre(), t.getProductocontenido()))
+          {          
+            cont = 0;
+            f = new FormatoTablaJefe();                  //sacamos la informacion general tanto jefe depto, director y los estud.
+            
+            List<UsuarioRolTrabajogrado> lst = ejbFacadeUsuRolTg.findbytrabajoId(t.getTrabajoid().getTrabajoid().intValue());
+            
+            if(lst.size() > 0)
+            {
+                f.setFecha(lst.get(0).getFechaasignacion());
+                f.setTrabajoGradoId(lst.get(0).getTrabajoid().getTrabajoid().intValue());
+                f.setTrabajoGrado(lst.get(0).getTrabajoid().getTrabajonombre());
 
-        List<Trabajodegrado> lstTrabajosDeGrado = new ArrayList();
-
-        for (int i = 0; i < lst.size(); i++) {
-            String productoContenido = lst.get(i).getProductocontenido();
-            if (trabajoDeGradoAsignado(usuNombre, productoContenido)) {
-                lstTrabajosDeGrado.add(lst.get(i).getTrabajoid());
+                for(UsuarioRolTrabajogrado l : lst)
+                {
+                        if(l.getRolid().getRolid().intValue() == 0)  //director
+                      {
+                          f.setDirector(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
+                          f.setDirectorId(l.getPersonacedula().getPersonacedula().intValue());   
+                      }   
+                    else if(l.getRolid().getRolid().intValue() == 1 && cont ==0)           //Estudiante 1
+                          { 
+                           f.setEst1(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
+                           f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
+                           cont ++;
+                          }
+                      else if(l.getRolid().getRolid().intValue() == 1 && cont ==1)      //estudiante 2
+                       { 
+                           f.setEst2(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
+                           f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());                      
+                       }
+                }
+                               
+                trabajosporeval.add(f);
             }
-        }
-        return lstTrabajosDeGrado;
+          }
+        }  
+               
+               }  
+        
+        return trabajosporeval;
     }
 
-    public void detalleTrabajoDeGrado(ActionEvent event) {
+    public void setTrabajosporeval(List<FormatoTablaJefe> trabajosporeval) {
+        this.trabajosporeval = trabajosporeval;
+    }
+
+    public void contenidoTgEvaluador(ActionEvent event) {
         
-        TrabajodeGradoActual.id = 0;
-        TrabajodeGradoActual.nombreTg = "nuevo Trabajo de Grado";
+         //Agregamos los datos del trabajo de grado para no enviar por url.                          
+        TrabajodeGradoActual.id =  (Integer)event.getComponent().getAttributes().get("idtrabajo");
+        TrabajodeGradoActual.nombreTg = (String) event.getComponent().getAttributes().get("nombretrab");
+
+        //Agregamos el primer estudiante a la clase estatica 
+        int idusu = (Integer) event.getComponent().getAttributes().get("est1");
+        if (idusu != -1) {
+            TrabajodeGradoActual.est1 = ejbFacadeUsu.buscarporUsuid(idusu).get(0);
+        }
+
+        //Agregamos el segundo estudiante si hay uno
+        idusu = (Integer) event.getComponent().getAttributes().get("est2");
+        if (idusu != -1) {
+            TrabajodeGradoActual.est2 = ejbFacadeUsu.buscarporUsuid(idusu).get(0);
+        }
+
+        idusu = (Integer)event.getComponent().getAttributes().get("iddirector");
+        if(idusu!=-1)TrabajodeGradoActual.director = ejbFacadeUsu.buscarporUsuid(idusu).get(0);
         
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {

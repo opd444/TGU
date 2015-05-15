@@ -7,7 +7,6 @@ package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.unicauca.tgu.Auxiliares.Servicio_Email;
 import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.controllers.util.JsfUtil;
@@ -23,18 +22,8 @@ import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -42,21 +31,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
 
 /**
  *

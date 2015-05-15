@@ -83,7 +83,7 @@
 
                             <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
                                  <h:outputText value="Anteproyecto: " style="font-weight: bold;" />
-                                 <p:button value="Asignar Evaluadores" icon="ui-icon-comment" href="asignar-evaluadores-anteproyecto.xhtml" disabled="#{trabajodegradoController.btnVerAnteproyecto}" style="width: 220px;" />                                
+                                 <p:button value="#{trabajodegradoController.tituloBtnAsignacionEval}" icon="ui-icon-comment" href="asignar-evaluadores-anteproyecto.xhtml" disabled="#{trabajodegradoController.btnVerAnteproyecto}" style="width: 320px;" />                                
                                 <p:commandButton id="btndesc" value="Descargar" rendered="#{anteproyecto.filedown != null}"
                                                  ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
                                                  icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">
