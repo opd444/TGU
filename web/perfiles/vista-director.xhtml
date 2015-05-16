@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form id="formMigaDirector">
+                    <p:breadCrumb id="migaDirector" styleClass="migaDePan">
+                        <p:menuitem value="Director" outcome="vista-director" />
+                        <p:menuitem value="Director" outcome="vista-director" />
+                        <p:menuitem value="#{directorController.titulotablaDirector}" outcome="vista-director" />
+                    </p:breadCrumb>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">                
+            </ui:define>
+
+            <ui:define name="body">
+                
+                <p:dialog showEffect="fade" hideEffect="explode" position="center" widgetVar="agregartest" header="Crear nuevo Trabajo de Grado" modal="true" resizable="false" >
+                    <h:form>
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p:outputLabel value="Nombre del Trabajo de Grado:" />
+                            <p:inputTextarea id="nombre" cols="45" rows="3" value="#{directorController.nombrenuevoTG}" label="nombre" />
+                            <f:facet name="footer">
+                                <p:commandButton id="btnnuevotg" style="display: block; margin: 0 auto;" actionListener="#{directorController.crearTG}" value="Crear" icon="ui-icon-disk" update=":form:tablatgDirector" onclick="agregartest.hide()"/>              
+                            </f:facet>                   
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+                <h:form id="form">
+                    <p:panel styleClass="paneltrabajo" >
+                        <h:panelGrid style="margin: 0 auto;">
+                            <p:menubar styleClass="menubarstyleClass">
+                                <p:menuitem style="border-color: #808080" value="Ver Trabajos en Curso" actionListener="#{directorController.trabajosenCurso()}"
+                                            update="tablatgDirector tituloVistaDirector :formMigaDirector:migaDirector" icon="ui-icon-folder-open"/>
+                                <p:menuitem style="border-color: #808080" value="Ver Trabajos Terminados" actionListener="#{directorController.trabajosTerminados()}"
+                                            update="tablatgDirector tituloVistaDirector :formMigaDirector:migaDirector" icon="ui-icon-folder-collapsed"/>
+                                <p:menuitem style="border-color: #808080" value="Crear Nuevo Trabajo de Grado" disabled="#{directorController.numMaxTrabPermitidos}" onclick="PF('agregartest').show();"
+                                            icon="ui-icon-plus"/>
+                            </p:menubar>
+                        </h:panelGrid>
+                        <p:spacer height="25"/>
+                        <h:outputLabel id="tituloVistaDirector" class="tituloContenido" value="#{directorController.titulotablaDirector}" />        
+                        <p:spacer height="10"/>
+                        <p:dataTable  styleClass="tabladirector" id="tablatgDirector" var="car" value="#{directorController.trabsDirector}"
+                                      paginator="#{directorController.modo}" rows="#{directorController.filas}" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24" emptyMessage="Lo sentimos, no hay trabajos registrados." style="font-size: 14px;">
+                            <p:column style="width: 80px;" headerText="Fecha">
+                                <h:outputText value="#{car.fecha}">
+                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column style="width: 275px;" headerText="Trabajo de Grado"> <!--filterBy="{car.trabajoGrado}"-->
+                                <p:commandLink actionListener="#{directorController.contenidoTgDirector}" value="#{car.trabajoGrado}" style="color: #045491;">                                     
+                                    <f:attribute name="idtrabajo" value="#{car.trabajoGradoId}" />    
+                                    <f:attribute name="nombretrab" value="#{car.trabajoGrado}" />
+                                    <f:attribute name="est1" value="#{car.est1Id}" />
+                                    <f:attribute name="est2" value="#{car.est2Id}" />
+                                </p:commandLink>
+                            </p:column>
+                            <p:column style="width: 150px;" headerText="Estudiantes" > <!--filterBy="{car.est1 or car.est2}"-->
+                                #{car.est1} <br /> #{car.est2}      
+                            </p:column>
+                            <p:column headerText="Fase" style="text-align: center">
+                                <h:outputText style="text-align: center;" value="#{car.estado}" />   
+                            </p:column>        
+                        </p:dataTable>                        
+                    </p:panel>
+                </h:form> 
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

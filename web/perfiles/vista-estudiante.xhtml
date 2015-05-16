@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <p:breadCrumb styleClass="migaDePan">
+                    <p:menuitem value="Estudiante" outcome="vista-estudiante" />                                        
+                    <p:menuitem value="Estudiante" outcome="vista-estudiante" />                    
+                    <p:menuitem value="Trabajo de Grado" outcome="vista-estudiante" />                        
+                    <p:menuitem value="Fases del Trabajo de Grado" outcome="vista-estudiante" />
+                    <p:menuitem value="1. Presentación de la Idea" outcome="vista-estudiante" />
+                </p:breadCrumb>
+            </ui:define>
+
+            <ui:define name="title">                                
+            </ui:define>
+
+            <ui:define name="body">                
+                <!--#{estudianteViewController.nombresApellidos(serviciosSimcaController.nombreUsuario)}
+                #{trabajodegradoController.trabajoAsignado(estudianteViewController.entityTrabajo.trabajoid)}
+                #{trabajodegradoController.incializar()}                
+                #{estudianteViewController.loadTrabajoDeGrado()}-->
+                <h:form id="fases">                                                           
+                    <p:panel styleClass="paneltrabajo" >
+                        <div class="tituloContenido">                        
+                            #{estudianteViewController.entityTrabajo.trabajonombre}
+                        </div>                                         
+                        <p:spacer height="25"/>
+                        <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado">
+                            <h:panelGrid columns="6" cellpadding="1" style="margin: 0 auto;">
+                                <p:graphicImage value="../resources/img/1.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/2.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/3.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/4.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
+
+                                <p:commandButton type="button" value="Presentación de la Idea" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" disabled="#{trabajodegradoController.fases.primeraFase}" >                            
+                                    <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
+                                        <f:param name="mode" value="'show'" />
+                                    </p:effect>
+                                </p:commandButton>
+
+                                <p:button value="Realización del Anteproyecto" outcome="2-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Anteproyecto" outcome="3-evaluacion-anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Ejecución del Trabajo de Grado" href="4-ejecucion-trabajo-grado" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Trabajo de Grado" href="5-evaluacion-trabajo-grado" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Finalizado" href="6-finalizado" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                            </h:panelGrid>
+                        </p:panel>      
+                        <p:spacer height="25"/>
+                        <p:panel id="pnlPresentacionIdea" header="1. Presentación de la Idea" style=" font-size: 14px;" widgetVar="pnlPresentacionIdea">
+                            <!--<p:commandButton type="button" value="1. Presentación de la Idea" style="background-color:greenyellow">
+                                <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
+                                    <f:param name="mode" value="'show'" />
+                                </p:effect>
+                            </p:commandButton>-->
+                            <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
+                                <h:outputText value="Formato A:" style="font-weight: bold;" />                                
+                                <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-A.xhtml" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
+                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" actionListener="#{pDFBean.generarPDF()}" oncomplete="PF('dlgVerRutina').show();" />
+
+                                <h:outputText value="Revisión de la idea:" style="font-weight: bold;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-revision-idea.xhtml" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
+                                <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />                                
+                            </h:panelGrid>
+                        </p:panel>
+                    </p:panel>
+                </h:form>
+                <h:form id="frmDescargarFormatoA">
+                    <p:dialog id="dlgVerRutina" header="Descargar Formato A" widgetVar="dlgVerRutina" modal="true" position="top" resizable="false">                            
+                        <c:if test="#{pDFBean.pdfFileName != 'sin-cargar'}">
+                            <object type="application/pdf" data="#{request.contextPath}/PDFServlet/#{pDFBean.pdfFileName}" height="600px" width="820px">
+                                Your browser can't display pdf, <a href="#{request.contextPath}/PDFServlet/#{pDFBean.pdfFileName}">click</a> to download pdf instead.
+                            </object>   
+                        </c:if>
+                    </p:dialog>        
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

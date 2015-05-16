@@ -42,14 +42,7 @@
 
                 </div>                
                 <nav id="mainNav">                       
-                    <ui:insert name="menuprincipal">
-                        <!--<ul> 
-                            <li><span class="punta"></span><p:link outcome="/administrador/contenidos/principal" value="inicio"/></li>
-                            <li><span class="punta"></span><p:link outcome="/administrador/usuarios/gestionUsuarios" value="Gestión Usuarios"/></li>
-                            <li><span class="punta"></span><p:link outcome="/administrador/medidas/consultaTest" value="Gestión de Medidas"/></li>
-                            <li><span class="punta"></span><p:link outcome="/administrador/asistencia/indexAsistencia" value="Control Asistencia"/></li>
-                            <li><span class="punta"></span><p:link outcome="/administrador/contenidos/gestionContenidos" value="Gestión Contenidos"/></li>                                               
-                        </ul>-->
+                    <ui:insert name="menuprincipal">                    
                     </ui:insert>           
                 </nav>                
             </div>
@@ -58,6 +51,13 @@
         <section id="contenido">
             <div class="contenedor">                
                 <ui:insert name="title">Default Title</ui:insert>    
+                <ui:insert name="perfiles">
+                    <h:form id="formMenu">
+                        <p:menu model="#{menuController.model}" 
+                                style="background-color: white" 
+                                styleClass="menuizqroles" />                    
+                    </h:form>
+                </ui:insert>
                 <ui:insert name="body">Default Body</ui:insert>
                 <div class="clear"></div>
             </div>

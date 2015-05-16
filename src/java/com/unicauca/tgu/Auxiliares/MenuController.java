@@ -5,21 +5,27 @@
  */
 package com.unicauca.tgu.Auxiliares;
 
+import com.unicauca.tgu.controllers.DirectorController;
 import com.unicauca.tgu.entities.Rol;
 import com.unicauca.tgu.entities.UsuarioRol;
 import com.unicauca.tgu.jpacontroller.RolFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolFacade;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ActionListener;
@@ -33,7 +39,7 @@ import org.primefaces.model.menu.MenuModel;
  * @author seven
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class MenuController implements Serializable {
 
     @EJB
@@ -46,6 +52,8 @@ public class MenuController implements Serializable {
     private MenuModel model;
     private List<DefaultMenuItem> items;
 
+    private boolean initMenu = false; // para el bucle de redireccionamiento
+
     public MenuController() {
         items = new ArrayList();
     }
@@ -54,7 +62,10 @@ public class MenuController implements Serializable {
     protected void initialize() {
         model = new DefaultMenuModel();
 
-        com.unicauca.tgu.entities.Usuario usu = ejbFacadeUsu.buscarPorUsuarionombre("wpantoja");
+        FacesContext context = FacesContext.getCurrentInstance();
+        ServiciosSimcaController s = (ServiciosSimcaController) context.getApplication().evaluateExpressionGet(context, "#{serviciosSimcaController}", ServiciosSimcaController.class);
+
+        com.unicauca.tgu.entities.Usuario usu = ejbFacadeUsu.buscarPorUsuarionombre(s.getNombreUsuario());
         List<Rol> roles = new ArrayList();
 
         List<UsuarioRol> lstUsuRol = ejbFacadeUsuRol.findAll();
@@ -64,9 +75,9 @@ public class MenuController implements Serializable {
         for (UsuarioRol usurolItem : lstUsuRol) {
 
             if (usurolItem.getPersonacedula().equals(personacedula)) {
-                
+
                 int rolid = usurolItem.getRolid().intValue();
-                
+
                 Rol rol = buscarPorRolId(BigDecimal.valueOf(rolid));
 //                System.out.println(rol.getRolnombre());
                 roles.add(rol);
@@ -74,15 +85,19 @@ public class MenuController implements Serializable {
         }
 
         DefaultSubMenu perfiles = new DefaultSubMenu("Perfiles");
-        perfiles.setStyle("background-color: white;");
+        perfiles.setStyle("background-color: lightcyan;");
 
         for (Rol rolItem : roles) {
             String rolnombre = rolItem.getRolnombre();
             DefaultMenuItem item = new DefaultMenuItem(rolnombre);
             item.setCommand("#{menuController.cmd" + createNameOfCmd(rolnombre) + "}");
             item.setUpdate("formMenu");
+//            item.setOutcome(setOutcomePefil(rolnombre));
             items.add(item);
             perfiles.addElement(item);
+            initMenu = true; // para el bucle de redireccionamiento
+            setStyleItem();
+            initMenu = false; // para el bucle de redireccionamiento
         }
 
         model.addElement(perfiles);
@@ -103,76 +118,80 @@ public class MenuController implements Serializable {
         return model;
     }
 
+    private void redirectVista(String facelet) {
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            context.redirect(facelet + ".xhtml");
+        } catch (Exception ex) {
+            context.redirect("../perfiles/" + facelet + ".xhtml");
+        }
+    }
+
+    private void cambioPerfil(DefaultMenuItem item) {
+        itemsSetDefaultStyle();
+        item.setStyle("background-color: #c2dfef");
+        VistaActual.rol = (String) item.getValue();
+        if (!initMenu) {// para el bucle de redireccionamiento
+            redirectVista(setOutcomePefil((String) item.getValue()));
+        }
+    }
+
     /**
      * cmdX: los siguientes métodos son usados para especificar las operaciones
      * de cada perfil
      */
     public void cmdDirector() {
-
         for (DefaultMenuItem item : items) {
             if (item.getValue().equals("Director")) {
-                itemsSetDefaultStyle();
-                item.setStyle("background-color: #c2dfef");
+                cambioPerfil(item);
             }
         }
     }
 
     public void cmdEstudiante() {
-
         for (DefaultMenuItem item : items) {
             if (item.getValue().equals("Estudiante")) {
-                itemsSetDefaultStyle();
-                item.setStyle("background-color: #c2dfef");
+                cambioPerfil(item);
             }
         }
     }
 
     public void cmdJefeDepartamento() {
-
         for (DefaultMenuItem item : items) {
             if (item.getValue().equals("Jefe de Departamento")) {
-                itemsSetDefaultStyle();
-                item.setStyle("background-color: #c2dfef");
+                cambioPerfil(item);
             }
         }
     }
 
     public void cmdCoordinadorPrograma() {
-
         for (DefaultMenuItem item : items) {
             if (item.getValue().equals("Coordinador de Programa")) {
-                itemsSetDefaultStyle();
-                item.setStyle("background-color: #c2dfef");
+                cambioPerfil(item);
             }
         }
     }
 
     public void cmdEvaluador() {
-
         for (DefaultMenuItem item : items) {
             if (item.getValue().equals("Evaluador")) {
-                itemsSetDefaultStyle();
-                item.setStyle("background-color: #c2dfef");
+                cambioPerfil(item);
             }
         }
     }
 
     public void cmdSecretariaGeneral() {
-
         for (DefaultMenuItem item : items) {
             if (item.getValue().equals("Secretaria General")) {
-                itemsSetDefaultStyle();
-                item.setStyle("background-color: #c2dfef");
+                cambioPerfil(item);
             }
         }
     }
 
     public void cmdJurado() {
-
         for (DefaultMenuItem item : items) {
             if (item.getValue().equals("Jurado")) {
-                itemsSetDefaultStyle();
-                item.setStyle("background-color: #c2dfef");
+                cambioPerfil(item);
             }
         }
     }
@@ -190,7 +209,6 @@ public class MenuController implements Serializable {
      * createNameOfCmd: define el nombre de la función a usar para cada perfil
      */
     private String createNameOfCmd(String rol) {
-        String nameOfCmd = new String();
 
         switch (rol) {
             case "Director":
@@ -209,5 +227,61 @@ public class MenuController implements Serializable {
                 return "Jurado";
         }
         return null;
+    }
+
+    /**
+     * setOutcomePefil: define hacia donde redireccionar cuando se cambia el
+     * perfil actual.
+     */
+    private String setOutcomePefil(String rol) {
+        switch (rol) {
+            case "Director":
+                return "vista-director";
+            case "Estudiante":
+                return "vista-estudiante";
+            case "Jefe de Departamento":
+                return "vista-jefe-de-departamento";
+            case "Coordinador de Programa":
+                return "vista-coordinador-de-programa";
+            case "Evaluador":
+                return "vista-evaluador";
+            case "Secretaria General":
+                return "vista-secretaria-general";
+            case "Jurado":
+                return "vista-jurado";
+        }
+        return null;
+    }
+
+    /**
+     * setStyleItem: cambia de color el item cuando este es selecionado
+     */
+    public void setStyleItem() {
+        String rol = VistaActual.rol;
+        if (!rol.equals("null")) {
+            switch (rol) {
+                case "Director":
+                    cmdDirector();
+                    break;
+                case "Estudiante":
+                    cmdEstudiante();
+                    break;
+                case "Jefe de Departamento":
+                    cmdJefeDepartamento();
+                    break;
+                case "Coordinador de Programa":
+                    cmdCoordinadorPrograma();
+                    break;
+                case "Evaluador":
+                    cmdEvaluador();
+                    break;
+                case "Secretaria General":
+                    cmdSecretariaGeneral();
+                    break;
+                case "Jurado":
+                    cmdJurado();
+                    break;
+            }
+        }
     }
 }
