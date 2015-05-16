@@ -16,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -32,7 +33,7 @@ public class TrabajogradoFaseController {
     public TrabajogradoFaseController() {
         
     }
-    public void btnAvalar() { // TODO Refactorizar con cosulta directa en el facade
+    public void btnAvalar(TrabajodegradoController mgb) { // TODO Refactorizar con cosulta directa en el facade
         List<TrabajogradoFase> lst = ejbFacadeTraFase.findAll();
         
         for(int i = 0; i < lst.size(); i++) {
@@ -48,9 +49,12 @@ public class TrabajogradoFaseController {
                     
                 }
             }
-        }     
+        }
+        mgb.incializar();
         FacesContext context = FacesContext.getCurrentInstance();
+        RequestContext requestContext =RequestContext.getCurrentInstance();
         context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Anteproyecto Avalado con Exito", ""));
+        requestContext.update("formularioavalar");
         
     }
 }

@@ -6,9 +6,12 @@
 package com.unicauca.tgu.jpacontroller;
 
 import com.unicauca.tgu.entities.Rol;
+import java.math.BigInteger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -16,6 +19,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class RolFacade extends AbstractFacade<Rol> {
+
     @PersistenceContext(unitName = "tguPU")
     private EntityManager em;
 
@@ -27,5 +31,18 @@ public class RolFacade extends AbstractFacade<Rol> {
     public RolFacade() {
         super(Rol.class);
     }
-    
+
+    public Rol buscarPorRolId(BigInteger rolid) {
+        try {
+            String queryString = ""
+                    + "SELECT r "
+                    + "FROM rol r "
+                    + "where r.rolid = " + rolid;
+            
+            TypedQuery<Rol> query = getEntityManager().createQuery(queryString,Rol.class);  
+            return query.getSingleResult();
+        } finally {
+            // em.close();
+        }        
+    }
 }
