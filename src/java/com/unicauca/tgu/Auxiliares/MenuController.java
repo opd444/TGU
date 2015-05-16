@@ -74,6 +74,7 @@ public class MenuController implements Serializable {
         }
 
         DefaultSubMenu perfiles = new DefaultSubMenu("Perfiles");
+        perfiles.setStyle("background-color: white;");
 
         for (Rol rolItem : roles) {
             String rolnombre = rolItem.getRolnombre();
