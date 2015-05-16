@@ -63,9 +63,10 @@ public class MenuController implements Serializable {
 
         for (UsuarioRol usurolItem : lstUsuRol) {
 
-            if (usurolItem.getUsuarioRolPK().getPersonacedula().equals(personacedula)) {
-
-                int rolid = usurolItem.getUsuarioRolPK().getRolid().intValue();
+            if (usurolItem.getPersonacedula().equals(personacedula)) {
+                
+                int rolid = usurolItem.getRolid().intValue();
+                
                 Rol rol = buscarPorRolId(BigDecimal.valueOf(rolid));
 //                System.out.println(rol.getRolnombre());
                 roles.add(rol);

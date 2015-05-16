@@ -6,12 +6,13 @@
 package com.unicauca.tgu.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -22,25 +23,33 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author seven
+ * @author pcblanco
  */
 @Entity
 @Table(name = "USUARIO_ROL")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "UsuarioRol.findAll", query = "SELECT u FROM UsuarioRol u"),
-    @NamedQuery(name = "UsuarioRol.findByPersonacedula", query = "SELECT u FROM UsuarioRol u WHERE u.usuarioRolPK.personacedula = :personacedula"),
-    @NamedQuery(name = "UsuarioRol.findByRolid", query = "SELECT u FROM UsuarioRol u WHERE u.usuarioRolPK.rolid = :rolid"),
     @NamedQuery(name = "UsuarioRol.findByUsuariorolid", query = "SELECT u FROM UsuarioRol u WHERE u.usuariorolid = :usuariorolid"),
+    @NamedQuery(name = "UsuarioRol.findByPersonacedula", query = "SELECT u FROM UsuarioRol u WHERE u.personacedula = :personacedula"),
+    @NamedQuery(name = "UsuarioRol.findByRolid", query = "SELECT u FROM UsuarioRol u WHERE u.rolid = :rolid"),
     @NamedQuery(name = "UsuarioRol.findByUsurolfecha", query = "SELECT u FROM UsuarioRol u WHERE u.usurolfecha = :usurolfecha")})
 public class UsuarioRol implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected UsuarioRolPK usuarioRolPK;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "USUARIOROLID")
-    private BigInteger usuariorolid;
+    private BigDecimal usuariorolid;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "PERSONACEDULA")
+    private BigInteger personacedula;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ROLID")
+    private BigInteger rolid;
     @Basic(optional = false)
     @NotNull
     @Column(name = "USUROLFECHA")
@@ -50,34 +59,39 @@ public class UsuarioRol implements Serializable {
     public UsuarioRol() {
     }
 
-    public UsuarioRol(UsuarioRolPK usuarioRolPK) {
-        this.usuarioRolPK = usuarioRolPK;
+    public UsuarioRol(BigDecimal usuariorolid) {
+        this.usuariorolid = usuariorolid;
     }
 
-    public UsuarioRol(UsuarioRolPK usuarioRolPK, BigInteger usuariorolid, Date usurolfecha) {
-        this.usuarioRolPK = usuarioRolPK;
+    public UsuarioRol(BigDecimal usuariorolid, BigInteger personacedula, BigInteger rolid, Date usurolfecha) {
         this.usuariorolid = usuariorolid;
+        this.personacedula = personacedula;
+        this.rolid = rolid;
         this.usurolfecha = usurolfecha;
     }
 
-    public UsuarioRol(BigInteger personacedula, BigInteger rolid) {
-        this.usuarioRolPK = new UsuarioRolPK(personacedula, rolid);
-    }
-
-    public UsuarioRolPK getUsuarioRolPK() {
-        return usuarioRolPK;
-    }
-
-    public void setUsuarioRolPK(UsuarioRolPK usuarioRolPK) {
-        this.usuarioRolPK = usuarioRolPK;
-    }
-
-    public BigInteger getUsuariorolid() {
+    public BigDecimal getUsuariorolid() {
         return usuariorolid;
     }
 
-    public void setUsuariorolid(BigInteger usuariorolid) {
+    public void setUsuariorolid(BigDecimal usuariorolid) {
         this.usuariorolid = usuariorolid;
+    }
+
+    public BigInteger getPersonacedula() {
+        return personacedula;
+    }
+
+    public void setPersonacedula(BigInteger personacedula) {
+        this.personacedula = personacedula;
+    }
+
+    public BigInteger getRolid() {
+        return rolid;
+    }
+
+    public void setRolid(BigInteger rolid) {
+        this.rolid = rolid;
     }
 
     public Date getUsurolfecha() {
@@ -91,7 +105,7 @@ public class UsuarioRol implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (usuarioRolPK != null ? usuarioRolPK.hashCode() : 0);
+        hash += (usuariorolid != null ? usuariorolid.hashCode() : 0);
         return hash;
     }
 
@@ -102,7 +116,7 @@ public class UsuarioRol implements Serializable {
             return false;
         }
         UsuarioRol other = (UsuarioRol) object;
-        if ((this.usuarioRolPK == null && other.usuarioRolPK != null) || (this.usuarioRolPK != null && !this.usuarioRolPK.equals(other.usuarioRolPK))) {
+        if ((this.usuariorolid == null && other.usuariorolid != null) || (this.usuariorolid != null && !this.usuariorolid.equals(other.usuariorolid))) {
             return false;
         }
         return true;
@@ -110,7 +124,7 @@ public class UsuarioRol implements Serializable {
 
     @Override
     public String toString() {
-        return "com.unicauca.tgu.entities.UsuarioRol[ usuarioRolPK=" + usuarioRolPK + " ]";
+        return "com.unicauca.tgu.entities.UsuarioRol[ usuariorolid=" + usuariorolid + " ]";
     }
     
 }
