@@ -13,9 +13,9 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Coordinador" outcome="vista-coordinador" />
-                        <p:menuitem value="Coordinador" outcome="vista-coordinador" />
-                        <p:menuitem value="Trabajo de Grado" outcome="vista-coordinador" />
+                        <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                        <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                        <p:menuitem value="Trabajo de Grado" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
                         <p:menuitem value="2. Realización del Anteproyecto" outcome="fases-trabajo-de-grado" />
                     </p:breadCrumb>
@@ -27,16 +27,8 @@
             </ui:define>
 
             <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
                 <h:form>                                                           
-
-                    <p:menu styleClass="menuizqroles" style="background-color: white">
-                        <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" outcome="./../director/vista-director.xhtml"/>
-                            <p:menuitem value="Jefe de Departamento" outcome="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />
-                             <p:menuitem value="Coordinador" outcome="vista-coordinador.xhtml"  style="background-color: #c2dfef"/>
-                        </p:submenu>                                
-                    </p:menu>
-
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
                             #{estudianteViewController.entityTrabajo.trabajonombre}
@@ -75,7 +67,7 @@
                             </p:commandButton>-->
                             <h:panelGrid columns="5" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Anteproyecto:" style="font-weight: bold;" />                                                                
-                                <p:button value="Ver" icon="ui-icon-comment" href="ver-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerAnteproyecto}" style="width: 120px;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerAnteproyecto}" style="width: 120px;" />
                                 <p:commandButton id="btndesc" value="Descargar" rendered="#{anteproyecto.filedown != null}"
                                                  ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
                                                  icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">

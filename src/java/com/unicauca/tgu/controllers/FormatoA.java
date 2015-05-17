@@ -363,7 +363,8 @@ public class FormatoA {
             */
                     
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
-            return "fases-trabajo-de-grado";
+//            return "fases-trabajo-de-grado";
+            return "";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -461,7 +462,8 @@ public class FormatoA {
             //flash.setRedirect(true);
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"¡Formato A diligenciado con éxito!", "Se le ha enviado un correo notificando dicha operación."));
-            return "fases-trabajo-de-grado";
+//            return "fases-trabajo-de-grado";
+            return "";
         } catch (Exception e) {
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"¡Error!", "Lo sentimos, no se pudo guardar el formato A."));

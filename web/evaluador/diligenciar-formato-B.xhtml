@@ -13,8 +13,8 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Evaluador" outcome="index" />
-                        <p:menuitem value="Evaluador" outcome="index" />                        
+                        <p:menuitem value="Evaluador" outcome="./../perfiles/vista-evaluador.xhtml" />
+                        <p:menuitem value="Evaluador" outcome="./../perfiles/vista-evaluador.xhtml" />                        
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
                         <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fases-trabajo-de-grado" />
                         <p:menuitem value="Diligenciar Formato B" outcome="diligenciar-formato-B" />
@@ -26,10 +26,8 @@
             </ui:define>
 
             <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
                 #{formatoB.buscarEvaluador(serviciosSimcaController.nombreUsuario)}                
-                <h:form>
-                    <p:menu model="#{menuView.model}" styleClass="menuizqroles" />                                        
-                </h:form>
                 
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
@@ -283,7 +281,8 @@
                                 </p:panel>
                             </p:tab>
                         </p:wizard>
-                        <p:button value="Cancelar" outcome="fases-trabajo-de-grado" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
+                        <p:button value="Cancelar" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
+                        <!--<p:button value="Cancelar" outcome="fases-trabajo-de-grado" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />-->
                     </h:form>
                 </p:panel>
             </ui:define>

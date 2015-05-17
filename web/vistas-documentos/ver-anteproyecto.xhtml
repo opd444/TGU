@@ -3,13 +3,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      >
 
     <body>
 
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
+
                 <script type="text/javascript">
                     function mostrarestado() {
                         PF('statusDialog').show();
@@ -23,30 +25,22 @@
                     <p:graphicImage library="img" name="ajax-loader.gif" />
                 </p:dialog>
                 <h:form>
-                   <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
-                         
-                    <p:menuitem value="Fases del Trabajo de Grado" 
-                                outcome="fases-trabajo-de-grado" />
-                    <p:menuitem value="Ver Anteproyecto" 
-                                outcome="ver-anteproyecto" />
-                </p:breadCrumb>              
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Estudiante" outcome="./../perfiles/vista-estudiante.xhtml" />                                        
+                        <p:menuitem value="Estudiante" outcome="./../perfiles/vista-estudiante.xhtml" />                    
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-estudiante.xhtml" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="./../perfiles/vista-estudiante.xhtml" />
+                        <p:menuitem value="2. Realización del Anteproyecto" />
+                        <p:menuitem value="Ver Anteproyecto" outcome="ver-anteproyecto" />
+                    </p:breadCrumb>              
                 </h:form>
             </ui:define>
 
-            <ui:define name="title">
-                
+            <ui:define name="title">               
             </ui:define>
 
             <ui:define name="body">
-                <h:form>
-                    <p:menu styleClass="menuizqroles" style="background-color: azure;">
-                        <p:submenu label="Perfiles">
-                            <p:menuitem value="Director" action="vista-director" style="background-color: #c2dfef" />
-                            <p:menuitem value="Jefe de Departamento" action="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />                            
-                        </p:submenu>                                
-                    </p:menu>
-                </h:form>
+                #{menuController.setOutPerfiles(true)}
                 <p:panel styleClass="paneltrabajo" >
                     
                     <div class="tituloContenido">                        
@@ -95,14 +89,13 @@
                             </h:panelGrid>
                             <br />
                             <h:panelGrid style="margin: 0 auto;">  
-                                <p:button value="Volver" outcome="fase-realizacion-anteproyecto" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>
+                                <p:button value="Volver" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>
+                                <!--<p:button value="Volver" outcome="2-realizacion-anteproyecto" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>-->
                             </h:panelGrid> 
                         </p:panel>
                     </h:form>
-                </p:panel>
+                </p:panel> 
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

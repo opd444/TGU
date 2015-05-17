@@ -26,9 +26,9 @@
                 </p:dialog>
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Director" outcome="vista-director" />
-                        <p:menuitem value="Director" outcome="vista-director" />
-                        <p:menuitem value="Trabajos de Grado" outcome="vista-director" />                        
+                        <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
+                        <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-director.xhtml" />                        
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
                         <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
                         <p:menuitem value="Diligenciar Formato A" outcome="diligenciar-formato-A" />
@@ -40,16 +40,7 @@
             </ui:define>
 
             <ui:define name="body">
-
-
-                <h:form>
-                    <p:menu styleClass="menuizqroles" style="background-color: white">
-                        <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" action="vista-director" style="background-color: #c2dfef" />
-                            <p:menuitem value="Jefe de Departamento" action="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />                            
-                        </p:submenu>                                
-                    </p:menu>
-                </h:form>
+                #{menuController.setOutPerfiles(true)}
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
                         <h:outputText value="Editar Anteproyecto"/> <br/>
@@ -60,7 +51,7 @@
                         <p:panel style="width: 100%; font-size: 14px;" header="Campos con * son obligatorios">
                             <p:growl id="growl" sticky="true" showDetail="true"/>
                             <p:messages/>
-                            
+
                             <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="15" >
                                 <p:outputLabel styleClass="subtitulosFormato" value="Nombre del trabajo de grado: *" />
                                 <p:outputLabel style="font-weight: bold" value="#{anteproyecto.nombretg}" />
@@ -76,9 +67,9 @@
                                 <p:outputLabel styleClass="subtitulosFormato" value="Adjuntar anteproyecto: *" />
                                 <p:column>    
                                     <p:fileUpload required="true" fileUploadListener="#{anteproyecto.handleFileUpload}" auto="true"
-                                                allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf)$/" sizeLimit="31457280" label="Examinar" update="nombarch"
-                                                invalidFileMessage="Tipo de Archivo no Valido, Agregue un archivo word o pdf" 
-                                                invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" 
+                                                  allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf)$/" sizeLimit="31457280" label="Examinar" update="nombarch"
+                                                  invalidFileMessage="Tipo de Archivo no Valido, Agregue un archivo word o pdf" 
+                                                  invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" 
                                                   />
                                     <p:outputLabel id="nombarch" value="#{anteproyecto.nombarch}"> </p:outputLabel> <br />
                                 </p:column>
@@ -87,8 +78,8 @@
                             <h:panelGrid style="margin: 0 auto;" columns="3" cellpadding="13">
                                 <p:commandButton value="Editar" update="growl" actionListener="#{anteproyecto.editar()}" icon="ui-icon-pencil" style="font-size: 13px; width: 120px;"/>
                                 <p:commandButton id="btndesc" style="font-size: 13px; width: 160px;" value="Descargar archivo" rendered="#{anteproyecto.filedown != null}"
-                                                ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
-                                                icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">
+                                                 ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
+                                                 icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">
                                     <p:fileDownload value="#{anteproyecto.filedown}" />
                                 </p:commandButton>
                                 <p:button value="Cancelar" icon="ui-icon-cancel" outcome="2-realizacion-anteproyecto" style="font-size: 13px; width: 120px;"/>

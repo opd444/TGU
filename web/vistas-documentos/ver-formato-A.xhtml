@@ -7,17 +7,13 @@
       xmlns:f="http://java.sun.com/jsf/core">
 
     <body>
-        
+
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
                 <h:form>
-                    <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Coordinador" outcome="vista-coordinador" />
-                        <p:menuitem value="Coordinador" outcome="vista-coordinador" />
-                        <p:menuitem value="Trabajos de Grado" outcome="vista-coordinador" />                        
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
+                    <!-- ToDo miga de pan por programación -->
+                    <p:breadCrumb styleClass="migaDePan">                        
                         <p:menuitem value="Ver Formato A" />
                     </p:breadCrumb>   
                 </h:form>
@@ -27,25 +23,16 @@
             </ui:define>
 
             <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
                 <f:metadata>
                     <f:viewParam name="productoid" value="#{formatoA.trabajoid}" />
                 </f:metadata>
-                
-                <h:form>
-                    <p:menu styleClass="menuizqroles" style="background-color: white">
-                        <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Jefe de Departamento" outcome="../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />
-                            <p:menuitem value="Coordinador" outcome="vista-coordinador" style="background-color: #c2dfef" />
-                        </p:submenu>
-                    </p:menu>
-                </h:form>
-
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
                         <h:outputText value="Formato A: Presentación de la idea"/> <br/>
                     </div>
                     <p:spacer height="30"/>
-                    
+
                     <h:form enctype="multipart/form-data">   
                         <p:panel header="Información Actual" style="color: #181818;">
                             <br />
@@ -53,7 +40,7 @@
                                 <p:graphicImage value="../resources/img/logo-unicauca-negro.png" style="width: 96px; margin-right: 60px" />
                                 <p:column>
                                     <div align="center">
-                                         <p:outputLabel value="Universidad del Cauca" styleClass="subtitulosFormato" /><br />
+                                        <p:outputLabel value="Universidad del Cauca" styleClass="subtitulosFormato" /><br />
                                         <p:outputLabel value="Facultad de Ingeniería Electrónica y" styleClass="subtitulosFormato" /><br />
                                         <p:outputLabel value="Telecomunicaciones" styleClass="subtitulosFormato" />
                                     </div>
@@ -114,7 +101,8 @@
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2" cellpadding="12" style="margin: 0 auto">
-                                    <p:button value="Volver" outcome="fase-presentacion-de-la-idea" icon="ui-icon-arrowthick-1-w" style="font-size: 13px;"/>                                
+                                    <p:button value="Volver" icon="ui-icon-arrowthick-1-w" style="font-size: 13px;"/>                                
+                                    <!--<p:button value="Volver" outcome="fases-trabajo-de-grado" icon="ui-icon-arrowthick-1-w" style="font-size: 13px;"/>-->
                                     <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px;" />
                                 </h:panelGrid>
                             </h:panelGrid>

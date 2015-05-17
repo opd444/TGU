@@ -14,8 +14,8 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Evaluador" outcome="index" />
-                        <p:menuitem value="Evaluador" outcome="index" />                        
+                        <p:menuitem value="Evaluador" outcome="./../perfiles/vista-evaluador.xhtml" />
+                        <p:menuitem value="Evaluador" outcome="./../perfiles/vista-evaluador.xhtml" />                        
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />                        
                     </p:breadCrumb>              
                 </h:form>
@@ -25,9 +25,10 @@
             </ui:define>
 
             <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
+                
                 #{trabajodegradoController.setUsunomEval(serviciosSimcaController.nombreUsuario)}
-                <h:form>
-                    <p:menu model="#{menuView.model}" styleClass="menuizqroles" />                                        
+                <h:form>                    
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
                             #{trabajodegradoController.trabajo.trabajonombre}
@@ -62,7 +63,7 @@
                                 <h:outputText value="Formato B:" style="font-weight: bold;" />
                                 <p:button value="Diligenciar" icon="ui-icon-document" href="diligenciar-formato-B.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnDiligenciarFormatoB}" style="width: 120px;" />          
                                 <p:button value="Editar" icon="ui-icon-pencil" href="editar-formato-B.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnEditarFormatoB}" style="width: 120px;" />
-                                <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-B.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoB}" style="width: 120px;" />                                
+                                <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-formato-B.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoB}" style="width: 120px;" />                                
                                 <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnDescargarFormatoB}" style="width: 120px;" />
                             </h:panelGrid>
                         </p:panel>

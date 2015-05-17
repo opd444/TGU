@@ -147,7 +147,7 @@ public class CoordinadorController {
 
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
-            context.redirect("fases-trabajo-de-grado.xhtml");
+            context.redirect("../coordinador/fases-trabajo-de-grado.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(DirectorController.class.getName()).log(Level.SEVERE, null, ex);
         }

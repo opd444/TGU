@@ -13,9 +13,9 @@
 
             <ui:define name="menuprincipal">
                 <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />                                        
-                    <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
-                    <p:menuitem value="Trabajos de Grado" outcome="vista-jefe-de-departamento" />                        
+                    <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />                                        
+                    <p:menuitem value="Jefe de Departamento" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />
+                    <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />                        
                     <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
                     <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
                 </p:breadCrumb>              
@@ -25,16 +25,8 @@
             </ui:define>
 
             <ui:define name="body">           
-
-                <h:form id="fases">                                                           
-                    
-                        <p:menu styleClass="menuizqroles" style="background-color: white">
-                            <p:submenu label="Perfiles" style="background-color: white">
-                                <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />
-                                <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" style="background-color: #c2dfef" />
-                            </p:submenu>                                
-                        </p:menu>
-                    
+                #{menuController.setOutPerfiles(true)}
+                <h:form id="fases">                                                                               
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
                             #{trabajodegradoController.trabajo.trabajonombre}
@@ -71,14 +63,14 @@
                             </p:commandButton>-->
                             <h:panelGrid columns="5" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Formato A:" style="font-weight: bold;" />
-                                <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-A.xhtml" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-formato-A.xhtml" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
                                 <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" actionListener="#{pDFBean.generarPDF()}" oncomplete="PF('dlgVerRutina').show();" />                                
                                 <h:outputText value="" />
                                 <h:outputText value="" />
                                 <h:outputText value="Revisión de la idea:" style="font-weight: bold;" />
                                 <p:button value="Diligenciar" icon="ui-icon-document" href="diligenciar-formato-revision-idea.xhtml" disabled="#{trabajodegradoController.btnDiligenciarRevisionFormatoA}" style="width: 120px;" />
                                 <p:button value="Editar" icon="ui-icon-pencil" href="editar-formato-revision-idea.xhtml" disabled="#{trabajodegradoController.btnEditarRevisionFormatoA}" style="width: 120px;" />
-                                <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-revision-idea.xhtml" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-formato-revision-idea.xhtml" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
                                 <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
                             </h:panelGrid>
                         </p:panel>

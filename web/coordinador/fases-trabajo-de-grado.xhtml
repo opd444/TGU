@@ -25,9 +25,9 @@
                 </p:dialog>
                 <h:form>
                 <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Coordinador" outcome="vista-coordinador" />
-                    <p:menuitem value="Coordinador" outcome="vista-coordinador" />
-                    <p:menuitem value="Trabajo de Grado" outcome="vista-coordinador" />
+                    <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                    <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                    <p:menuitem value="Trabajo de Grado" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
                     <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
                     <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fases-trabajo-de-grado" />
                 </p:breadCrumb>
@@ -39,17 +39,10 @@
             </ui:define>
 
             <ui:define name="body">
-                
+                #{menuController.setOutPerfiles(true)}
                 
                 <h:form id="fases">                                                           
-                    <p:growl id="growl" sticky="true" showDetail="true"/>
-                    <p:menu styleClass="menuizqroles" style="background-color: white">
-                        <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" outcome="./../director/vista-director.xhtml"/>
-                            <p:menuitem value="Jefe de Departamento" outcome="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />
-                             <p:menuitem value="Coordinador" outcome="vista-coordinador.xhtml"  style="background-color: #c2dfef"/>
-                        </p:submenu>                                
-                    </p:menu>
+                    <p:growl id="growl" sticky="true" showDetail="true"/>                    
 
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        

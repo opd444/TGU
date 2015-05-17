@@ -13,34 +13,24 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Director" outcome="vista-director" />
-                        <p:menuitem value="Director" outcome="vista-director" />
-                        <p:menuitem value="Trabajos de Grado" outcome="vista-director" />                        
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />                                        
+                        <p:menuitem value="Jefe de Departamento" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" />
+                        <p:menuitem value="1. Presentación de la Idea" />
                         <p:menuitem value="Ver Revisión de la idea" />
                     </p:breadCrumb>   
                 </h:form>
             </ui:define>
 
-            <ui:define name="title">
+            <ui:define name="title">                
             </ui:define>
 
             <ui:define name="body">
                 <f:metadata>
                     <f:viewParam name="productoid" value="#{trabajodegradoController.trabajoid}" />
                 </f:metadata>
-
-                <h:form>
-                    <p:menu styleClass="menuizqroles" style="background-color: white">
-                        <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" outcome="vista-director" style="background-color: #c2dfef" />
-                            <p:menuitem value="Jefe de Departamento" outcome="../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />
-                        </p:submenu>
-                    </p:menu>
-                </h:form>
-                
+                #{menuController.setOutPerfiles(true)}
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
                         <h:outputText value="Formato: Revisión de la idea"/> <br/>
@@ -84,7 +74,8 @@
                             </h:panelGrid>
                             <br />
                             <h:panelGrid columns="2" cellpadding="12" style="margin: 0 auto">
-                                <p:button value="Volver" outcome="fases-trabajo-de-grado" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>                                
+                                <p:button value="Volver" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>                                
+                                <!--<p:button value="Volver" outcome="fases-trabajo-de-grado" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>-->
                                 <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px; width: 120px;" />
                             </h:panelGrid>
                         </p:panel>

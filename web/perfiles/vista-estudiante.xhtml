@@ -29,6 +29,7 @@
                 #{trabajodegradoController.trabajoAsignado(estudianteViewController.entityTrabajo.trabajoid)}
                 #{trabajodegradoController.incializar()}                
                 #{estudianteViewController.loadTrabajoDeGrado()}-->
+                
                 <h:form id="fases">                                                           
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
@@ -49,9 +50,9 @@
                                         <f:param name="mode" value="'show'" />
                                     </p:effect>
                                 </p:commandButton>
-
-                                <p:button value="Realización del Anteproyecto" outcome="2-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
-                                <p:button value="Evaluación del Anteproyecto" outcome="3-evaluacion-anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                
+                                <p:button value="Realización del Anteproyecto" outcome="../estudiante/2-realizacion-anteproyecto.xhtml" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Anteproyecto" outcome="../estudiante/3-evaluacion-anteproyecto.xhtml" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Ejecución del Trabajo de Grado" href="4-ejecucion-trabajo-grado" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Evaluación del Trabajo de Grado" href="5-evaluacion-trabajo-grado" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Finalizado" href="6-finalizado" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
@@ -66,11 +67,11 @@
                             </p:commandButton>-->
                             <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Formato A:" style="font-weight: bold;" />                                
-                                <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-A.xhtml" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-formato-A.xhtml" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />
                                 <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" actionListener="#{pDFBean.generarPDF()}" oncomplete="PF('dlgVerRutina').show();" />
 
                                 <h:outputText value="Revisión de la idea:" style="font-weight: bold;" />
-                                <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-revision-idea.xhtml" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-formato-revision-idea.xhtml" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
                                 <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />                                
                             </h:panelGrid>
                         </p:panel>

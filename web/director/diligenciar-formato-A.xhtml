@@ -12,9 +12,9 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Director" outcome="vista-director" />
-                        <p:menuitem value="Director" outcome="vista-director" />
-                        <p:menuitem value="Trabajos de Grado" outcome="vista-director" />                        
+                        <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
+                        <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-director.xhtml" />                        
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
                         <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
                         <p:menuitem value="Diligenciar Formato A" outcome="diligenciar-formato-A" />
@@ -26,18 +26,9 @@
             </ui:define>
 
             <ui:define name="body">
-
-                <h:form>
-                    <p:menu styleClass="menuizqroles" style="background-color: white">
-                        <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" action="vista-director" style="background-color: #c2dfef" />
-                            <p:menuitem value="Jefe de Departamento" action="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />                            
-                        </p:submenu>                                
-                    </p:menu>
-                </h:form>
-
+                #{menuController.setOutPerfiles(true)}
                 <p:panel styleClass="paneltrabajo" >
-                    
+
                     <div class="tituloContenido">                        
                         <h:outputText value="Formato A: Presentación de la idea"/> <br/>
                     </div>
@@ -49,13 +40,13 @@
                                 <p:panel header="Campos con * son obligatorios">
                                     <p:messages />
                                     <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="5">
-                                        
+
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
                                         <p:outputLabel styleClass="subtitulosFormato" value="Titulo del trabajo de grado: *"> </p:outputLabel>
                                         <p:inputText style="font-weight: bold;" value="#{formatoA.nombretg}" required="true" requiredMessage="Por favor ingrese el titulo del Trabajo de Grado." size="26"> </p:inputText>
-                                        
+
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
-                                        
+
                                         <p:outputLabel styleClass="subtitulosFormato" value="Nombre del Estudiante 1: *"> </p:outputLabel>
                                         <p:autoComplete value="#{formatoA.est1}" label="Estudiante 1"
                                                         completeMethod="#{formatoA.complete}"
@@ -77,11 +68,11 @@
                                                 #{est.personanombres} #{est.personaapellidos}
                                             </p:column>
                                         </p:autoComplete> 
-                                        
+
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
-                                        
+
                                         <p:outputLabel styleClass="subtitulosFormato" value="Nombre del Estudiante 2:"> </p:outputLabel>
-                                         <p:autoComplete value="#{formatoA.est2}" label="Estudiante 2"
+                                        <p:autoComplete value="#{formatoA.est2}" label="Estudiante 2"
                                                         completeMethod="#{formatoA.complete2}"
                                                         var="est"
                                                         itemValue="#{est}" dropdown="true"
@@ -93,15 +84,15 @@
                                                         maxResults="8"
                                                         size="24"
                                                         >
-                                             <p:ajax event="itemSelect" listener="#{formatoA.handlerSelectest2}"></p:ajax>
+                                            <p:ajax event="itemSelect" listener="#{formatoA.handlerSelectest2}"></p:ajax>
                                             <p:ajax event="itemUnselect" listener="#{formatoA.handleUnSelectest2}"></p:ajax>
                                             <p:column> 
                                                 #{est.personanombres} #{est.personaapellidos}
                                             </p:column>
                                         </p:autoComplete>
-                                        
+
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
-                                        
+
                                         <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado: *"> </p:outputLabel>
                                         <p:outputLabel value="#{formatoA.nombreDirector}"> </p:outputLabel>
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
@@ -118,12 +109,12 @@
                                         <p:inputTextarea value="#{formatoA.objetivos}" required="true" label="Objetivos" styleClass="txtareaform" requiredMessage="Debe ingresar los objetivos de su trabajo de grado."/>
 
                                         <p:separator style="border-color: white !important;" />
-                                        
+
                                         <p:outputLabel styleClass="subtitulosFormato" value="Aportes o contribución a las lineas de investigacion y desarrollo o temas de interes del departamento: *" />
                                         <p:inputTextarea value="#{formatoA.aportes}" required="true" label="Aportes o contribución" styleClass="txtareaform" requiredMessage="Debe ingresar los aportes o contribución a las lineas de investigación."/>
-                                        
+
                                         <p:separator style="border-color: white !important;" />
-                                        
+
                                         <p:column >
                                             <p:outputLabel styleClass="subtitulosFormato" value="Tiempo estimado de realización: *"> </p:outputLabel>
                                             <p:inputText value="#{formatoA.tiempo}" required="true" label="Tiempo Estimado" validatorMessage="El tiempo estimado debe estar entre los 6 a 9 meses." size="4" requiredMessage="Debe ingresar el tiempo estimado para realizar su trabajo de grado." style="margin-left: 10px; margin-right: 10px">
@@ -139,7 +130,7 @@
 
                             <p:tab id="paso3" title="Paso 3">
                                 <p:panel header="Campos con * son obligatorios">
-                                     <p:messages />
+                                    <p:messages />
                                     <h:panelGrid cellpadding="5">
                                         <p:separator style="border-color: white !important;" />
                                         <p:outputLabel styleClass="subtitulosFormato" value="Recursos requeridos: *"> </p:outputLabel>
@@ -164,33 +155,33 @@
                             </p:tab>
 
                             <p:tab id="paso4" title="Paso 4">
-                                 <p:panel header="Confirmación de Datos">
+                                <p:panel header="Confirmación de Datos">
                                     <h:panelGrid cellpadding="7">
-                                        
+
                                         <p:fieldset legend="Titulo del trabajo de grado:" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoA.nombretg}"> </p:outputLabel>
                                         </p:fieldset>
-                                        
+
                                         <p:fieldset legend="Nombre del Estudiante 1:" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoA.est1.personanombres} #{formatoA.est1.personaapellidos}"> </p:outputLabel>
                                         </p:fieldset>
-                                        
+
                                         <p:fieldset legend="Nombre del Estudiante 2:" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoA.est2.personanombres} #{formatoA.est2.personaapellidos}"> </p:outputLabel>
                                         </p:fieldset>
-                                        
+
                                         <p:fieldset legend="Director del trabajo de grado:" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoA.nombreDirector}"> </p:outputLabel>
                                         </p:fieldset>
-                                        
+
                                         <p:fieldset legend="Objetivos:" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoA.objetivos}"> </p:outputLabel>
                                         </p:fieldset>
-                                        
+
                                         <p:fieldset legend="Aportes o contribución a las lineas de investigacion y desarrollo o temas de interes del departamento:" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoA.aportes}"> </p:outputLabel>
                                         </p:fieldset>   
-                                       
+
                                         <p:fieldset legend="Tiempo estimado de realización" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoA.tiempo} meses"> </p:outputLabel>
                                         </p:fieldset>
@@ -213,7 +204,7 @@
                                             </p:outputLabel>
                                         </p:fieldset>
                                     </h:panelGrid>
-                                     <p:commandButton style="display: block; margin: 0 auto;" value="Guardar" update="growl" action="#{formatoA.guardar()}" icon="ui-icon-disk"/>
+                                    <p:commandButton style="display: block; margin: 0 auto;" value="Guardar" update="growl" action="#{formatoA.guardar()}" icon="ui-icon-disk"/>
                                 </p:panel>
                             </p:tab>
                         </p:wizard>

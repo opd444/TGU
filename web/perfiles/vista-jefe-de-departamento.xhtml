@@ -13,7 +13,7 @@
             <ui:define name="menuprincipal">
                 <h:form id="formMigaJefe">
                     <p:breadCrumb id="migaJefe" styleClass="migaDePan">
-                        <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />                                        
+                        <p:menuitem value="Director" outcome="vista-director.xhtml" />                                        
                         <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
                         <p:menuitem value="#{jefeDepController.titulotablaJefe}" outcome="vista-jefe-de-departamento" />
                     </p:breadCrumb>
@@ -24,6 +24,7 @@
             </ui:define>
 
             <ui:define name="body">
+                
                 <h:form id="form1">                    
                     <p:panel styleClass="paneltrabajo" >
                         <h:panelGrid style="margin: 0 auto;">

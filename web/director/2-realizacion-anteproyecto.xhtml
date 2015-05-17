@@ -12,10 +12,10 @@
 
             <ui:define name="menuprincipal">
                 <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Director" outcome="vista-director" />
-                    <p:menuitem value="Director" outcome="vista-director" />
+                    <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
+                    <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
                     <p:menuitem value="Trabajos de Grado" 
-                                outcome="vista-director" />                        
+                                outcome="./../perfiles/vista-director.xhtml" />                        
                     <p:menuitem value="Fases del Trabajo de Grado" 
                                 outcome="2-realizacion-anteproyecto" />
                     <p:menuitem value="2. Realizacion del Anteproyecto" 
@@ -27,16 +27,9 @@
             </ui:define>
 
             <ui:define name="body">                                               
-                               
+                #{menuController.setOutPerfiles(true)}
+
                 <h:form id="formularioavalar">                                                           
-
-                    <p:menu styleClass="menuizqroles" style="background-color: white">
-                        <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" outcome="vista-director" style="background-color: #c2dfef" />
-                            <p:menuitem value="Jefe de Departamento" outcome="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />
-                        </p:submenu>                                
-                    </p:menu>
-
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
                             #{estudianteViewController.entityTrabajo.trabajonombre}
@@ -76,7 +69,7 @@
                             <h:panelGrid columns="5" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Anteproyecto:" style="font-weight: bold;" />                                                                
                                 <p:button value="Editar" icon="ui-icon-pencil" href="editar-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnEditarAnteproyecto}" style="width: 120px;" />
-                                <p:button value="Ver" icon="ui-icon-comment" href="ver-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerAnteproyecto}" style="width: 120px;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-anteproyecto.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerAnteproyecto}" style="width: 120px;" />
                                 <p:commandButton id="btndesc" value="Descargar" rendered="#{anteproyecto.filedown != null}"
                                                  ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
                                                  icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">
@@ -86,7 +79,7 @@
                             </h:panelGrid>
                         </p:panel>
                     </p:panel>
-                    
+
                     <p:dialog header="Confiramcion" showEffect="scale" modal="true"  widgetVar="Avalar">
                         <p:outputLabel value="Esta seguro."/>
                         <p:commandButton id="btnAceptar" value="Aceptar" icon="ui-icon-check" action="#{trabajogradoFaseController.btnAvalar(trabajodegradoController)}"/>

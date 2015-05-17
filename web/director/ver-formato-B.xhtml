@@ -13,9 +13,9 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Director" outcome="vista-director" />
-                        <p:menuitem value="Director" outcome="vista-director" />
-                        <p:menuitem value="Trabajos de Grado" outcome="vista-director" />                        
+                        <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
+                        <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-director.xhtml" />                        
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
                         <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fases-trabajo-de-grado" />
                         <p:menuitem value="Ver Formato B" outcome="ver-formato-B" />
@@ -27,17 +27,8 @@
             </ui:define>
 
             <ui:define name="body">
-                
-                #{formatoB.btnVerFormatoB(1)}
-                <h:form>
-                    <p:menu styleClass="menuizqroles" style="background-color: white">
-                        <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" outcome="vista-director" style="background-color: #c2dfef" />
-                            <p:menuitem value="Jefe de Departamento" outcome="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />
-                        </p:submenu>                                
-                    </p:menu>                            
-                </h:form>
-
+                #{menuController.setOutPerfiles(true)}
+                #{formatoB.btnVerFormatoB(1)}                
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
                         <h:outputText value="Formato B: Evaluación del Anteproyecto"/> <br/>

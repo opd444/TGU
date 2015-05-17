@@ -13,9 +13,9 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Coordinador" outcome="vista-coordinador" />
-                        <p:menuitem value="Coordinador" outcome="vista-coordinador" />
-                        <p:menuitem value="Trabajo de Grado" outcome="vista-coordinador" />
+                        <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                        <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                        <p:menuitem value="Trabajo de Grado" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
                         <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
                     </p:breadCrumb>
@@ -27,18 +27,10 @@
             </ui:define>
 
             <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
                 #{trabajodegradoController.incializar()}
 
                 <h:form id="fases">                                                           
-
-                    <p:menu styleClass="menuizqroles" style="background-color: white">
-                        <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" outcome="./../director/vista-director.xhtml"/>
-                            <p:menuitem value="Jefe de Departamento" outcome="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />
-                             <p:menuitem value="Coordinador" outcome="vista-coordinador.xhtml"  style="background-color: #c2dfef"/>
-                        </p:submenu>                                  
-                    </p:menu>
-
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
                             #{trabajodegradoController.trabajo.trabajonombre}
@@ -75,10 +67,10 @@
                             </p:commandButton>-->
                             <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Formato A:" style="font-weight: bold;" />
-                               <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-A.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />                                
+                               <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-formato-A.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />                                
                                 <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" actionListener="#{pDFBean.generarPDF()}" oncomplete="PF('dlgVerRutina').show();" />
                                 <h:outputText value="Revisión de la idea:" style="font-weight: bold;" />
-                                <p:button value="Ver" href="ver-formato-revision-idea.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" icon="ui-icon-comment" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
+                                <p:button value="Ver" href="../vistas-documentos/ver-formato-revision-idea.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" icon="ui-icon-comment" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
                                 <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />                                                                
                             </h:panelGrid>
 

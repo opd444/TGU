@@ -24,12 +24,12 @@
                 </p:dialog>
                 <h:form>
                    <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Coordinador" outcome="vista-coordinador" />
-                    <p:menuitem value="Coordinador" outcome="vista-coordinador" />                      
+                    <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                    <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />                      
                     <p:menuitem value="Fases del Trabajo de Grado" 
                                 outcome="fases-trabajo-de-grado" />
                     <p:menuitem value="Ver Anteproyecto" 
-                                outcome="ver-anteproyecto" />
+                                outcome="./../vistas-documentos/ver-anteproyecto.xhtml" />
                 </p:breadCrumb>              
                 </h:form>
             </ui:define>
@@ -39,15 +39,7 @@
             </ui:define>
 
             <ui:define name="body">
-                <h:form>
-                    <p:menu styleClass="menuizqroles" style="background-color: azure;">
-                        <p:submenu label="Perfiles">
-                            <p:menuitem value="Director" action="vista-director"/>
-                            <p:menuitem value="Jefe de Departamento" action="./../jefe-de-departamento/vista-jefe-de-departamento.xhtml" />
-                            <p:menuitem value="Coordinador" outcome="vista-coordinador.xhtml"  style="background-color: #c2dfef"/>
-                        </p:submenu>                                
-                    </p:menu>
-                </h:form>
+                #{menuController.setOutPerfiles(true)}
                 <p:panel styleClass="paneltrabajo" >
                     
                     <div class="tituloContenido">                        

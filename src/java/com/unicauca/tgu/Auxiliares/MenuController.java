@@ -53,6 +53,7 @@ public class MenuController implements Serializable {
     private List<DefaultMenuItem> items;
 
     private boolean initMenu = false; // para el bucle de redireccionamiento
+    private boolean outPerfiles = false;
 
     public MenuController() {
         items = new ArrayList();
@@ -121,9 +122,14 @@ public class MenuController implements Serializable {
     private void redirectVista(String facelet) {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
-            context.redirect(facelet + ".xhtml");
-        } catch (Exception ex) {
-            context.redirect("../perfiles/" + facelet + ".xhtml");
+            if (outPerfiles) {
+                context.redirect("../perfiles/" + facelet + ".xhtml");
+            } else {
+                context.redirect(facelet + ".xhtml");
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -284,4 +290,13 @@ public class MenuController implements Serializable {
             }
         }
     }
+
+    public boolean isOutPerfiles() {
+        return outPerfiles;
+    }
+
+    public void setOutPerfiles(boolean outPerfiles) {
+        this.outPerfiles = outPerfiles;
+    }
+
 }

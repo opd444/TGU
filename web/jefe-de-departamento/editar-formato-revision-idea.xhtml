@@ -13,9 +13,9 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />                                        
-                        <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
-                        <p:menuitem value="Trabajos de Grado" outcome="vista-jefe-de-departamento" />                        
+                        <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />                                        
+                        <p:menuitem value="Jefe de Departamento" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />                        
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
                         <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
                         <p:menuitem value="Editar Revisión de la idea" outcome="editar-formato-revision-idea" />
@@ -27,15 +27,7 @@
             </ui:define>
 
             <ui:define name="body">
-                <h:form>
-                    <p:menu styleClass="menuizqroles" style="background-color: white">
-                        <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />
-                            <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" style="background-color: #c2dfef" />                            
-                        </p:submenu>                                
-                    </p:menu>
-                </h:form>
-
+                #{menuController.setOutPerfiles(true)}
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
                         <h:outputText value="Formato: Revisión de la idea"/> <br/>
