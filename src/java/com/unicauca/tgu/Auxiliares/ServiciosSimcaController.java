@@ -81,6 +81,10 @@ public class ServiciosSimcaController {
                     return null;
                 }
             
+                if (usu.getRol().equals("Secretaria")) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("secretaria/vista-secretaria.xhtml");
+                }
+                
                 if (usu.getRol().equals("Docente")) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("director/vista-director.xhtml");
                 }

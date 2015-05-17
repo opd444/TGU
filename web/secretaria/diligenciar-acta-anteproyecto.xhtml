@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Secretaria" outcome="vista-secretaria.xhtml" />                                        
+                        <p:menuitem value="Evaluacion del Anteproyecto"  />                      
+                        <p:menuitem value="Asignacion de Acta"  />
+                    </p:breadCrumb>              
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">               
+            </ui:define>
+
+            <ui:define name="body">
+                
+                <h:form>
+                    <p:menu styleClass="menuizqroles" style="background-color: white">
+                        <p:submenu label="Perfiles" style="background-color: white">
+                            <p:menuitem value="Secretaria" outcome="vista-secretaria" style="background-color: #c2dfef" />                            
+                        </p:submenu>                                
+                    </p:menu>
+                </h:form>
+
+                <p:panel styleClass="paneltrabajo" >
+                    <div class="tituloContenido">                        
+                        <h:outputText value="Agregar Acta"/> <br/>
+                    </div>                 
+                    <p:spacer height="30"/>                 
+
+                    <h:form>
+                        <p:panel header="Campos con * son obligatorios" style="width: 100%; font-size: 14px;" >
+                            <p:growl id="growl" sticky="true" showDetail="true" />
+                            <p:messages/>
+
+                            <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="15" >
+
+                                <p:outputLabel styleClass="subtitulosFormato" value="Nombre del trabajo de grado:" />
+                                <p:outputLabel value="#{actaSecretariaController.nombreTrabajodeGrado}"/> 
+                                
+                                <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado: *" />
+                                <p:outputLabel value="#{actaSecretariaController.nombreDirector}"/>
+                                
+                                <p:outputLabel styleClass="subtitulosFormato" value="Número de acta  *" />
+                                <p:inputText value="#{actaSecretariaController.numact}" required="true" label="Numero de acta" size="8" requiredMessage="Debe ingresar el número de acta." validatorMessage="Debe ingresar solo valores numericos menores de 8 cifras.">
+                                    <f:convertNumber integerOnly="true" type="number" />
+                                </p:inputText >
+
+                                <p:outputLabel styleClass="subtitulosFormato" value="Fecha: *" />
+                                <p:calendar navigator="true" value="#{actaSecretariaController.fechaact}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." />                              
+
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" style="margin: 0 auto;" cellpadding="8">
+                                <p:commandButton ajax="false" update="growl tablaactas" value="Guardar" action="#{actaSecretariaController.guardar()}" icon="ui-icon-disk"/>
+                                <p:button value="Cancelar"  icon="ui-icon-cancel"/>
+                            </h:panelGrid>
+                        </p:panel>
+                        <p:spacer height="20"/>
+                        <div class="tituloContenido">  
+                            
+                        <h:outputText value="Actas Relacionadas al Trabajo de Grado"/> <br/>
+                    </div>                 
+                         <p:spacer height="10"/>
+                         <p:dataTable id="tablaactas" styleClass="tabladirector" var="car" value="#{actaSecretariaController.actas}"
+                                      paginator="true" rows="5" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24" emptyMessage="No hay actas registradas a este trabajo de grado." style="font-size: 14px;">
+                            <p:column  headerText="Fecha">
+                                <p:outputLabel value="#{car.fechaact}" />      
+                            </p:column>
+                            <p:column  headerText="Numero de Acta"> <!--filterBy="{car.trabajoGrado}"-->
+                                <p:outputLabel value="#{car.numacta}" />            
+                            </p:column>     
+                        </p:dataTable>
+                    </h:form>
+                </p:panel>       
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
