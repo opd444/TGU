@@ -12,9 +12,9 @@
 
             <ui:define name="menuprincipal">
                 <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />                                        
-                    <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" />
-                    <p:menuitem value="Trabajos de Grado" outcome="vista-jefe-de-departamento" />      
+                    <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />                                        
+                    <p:menuitem value="Jefe de Departamento" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />
+                    <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />      
                     <p:menuitem value="Fases del Trabajo de Grado" 
                                 outcome="fases-trabajo-de-grado" />
                     <p:menuitem value="3 Evaluacion del Anteproyecto" 
@@ -26,16 +26,8 @@
             </ui:define>
 
             <ui:define name="body">                                               
-
+                #{menuController.setOutPerfiles(true)}
                 <h:form>                                                           
-
-                    <p:menu styleClass="menuizqroles" style="background-color: white">
-                        <p:submenu label="Perfiles" style="background-color: white">
-                            <p:menuitem value="Director" outcome="./../director/vista-director.xhtml" />
-                            <p:menuitem value="Jefe de Departamento" outcome="vista-jefe-de-departamento" style="background-color: #c2dfef" />
-                        </p:submenu>                                
-                    </p:menu>
-
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
                             #{estudianteViewController.entityTrabajo.trabajonombre}
@@ -53,7 +45,7 @@
 
                                 <p:button value="Presentación de la Idea" outcome="fases-trabajo-de-grado" style="width: 105px;height: 96px; font-size: 13px;" disabled="#{trabajodegradoController.fases.primeraFase}" />                            
 
-                                <p:button value="Realización del Anteproyecto" href="2-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
 
                                 <p:commandButton type="button" value="Evaluación del Anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" >
                                     <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
@@ -75,7 +67,7 @@
                             </p:commandButton>-->
                             <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Formato B (Evaluador 1):" style="font-weight: bold;" />                                                                                                
-                                <p:button value="Ver" icon="ui-icon-comment" href="ver-formato-B.xhtml" style="width: 120px;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="./../vistas-documentos/ver-formato-B.xhtml" style="width: 120px;" />
                                 <p:commandButton id="btndesc1" value="Descargar" rendered="#{anteproyecto.filedown != null}" disabled="#{trabajodegradoController.btnVerFormatoB1()}" 
                                                  ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
                                                  icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">
