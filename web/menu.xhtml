@@ -18,10 +18,12 @@
             </ui:define>
 
             <ui:define name="body">
-                <h:form>
+                <h:form id="formMenu">
                     <p:growl id="growl" />
 
-                    <p:menu model="#{menuController.model}" />                    
+                    <p:menu model="#{menuController.model}" 
+                            style="background-color: white" 
+                            styleClass="menuizqroles" />                    
                 </h:form>
             </ui:define>
 
