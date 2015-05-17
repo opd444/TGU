@@ -11,11 +11,11 @@
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
-                <h:form>
-                    <p:breadCrumb id="migaDirector" styleClass="migaDePan">
+                <h:form id="formMigaEvaluador">
+                    <p:breadCrumb id="migaEvaluador" styleClass="migaDePan">
                         <p:menuitem value="Evaluador" outcome="vista-evaluador" />
                         <p:menuitem value="Evaluador" outcome="vista-evaluador" />
-                        <p:menuitem value="Anteproyectos" />
+                        <p:menuitem value="#{evaluadorController.titulo}" />
                     </p:breadCrumb>
                 </h:form>
             </ui:define>
@@ -28,38 +28,46 @@
                         <p:panel styleClass="paneltrabajo" >
                             <h:panelGrid style="margin: 0 auto;">
                                 <p:menubar styleClass="menubarstyleClass">
-                                    <p:menuitem style="border-color: #808080" value="Ver Anteproyectos por evaluar" icon="ui-icon-folder-open"/>
+                                    <p:menuitem style="border-color: #808080" value="Ver Anteproyectos por evaluar" actionListener="#{evaluadorController.anteproyectosPorEvaluar()}"
+                                                update="tituloEvaluador :formMigaEvaluador:migaEvaluador tablaEvaluador" icon="ui-icon-folder-open"/>
+                                    <p:menuitem style="border-color: #808080" value="Ver Anteproyectos evaluados" actionListener="#{evaluadorController.anteproyectosEvaluados()}"
+                                                update="tituloEvaluador :formMigaEvaluador:migaEvaluador tablaEvaluador" icon="ui-icon-folder-collapsed"/>                               
                                 </p:menubar>
                             </h:panelGrid>
                             <p:spacer height="25"/>
-                            <h:outputLabel id="tituloVistaDirector" class="tituloContenido" value="Anteproyectos por evaluar" />        
-                            <p:spacer height="10"/>                               
-                            <p:dataTable  styleClass="tabladirector" id="tablacoord" var="car" value="#{evaluador.trabajosporeval}"
-                                          paginator="true" rows="5" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24" emptyMessage="Lo sentimos, no hay trabajos registrados." style="font-size: 14px;">
-
-                                <p:column style="width: 275px;" headerText="Trabajo de Grado"> <!--filterBy="{car.trabajoGrado}"-->
-                                    <p:commandLink value="#{car.trabajoGrado}" actionListener="#{evaluador.contenidoTgEvaluador}" style="color: #045491;">                                     
-                                        <f:attribute name="idtrabajo" value="#{car.trabajoGradoId}" />    
-                                        <f:attribute name="nombretrab" value="#{car.trabajoGrado}" />
-                                        <f:attribute name="iddirector" value="#{car.directorId}" />
-                                        <f:attribute name="est1" value="#{car.est1Id}" />
-                                        <f:attribute name="est2" value="#{car.est2Id}" />
-                                    </p:commandLink>             
-                                </p:column>
-                                <p:column style="width: 150px;" headerText="Estudiantes" > 
-                                    #{car.est1} <br /> #{car.est2}      
-                                </p:column>
-                                <p:column headerText="Director"> 
-                                    #{car.director}  
-                                </p:column>
-
-                            </p:dataTable> 
-
+                            <h:outputLabel id="tituloEvaluador" class="tituloContenido" value="#{evaluadorController.titulo}" />        
+                            <p:spacer height="10"/>
+                            
+                            <p:dataTable  styleClass="tabladirector" id="tablaEvaluador" var="car" value="#{evaluadorController.anteproyectos}"
+                                      paginator="true" rows="5" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24" emptyMessage="Lo sentimos, no hay trabajos registrados." style="font-size: 14px;">
+                            <p:column style="width: 80px;" headerText="Fecha">
+                                <h:outputText value="#{car.fecha}">
+                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                </h:outputText>                                 
+                            </p:column>
+                            <p:column style="width: 250px;" headerText="Trabajo de Grado">
+                                <p:commandLink value="#{car.trabajoGrado}" actionListener="#{evaluadorController.contenidoTgEvaluador}" style="color: #045491;">                                     
+                                    <f:attribute name="idtrabajo" value="#{car.trabajoGradoId}" />    
+                                    <f:attribute name="nombretrab" value="#{car.trabajoGrado}" />
+                                    <f:attribute name="iddirector" value="#{car.directorId}" />
+                                    <f:attribute name="est1" value="#{car.est1Id}" />
+                                    <f:attribute name="est2" value="#{car.est2Id}" />
+                                </p:commandLink>             
+                            </p:column>
+                            <p:column rendered="#{!evaluadorController.modo}" style="width: 140px;" headerText="Director">
+                                #{car.director}    
+                            </p:column>
+                             <p:column style="width: 140px;" headerText="Estudiantes" > 
+                                #{car.est1} <br /> #{car.est2}      
+                            </p:column>
+                            <p:column rendered="#{evaluadorController.modo}" style="width: 70px; text-align: center;" headerText="Aprobado">
+                                <h:selectBooleanCheckbox id="checkbox" value="#{car.aprobado}" disabled="true" />
+                            </p:column>
+                        </p:dataTable>
+                            
                         </p:panel>
                     </h:form>                
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

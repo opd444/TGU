@@ -370,18 +370,18 @@ public class Anteproyecto {
 
         ejbFacadeProdTrab.edit(anteproyactual);
         
-        Servicio_Email se = new Servicio_Email();
-        se.setSubject("Asignacion como evaluador de anteproyecto");
-
-            if (doc1 != null) {
-                se.setTo(doc1.getPersonacorreo());
-                se.enviarAsignacionEvaluacionanteproyecto(nombretg);
-            }
-        
-            if (doc2 != null) {
-                se.setTo(doc2.getPersonacorreo());
-                se.enviarAsignacionEvaluacionanteproyecto(nombretg);
-            }
+//        Servicio_Email se = new Servicio_Email();
+//        se.setSubject("Asignacion como evaluador de anteproyecto");
+//
+//            if (doc1 != null) {
+//                se.setTo(doc1.getPersonacorreo());
+//                se.enviarAsignacionEvaluacionanteproyecto(nombretg);
+//            }
+//        
+//            if (doc2 != null) {
+//                se.setTo(doc2.getPersonacorreo());
+//                se.enviarAsignacionEvaluacionanteproyecto(nombretg);
+//            }
             
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Evaluadores Asignados correctamente"));
         //ExternalContext extcontext = context.getExternalContext();
