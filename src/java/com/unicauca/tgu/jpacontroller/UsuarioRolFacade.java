@@ -6,9 +6,11 @@
 package com.unicauca.tgu.jpacontroller;
 
 import com.unicauca.tgu.entities.UsuarioRol;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,4 +30,14 @@ public class UsuarioRolFacade extends AbstractFacade<UsuarioRol> {
         super(UsuarioRol.class);
     }
     
+    public List<UsuarioRol> findByUsuid_Rolid(int usuid, int rolid) {
+        try {
+            String queryString = "SELECT u FROM UsuarioRol u "
+                    + "where u.personacedula=" + usuid + " and u.rolid=" + rolid;
+            Query query = getEntityManager().createQuery(queryString);
+            return query.getResultList();
+        } finally {
+            // em.close();
+        }
+    }    
 }

@@ -13,8 +13,12 @@ import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.Usuario;
+import com.unicauca.tgu.entities.UsuarioRol;
+import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioRolFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,6 +42,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
@@ -52,6 +58,12 @@ public class Anteproyecto {
 
     @EJB
     private UsuarioFacade ejbFacadeUsuario;
+    @EJB
+    private UsuarioRolTrabajogradoFacade ejbFacadeUsuroltrab;
+    @EJB
+    private UsuarioRolFacade ejbFacadeUsuRol;
+    @EJB
+    private ProductodetrabajoFacade ejbFacadeProdTrab;
 
     private String nombretg;
     private String directortg;
@@ -67,9 +79,6 @@ public class Anteproyecto {
     private final String directorioanteproyectos = "D:\\Archivos_TGU\\Anteproyectos\\";
     private Usuario doc1;
     private Usuario doc2;
-
-    @EJB
-    private ProductodetrabajoFacade ejbFacadeProdTrab;
 
     public Anteproyecto() {
     }
@@ -325,14 +334,82 @@ public class Anteproyecto {
 
     }
 
-    public List<Usuario> complete(String query) {
-
+    public List<Usuario> complete(String query)
+    {
         query = query.trim();
         query = query.toUpperCase();
-
+        
         List<Usuario> ls = ejbFacadeUsuario.buscarEvaluadores(query);
-
-        return ls;
+        List<Usuario> usus = new ArrayList();
+        
+        if(query.isEmpty())
+            doc1 = null;
+        
+        for (Usuario u : ls) {
+            List<UsuarioRol> lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 1);
+            if(!lstTrab1.isEmpty())
+                continue;
+            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 5);
+            if(!lstTrab1.isEmpty())
+                continue;
+            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 6);
+            if(!lstTrab1.isEmpty())
+                continue;
+            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 8);
+            if(!lstTrab1.isEmpty())
+                continue;
+            List<UsuarioRolTrabajogrado> lstTrabs = ejbFacadeUsuroltrab.findByUsuid_Rolid(u.getPersonacedula().intValue(), 4);
+            if(lstTrabs.size() > 3) //Para evitar que se asigne un evaluador con 3 trabajos de grado.
+                continue;
+            usus.add(u);
+        }
+        
+        if (doc2 != null) {
+            for (Usuario u : ls) {
+                if (u.getPersonacedula().intValue() == doc2.getPersonacedula().intValue())
+                    usus.remove(u);
+            }
+        }
+        return usus;
+    }
+    
+    public List<Usuario> complete2(String query)
+    {
+        query = query.trim();
+        query = query.toUpperCase();
+        
+        if(query.isEmpty())
+            doc2 = null;
+        
+        List<Usuario> ls = ejbFacadeUsuario.buscarEvaluadores(query);
+        List<Usuario> usus = new ArrayList();
+        
+        for (Usuario u : ls) {
+            List<UsuarioRol> lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 1);
+            if(!lstTrab1.isEmpty())
+                continue;
+            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 5);
+            if(!lstTrab1.isEmpty())
+                continue;
+            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 6);
+            if(!lstTrab1.isEmpty())
+                continue;
+            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 8);
+            if(!lstTrab1.isEmpty())
+                continue;
+            List<UsuarioRolTrabajogrado> lstTrabs = ejbFacadeUsuroltrab.findByUsuid_Rolid(u.getPersonacedula().intValue(), 4);
+            if(lstTrabs.size() > 3) //Para evitar que se asigne un evaluador con 3 trabajos de grado.
+                continue;
+            usus.add(u);
+        }
+        
+        if (doc1 != null) {
+            for (Usuario u : ls) {
+                if (u.getPersonacedula().intValue() == doc1.getPersonacedula().intValue())
+                    usus.remove(u);
+            }
+        }
+        return usus;
     }
 
     public void guardarevaluadores() {
@@ -391,5 +468,22 @@ public class Anteproyecto {
             context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "Ocurrio algun error al intentar  efectuar la operacion"));
         }
 
+    }
+    
+    public void handlerSelectDoc1(SelectEvent e) {
+        doc1 = (Usuario) e.getObject();
+    }
+
+    public void handlerSelectDoc2(SelectEvent e) {
+
+        doc2 = (Usuario) e.getObject();
+    }
+
+    public void handleUnSelectDoc1(UnselectEvent e) {
+        doc1 = null;
+    }
+
+    public void handleUnSelectDoc2(UnselectEvent e) {
+        doc2 = null;
     }
 }

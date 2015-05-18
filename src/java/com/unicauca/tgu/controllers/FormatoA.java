@@ -23,6 +23,8 @@ import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import com.unicauca.tgu.controllers.util.JsfUtil;
+import com.unicauca.tgu.entities.UsuarioRol;
+import com.unicauca.tgu.jpacontroller.UsuarioRolFacade;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.ParseException;
@@ -55,6 +57,9 @@ public class FormatoA {
 
     @EJB
     private UsuarioRolTrabajogradoFacade ejbFacadeUsuroltrab;
+    
+    @EJB
+    private UsuarioRolFacade ejbFacadeUsuRol;
 
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
@@ -476,18 +481,28 @@ public class FormatoA {
 
         query = query.trim();
         query = query.toUpperCase();
-
+        
+        if(query.isEmpty())
+            est1 = null;
+        
         List<Usuario> ls = ejbFacadeUsuario.buscarEstudiantesDisponibles(iddirector, query);
-        List<Usuario> usus = new ArrayList<Usuario>();
+        List<Usuario> usus = new ArrayList();
+        
+        for (Usuario u : ls) {
+            List<UsuarioRol> lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 1);
+            if(lstTrab1.isEmpty())
+                continue;
+            List<UsuarioRolTrabajogrado> lstTrabs = ejbFacadeUsuroltrab.findByUsuid_Rolid(u.getPersonacedula().intValue(), 1);
+            if(lstTrabs.size() > 0)
+                continue;
+            usus.add(u);
+        }
+        
         if (est2 != null) {
             for (Usuario u : ls) {
-                if (u.getPersonacedula().intValue() == est2.getPersonacedula().intValue()) {
-                    continue;
-                }
-                usus.add(u);
+                if (u.getPersonacedula().intValue() == est2.getPersonacedula().intValue())
+                    usus.remove(u);
             }
-        } else {
-            return ls;
         }
         return usus;
     }
@@ -496,18 +511,28 @@ public class FormatoA {
 
         query = query.trim();
         query = query.toUpperCase();
+        
+        if(query.isEmpty())
+            est2 = null;
+        
         List<Usuario> ls = ejbFacadeUsuario.buscarEstudiantesDisponibles(iddirector, query);
-        List<Usuario> usus = new ArrayList<Usuario>();
+        List<Usuario> usus = new ArrayList();
+        
+        for (Usuario u : ls) {
+            List<UsuarioRol> lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 1);
+            if(lstTrab1.isEmpty())
+                continue;
+            List<UsuarioRolTrabajogrado> lstTrabs = ejbFacadeUsuroltrab.findByUsuid_Rolid(u.getPersonacedula().intValue(), 1);
+            if(lstTrabs.size() > 0)
+                continue;
+            usus.add(u);
+        }
+        
         if (est1 != null) {
             for (Usuario u : ls) {
-                if (u.getPersonacedula().intValue() == est1.getPersonacedula().intValue()) {
-                    continue;
-                }
-                usus.add(u);
-
+                if (u.getPersonacedula().intValue() == est1.getPersonacedula().intValue())
+                    usus.remove(u);
             }
-        } else {
-            return ls;
         }
         return usus;
     }

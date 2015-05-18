@@ -86,44 +86,52 @@
                                     <p:fileDownload value="#{anteproyecto.filedown}" />
                                     <p:graphicImage value="descargar.png" library="img" />
                                 </p:commandLink>
-                                <p:outputLabel styleClass="subtitulosFormato" value="Docente Evaluador 1:" />
-                                <p:autoComplete value="#{anteproyecto.doc1}" label="Docente 1"
-                                                        completeMethod="#{anteproyecto.complete}"
-                                                        var="est"
-                                                        itemValue="#{est}" dropdown="true"
-                                                        forceSelection="true"
-                                                        itemLabel="#{est.personanombres} #{est.personaapellidos}"
-                                                        converter="usuarioConverter"
-                                                        cache="true"
-                                                        queryDelay="750"
-                                                        maxResults="8"
-                                                        required="true"
-                                                        requiredMessage="Por favor ingrese el nombre del primer evaluador"
-                                                        size="24"
-                                                        >
-                                            <p:column>
-                                                #{est.personanombres} #{est.personaapellidos}
-                                            </p:column>
-                                        </p:autoComplete> 
-                                <p:outputLabel styleClass="subtitulosFormato" value="Docente Evaluador 2:" />
-                                <p:autoComplete value="#{anteproyecto.doc2}" label="Docente 2"
-                                                        completeMethod="#{anteproyecto.complete}"
-                                                        var="est"
-                                                        itemValue="#{est}" dropdown="true"
-                                                        forceSelection="true"
-                                                        itemLabel="#{est.personanombres} #{est.personaapellidos}"
-                                                        converter="usuarioConverter"
-                                                        cache="true"
-                                                        queryDelay="750"
-                                                        maxResults="8"
-                                                        required="true"
-                                                        requiredMessage="Por favor ingrese el nombre del segundo evaluador."
-                                                        size="24"
-                                                        >                                  
-                                            <p:column>
-                                                #{est.personanombres} #{est.personaapellidos}
-                                            </p:column>
-                                        </p:autoComplete> 
+                                <p:outputLabel styleClass="subtitulosFormato" value="Docente Evaluador 1: *" />
+
+                                <p:autoComplete id="lista1"
+                                                value="#{anteproyecto.doc1}" label="Doc Evaluador 1"
+                                                completeMethod="#{anteproyecto.complete}"
+                                                var="est"
+                                                itemValue="#{est}" dropdown="true"
+                                                forceSelection="true"
+                                                itemLabel="#{est.personanombres} #{est.personaapellidos}"
+                                                converter="usuarioConverter"
+                                                cache="true"
+                                                queryDelay="750"
+                                                maxResults="8"
+                                                required="true"
+                                                requiredMessage="Por favor ingrese el nombre del primer evaluador."
+                                                size="24"
+                                                >
+                                    <p:ajax event="itemSelect" listener="#{anteproyecto.handlerSelectDoc1}" /> 
+                                    <p:ajax event="itemUnselect" listener="#{anteproyecto.handleUnSelectDoc1}" />
+                                    <p:column>
+                                        #{est.personanombres} #{est.personaapellidos}
+                                    </p:column>
+                                </p:autoComplete> 
+                                <p:outputLabel styleClass="subtitulosFormato" value="Docente Evaluador 2: *" />
+                                
+                                <p:autoComplete id="lista2"
+                                                value="#{anteproyecto.doc2}" label="Doc Evaluador 2"
+                                                completeMethod="#{anteproyecto.complete2}"
+                                                var="est"
+                                                itemValue="#{est}" dropdown="true"
+                                                forceSelection="true"
+                                                itemLabel="#{est.personanombres} #{est.personaapellidos}"
+                                                converter="usuarioConverter"
+                                                cache="true"
+                                                queryDelay="750"
+                                                maxResults="8"
+                                                required="true"
+                                                requiredMessage="Por favor ingrese el nombre del segundo evaluador."
+                                                size="24"
+                                                >
+                                    <p:ajax event="itemSelect" listener="#{anteproyecto.handlerSelectDoc2}" process="#{anteproyecto.doc1}" />
+                                    <p:ajax event="itemUnselect" listener="#{anteproyecto.handleUnSelectDoc2}" />
+                                    <p:column>
+                                        #{est.personanombres} #{est.personaapellidos}
+                                    </p:column>
+                                </p:autoComplete>
                             </h:panelGrid>
                             <br />
                             <h:panelGrid  columns="2" style="margin: 0 auto;" cellpadding="5">  
