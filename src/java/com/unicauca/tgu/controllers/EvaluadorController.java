@@ -91,96 +91,122 @@ public class EvaluadorController {
 
         return false;
     }
+    
+     private boolean trabajoDeGradoEvaluado(String usuNombreCompleto, String productoContenido) {
+        Gson gson = new Gson();
 
+        Map<String, String> map = gson.fromJson(productoContenido, new TypeToken<Map<String, String>>() {
+        }.getType());
+
+        if (map.containsKey("evaluador")) {
+            String nombre = map.get("evaluador");
+            if (nombre.equals(usuNombreCompleto)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
      public List<FormatoTablaEvaluador> getAnteproyectos() {
        
         trabajos = new ArrayList();
         FormatoTablaEvaluador f;
-        int cont;
-        
+        int cont, temp;
         List<Productodetrabajo> lstProductos = new ArrayList();
         List<Productodetrabajo> lstAux1 = productoTrabEJB.ObtenerProdsTrabajoPor_formatoID(2);
         
         if(modo == false)    //Para anteproyectos por evaluar.
         {
             for(Productodetrabajo p : lstAux1)
-            {                
-                List<Productodetrabajo> lstAux2 = productoTrabEJB.ObtenerProdsTrabajoPor_trabajoID_formatoID(p.getTrabajoid().getTrabajoid().intValue(),3);
-                if(lstAux2.isEmpty())   //Si dicho trabajo no tiene formato B asociado.
-                    lstProductos.add(p);
+            {
+                if(trabajoDeGradoAsignado(evaluador.getUsuarionombre(), p.getProductocontenido()))
+                {
+                    List<Productodetrabajo> lstAux2 = productoTrabEJB.ObtenerProdsTrabajoPor_trabajoID_formatoID(p.getTrabajoid().getTrabajoid().intValue(),3);
+                    if(lstAux2.isEmpty())
+                        lstProductos.add(p);
+                    else if (lstAux2.size() == 1) {
+                            if(!trabajoDeGradoEvaluado(evaluador.getPersonanombres()+" "+evaluador.getPersonaapellidos(), lstAux2.get(0).getProductocontenido()))
+                                lstProductos.add(p);
+                    }
+                }
             }
         }
         else                //Para anteproyectos evaluados.
         {
             for(Productodetrabajo p : lstAux1)
-            {                
-                List<Productodetrabajo> lstAux2 = productoTrabEJB.ObtenerProdsTrabajoPor_trabajoID_formatoID(p.getTrabajoid().getTrabajoid().intValue(),3);
-                if(!lstAux2.isEmpty())   //Si dicho trabajo tiene formato B asociado.
-                    lstProductos.add(p);
+            {
+                if(trabajoDeGradoAsignado(evaluador.getUsuarionombre(), p.getProductocontenido()))
+                {
+                    temp = 0;
+                    List<Productodetrabajo> lstAux2 = productoTrabEJB.ObtenerProdsTrabajoPor_trabajoID_formatoID(p.getTrabajoid().getTrabajoid().intValue(),3);
+                    if(lstAux2.size() > 0 ) {
+                        for(Productodetrabajo p2 : lstAux2) {
+                            if(trabajoDeGradoEvaluado(evaluador.getPersonanombres()+" "+evaluador.getPersonaapellidos(), p2.getProductocontenido())) {
+                                temp++;
+                            }
+                        }
+                    }
+                    if(temp > 0)
+                        lstProductos.add(p);
+                }
             }
         }
         
         for(Productodetrabajo t : lstProductos)
-        {
-            if(trabajoDeGradoAsignado(evaluador.getUsuarionombre(), t.getProductocontenido()))
-            {    
-                cont = 0;
-                f = new FormatoTablaEvaluador();
+        { 
+            cont = 0;
+            f = new FormatoTablaEvaluador();
 
-                List<UsuarioRolTrabajogrado> lst = usuRolTgEJB.findbytrabajoId(t.getTrabajoid().getTrabajoid().intValue());
+            List<UsuarioRolTrabajogrado> lst = usuRolTgEJB.findbytrabajoId(t.getTrabajoid().getTrabajoid().intValue());
 
-                if(lst.size() > 0)
+            if(lst.size() > 0)
+            {
+                f.setFecha(lst.get(0).getFechaasignacion());
+                f.setTrabajoGradoId(lst.get(0).getTrabajoid().getTrabajoid().intValue());
+                f.setTrabajoGrado(lst.get(0).getTrabajoid().getTrabajonombre());
+
+                for(UsuarioRolTrabajogrado l : lst)
                 {
-                    f.setFecha(lst.get(0).getFechaasignacion());
-                    f.setTrabajoGradoId(lst.get(0).getTrabajoid().getTrabajoid().intValue());
-                    f.setTrabajoGrado(lst.get(0).getTrabajoid().getTrabajonombre());
-
-                    for(UsuarioRolTrabajogrado l : lst)
+                        if(l.getRolid().getRolid().intValue() == 0)  //director
+                      {
+                          f.setDirector(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
+                          f.setDirectorId(l.getPersonacedula().getPersonacedula().intValue());   
+                      }   
+                    else if(l.getRolid().getRolid().intValue() == 1 && cont ==0)           //Estudiante 1
+                          { 
+                           f.setEst1(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
+                           f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
+                           cont ++;
+                          }
+                      else if(l.getRolid().getRolid().intValue() == 1 && cont ==1)      //estudiante 2
+                       { 
+                           f.setEst2(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
+                           f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());                      
+                       }
+                }
+                if(modo == true)
+                {   
+                    List<Productodetrabajo> lstProductos2 = productoTrabEJB.ObtenerProdsTrabajoPor_trabajoID_formatoID(t.getTrabajoid().getTrabajoid().intValue(),3);
+                    for(Productodetrabajo t1 : lstProductos2)
                     {
-                            if(l.getRolid().getRolid().intValue() == 0)  //director
-                          {
-                              f.setDirector(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
-                              f.setDirectorId(l.getPersonacedula().getPersonacedula().intValue());   
-                          }   
-                        else if(l.getRolid().getRolid().intValue() == 1 && cont ==0)           //Estudiante 1
-                              { 
-                               f.setEst1(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
-                               f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
-                               cont ++;
-                              }
-                          else if(l.getRolid().getRolid().intValue() == 1 && cont ==1)      //estudiante 2
-                           { 
-                               f.setEst2(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
-                               f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());                      
-                           }
-                    }
-                    if(modo == true)
-                    {   
-                        List<Productodetrabajo> lstProductos2 = productoTrabEJB.ObtenerProdsTrabajoPor_trabajoID_formatoID(t.getTrabajoid().getTrabajoid().intValue(),3);
-                        for(Productodetrabajo t1 : lstProductos2)
+                        if(trabajoDeGradoEvaluado(evaluador.getPersonanombres()+" "+evaluador.getPersonaapellidos(), t1.getProductocontenido()))
                         {
+                            int aprobado = 0;
                             Gson gson = new Gson();
-                            Map<String, String> decoded = gson.fromJson(t1.getProductocontenido(), new TypeToken<Map<String, String>>() {
-                            }.getType());
-                            String nombreEvaluador = "";
-                            if (decoded.get("evaluador") != null) {
-                                nombreEvaluador = decoded.get("evaluador");
+                            Map<String, String> decoded = gson.fromJson(t1.getProductocontenido(), new TypeToken<Map<String, String>>() {}.getType());
+                            
+                            if (decoded.get("elementoConsideradoH") != null) {
+                                aprobado = Integer.parseInt(decoded.get("elementoConsideradoH"));
                             }
-                            if(nombreEvaluador.equals(evaluador.getPersonanombres()+" "+evaluador.getPersonaapellidos()))
-                            {
-                                int aprobado = 0;
-                                if (decoded.get("elementoConsideradoH") != null) {
-                                    aprobado = Integer.parseInt(decoded.get("elementoConsideradoH"));
-                                }
-                                if(aprobado == 1)
-                                    f.setAprobado(true);
-                                else
-                                    f.setAprobado(false);
-                            }
+                            
+                            if(aprobado == 1)
+                                f.setAprobado(true);
+                            else
+                                f.setAprobado(false);
                         }
                     }
-                    trabajos.add(f);
                 }
+                trabajos.add(f);
             }
         }
         return trabajos;

@@ -9,7 +9,7 @@
     <body>
 
         <ui:composition template="./../plantillas/plantilla.xhtml">
-            <a href="../perfiles/vista-jurado.xhtml"></a>
+            
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
@@ -173,7 +173,7 @@
                                         <p:separator style="border-color: white !important;" />
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Fecha: *"> </p:outputLabel>
-                                        <p:calendar navigator="true" value="#{formatoB.fecha}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." style="margin-left: 10px; margin-right: 10px"/>
+                                        <p:calendar navigator="true" value="#{formatoB.fecha}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." style="margin-right: 10px"/>
 
                                         <p:separator style="border-color: white !important;" />
                                         <p:separator style="border-color: white !important;" />

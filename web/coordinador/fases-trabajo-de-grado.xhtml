@@ -72,27 +72,29 @@
                             </h:panelGrid>
                         </p:panel>      
                         <p:spacer height="25"/>
-                        <p:panel id="pnlEvaluacion" header="1. Evaluación del Anteproyecto" style=" font-size: 14px;" widgetVar="pnlPresentacionIdea">
+                        <p:panel id="pnlEvaluacion" header="3. Evaluación del Anteproyecto" style=" font-size: 14px;" widgetVar="pnlPresentacionIdea">
 
                             <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
-                                 <h:outputText value="Anteproyecto: " style="font-weight: bold;" />
-                                 <p:button value="#{trabajodegradoController.tituloBtnAsignacionEval}" icon="ui-icon-comment" href="asignar-evaluadores-anteproyecto.xhtml" disabled="#{trabajodegradoController.btnVerAnteproyecto}" style="width: 320px;" />                                
-                                <p:commandButton id="btndesc" value="Descargar" rendered="#{anteproyecto.filedown != null}"
+                                <h:outputText value="Anteproyecto: " style="font-weight: bold;" />
+                                 <p:button value="#{trabajodegradoController.tituloBtnAsignacionEval}" icon="ui-icon-comment" href="asignar-evaluadores-anteproyecto.xhtml" disabled="#{trabajodegradoController.btnVerAnteproyecto}" style="width: 280px;" />                                
+                                <p:commandButton id="btndesc" value="Descargar" rendered="#{anteproyecto.filedown != null}" style="width: 120px;"
                                                  ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
                                                  icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">
                                     <p:fileDownload value="#{anteproyecto.filedown}" />
                                 </p:commandButton>
-                                
+                            </h:panelGrid>
+                            <h:panelGrid columns="4" cellpadding="5" cellspacing="5">
+                                <h:outputText value="Carta de remisión: " style="font-weight: bold;" />
+                                <p:button value="Diligenciar" icon="ui-icon-document" href="diligenciar-acta-remision-anteproyecto.xhtml" disabled="#{trabajodegradoController.btnDiligenciarRemisionAnteproyecto}" style="width: 120px;" />                                
+                                <p:button value="Ver" icon="ui-icon-comment" href="#" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
+                                <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
                             </h:panelGrid>
 
                         </p:panel>
                     </p:panel>
 
-
                 </h:form> 
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

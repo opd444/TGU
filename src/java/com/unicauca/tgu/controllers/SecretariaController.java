@@ -1,13 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.unicauca.tgu.controllers;
 
+import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.FormatosTablas.FormatoTablaJefe;
+import com.unicauca.tgu.FormatosTablas.FormatoTablaSecretaria;
 import com.unicauca.tgu.entities.Productodetrabajo;
+import com.unicauca.tgu.entities.Usuario;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import java.io.IOException;
@@ -23,87 +21,92 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-/**
- *
- * @author pcblanco
- */
 @ManagedBean
 @ViewScoped
-public class SecretariaController {
-
+public class SecretariaController
+{
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
-    
     @EJB
     private com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade ejbFacadeUsuRolTg;
-    
     @EJB
     private com.unicauca.tgu.jpacontroller.UsuarioFacade ejbFacadeusuario;
     
-    private List<FormatoTablaJefe> anteproys;
-
+    private List<FormatoTablaSecretaria> anteproys;
     
-    /**
-     * Creates a new instance of SecretariaController
-     */
+    private Usuario secretaria;
+    private String titulo;
+    boolean modo;
+    
     public SecretariaController() {
-
     }
     
     @PostConstruct
     public void init() {
-        
-       
+        FacesContext context = FacesContext.getCurrentInstance();
+        ServiciosSimcaController s =  (ServiciosSimcaController)context.getApplication().evaluateExpressionGet(context, "#{serviciosSimcaController}", ServiciosSimcaController.class);
+        secretaria = s.getUsulog();
+        modo = false;
+        titulo = "Anteproyectos por aprobar";
     }
-
-   
     
-    
-    public List<FormatoTablaJefe> getAnteproys() {
-
+    public List<FormatoTablaSecretaria> getAnteproyectos()
+    {
         anteproys = new ArrayList();
-
-        List<Productodetrabajo> tem = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_formatoID(2);
-
-        if (tem.size() > 0) {
-
-            int cont = 0;
-            FormatoTablaJefe f;
-
-            for (Productodetrabajo t : tem) {
-                cont = 0;
-                f = new FormatoTablaJefe();                  //sacamos la informacion general tanto jefe depto, director y los estud.
-
-                List<UsuarioRolTrabajogrado> lst = ejbFacadeUsuRolTg.findbytrabajoId(t.getTrabajoid().getTrabajoid().intValue());
-
-                if (lst.size() > 0) {
-                    f.setFecha(lst.get(0).getFechaasignacion());
-                    f.setTrabajoGradoId(lst.get(0).getTrabajoid().getTrabajoid().intValue());
-                    f.setTrabajoGrado(lst.get(0).getTrabajoid().getTrabajonombre());
-
-                    for (UsuarioRolTrabajogrado l : lst) {
-                        if (l.getRolid().getRolid().intValue() == 0) //director
-                        {
-                            f.setDirector(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
-                            f.setDirectorId(l.getPersonacedula().getPersonacedula().intValue());
-                        } else if (l.getRolid().getRolid().intValue() == 1 && cont == 0) //Estudiante 1
-                        {
-                            f.setEst1(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
-                            f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
-                            cont++;
-                        } else if (l.getRolid().getRolid().intValue() == 1 && cont == 1) //estudiante 2
-                        {
-                            f.setEst2(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
-                            f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());
-                        }
-                    }
-         
-                        anteproys.add(f);                 
-                }
+        FormatoTablaSecretaria f;
+        int cont;
+        List<Productodetrabajo> lstProductos = new ArrayList();
+        List<Productodetrabajo> lstAux1 = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_formatoID(4);    //Se obtienen todos los productos con el formato: Acta de remisión. 
+        
+        if(modo == false) //Anteproyectos por aprobar
+        {
+            for(Productodetrabajo p : lstAux1)
+            {                
+                List<Productodetrabajo> lstAux2 = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(p.getTrabajoid().getTrabajoid().intValue(),5);
+                if(lstAux2.isEmpty())   //Sino tiene formato 5 asociado.
+                    lstProductos.add(p);
             }
-
         }
+        else { //Anteproyectos aprobados
+            for(Productodetrabajo p : lstAux1)
+            {                
+                List<Productodetrabajo> lstAux2 = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(p.getTrabajoid().getTrabajoid().intValue(),5);
+                if(!lstAux2.isEmpty())   //Si tiene formato 5 asociado.
+                    lstProductos.add(p);
+            }
+        }
+        
+        for(Productodetrabajo t : lstProductos)
+        {
+            cont = 0;
+            f = new FormatoTablaSecretaria();
 
+            List<UsuarioRolTrabajogrado> lst = ejbFacadeUsuRolTg.findbytrabajoId(t.getTrabajoid().getTrabajoid().intValue());
+            if (lst.size() > 0)
+            {
+                f.setFecha(lst.get(0).getFechaasignacion());
+                f.setTrabajoGradoId(lst.get(0).getTrabajoid().getTrabajoid().intValue());
+                f.setTrabajoGrado(lst.get(0).getTrabajoid().getTrabajonombre());
+
+                for (UsuarioRolTrabajogrado l : lst) {
+                    if (l.getRolid().getRolid().intValue() == 0) //director
+                    {
+                        f.setDirector(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
+                        f.setDirectorId(l.getPersonacedula().getPersonacedula().intValue());
+                    } else if (l.getRolid().getRolid().intValue() == 1 && cont == 0) //Estudiante 1
+                    {
+                        f.setEst1(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
+                        f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
+                        cont++;
+                    } else if (l.getRolid().getRolid().intValue() == 1 && cont == 1) //estudiante 2
+                    {
+                        f.setEst2(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
+                        f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());
+                    }
+                }                
+                anteproys.add(f);                 
+            }
+        }
         return anteproys;
     }
     
@@ -124,7 +127,8 @@ public class SecretariaController {
         if (idusu != -1) {
             TrabajodeGradoActual.est2 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
         }
-
+        
+        //Agregamos el director respectivo de dicho trabajo de grado
         idusu = (Integer) event.getComponent().getAttributes().get("iddirector");
         if (idusu != -1) {
             TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
@@ -132,15 +136,41 @@ public class SecretariaController {
 
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
-            context.redirect("diligenciar-acta-anteproyecto.xhtml");
+            context.redirect("../secretaria/fase-evaluacion-anteproyecto.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(DirectorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void setAnteproys(List<FormatoTablaJefe> anteproys) {
+    public void setAnteproyectos(List<FormatoTablaSecretaria> anteproys) {
         this.anteproys = anteproys;
     }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public boolean isModo() {
+        return modo;
+    }
+
+    public void setModo(boolean modo) {
+        this.modo = modo;
+    }
     
-   
+    public void anteproyectosPorAprobar()
+    {
+        modo = false;
+        titulo = "Anteproyectos por aprobar";
+    }
+    
+    public void anteproyectosYaAprobados()
+    {
+        modo = true;
+        titulo = "Anteproyectos ya aprobados";
+    }
 }

@@ -7,9 +7,15 @@ package com.unicauca.tgu.controllers;
 
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.FormatosTablas.FormatoTablaJefe;
+import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
+import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
+import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
+import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -34,16 +40,15 @@ import javax.faces.event.ActionEvent;
 public class JefeDepController {
 
     @EJB
-    private com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade ejbFacade;
-
+    private UsuarioRolTrabajogradoFacade ejbFacade;
     @EJB
-    private com.unicauca.tgu.jpacontroller.TrabajodegradoFacade ejbFacadetrabgrad;
-
+    private TrabajodegradoFacade ejbFacadetrabgrad;
     @EJB
-    private com.unicauca.tgu.jpacontroller.UsuarioFacade ejbFacadeusuario;
-    
+    private UsuarioFacade ejbFacadeusuario;
     @EJB
-    private com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade ejbFacadeTrabFase;
+    private TrabajogradoFaseFacade ejbFacadeTrabFase;
+    @EJB
+    private ProductodetrabajoFacade productoTrabEJB;
     
     private boolean modo;           
     private String titulotablaJefe;
@@ -90,25 +95,36 @@ public class JefeDepController {
     public List<FormatoTablaJefe> getTrabsJefe() {
 
         trabs1 = new ArrayList();
-        
-        List<Trabajodegrado> trabstemp;
-
-        if(true == modo){
-            trabstemp= ejbFacadetrabgrad.getIdeasRevisadasJefe();
-        }
-        else {
-            trabstemp = ejbFacadetrabgrad.getIdeasPorRevisarJefe();
-        }
-
         int cont;     
         FormatoTablaJefe f;
-
-        for(Trabajodegrado t : trabstemp)
+        List<Productodetrabajo> lstProductos = new ArrayList();
+        List<Productodetrabajo> lstAux1 = productoTrabEJB.ObtenerProdsTrabajoPor_formatoID(0);
+        
+        if(modo == false) //Ideas por revisar
+        {
+            for(Productodetrabajo p : lstAux1)
+            {                
+                List<Productodetrabajo> lstAux2 = productoTrabEJB.ObtenerProdsTrabajoPor_trabajoID_formatoID(p.getTrabajoid().getTrabajoid().intValue(),1);
+                if(lstAux2.isEmpty())   //Sino tiene el formato Revision Idea asociado.
+                    lstProductos.add(p);
+            }
+        }
+        else    //Ideas ya revisadas
+        {
+            for(Productodetrabajo p : lstAux1)
+            {                
+                List<Productodetrabajo> lstAux2 = productoTrabEJB.ObtenerProdsTrabajoPor_trabajoID_formatoID(p.getTrabajoid().getTrabajoid().intValue(),1);
+                if(!lstAux2.isEmpty())   //Si tiene el formato Revision Idea asociado.
+                    lstProductos.add(p);
+            }
+        }
+        
+        for(Productodetrabajo t : lstProductos)
         {
             cont = 0;
             f = new FormatoTablaJefe();                  //sacamos la informacion general tanto jefe depto, director y los estud.
             
-            List<UsuarioRolTrabajogrado> lst = ejbFacade.findbytrabajoId(t.getTrabajoid().intValue());
+            List<UsuarioRolTrabajogrado> lst = ejbFacade.findbytrabajoId(t.getTrabajoid().getTrabajoid().intValue());
             
             if(lst.size() > 0)
             {
@@ -136,7 +152,7 @@ public class JefeDepController {
                        }
                 }
                 
-                List<TrabajogradoFase> lstTrabFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(t.getTrabajoid().intValue());
+                List<TrabajogradoFase> lstTrabFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(t.getTrabajoid().getTrabajoid().intValue());
                 for(TrabajogradoFase tf : lstTrabFase)
                 {
                     if(tf.getFaseid().getFaseid().equals(BigDecimal.valueOf(1)))

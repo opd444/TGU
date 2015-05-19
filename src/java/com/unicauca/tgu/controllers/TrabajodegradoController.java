@@ -271,7 +271,7 @@ public class TrabajodegradoController implements Serializable {
         }
         return num;
     }
-    
+    // Formato B
     public boolean btnVerFormatoB1() {
         if(numFormatosB() == 1) {
             
@@ -292,6 +292,54 @@ public class TrabajodegradoController implements Serializable {
     public void btnVerFotmatoBnum2() {
         FormatoBActual.numFormatoB = 2;
     }
+    
+    // Formato: Carta Remision de Anteproyecto
+    public boolean getBtnDiligenciarRemisionAnteproyecto()
+    {
+        if(getBtnVerRemisionAnteproyecto())
+        {
+            List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 3);
 
-    // Formato B
+            if(lstProductos.size() == 2)    //Deben haber 2 productos: El 1er Formato B del evaluador 1 y el 2 formato B del evaluador 2
+            {
+                for(Productodetrabajo p : lstProductos)
+                {
+                    Gson gson = new Gson();
+                    Map<String, String> decoded = gson.fromJson(p.getProductocontenido(), new TypeToken<Map<String, String>>() {}.getType());
+                    int aprobacionGeneral = 0;
+                    if (decoded.get("elementoConsideradoH") != null) {
+                        aprobacionGeneral = Integer.parseInt(decoded.get("elementoConsideradoH"));
+                    }
+                    if(aprobacionGeneral == 0)   //Si dicho formato B no ha sido aprobado
+                        return true;    //El boton se oculta
+                }
+                return false;
+            }
+            else
+                return true;
+        }
+        else
+            return true;
+    }
+    
+    public boolean getBtnVerRemisionAnteproyecto()
+    {
+        List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 4);
+        if(lstProductos.size() > 0)
+            return false;
+        else
+            return true;
+    }
+    
+    //Formato 5: Acta de resolución de aprobación
+    public boolean getBtnVerAsignarActaResolucion()
+    {
+        List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 4);
+        if(lstProductos.size() > 0)
+            return false;
+        else
+            return true;
+    }
+
+    
 }

@@ -107,7 +107,7 @@ public class ActaSecretariaController {
             Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
 
             Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.ZERO, contenido);
-            prod.setFormatoid(new Formatoproducto(BigDecimal.valueOf(4)));
+            prod.setFormatoid(new Formatoproducto(BigDecimal.valueOf(5)));
             prod.setTrabajoid(trab);
             ejbFacadeProdTrab.create(prod);
 
@@ -141,7 +141,7 @@ public class ActaSecretariaController {
 
     public List<FormatoTablaActa> getActas() {
         
-        List<Productodetrabajo> lst = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 4);
+        List<Productodetrabajo> lst = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 5);
         List<FormatoTablaActa> lstact = new ArrayList<>();
         FormatoTablaActa act;
         
