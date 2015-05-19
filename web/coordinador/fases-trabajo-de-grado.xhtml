@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <body>
 
@@ -24,23 +25,23 @@
                     <p:graphicImage library="img" name="ajax-loader.gif" />
                 </p:dialog>
                 <h:form>
-                <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
-                    <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
-                    <p:menuitem value="Trabajo de Grado" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
-                    <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
-                    <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fases-trabajo-de-grado" />
-                </p:breadCrumb>
-                    </h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                        <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                        <p:menuitem value="Trabajo de Grado" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
+                        <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fases-trabajo-de-grado" />
+                    </p:breadCrumb>
+                </h:form>
             </ui:define>
 
             <ui:define name="title">
-                
+
             </ui:define>
 
             <ui:define name="body">
                 #{menuController.setOutPerfiles(true)}
-                
+
                 <h:form id="fases">                                                           
                     <p:growl id="growl" sticky="true" showDetail="true"/>                    
 
@@ -58,7 +59,7 @@
                                 <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
                                 <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
 
-                                
+
                                 <p:button value="Presentación de la Idea" outcome="fase-presentacion-de-la-idea" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
                                 <p:button value="Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto"  disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
                                 <p:commandButton type="button" value="Evaluación del Anteproyecto" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" disabled="#{trabajodegradoController.fases.primeraFase}" >                            
@@ -76,12 +77,21 @@
 
                             <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Anteproyecto: " style="font-weight: bold;" />
-                                 <p:button value="#{trabajodegradoController.tituloBtnAsignacionEval}" icon="ui-icon-comment" href="asignar-evaluadores-anteproyecto.xhtml" disabled="#{trabajodegradoController.btnVerAnteproyecto}" style="width: 280px;" />                                
+                                <p:button value="#{trabajodegradoController.tituloBtnAsignacionEval}" icon="ui-icon-comment" href="asignar-evaluadores-anteproyecto.xhtml" disabled="#{trabajodegradoController.btnVerAnteproyecto}" style="width: 280px;" />                                
                                 <p:commandButton id="btndesc" value="Descargar" rendered="#{anteproyecto.filedown != null}" style="width: 120px;"
                                                  ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
                                                  icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">
                                     <p:fileDownload value="#{anteproyecto.filedown}" />
                                 </p:commandButton>
+                            </h:panelGrid>
+                            <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
+                                <h:outputText value="Formato B (Evaluador 1):" style="font-weight: bold;" />                                                                                                
+                                <p:commandButton value="Ver" icon="ui-icon-comment" actionListener="#{formatoB.btnVerFormatoBEvaluador1()}" style="width: 120px;" disabled="#{trabajodegradoController.btnVerFormatoB1()}" />
+                                <p:commandButton id="d1" value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoB1()}" style="width: 120px;" actionListener="#{pdfFormatoB.pdfFormatoBEvaluador1()}" oncomplete="PF('dlgVerRutina').show();"/>
+
+                                <h:outputText value="Formato B (Evaluador 2):" style="font-weight: bold;" />                                                                                                
+                                <p:commandButton value="Ver" icon="ui-icon-comment" actionListener="#{formatoB.btnVerFormatoBEvaluador2()}" disabled="#{trabajodegradoController.btnVerFormatoB2()}" style="width: 120px;" />
+                                <p:commandButton id="d2" value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoB2()}" style="width: 120px;" actionListener="#{pdfFormatoB.pdfFormatoBEvaluador2()}" oncomplete="PF('dlgVerRutina').show();"/>
                             </h:panelGrid>
                             <h:panelGrid columns="4" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Carta de remisión: " style="font-weight: bold;" />
@@ -89,11 +99,18 @@
                                 <p:button value="Ver" icon="ui-icon-comment" href="#" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
                                 <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
                             </h:panelGrid>
-
                         </p:panel>
                     </p:panel>
-
                 </h:form> 
+                <h:form id="frmDescargarFormatoA">
+                    <p:dialog id="dlgVerRutina" header="Descargar Formato B" widgetVar="dlgVerRutina" modal="true" position="top" resizable="false" closeOnEscape="true">                            
+                        <c:if test="#{pdfFormatoB.pdfFileName != 'sin-cargar'}">
+                            <object type="application/pdf" data="#{request.contextPath}/PDFServlet/#{pdfFormatoB.pdfFileName}" height="600px" width="820px">
+                                Tu navegador no puede mostrar el pdf, <a href="#{request.contextPath}/PDFServlet/#{pdfFormatoB.pdfFileName}">click</a> to download pdf instead.
+                            </object>   
+                        </c:if>
+                    </p:dialog>        
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>

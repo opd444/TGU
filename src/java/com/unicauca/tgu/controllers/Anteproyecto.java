@@ -5,9 +5,10 @@
  */
 package com.unicauca.tgu.controllers;
 
-import com.google.gson.Gson; 
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.unicauca.tgu.Auxiliares.Servicio_Email;
+import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
@@ -64,6 +65,8 @@ public class Anteproyecto {
     private UsuarioRolFacade ejbFacadeUsuRol;
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
+    @EJB
+    private UsuarioRolTrabajogradoFacade ejbFacadeUsuRolTrab;
 
     private String nombretg;
     private String directortg;
@@ -94,16 +97,14 @@ public class Anteproyecto {
 
             nombarch = map.get("nombarch");
             objetivos = map.get("obj");
-            rutaarch = map.get("rutaarch");         
-            
-            if(map.containsKey("iddoc1"))
-                {
-                    doc1 = ejbFacadeUsuario.find(new BigDecimal(map.get("iddoc1")));
-                }
-            if(map.containsKey("iddoc2"))
-                {
-                    doc2 = ejbFacadeUsuario.find(new BigDecimal(map.get("iddoc2")));
-                }
+            rutaarch = map.get("rutaarch");
+
+            if (map.containsKey("iddoc1")) {
+                doc1 = ejbFacadeUsuario.find(new BigDecimal(map.get("iddoc1")));
+            }
+            if (map.containsKey("iddoc2")) {
+                doc2 = ejbFacadeUsuario.find(new BigDecimal(map.get("iddoc2")));
+            }
 
             anteproyactual = lst.get(0);
 
@@ -231,12 +232,22 @@ public class Anteproyecto {
                 Map<String, String> map = new HashMap<String, String>();
 
                 map.put("nombretg", nombretg);
+                if (TrabajodeGradoActual.director != null) {
+                    map.put("idDir", TrabajodeGradoActual.director.getPersonacedula().toString());
+                }
                 map.put("directortg", directortg);
+                if (TrabajodeGradoActual.est1 != null) {
+                    map.put("idEst1", TrabajodeGradoActual.est1.getPersonacedula().toString());
+                }
                 map.put("est1", est1);
+                if (TrabajodeGradoActual.est2 != null) {
+                    map.put("idEst2", TrabajodeGradoActual.est2.getPersonacedula().toString());
+                }
                 map.put("est2", est2);
                 map.put("obj", objetivos);
                 map.put("rutaarch", directorioanteproyectos + file.getFileName());
                 map.put("nombarch", file.getFileName());
+                map.put("numberOfUpdatesEst", "0");
 
                 Gson gson = new Gson();
                 String contenido = gson.toJson(map, Map.class);
@@ -280,12 +291,48 @@ public class Anteproyecto {
                     = gson.fromJson(anteproyactual.getProductocontenido(), new TypeToken<Map<String, String>>() {
                     }.getType());
 
-            if (archivomodificado) {
+            int numberOfUpdatesEst = Integer.valueOf(mapedicion.get("numberOfUpdatesEst"));
+
+            ServiciosSimcaController s = (ServiciosSimcaController) context.getApplication().evaluateExpressionGet(context, "#{serviciosSimcaController}", ServiciosSimcaController.class);
+            String idEstudiante = s.getUsulog().getPersonacedula().toString();
+
+            if (mapedicion.get("idDir") != null) {
+                if (mapedicion.get("idDir").equals(idEstudiante)) {
+                    numberOfUpdatesEst = 0;
+                }
+            }
+
+            if (archivomodificado && (numberOfUpdatesEst <= 3)) {
                 File f = new File(rutaarch);
                 f.delete();
                 copiarArchivo();
                 mapedicion.put("rutaarch", directorioanteproyectos + file.getFileName());
                 mapedicion.put("nombarch", file.getFileName());
+
+                List<UsuarioRolTrabajogrado> lst = ejbFacadeUsuRolTrab.findAll();
+                int numFormatosB = 0;
+
+                for (int i = 0; i < lst.size(); i++) {
+                    if (lst.get(i).getRolid().getRolid().equals(BigDecimal.valueOf(4))
+                            && lst.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+                        numFormatosB += 1;
+                    }
+                }
+
+                if (mapedicion.get("idEst1") != null && (numFormatosB == 2)) {
+                    if (mapedicion.get("idEst1").equals(idEstudiante)) {
+                        numberOfUpdatesEst = Integer.valueOf(mapedicion.get("numberOfUpdatesEst"));
+                        numberOfUpdatesEst += 1;
+                        mapedicion.put("numberOfUpdatesEst", String.valueOf(numberOfUpdatesEst));
+                    }
+                }
+                if (mapedicion.get("idEst2") != null && (numFormatosB == 2)) {
+                    if (mapedicion.get("idEst1").equals(idEstudiante)) {
+                        numberOfUpdatesEst = Integer.valueOf(mapedicion.get("numberOfUpdatesEst"));
+                        numberOfUpdatesEst += 1;
+                        mapedicion.put("numberOfUpdatesEst", String.valueOf(numberOfUpdatesEst));
+                    }
+                }
             }
 
             mapedicion.put("obj", objetivos);
@@ -303,8 +350,13 @@ public class Anteproyecto {
                 se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
                 se.enviarEditadoAnteproyecto(nombretg);
             }
+            if (numberOfUpdatesEst <= 3) {
+                context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Anteproyecto Editado con Exito", ""));
+            } else {
+                context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "Se ha alcanzado el nÃºmero mÃ¡ximo de ediciones, "
+                        + "el anteproyecto fue editado 3 veces"));
+            }
 
-            context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Anteproyecto Editado con Exito", ""));
         } catch (Exception e) {
             System.out.println(e.getMessage());
             context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "Ocurrio algun error al intentar  efectuar la operacion"));
@@ -334,119 +386,133 @@ public class Anteproyecto {
 
     }
 
-    public List<Usuario> complete(String query)
-    {
+    public List<Usuario> complete(String query) {
         query = query.trim();
         query = query.toUpperCase();
-        
+
         List<Usuario> ls = ejbFacadeUsuario.buscarEvaluadores(query);
         List<Usuario> usus = new ArrayList();
-        
-        if(query.isEmpty())
+
+        if (query.isEmpty()) {
             doc1 = null;
-        
+        }
+
         for (Usuario u : ls) {
             List<UsuarioRol> lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 1);
-            if(!lstTrab1.isEmpty())
+            if (!lstTrab1.isEmpty()) {
                 continue;
+            }
             lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 5);
-            if(!lstTrab1.isEmpty())
+            if (!lstTrab1.isEmpty()) {
                 continue;
+            }
             lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 6);
-            if(!lstTrab1.isEmpty())
+            if (!lstTrab1.isEmpty()) {
                 continue;
+            }
             lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 8);
-            if(!lstTrab1.isEmpty())
+            if (!lstTrab1.isEmpty()) {
                 continue;
+            }
             List<UsuarioRolTrabajogrado> lstTrabs = ejbFacadeUsuroltrab.findByUsuid_Rolid(u.getPersonacedula().intValue(), 4);
-            if(lstTrabs.size() > 3) //Para evitar que se asigne un evaluador con 3 trabajos de grado.
+            if (lstTrabs.size() > 3) //Para evitar que se asigne un evaluador con 3 trabajos de grado.
+            {
                 continue;
+            }
             usus.add(u);
         }
-        
+
         if (doc2 != null) {
             for (Usuario u : ls) {
-                if (u.getPersonacedula().intValue() == doc2.getPersonacedula().intValue())
+                if (u.getPersonacedula().intValue() == doc2.getPersonacedula().intValue()) {
                     usus.remove(u);
+                }
             }
         }
         return usus;
     }
-    
-    public List<Usuario> complete2(String query)
-    {
+
+    public List<Usuario> complete2(String query) {
         query = query.trim();
         query = query.toUpperCase();
-        
-        if(query.isEmpty())
+
+        if (query.isEmpty()) {
             doc2 = null;
-        
+        }
+
         List<Usuario> ls = ejbFacadeUsuario.buscarEvaluadores(query);
         List<Usuario> usus = new ArrayList();
-        
+
         for (Usuario u : ls) {
             List<UsuarioRol> lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 1);
-            if(!lstTrab1.isEmpty())
+            if (!lstTrab1.isEmpty()) {
                 continue;
+            }
             lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 5);
-            if(!lstTrab1.isEmpty())
+            if (!lstTrab1.isEmpty()) {
                 continue;
+            }
             lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 6);
-            if(!lstTrab1.isEmpty())
+            if (!lstTrab1.isEmpty()) {
                 continue;
+            }
             lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 8);
-            if(!lstTrab1.isEmpty())
+            if (!lstTrab1.isEmpty()) {
                 continue;
+            }
             List<UsuarioRolTrabajogrado> lstTrabs = ejbFacadeUsuroltrab.findByUsuid_Rolid(u.getPersonacedula().intValue(), 4);
-            if(lstTrabs.size() > 3) //Para evitar que se asigne un evaluador con 3 trabajos de grado.
+            if (lstTrabs.size() > 3) //Para evitar que se asigne un evaluador con 3 trabajos de grado.
+            {
                 continue;
+            }
             usus.add(u);
         }
-        
+
         if (doc1 != null) {
             for (Usuario u : ls) {
-                if (u.getPersonacedula().intValue() == doc1.getPersonacedula().intValue())
+                if (u.getPersonacedula().intValue() == doc1.getPersonacedula().intValue()) {
                     usus.remove(u);
+                }
             }
         }
         return usus;
     }
 
     public void guardarevaluadores() {
-         
-       FacesContext context = FacesContext.getCurrentInstance();
-        try {          
-        Gson gson = new Gson();
-        Map<String, String> mapedicion
-                = gson.fromJson(anteproyactual.getProductocontenido(), new TypeToken<Map<String, String>>() {
-                }.getType());
 
-        if (doc1 == null) {
-            if (mapedicion.containsKey("iddoc1")) {
-                mapedicion.remove("iddoc1");
-                mapedicion.remove("nombredoc1");
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            Gson gson = new Gson();
+            Map<String, String> mapedicion
+                    = gson.fromJson(anteproyactual.getProductocontenido(), new TypeToken<Map<String, String>>() {
+                    }.getType());
+
+            if (doc1 == null) {
+                if (mapedicion.containsKey("iddoc1")) {
+                    mapedicion.remove("iddoc1");
+                    mapedicion.remove("nombredoc1");
+                }
+            } else {
+                mapedicion.put("iddoc1", doc1.getPersonacedula().intValue() + "");
+                mapedicion.put("nombredoc1", doc1.getPersonanombres() + " " + doc1.getPersonaapellidos());
             }
-        } else {
-             mapedicion.put("iddoc1", doc1.getPersonacedula().intValue()+"");
-             mapedicion.put("nombredoc1", doc1.getPersonanombres()+" "+doc1.getPersonaapellidos());
-        }
-        
-        if (doc2 == null) {
-            if (mapedicion.containsKey("iddoc2")) {
-                mapedicion.remove("iddoc2");
-                mapedicion.remove("nombredoc2");
+
+            if (doc2 == null) {
+                if (mapedicion.containsKey("iddoc2")) {
+                    mapedicion.remove("iddoc2");
+                    mapedicion.remove("nombredoc2");
+                }
+            } else {
+                mapedicion.put("iddoc2", doc2.getPersonacedula().intValue() + "");
+                mapedicion.put("nombredoc2", doc2.getPersonanombres() + " " + doc2.getPersonaapellidos());
             }
-        } else {
-             mapedicion.put("iddoc2", doc2.getPersonacedula().intValue()+"");
-             mapedicion.put("nombredoc2", doc2.getPersonanombres()+" "+doc2.getPersonaapellidos());
-        }
-        
-        String contenido = gson.toJson(mapedicion, Map.class);
 
-        anteproyactual.setProductocontenido(contenido);
+            String contenido = gson.toJson(mapedicion, Map.class);
 
-        ejbFacadeProdTrab.edit(anteproyactual);
-        
+            anteproyactual.setProductocontenido(contenido);
+
+            ejbFacadeProdTrab.edit(anteproyactual);
+
 //        Servicio_Email se = new Servicio_Email();
 //        se.setSubject("Asignacion como evaluador de anteproyecto");
 //
@@ -459,17 +525,16 @@ public class Anteproyecto {
 //                se.setTo(doc2.getPersonacorreo());
 //                se.enviarAsignacionEvaluacionanteproyecto(nombretg);
 //            }
-            
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Evaluadores Asignados correctamente"));
-        //ExternalContext extcontext = context.getExternalContext();
-        // extcontext.redirect("fases-trabajo-de-grado.xhtml");
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Evaluadores Asignados correctamente"));
+            //ExternalContext extcontext = context.getExternalContext();
+            // extcontext.redirect("fases-trabajo-de-grado.xhtml");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "Ocurrio algun error al intentar  efectuar la operacion"));
         }
 
     }
-    
+
     public void handlerSelectDoc1(SelectEvent e) {
         doc1 = (Usuario) e.getObject();
     }

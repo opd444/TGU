@@ -79,11 +79,11 @@
 
                 <h:form id="frmDescargarFormatoA">
                     <p:dialog id="dlgVerRutina" header="Descargar Formato A" widgetVar="dlgVerRutina" modal="true" position="top" resizable="false">                            
-                       <!-- <c:if test="#{pDFBean.pdfFileName != 'sin-cargar'}">
+                        <c:if test="#{pDFBean.pdfFileName != 'sin-cargar'}">
                             <object type="application/pdf" data="#{request.contextPath}/PDFServlet/#{pDFBean.pdfFileName}" height="600px" width="820px">
                                 Your browser can't display pdf, <a href="#{request.contextPath}/PDFServlet/#{pDFBean.pdfFileName}">click</a> to download pdf instead.
                             </object>   
-                        </c:if> -->
+                        </c:if>
                     </p:dialog>        
                 </h:form>
             </ui:define>

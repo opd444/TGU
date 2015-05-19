@@ -2,7 +2,6 @@ package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.unicauca.tgu.Auxiliares.FormatoBActual;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.entities.FasesTrabajoDeGrado;
 import com.unicauca.tgu.entities.Productodetrabajo;
@@ -142,23 +141,22 @@ public class TrabajodegradoController implements Serializable {
             return true;
         }
     }
-    
-    public String getTituloBtnAsignacionEval()
-          {
+
+    public String getTituloBtnAsignacionEval() {
         List<Productodetrabajo> lst = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 2);
-    
+
         if (lst.size() > 0) {
             Gson gson = new Gson();
             Map<String, String> map = gson.fromJson(lst.get(0).getProductocontenido(), new TypeToken<Map<String, String>>() {
-            }.getType());        
-            
-            if(map.containsKey("iddoc1") || map.containsKey("iddoc2"))
-                {
-                    return "Editar Asignación de Evaluadores";
-                }
-          } 
+            }.getType());
+
+            if (map.containsKey("iddoc1") || map.containsKey("iddoc2")) {
+                return "Editar Asignación de Evaluadores";
+            }
+        }
         return "Asignación de Evaluadores";
-          }
+    }
+
     public void incializar() {
         habilitarfases();
     }
@@ -257,89 +255,84 @@ public class TrabajodegradoController implements Serializable {
     public void setUsunomEval(String usunomEval) {
         this.usunomEval = usunomEval;
     }
-    
+
+    // Formato B
     public int numFormatosB() {
         List<UsuarioRolTrabajogrado> lst = ejbFacadeUsuRolTrab.findAll();
-        
+
         int num = 0;
-        
-        for(int i = 0; i < lst.size(); i++) {
-            if(lst.get(i).getRolid().getRolid().equals(BigDecimal.valueOf(4)) && 
-                    lst.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+
+        for (int i = 0; i < lst.size(); i++) {
+            if (lst.get(i).getRolid().getRolid().equals(BigDecimal.valueOf(4))
+                    && lst.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
                 num += 1;
             }
         }
         return num;
     }
-    // Formato B
+
     public boolean btnVerFormatoB1() {
-        if(numFormatosB() == 1) {
-            
+        if (numFormatosB() >= 1) {
+
             return false;
         }
         return true;
     }
 
     public boolean btnVerFormatoB2() {
-        if(numFormatosB() == 2) {            
+        if (numFormatosB() == 2) {
             return false;
         }
         return true;
     }
-    public void btnVerFotmatoBnum1() {
-        FormatoBActual.numFormatoB = 1;
-    }
-    public void btnVerFotmatoBnum2() {
-        FormatoBActual.numFormatoB = 2;
-    }
-    
+
     // Formato: Carta Remision de Anteproyecto
-    public boolean getBtnDiligenciarRemisionAnteproyecto()
-    {
-        if(getBtnVerRemisionAnteproyecto())
-        {
+
+    public boolean getBtnDiligenciarRemisionAnteproyecto() {
+        if (getBtnVerRemisionAnteproyecto()) {
             List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 3);
 
-            if(lstProductos.size() == 2)    //Deben haber 2 productos: El 1er Formato B del evaluador 1 y el 2 formato B del evaluador 2
+            if (lstProductos.size() == 2) //Deben haber 2 productos: El 1er Formato B del evaluador 1 y el 2 formato B del evaluador 2
             {
-                for(Productodetrabajo p : lstProductos)
-                {
+                for (Productodetrabajo p : lstProductos) {
                     Gson gson = new Gson();
-                    Map<String, String> decoded = gson.fromJson(p.getProductocontenido(), new TypeToken<Map<String, String>>() {}.getType());
+                    Map<String, String> decoded = gson.fromJson(p.getProductocontenido(), new TypeToken<Map<String, String>>() {
+                    }.getType());
                     int aprobacionGeneral = 0;
                     if (decoded.get("elementoConsideradoH") != null) {
                         aprobacionGeneral = Integer.parseInt(decoded.get("elementoConsideradoH"));
                     }
-                    if(aprobacionGeneral == 0)   //Si dicho formato B no ha sido aprobado
+                    if (aprobacionGeneral == 0) //Si dicho formato B no ha sido aprobado
+                    {
                         return true;    //El boton se oculta
+                    }
                 }
                 return false;
-            }
-            else
+            } else {
                 return true;
+            }
+        } else {
+            return true;
         }
-        else
-            return true;
-    }
-    
-    public boolean getBtnVerRemisionAnteproyecto()
-    {
-        List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 4);
-        if(lstProductos.size() > 0)
-            return false;
-        else
-            return true;
-    }
-    
-    //Formato 5: Acta de resolución de aprobación
-    public boolean getBtnVerAsignarActaResolucion()
-    {
-        List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 4);
-        if(lstProductos.size() > 0)
-            return false;
-        else
-            return true;
     }
 
-    
+    public boolean getBtnVerRemisionAnteproyecto() {
+        List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 4);
+        if (lstProductos.size() > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    //Formato 5: Acta de resolución de aprobación
+    public boolean getBtnVerAsignarActaResolucion() {
+        List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 4);
+        if (lstProductos.size() > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }

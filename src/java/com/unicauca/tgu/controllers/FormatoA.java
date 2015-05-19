@@ -8,7 +8,6 @@ package com.unicauca.tgu.controllers;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sun.org.apache.xalan.internal.xsltc.dom.DOMWSFilter;
-import com.unicauca.tgu.Auxiliares.ContenidoFormatoA;
 import com.unicauca.tgu.Auxiliares.Servicio_Email;
 import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
@@ -115,7 +114,6 @@ public class FormatoA {
         if (lst.size() > 0) {               //verificar si ya hay guardardo un formato A para este trabajo de grado
 
             formatoactual = lst.get(0);
-            ContenidoFormatoA.contenido = formatoactual.getProductocontenido();
             Gson gson = new Gson();
             Map<String, String> decoded = gson.fromJson(formatoactual.getProductocontenido(), new TypeToken<Map<String, String>>() {
             }.getType());
@@ -351,7 +349,6 @@ public class FormatoA {
             
             ejbFacadeProdTrab.edit(formatoactual);
             
-            /*
             Servicio_Email se = new Servicio_Email();
             se.setSubject("El Formato A del Trabajo de Grado: '"+nombretg+"' ha sido editado.");
 
@@ -365,11 +362,9 @@ public class FormatoA {
                 se.setTo(est2.getPersonacorreo());
                 se.enviarEditadoFormatoA(nombretg);
              }
-            */
                     
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
-//            return "fases-trabajo-de-grado";
-            return "";
+            return "fases-trabajo-de-grado";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;

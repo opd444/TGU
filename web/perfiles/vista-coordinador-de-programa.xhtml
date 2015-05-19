@@ -29,9 +29,9 @@
                     <p:panel styleClass="paneltrabajo" >
                         <h:panelGrid style="margin: 0 auto;">
                             <p:menubar styleClass="menubarstyleClass">
-                                <p:menuitem style="border-color: #808080" value="Ver Anteproyecto sin asignacion de evaluadores" actionListener="#{coordinadorController.porAsignarEvaluadores()}"
+                                <p:menuitem style="border-color: #808080" value="Anteproyectos sin asignacion de evaluadores" actionListener="#{coordinadorController.porAsignarEvaluadores()}"
                                             update="tablacoord tituloVistaDirector :formMigaDirector:migaDirector" icon="ui-icon-folder-open"/>
-                                <p:menuitem style="border-color: #808080" value="Ver Anteproyecto con evaluadores asignados"
+                                <p:menuitem style="border-color: #808080" value="Anteproyectos con evaluadores asignados"
                                             update="tablacoord tituloVistaDirector :formMigaDirector:migaDirector" actionListener="#{coordinadorController.conEvaludaresAsignados()}" icon="ui-icon-folder-collapsed"/>
                             </p:menubar>
                         </h:panelGrid>

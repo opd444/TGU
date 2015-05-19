@@ -7,6 +7,7 @@ package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.unicauca.tgu.Auxiliares.Servicio_Email;
 import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.controllers.util.JsfUtil;
@@ -315,7 +316,7 @@ public class RevisionIdeaController {
             }
             
             
-            /*
+            
             Servicio_Email se = new Servicio_Email();
             se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido diligenciada.");
 
@@ -334,7 +335,7 @@ public class RevisionIdeaController {
                 se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
                 se.enviarDiligenciadoRevisionIdea(nombretg);
              }
-            */
+            
             
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProductodetrabajoCreated"));
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"¡Revisión diligenciada con éxito!", "Se le ha enviado un correo notificando dicha operación."));
@@ -363,7 +364,6 @@ public class RevisionIdeaController {
                 ejbFacadeTrabajoGradFase.edit(trabfase);                
             }
             
-            /*
             Servicio_Email se = new Servicio_Email();
             se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido editado.");
 
@@ -382,7 +382,6 @@ public class RevisionIdeaController {
                 se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
                 se.enviarEditadoRevisionIdea(nombretg);
              }
-            */
             
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
             return "fases-trabajo-de-grado";

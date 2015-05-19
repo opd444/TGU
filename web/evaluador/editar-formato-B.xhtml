@@ -28,7 +28,7 @@
             <ui:define name="body">
                 #{menuController.setOutPerfiles(true)}
                 
-                #{formatoB.buscarEvaluador(serviciosSimcaController.nombreUsuario)}
+                #{formatoB.buscarEvaluador(serviciosSimcaController.nombreUsuario)}                                
                 #{formatoB.prepararEdicion()}
                 
                 <p:panel styleClass="paneltrabajo" >
@@ -196,11 +196,7 @@
                                         <p:fieldset legend="Titulo del trabajo de grado:" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoB.titulo}"> </p:outputLabel>
                                         </p:fieldset>
-
-                                        <p:fieldset legend="Número de estudiantes:" toggleable="true" styleClass="txtareaform"> 
-                                            <p:outputLabel value="#{formatoB.numEstudiantes}"> </p:outputLabel>
-                                        </p:fieldset>
-
+                                        
                                         <p:fieldset legend="Nombre de los estudiantes:" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoB.est1est2}"> </p:outputLabel>
                                         </p:fieldset>

@@ -25,11 +25,7 @@ import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -62,6 +58,9 @@ public class PDFBean {
     private String txtObservaciones; //
     private String txtFecha; //   
 
+    @EJB
+    private ProductodetrabajoFacade ejbFacadeProdTrab;
+    
     public PDFBean() {
     }
 
@@ -74,69 +73,64 @@ public class PDFBean {
     }
 
     public void obtenerDatosFormatoA() {
-//        Gson gson = new Gson();
-//        Map<String, String> decoded = gson.fromJson(ContenidoFormatoA.contenido, new TypeToken<Map<String, String>>() {
-//        }.getType());
-//
-//        if (decoded.get("nombre") != null) {
-//            txtTitulo = decoded.get("nombre");
-//        }
-////        //decoded.get("idestud1");
-//        int numEst = 0;
-//        if (decoded.get("idestud1") != null) {
-//            numEst += 1;
-////                int x = Integer.parseInt(decoded.get("idestud1"));
-////                est1 = ejbFacadeUsuario.find(BigDecimal.valueOf(x));
-//        }
-////        //decoded.get("idestud2");
-//        if (decoded.get("idestud2") != null) {
-//            numEst += 1;
-////                int x = Integer.parseInt(decoded.get("idestud2"));
-////                est2 = ejbFacadeUsuario.find(BigDecimal.valueOf(x));
-//        }
-//        txtNumEst = String.valueOf(numEst);
-////        //decoded.get("iddirector");
-//        if (decoded.get("nombredirector") != null) {
-//            txtDirTra = decoded.get("nombredirector");
-//        }
-//        if (decoded.get("objetivos") != null) {
-//            txtObjetivos = decoded.get("objetivos");
-//        }
-//        if (decoded.get("aportes") != null) {
-//            txtAportes = decoded.get("aportes");
-//        }
-//        if (decoded.get("tiempo") != null) {
-//            txtTiempo = decoded.get("tiempo");
-//        }
-//        if (decoded.get("recursos") != null) {
-//            txtRecursos = decoded.get("recursos");
-//        }
-//        if (decoded.get("financiacion") != null) {
-//            txtFinanciacion = decoded.get("financiacion");
-//        }
-//        if (decoded.get("observaciones") != null) {
-//            txtObservaciones = decoded.get("observaciones");
-//        }
-//        if (decoded.get("fecha") != null) {
-//            try {
-//                Date fecha = new SimpleDateFormat("dd-MM-yyyy").parse(decoded.get("fecha"));
-//                txtFecha = fecha.toString();
-//            } catch (ParseException ex) {
-////                    Logger.getLogger(FormatoA.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        
+        List<Productodetrabajo> lst = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 0);
+        
+        if (lst.size() > 0) { //verificar si ya hay guardardo un formato A para este trabajo de grado
 
-            txtTitulo = "* ";
-            txtNumEst = "Sample";
-            txtDirTra = "Sample";
-            txtObjetivos = "Sample";
-            txtAportes = "Sample";
-            txtTiempo = "Sample";
-            txtCondiciones = "*";
-            txtRecursos = "Sample";
-            txtFinanciacion = "Sample";
-            txtObservaciones = "Sample";
-            txtFecha = "Sample";
+            Productodetrabajo formatoactual = lst.get(0);
+            String contenido = formatoactual.getProductocontenido();
+            int numEst = 0;
+
+            Gson gson = new Gson();
+
+            Map<String, String> decoded = gson.fromJson(contenido,
+                    new TypeToken<Map<String, String>>() {
+                    }.getType());
+
+            if (decoded.get("nombre") != null) {
+                txtTitulo = decoded.get("nombre");
+            }
+//        //decoded.get("idestud1");
+            if (decoded.get("idestud1") != null) {
+//                int x = Integer.parseInt(decoded.get("idestud1"));
+//                com.unicauca.tgu.entities.Usuario est1 = ejbFacadeUsuario.find(BigDecimal.valueOf(x));
+                numEst += 1;
+            }
+//        //decoded.get("idestud2");
+            if (decoded.get("idestud2") != null) {
+//                int x = Integer.parseInt(decoded.get("idestud2"));
+//                com.unicauca.tgu.entities.Usuario est2 = ejbFacadeUsuario.find(BigDecimal.valueOf(x));
+                numEst += 1;
+            }
+            txtNumEst = String.valueOf(numEst);
+//        //decoded.get("iddirector");
+            if (decoded.get("nombredirector") != null) {
+                txtDirTra = decoded.get("nombredirector");
+            }
+            if (decoded.get("objetivos") != null) {
+                txtObjetivos = decoded.get("objetivos");
+            }
+            if (decoded.get("aportes") != null) {
+                txtAportes = decoded.get("aportes");
+            }
+            if (decoded.get("tiempo") != null) {
+                txtTiempo = decoded.get("tiempo");
+            }
+            if (decoded.get("recursos") != null) {
+                txtRecursos = decoded.get("recursos");
+            }
+            if (decoded.get("financiacion") != null) {
+                txtFinanciacion = decoded.get("financiacion");
+            }
+            if (decoded.get("observaciones") != null) {
+                txtObservaciones = decoded.get("observaciones");
+            }
+            if (decoded.get("fecha") != null) {
+                txtFecha = decoded.get("fecha");
+            }
+        }
+        txtCondiciones = "*";
     }
 
     public void generarPDF() {
@@ -214,19 +208,7 @@ public class PDFBean {
             document.add(pphformatoA);
             document.add(new Paragraph(""));
             document.add(new Paragraph("\n"));
-            /* Formato A */
-//            txtTitulo = "titulo 1";
-//            txtNumEst = "titulo 2";
-//            txtDirTra = "titulo 3";
-//            txtObjetivos = "titulo 4";
-//            txtAportes = "titulo 5";
-//            txtTiempo = "titulo 6";
-//            txtCondiciones = "titulo 7";
-//            txtRecursos = "titulo 8";
-//            txtFinanciacion = "titulo 9";
-//            txtObservaciones = "titulo 10";
-//            txtFecha = "titulo 11";
-            /**/
+            
             Paragraph pphTitulo = new Paragraph("TITULO:", font);
             Chunk titulo = new Chunk(txtTitulo, font);
             titulo.setUnderline(0.2f, -2f);
@@ -328,99 +310,8 @@ public class PDFBean {
             /**/
             document.close();
             RequestContext.getCurrentInstance().update("frmDescargarFormatoA");
-        } catch (DocumentException ex) {
-            Logger.getLogger(PDFBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (DocumentException | IOException ex) {
             Logger.getLogger(PDFBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    public String getTxtTitulo() {
-        return txtTitulo;
-    }
-
-    public void setTxtTitulo(String txtTitulo) {
-        this.txtTitulo = txtTitulo;
-    }
-
-    public String getTxtNumEst() {
-        return txtNumEst;
-    }
-
-    public void setTxtNumEst(String txtNumEst) {
-        this.txtNumEst = txtNumEst;
-    }
-
-    public String getTxtDirTra() {
-        return txtDirTra;
-    }
-
-    public void setTxtDirTra(String txtDirTra) {
-        this.txtDirTra = txtDirTra;
-    }
-
-    public String getTxtObjetivos() {
-        return txtObjetivos;
-    }
-
-    public void setTxtObjetivos(String txtObjetivos) {
-        this.txtObjetivos = txtObjetivos;
-    }
-
-    public String getTxtAportes() {
-        return txtAportes;
-    }
-
-    public void setTxtAportes(String txtAportes) {
-        this.txtAportes = txtAportes;
-    }
-
-    public String getTxtTiempo() {
-        return txtTiempo;
-    }
-
-    public void setTxtTiempo(String txtTiempo) {
-        this.txtTiempo = txtTiempo;
-    }
-
-    public String getTxtCondiciones() {
-        return txtCondiciones;
-    }
-
-    public void setTxtCondiciones(String txtCondiciones) {
-        this.txtCondiciones = txtCondiciones;
-    }
-
-    public String getTxtRecursos() {
-        return txtRecursos;
-    }
-
-    public void setTxtRecursos(String txtRecursos) {
-        this.txtRecursos = txtRecursos;
-    }
-
-    public String getTxtFinanciacion() {
-        return txtFinanciacion;
-    }
-
-    public void setTxtFinanciacion(String txtFinanciacion) {
-        this.txtFinanciacion = txtFinanciacion;
-    }
-
-    public String getTxtObservaciones() {
-        return txtObservaciones;
-    }
-
-    public void setTxtObservaciones(String txtObservaciones) {
-        this.txtObservaciones = txtObservaciones;
-    }
-
-    public String getTxtFecha() {
-        return txtFecha;
-    }
-
-    public void setTxtFecha(String txtFecha) {
-        this.txtFecha = txtFecha;
-    }
-
 }

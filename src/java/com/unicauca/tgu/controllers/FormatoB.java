@@ -7,7 +7,6 @@ package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.unicauca.tgu.Auxiliares.Servicio_Email;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
@@ -19,18 +18,21 @@ import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 /**
@@ -38,9 +40,13 @@ import javax.faces.context.FacesContext;
  * @author seven
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class FormatoB {
 
+    private Usuario usuEvaluador;
+    private Usuario usuEst1;
+    private Usuario usuEst2;
+    private Usuario usuDir;
     /**
      * Creates a new instance of FormatoB
      */
@@ -48,7 +54,6 @@ public class FormatoB {
     private String estudiante1;
     private String estudiante2;
     private String director;
-    private String numEstudiantes;
     private String est1est2;
     private int elementoConsideradoA;
     private int elementoConsideradoB;
@@ -82,11 +87,16 @@ public class FormatoB {
 
     @PostConstruct
     public void init() {
+        buscarFormatoA();
+    }
+    
+    public void buscarFormatoA() {
         List<Productodetrabajo> lstProdTrab = ejbFacadeProdTrab.findAll();
 
         Productodetrabajo prodTrab = null;
 
         for (int i = 0; i < lstProdTrab.size(); i++) {
+            // Buscando la RevisiÃ³n del Formatos A para el trabajo de grado actual
             if (lstProdTrab.get(i).getFormatoid().getFormatoid().equals(BigDecimal.valueOf(1))
                     && lstProdTrab.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
                 prodTrab = lstProdTrab.get(i);
@@ -96,16 +106,24 @@ public class FormatoB {
             Gson gson = new Gson();
             Map<String, String> decoded = gson.fromJson(prodTrab.getProductocontenido(), new TypeToken<Map<String, String>>() {
             }.getType());
-
+            /// titulo del trabajo de grado
             if (decoded.get("nombre") != null) {
                 titulo = decoded.get("nombre");
             }
-            if (decoded.get("numeroEstudiantes") != null) {
-                numEstudiantes = decoded.get("numeroEstudiantes");
+            /// Buscando el director y los estudiantes para el trabajo de grado actual
+            if (decoded.get("idestud1") != null) {
+                int personacedulaEst1 = Integer.valueOf(decoded.get("idestud1"));
+                usuEst1 = ejbFacadeUsu.buscarporUsuid(personacedulaEst1).get(0);
             }
-            if (decoded.get("numeroEstudiantes") != null) {
-                numEstudiantes = decoded.get("numeroEstudiantes");
+            if (decoded.get("idestud2") != null) {
+                int personacedulaEst2 = Integer.valueOf(decoded.get("idestud2"));
+                usuEst2 = ejbFacadeUsu.buscarporUsuid(personacedulaEst2).get(0);
             }
+            if (decoded.get("iddirector") != null) {
+                int personacedulaDir = Integer.valueOf(decoded.get("iddirector"));
+                usuDir = ejbFacadeUsu.buscarporUsuid(personacedulaDir).get(0);
+            }
+
             if (decoded.get("nombreestud") != null) {
                 estudiante1 = decoded.get("nombreestud");
                 est1est2 = estudiante1;
@@ -126,8 +144,7 @@ public class FormatoB {
             elementoConsideradoG = 0;
             elementoConsideradoH = 0;
             fecha = new Date();
-        }
-
+        }        
     }
 
     public int getElementoConsideradoA() {
@@ -210,14 +227,6 @@ public class FormatoB {
         this.director = director;
     }
 
-    public String getNumEstudiantes() {
-        return numEstudiantes;
-    }
-
-    public void setNumEstudiantes(String numEstudiantes) {
-        this.numEstudiantes = numEstudiantes;
-    }
-
     public String getEst1est2() {
         return est1est2;
     }
@@ -251,20 +260,20 @@ public class FormatoB {
     }
 
     public String getAprobado() {
-        if(elementoConsideradoH == 1) {
+        if (elementoConsideradoH == 1) {
             aprobado = "Aprobado";
         }
-        if(elementoConsideradoH == 0) {
+        if (elementoConsideradoH == 0) {
             aprobado = "No Aprobado";
         }
         return aprobado;
     }
-    
+
     public String elementocosiderado(int elemento) {
-        if(elemento == 1) {
+        if (elemento == 1) {
             return "Si";
         }
-        if(elemento == 0) {
+        if (elemento == 0) {
             return "No";
         }
         return null;
@@ -272,20 +281,23 @@ public class FormatoB {
 
     public void buscarEvaluador(String evaluador) {
         usunomEvaluador = evaluador;
-        Usuario usu = ejbFacadeUsu.buscarPorUsuarionombre(evaluador);
-        String nombres = usu.getPersonanombres();
-        String apellidos = usu.getPersonaapellidos();
+        usuEvaluador = ejbFacadeUsu.buscarPorUsuarionombre(evaluador);
+        String nombres = usuEvaluador.getPersonanombres();
+        String apellidos = usuEvaluador.getPersonaapellidos();
         this.evaluador = nombres + " " + apellidos;
     }
 
-    public String obtenerDatos() {
+    public String crearContenidoFormatoB() {
         Map<String, String> map = new HashMap<String, String>();
 
         map.put("titulo", titulo);
+        map.put("estudiante1Id", usuEst1.getPersonacedula().toString());
         map.put("estudiante1", estudiante1);
         if (estudiante2 != null) {
+            map.put("estudiante2Id", usuEst2.getPersonacedula().toString());
             map.put("estudiante2", estudiante2);
         }
+        map.put("directorId", usuDir.getPersonacedula().toString());
         map.put("director", director);
         map.put("elementoConsideradoA", String.valueOf(elementoConsideradoA));
         map.put("elementoConsideradoB", String.valueOf(elementoConsideradoB));
@@ -297,6 +309,7 @@ public class FormatoB {
         map.put("elementoConsideradoH", String.valueOf(elementoConsideradoH));
         map.put("observaciones", observaciones);
         map.put("fecha", fecha.toString());
+        map.put("evaluadorId", usuEvaluador.getPersonacedula().toString());
         map.put("evaluador", evaluador);
 
         Gson gson = new Gson();
@@ -307,15 +320,14 @@ public class FormatoB {
 
     public String btnGuardar() {
         try {
-
-            String contenido = obtenerDatos();
+            String contenido = crearContenidoFormatoB();
             Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
 
             UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);
-            Usuario usuEvaluador = null;
+//            Usuario usuEvaluador = null;
 
             if (usunomEvaluador != null) {
-                usuEvaluador = ejbFacadeUsu.buscarPorUsuarionombre(usunomEvaluador);
+//                usuEvaluador = ejbFacadeUsu.buscarPorUsuarionombre(usunomEvaluador);
 
                 usuroltg.setRolid(new Rol(BigDecimal.valueOf(4)));                            //agregando al Evaluador
                 usuroltg.setTrabajoid(trab);
@@ -347,11 +359,11 @@ public class FormatoB {
 //             se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
 //             se.enviarDiligenciadoRevisionIdea(nombretg);
 //             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡Formato B diligenciado con éxito!", "Se le ha enviado un correo notificando dicha operación."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "!Formato B diligenciado con Exito!", "Se le ha enviado un correo notificando dicha operación."));
             return "fases-trabajo-de-grado";
         } catch (Exception e) {
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡Error!", "Lo sentimos, no se pudo guardar el formato B."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Â¡Error!", "Lo sentimos, no se pudo guardar el formato B."));
             //JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return "";
         }
@@ -359,7 +371,7 @@ public class FormatoB {
 
     public String btnEditar() {
         try {
-            String contenido = obtenerDatos();
+            String contenido = crearContenidoFormatoB();
 
             prodtrab.setProductocontenido(contenido);
 //            formatoactual.setProductoaprobado(BigInteger.valueOf(getResultado()));
@@ -403,84 +415,95 @@ public class FormatoB {
     }
 
     public void prepararEdicion() {
+        prepararbtnVerFormatoB();
+    }
+
+    public void redirectVerFormatoB() {
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        try {
+            context.redirect("../vistas-documentos/ver-formato-B.xhtml");
+        } catch (IOException ex) {
+            Logger.getLogger(FormatoB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void prepararbtnVerFormatoBEvaluador1() {
         List<Productodetrabajo> lstProdTrab = ejbFacadeProdTrab.findAll();
 
-        for (int i = 0; i < lstProdTrab.size(); i++) {
-            if (lstProdTrab.get(i).getFormatoid().getFormatoid().equals(BigDecimal.valueOf(3))
-                    && lstProdTrab.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+        for (Productodetrabajo ProdTrab : lstProdTrab) {
+            // Buscando el Formato B
+            if (ProdTrab.getFormatoid().getFormatoid().equals(BigDecimal.valueOf(3)) && ProdTrab.getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
 
-                prodtrab = lstProdTrab.get(i);
+                prodtrab = ProdTrab;
+
                 Gson gson = new Gson();
                 Map<String, String> decoded = gson.fromJson(prodtrab.getProductocontenido(), new TypeToken<Map<String, String>>() {
                 }.getType());
 
-                if (decoded.get("evaluador") != null && decoded.get("evaluador").equals(evaluador)) {
-                    if (decoded.get("titulo") != null) {
-                        titulo = decoded.get("titulo");
-                    }
-                    if (decoded.get("estudiante1") != null) {
-                        estudiante1 = decoded.get("estudiante1");
-                    }
-                    if (decoded.get("estudiante2") != null) {
-                        estudiante1 = decoded.get("estudiante2");
-                    }
-                    if (decoded.get("director") != null) {
-                        director = decoded.get("director");
-                    }
-                    if (decoded.get("elementoConsideradoA") != null) {
-                        elementoConsideradoA = Integer.valueOf(decoded.get("elementoConsideradoA"));
-                    }
-                    if (decoded.get("elementoConsideradoB") != null) {
-                        elementoConsideradoB = Integer.valueOf(decoded.get("elementoConsideradoB"));
-                    }
-                    if (decoded.get("elementoConsideradoC") != null) {
-                        elementoConsideradoC = Integer.valueOf(decoded.get("elementoConsideradoC"));
-                    }
-                    if (decoded.get("elementoConsideradoD") != null) {
-                        elementoConsideradoD = Integer.valueOf(decoded.get("elementoConsideradoD"));
-                    }
-                    if (decoded.get("elementoConsideradoE") != null) {
-                        elementoConsideradoE = Integer.valueOf(decoded.get("elementoConsideradoE"));
-                    }
-                    if (decoded.get("elementoConsideradoF") != null) {
-                        elementoConsideradoF = Integer.valueOf(decoded.get("elementoConsideradoF"));
-                    }
-                    if (decoded.get("elementoConsideradoG") != null) {
-                        elementoConsideradoG = Integer.valueOf(decoded.get("elementoConsideradoG"));
-                    }
-                    if (decoded.get("elementoConsideradoH") != null) {
-                        elementoConsideradoH = Integer.valueOf(decoded.get("elementoConsideradoH"));
-                    }
-                    if (decoded.get("observaciones") != null) {
-                        observaciones = decoded.get("observaciones");
-                    }
-                    if (decoded.get("fecha") != null) {
-                        fecha = new Date();
-                    }
-                    if (decoded.get("evaluador") != null) {
-                        evaluador = decoded.get("evaluador");
-                    }
-
+                if (decoded.get("evaluador") != null) {
+                    evaluador = decoded.get("evaluador");
+                    prepararbtnVerFormatoB();
                     return;
                 }
             }
-
         }
     }
-    public void btnVerFormatoB(int numFormatoB) {
-        List<Productodetrabajo> lstProdTrab = ejbFacadeProdTrab.findAll();
-        
-        int num = 0;
 
-        for (int i = 0; i < lstProdTrab.size(); i++) {
-            if (lstProdTrab.get(i).getFormatoid().getFormatoid().equals(BigDecimal.valueOf(3))
-                    && lstProdTrab.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
-                num += 1;
-                prodtrab = lstProdTrab.get(i);
+    public void prepararbtnVerFormatoBEvaluador2() {
+        List<Productodetrabajo> lstProdTrab = ejbFacadeProdTrab.findAll();
+
+        int evaluador2 = 0;
+
+        for (Productodetrabajo ProdTrab : lstProdTrab) {
+            // Buscando el Formato B
+            if (ProdTrab.getFormatoid().getFormatoid().equals(BigDecimal.valueOf(3)) && ProdTrab.getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+
+                prodtrab = ProdTrab;
+
                 Gson gson = new Gson();
                 Map<String, String> decoded = gson.fromJson(prodtrab.getProductocontenido(), new TypeToken<Map<String, String>>() {
                 }.getType());
 
+                if (decoded.get("evaluador") != null) {
+                    evaluador = decoded.get("evaluador");
+                    evaluador2 += 1;
+                    if (evaluador2 == 2) {
+                        prepararbtnVerFormatoB();
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    public void btnVerFormatoB(String evaluador) {
+        buscarEvaluador(evaluador);
+        prepararbtnVerFormatoB();
+        redirectVerFormatoB();
+    }
+
+    public void btnVerFormatoBEvaluador1() {
+        prepararbtnVerFormatoBEvaluador1();
+        redirectVerFormatoB();
+
+    }
+
+    public void btnVerFormatoBEvaluador2() {
+        prepararbtnVerFormatoBEvaluador2();
+        redirectVerFormatoB();
+    }
+
+    public void prepararbtnVerFormatoB() {
+        List<Productodetrabajo> lstProdTrab = ejbFacadeProdTrab.findAll();
+
+        for (Productodetrabajo ProdTrab : lstProdTrab) {
+            // Buscando el Formato B para el evaluador actual
+            if (ProdTrab.getFormatoid().getFormatoid().equals(BigDecimal.valueOf(3)) && ProdTrab.getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+                prodtrab = ProdTrab;
+                Gson gson = new Gson();
+                Map<String, String> decoded = gson.fromJson(prodtrab.getProductocontenido(), new TypeToken<Map<String, String>>() {
+                }.getType());
+                // Buscando el Formato B que diligencio el evaluador
                 if (decoded.get("evaluador") != null && decoded.get("evaluador").equals(evaluador)) {
                     if (decoded.get("titulo") != null) {
                         titulo = decoded.get("titulo");
@@ -489,7 +512,7 @@ public class FormatoB {
                         estudiante1 = decoded.get("estudiante1");
                     }
                     if (decoded.get("estudiante2") != null) {
-                        estudiante1 = decoded.get("estudiante2");
+                        estudiante2 = decoded.get("estudiante2");
                     }
                     if (decoded.get("director") != null) {
                         director = decoded.get("director");
@@ -527,12 +550,9 @@ public class FormatoB {
                     if (decoded.get("evaluador") != null) {
                         evaluador = decoded.get("evaluador");
                     }
-                    if(num == numFormatoB) {
-                        return;
-                    }                    
+                    return;
                 }
             }
-
         }
     }
 }
