@@ -30,7 +30,7 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean
 @ViewScoped
-public class ActaRemisionAnteproyecto {
+public class FormatoD {
     
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
@@ -56,7 +56,7 @@ public class ActaRemisionAnteproyecto {
     private String aprobado;
     private int idCoord;
 
-    public ActaRemisionAnteproyecto() {
+    public FormatoD() {
         
     }
     

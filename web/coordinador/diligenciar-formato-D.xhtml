@@ -18,7 +18,7 @@
                         <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />                        
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
                         <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="Acta de remisión del Anteproyecto" />
+                        <p:menuitem value="Presentación del Anteproyecto" />
                     </p:breadCrumb>              
                 </h:form>
             </ui:define>
@@ -45,22 +45,22 @@
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Titulo del trabajo de grado:"> </p:outputLabel>
-                                        <p:outputLabel value="#{actaRemisionAnteproyecto.titulo}"> </p:outputLabel>                                        
+                                        <p:outputLabel value="#{formatoD.titulo}"> </p:outputLabel>                                        
 
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Nombre de los estudiantes:"> </p:outputLabel>
-                                        <p:outputLabel value="#{actaRemisionAnteproyecto.est1est2}"> </p:outputLabel>                                        
+                                        <p:outputLabel value="#{formatoD.est1est2}"> </p:outputLabel>                                        
 
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Director de trabajo:"> </p:outputLabel>
-                                        <p:outputLabel value="#{actaRemisionAnteproyecto.director}"> </p:outputLabel>                                        
+                                        <p:outputLabel value="#{formatoD.director}"> </p:outputLabel>                                        
 
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
                                         
                                         <p:outputLabel styleClass="subtitulosFormato" value="Linea de desarrollo: *"> </p:outputLabel>
-                                        <p:inputTextarea value="#{actaRemisionAnteproyecto.lineaDesarrollo}" label="Linea" styleClass="txtareaform" style="width: 350px" />
+                                        <p:inputTextarea value="#{formatoD.lineaDesarrollo}" label="Linea" styleClass="txtareaform" style="width: 350px" />
 
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
                                     </h:panelGrid>
@@ -77,7 +77,7 @@
                                         <p:separator style="border-color: white !important;" />
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Estructura (¿Consta de las partes pertinentes?):" />                               
-                                        <p:selectOneRadio id="aprobadoEst" value="#{actaRemisionAnteproyecto.elementoConsideradoA}">  
+                                        <p:selectOneRadio id="aprobadoEst" value="#{formatoD.elementoConsideradoA}">  
                                             <f:selectItem itemLabel="Si" itemValue="1" />
                                             <f:selectItem itemLabel="No" itemValue="0" />
                                         </p:selectOneRadio>
@@ -86,7 +86,7 @@
                                         <p:separator style="border-color: white !important;" />
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Concepto del Departamento (¿Fue satisfactorio?):"/>
-                                        <p:selectOneRadio id="aprobadoDept" value="#{actaRemisionAnteproyecto.elementoConsideradoB}">                                        
+                                        <p:selectOneRadio id="aprobadoDept" value="#{formatoD.elementoConsideradoB}">                                        
                                             <f:selectItem itemLabel="Si" itemValue="1" />
                                             <f:selectItem itemLabel="No" itemValue="0" />
                                         </p:selectOneRadio>
@@ -94,8 +94,8 @@
                                         <p:separator style="border-color: white !important;" />
                                         <p:separator style="border-color: white !important;" />
 
-                                        <p:outputLabel styleClass="subtitulosFormato" value="Concepto de los Evaluadores (¿Satisfactorio?):"/>
-                                        <p:selectOneRadio id="aprobadoEval" value="#{actaRemisionAnteproyecto.elementoConsideradoC}">                                        
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Concepto de los Evaluadores (¿Fue satisfactorio?):"/>
+                                        <p:selectOneRadio id="aprobadoEval" value="#{formatoD.elementoConsideradoC}">                                        
                                             <f:selectItem itemLabel="Si" itemValue="1" />
                                             <f:selectItem itemLabel="No" itemValue="0" />
                                         </p:selectOneRadio>
@@ -114,7 +114,7 @@
                                         <p:separator style="border-color: white !important;" />
                                         
                                         <p:outputLabel styleClass="subtitulosFormato" value="Concepto general"/>                                        
-                                        <p:selectOneRadio id="aprobadoGeneral" value="#{actaRemisionAnteproyecto.elementoConsideradoD}">                                        
+                                        <p:selectOneRadio id="aprobadoGeneral" value="#{formatoD.elementoConsideradoD}">                                        
                                             <f:selectItem itemLabel="Aprobado" itemValue="1" />
                                             <f:selectItem itemLabel="No Aprobado" itemValue="0" />
                                         </p:selectOneRadio>
@@ -123,13 +123,13 @@
                                         <p:separator style="border-color: white !important;" />
                                         
                                         <p:outputLabel styleClass="subtitulosFormato" value="Observaciones:" />
-                                        <p:inputTextarea cols="40" rows="3" value="#{actaRemisionAnteproyecto.observaciones}"/>
+                                        <p:inputTextarea cols="40" rows="3" value="#{formatoD.observaciones}"/>
                                         
                                         <p:separator style="border-color: white !important;" />
                                         <p:separator style="border-color: white !important;" />
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Fecha: *"> </p:outputLabel>
-                                        <p:calendar navigator="true" value="#{actaRemisionAnteproyecto.fecha}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." style="margin-right: 10px"/>
+                                        <p:calendar navigator="true" value="#{formatoD.fecha}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." style="margin-right: 10px"/>
 
                                         <p:separator style="border-color: white !important;" />
                                         <p:separator style="border-color: white !important;" />
@@ -142,65 +142,65 @@
                                     <h:panelGrid cellpadding="7">
 
                                         <p:fieldset legend="Titulo del trabajo de grado:" toggleable="true" styleClass="txtareaform"> 
-                                            <p:outputLabel value="#{actaRemisionAnteproyecto.titulo}"> </p:outputLabel>
+                                            <p:outputLabel value="#{formatoD.titulo}"> </p:outputLabel>
                                         </p:fieldset>
 
                                         <p:fieldset legend="Número de estudiantes:" toggleable="true" styleClass="txtareaform"> 
-                                            <p:outputLabel value="#{actaRemisionAnteproyecto.numEstudiantes}"> </p:outputLabel>
+                                            <p:outputLabel value="#{formatoD.numEstudiantes}"> </p:outputLabel>
                                         </p:fieldset>
 
                                         <p:fieldset legend="Nombre de los estudiantes:" toggleable="true" styleClass="txtareaform"> 
-                                            <p:outputLabel value="#{actaRemisionAnteproyecto.est1est2}"> </p:outputLabel>
+                                            <p:outputLabel value="#{formatoD.est1est2}"> </p:outputLabel>
                                         </p:fieldset>
 
                                         <p:fieldset legend="Director de trabajo:" toggleable="true" styleClass="txtareaform"> 
-                                            <p:outputLabel value="#{actaRemisionAnteproyecto.director}"> </p:outputLabel>
+                                            <p:outputLabel value="#{formatoD.director}"> </p:outputLabel>
                                         </p:fieldset>
                                         
                                         <p:fieldset legend="Linea de desarrollo:" toggleable="true" styleClass="txtareaform"> 
-                                            <p:outputLabel value="#{actaRemisionAnteproyecto.lineaDesarrollo}"> </p:outputLabel>
+                                            <p:outputLabel value="#{formatoD.lineaDesarrollo}"> </p:outputLabel>
                                         </p:fieldset>
                                         
                                         <p:fieldset legend="Estructura (¿Consta de las partes pertinentes?):" toggleable="true" styleClass="txtareaform"> 
-                                            <p:selectOneRadio id="aprobadoA_CD" value="#{actaRemisionAnteproyecto.elementoConsideradoA}" disabled="true">                                        
+                                            <p:selectOneRadio id="aprobadoA_CD" value="#{formatoD.elementoConsideradoA}" disabled="true">                                        
                                                 <f:selectItem itemLabel="Si" itemValue="1" />
                                                 <f:selectItem itemLabel="No" itemValue="0" />
                                             </p:selectOneRadio>
                                         </p:fieldset>
 
                                         <p:fieldset legend="Concepto del Departamento (¿Fue satisfactorio?):" toggleable="true" styleClass="txtareaform"> 
-                                            <p:selectOneRadio id="aprobadoB_CD" value="#{actaRemisionAnteproyecto.elementoConsideradoB}" disabled="true">                                        
+                                            <p:selectOneRadio id="aprobadoB_CD" value="#{formatoD.elementoConsideradoB}" disabled="true">                                        
                                                 <f:selectItem itemLabel="Si" itemValue="1" />
                                                 <f:selectItem itemLabel="No" itemValue="0" />
                                             </p:selectOneRadio>
                                         </p:fieldset>   
 
                                         <p:fieldset legend="Concepto de los Evaluadores (¿Fue satisfactorio?):" toggleable="true" styleClass="txtareaform"> 
-                                            <p:selectOneRadio id="aprobadoC_CD" value="#{actaRemisionAnteproyecto.elementoConsideradoC}" disabled="true">                                        
+                                            <p:selectOneRadio id="aprobadoC_CD" value="#{formatoD.elementoConsideradoC}" disabled="true">                                        
                                                 <f:selectItem itemLabel="Si" itemValue="1" />
                                                 <f:selectItem itemLabel="No" itemValue="0" />
                                             </p:selectOneRadio>
                                         </p:fieldset>
 
                                         <p:fieldset legend="Concepto general:" toggleable="true" styleClass="txtareaform"> 
-                                            <p:selectOneRadio id="aprobadoH_CD" value="#{actaRemisionAnteproyecto.elementoConsideradoD}" disabled="true" >                                        
+                                            <p:selectOneRadio id="aprobadoH_CD" value="#{formatoD.elementoConsideradoD}" disabled="true" >                                        
                                                 <f:selectItem itemLabel="Aprobado" itemValue="1" />
                                                 <f:selectItem itemLabel="No Aprobado" itemValue="0" />
                                             </p:selectOneRadio>                                            
                                         </p:fieldset>   
 
                                         <p:fieldset legend="Observaciones:" toggleable="true" styleClass="txtareaform"> 
-                                            <p:outputLabel value="#{actaRemisionAnteproyecto.observaciones}"> </p:outputLabel>
+                                            <p:outputLabel value="#{formatoD.observaciones}"> </p:outputLabel>
                                         </p:fieldset>   
 
                                         <p:fieldset legend="Fecha:" toggleable="true" styleClass="txtareaform"> 
-                                            <p:outputLabel value="#{actaRemisionAnteproyecto.fecha}" >
+                                            <p:outputLabel value="#{formatoD.fecha}" >
                                                 <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
                                             </p:outputLabel>                                            
                                         </p:fieldset>
 
                                     </h:panelGrid>
-                                    <p:commandButton style="display: block; margin: 0 auto;" value="Guardar" update="growl" action="#{actaRemisionAnteproyecto.btnGuardar()}" icon="ui-icon-disk"/>
+                                    <p:commandButton style="display: block; margin: 0 auto;" value="Guardar" update="growl" action="#{formatoD.btnGuardar()}" icon="ui-icon-disk"/>
                                 </p:panel>
                             </p:tab>
                         </p:wizard>

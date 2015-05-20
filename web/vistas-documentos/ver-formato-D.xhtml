@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <!-- ToDo miga de pan por programación -->
+                    <p:breadCrumb styleClass="migaDePan">                        
+                        <p:menuitem value="Ver Formato A" />
+                    </p:breadCrumb>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">
+            </ui:define>
+
+            <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
+                <p:panel styleClass="paneltrabajo" >
+                    
+                    <div class="tituloContenido">                        
+                        <h:outputText value="Presentación del Anteproyecto a la Secretaría de la Facultad"/> <br/>
+                    </div>
+                    <p:spacer height="30"/>
+
+                    <h:form enctype="multipart/form-data">   
+                        <p:panel header="Información Actual" style="color: #181818;">
+                            <br />
+                            <h:panelGrid columns="2" style="margin: 0 auto">
+                                <p:graphicImage value="../resources/img/logo-unicauca-negro.png" style="width: 96px; margin-right: 60px" />
+                                <p:column>
+                                    <div align="center">
+                                        <p:outputLabel value="Universidad del Cauca" styleClass="subtitulosFormato" /><br />
+                                        <p:outputLabel value="Facultad de Ingeniería Electrónica y" styleClass="subtitulosFormato" /><br />
+                                        <p:outputLabel value="Telecomunicaciones" styleClass="subtitulosFormato" />
+                                    </div>
+                                </p:column>
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid style="margin: 0 auto">
+                                <p:outputLabel value="TRABAJO DE GRADO" styleClass="subtitulosFormato" />
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="FORMATO D: " styleClass="subtitulosFormato" />
+                                <p:outputLabel value="Presentación del Anteproyecto a la Secretaría General de la Facultad" style="margin-left: 5px" />
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Título:" styleClass="subtitulosFormato" />
+                                <p:outputLabel value="#{formatoD.titulo}" style="margin-left: 5px" />
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Estudiante(s):" styleClass="subtitulosFormato" />
+                                <p:outputLabel value="#{formatoD.est1est2}" style="margin-left: 5px" />
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Director:" styleClass="subtitulosFormato" />
+                                <p:outputLabel value="#{formatoD.director}" style="margin-left: 5px" />
+                            </h:panelGrid>
+                            <br />
+                            <p:outputLabel value="Linea de desarrollo:" styleClass="subtitulosFormato" />
+                            <p:outputLabel value="#{formatoD.lineaDesarrollo}" style="margin-left: 5px"/>
+                            <br /><br /><br />
+                            <p:outputLabel value="ELEMENTOS EVALUADOS:" styleClass="subtitulosFormato" />
+                            <br /><br />
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="A) Estructura (¿Consta de las partes pertinentes?):" styleClass="subtitulosFormato"  />
+                                <p:outputLabel value="#{formatoD.elementocosiderado(formatoD.elementoConsideradoA)}" />
+                                <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                <p:outputLabel value="B) Concepto del Departamento (¿Fue satisfactorio?):" styleClass="subtitulosFormato"  />
+                                <p:outputLabel value="#{formatoD.elementocosiderado(formatoD.elementoConsideradoB)}" />
+                                <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                <p:outputLabel value="C) Concepto de los Evaluadores (¿Fue satisfactorio?):" styleClass="subtitulosFormato"  />
+                                <p:outputLabel value="#{formatoD.elementocosiderado(formatoD.elementoConsideradoC)}" />
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="D) Concepto general:" styleClass="subtitulosFormato"  />
+                                <p:outputLabel value="#{formatoD.aprobado}" />
+                            </h:panelGrid>
+                            <br /><br />
+                            <p:outputLabel value="Observaciones:" styleClass="subtitulosFormato"  />
+                            <p:outputLabel value="#{formatoD.observaciones}" style="margin-left: 5px" />
+                            <br /><br />
+                            <h:panelGrid columns="2">
+                                <p:outputLabel value="Fecha:" styleClass="subtitulosFormato" />
+                                <p:outputLabel value="#{formatoD.fecha}" style="margin-left: 5px" >
+                                    <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                </p:outputLabel>
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid columns="2" cellpadding="12" style="margin: 0 auto">
+                                <p:button value="Volver" icon="ui-icon-arrowthick-1-w" style="font-size: 13px;"/>                                
+                                <!--<p:button value="Volver" outcome="fases-trabajo-de-grado" icon="ui-icon-arrowthick-1-w" style="font-size: 13px;"/>-->                                
+                                <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px;" />
+                            </h:panelGrid>
+                        </p:panel>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

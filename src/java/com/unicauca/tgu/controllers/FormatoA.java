@@ -71,7 +71,6 @@ public class FormatoA {
 
     private String nombretg;
     private BigDecimal trabajoid;
-    private BigDecimal trabajoidVer;
     private String numstud;
     private Usuario est1;
     private String nomEst1;
@@ -131,6 +130,15 @@ public class FormatoA {
                 int x = Integer.parseInt(decoded.get("idestud2"));
                 est2 = ejbFacadeUsuario.find(BigDecimal.valueOf(x));
             }
+            if (decoded.get("numeroEstudiantes") != null) {
+                numstud = decoded.get("numeroEstudiantes");
+            }
+            if (decoded.get("nombreestud") != null) {
+                nomEst1 = decoded.get("nombreestud");
+            }
+            if (decoded.get("nombreestud2") != null) {
+                nomEst2 = decoded.get("nombreestud2");
+            }            
 //        //decoded.get("iddirector");
             if (decoded.get("nombredirector") != null) {
                 nombreDirector = decoded.get("nombredirector");
@@ -349,19 +357,19 @@ public class FormatoA {
             
             ejbFacadeProdTrab.edit(formatoactual);
             
-            Servicio_Email se = new Servicio_Email();
-            se.setSubject("El Formato A del Trabajo de Grado: '"+nombretg+"' ha sido editado.");
-
-            if(est1!=null)
-              {  
-                se.setTo(est1.getPersonacorreo());
-                se.enviarEditadoFormatoA(nombretg);
-              }
-            if(est2!=null)
-             {
-                se.setTo(est2.getPersonacorreo());
-                se.enviarEditadoFormatoA(nombretg);
-             }
+//            Servicio_Email se = new Servicio_Email();
+//            se.setSubject("El Formato A del Trabajo de Grado: '"+nombretg+"' ha sido editado.");
+//
+//            if(est1!=null)
+//              {  
+//                se.setTo(est1.getPersonacorreo());
+//                se.enviarEditadoFormatoA(nombretg);
+//              }
+//            if(est2!=null)
+//             {
+//                se.setTo(est2.getPersonacorreo());
+//                se.enviarEditadoFormatoA(nombretg);
+//             }
                     
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
             return "fases-trabajo-de-grado";

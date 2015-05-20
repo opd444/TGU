@@ -77,7 +77,7 @@
 
                             <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Anteproyecto: " style="font-weight: bold;" />
-                                <p:button value="#{trabajodegradoController.tituloBtnAsignacionEval}" icon="ui-icon-comment" href="asignar-evaluadores-anteproyecto.xhtml" disabled="#{trabajodegradoController.btnVerAnteproyecto}" style="width: 280px;" />                                
+                                <p:button value="#{trabajodegradoController.tituloBtnAsignacionEval}" icon="ui-icon-comment" href="asignar-evaluadores-anteproyecto.xhtml" disabled="#{trabajodegradoController.btnVerAsignacionEval}" style="width: 280px;" />                                
                                 <p:commandButton id="btndesc" value="Descargar" rendered="#{anteproyecto.filedown != null}" style="width: 120px;"
                                                  ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
                                                  icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">
@@ -94,9 +94,9 @@
                                 <p:commandButton id="d2" value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoB2()}" style="width: 120px;" actionListener="#{pdfFormatoB.pdfFormatoBEvaluador2()}" oncomplete="PF('dlgVerRutina').show();"/>
                             </h:panelGrid>
                             <h:panelGrid columns="4" cellpadding="5" cellspacing="5">
-                                <h:outputText value="Carta de remisión: " style="font-weight: bold;" />
-                                <p:button value="Diligenciar" icon="ui-icon-document" href="diligenciar-acta-remision-anteproyecto.xhtml" disabled="#{trabajodegradoController.btnDiligenciarRemisionAnteproyecto}" style="width: 120px;" />                                
-                                <p:button value="Ver" icon="ui-icon-comment" href="#" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
+                                <h:outputText value="Formato D: " style="font-weight: bold;" />
+                                <p:button value="Diligenciar" icon="ui-icon-document" href="diligenciar-formato-D.xhtml" disabled="#{trabajodegradoController.btnDiligenciarRemisionAnteproyecto}" style="width: 120px;" />                                
+                                <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-formato-D.xhtml" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
                                 <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
                             </h:panelGrid>
                         </p:panel>

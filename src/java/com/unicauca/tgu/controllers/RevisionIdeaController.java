@@ -315,27 +315,24 @@ public class RevisionIdeaController {
                 ejbFacadeTrabajoGradFase.edit(trabfase);
             }
             
-            
-            
-            Servicio_Email se = new Servicio_Email();
-            se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido diligenciada.");
-
-            if(est1!=null)
-              {  
-                se.setTo(est1.getPersonacorreo());
-                se.enviarDiligenciadoRevisionIdea(nombretg);
-              }
-            if(est2!=null)
-             {
-                se.setTo(est2.getPersonacorreo());
-                se.enviarDiligenciadoRevisionIdea(nombretg);
-             }
-            if(TrabajodeGradoActual.director!=null)
-             {
-                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
-                se.enviarDiligenciadoRevisionIdea(nombretg);
-             }
-            
+//            Servicio_Email se = new Servicio_Email();
+//            se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido diligenciada.");
+//
+//            if(est1!=null)
+//              {  
+//                se.setTo(est1.getPersonacorreo());
+//                se.enviarDiligenciadoRevisionIdea(nombretg);
+//              }
+//            if(est2!=null)
+//             {
+//                se.setTo(est2.getPersonacorreo());
+//                se.enviarDiligenciadoRevisionIdea(nombretg);
+//             }
+//            if(TrabajodeGradoActual.director!=null)
+//             {
+//                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
+//                se.enviarDiligenciadoRevisionIdea(nombretg);
+//             }
             
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProductodetrabajoCreated"));
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"¡Revisión diligenciada con éxito!", "Se le ha enviado un correo notificando dicha operación."));
@@ -364,24 +361,24 @@ public class RevisionIdeaController {
                 ejbFacadeTrabajoGradFase.edit(trabfase);                
             }
             
-            Servicio_Email se = new Servicio_Email();
-            se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido editado.");
-
-            if(est1!=null)
-              {  
-                se.setTo(est1.getPersonacorreo());
-                se.enviarEditadoRevisionIdea(nombretg);
-              }
-            if(est2!=null)
-             {
-                se.setTo(est2.getPersonacorreo());
-                se.enviarEditadoRevisionIdea(nombretg);
-             }
-            if(TrabajodeGradoActual.director!=null)
-             {
-                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
-                se.enviarEditadoRevisionIdea(nombretg);
-             }
+//            Servicio_Email se = new Servicio_Email();
+//            se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido editado.");
+//
+//            if(est1!=null)
+//              {  
+//                se.setTo(est1.getPersonacorreo());
+//                se.enviarEditadoRevisionIdea(nombretg);
+//              }
+//            if(est2!=null)
+//             {
+//                se.setTo(est2.getPersonacorreo());
+//                se.enviarEditadoRevisionIdea(nombretg);
+//             }
+//            if(TrabajodeGradoActual.director!=null)
+//             {
+//                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
+//                se.enviarEditadoRevisionIdea(nombretg);
+//             }
             
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
             return "fases-trabajo-de-grado";

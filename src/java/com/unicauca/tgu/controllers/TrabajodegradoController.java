@@ -141,6 +141,24 @@ public class TrabajodegradoController implements Serializable {
             return true;
         }
     }
+    
+    public boolean getBtnVerAsignacionEval() {
+        List<Productodetrabajo> lstProd1 = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 4);
+        if(lstProd1.size() > 0)
+            return true;
+        else {
+            List<Productodetrabajo> lstProd2 = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 3);
+            if (lstProd2.size() == 2)
+                return true;
+            else {
+                List<Productodetrabajo> lstProd3 = obtenerProductodeTrabajoporFormato(TrabajodeGradoActual.id, 2);
+                if (lstProd3.size() > 0)
+                    return false;
+                else
+                    return true;
+            }
+        }
+    }
 
     public String getTituloBtnAsignacionEval() {
         List<Productodetrabajo> lst = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 2);

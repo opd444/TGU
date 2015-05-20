@@ -44,8 +44,8 @@
                                 <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
                                 <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
                                 
-                                <p:button value="Presentación de la Idea" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
-                                <p:button value="Realización del Anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:button value="Presentación de la Idea" outcome="fase-presentacion-de-la-idea" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:button value="Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
                                 <p:commandButton type="button" value="Evaluación del Anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" >                            
                                     <p:effect type="highlight" event="click" for="pnlEvaluacion">
                                         <f:param name="mode" value="'show'" />
@@ -71,6 +71,10 @@
                                 <p:commandButton value="Ver" icon="ui-icon-comment" actionListener="#{formatoB.btnVerFormatoBEvaluador2()}" disabled="#{trabajodegradoController.btnVerFormatoB2()}" style="width: 120px;" />
                                 <p:commandButton id="d2" value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoB2()}" style="width: 120px;" actionListener="#{pdfFormatoB.pdfFormatoBEvaluador2()}" oncomplete="PF('dlgVerRutina').show();"/>
                                 
+                                <h:outputText value="Formato D: " style="font-weight: bold;" />                            
+                                <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-formato-D.xhtml" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
+                                <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
+
                                 <h:outputText value="Acta de resolución:" style="font-weight: bold;" />    
                                 <p:button value="Asignar" icon="ui-icon-plus" href="diligenciar-acta-resolucion.xhtml" disabled="#{trabajodegradoController.btnVerAsignarActaResolucion}" style="width: 120px;" />
                             </h:panelGrid>

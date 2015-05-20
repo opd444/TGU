@@ -68,6 +68,14 @@
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2">
+                                    <p:outputLabel value="Estudiante(s):" styleClass="subtitulosFormato" />
+                                    <p:column>
+                                        <p:outputLabel value="#{formatoA.nomEst1}" /> <br />
+                                        <p:outputLabel value="#{formatoA.nomEst2}" />
+                                    </p:column>
+                                </h:panelGrid>
+                                <br />
+                                <h:panelGrid columns="2">
                                     <p:outputLabel value="Director del trabajo:" styleClass="subtitulosFormato" />
                                     <p:outputLabel value="#{formatoA.nombreDirector}" style="margin-left: 5px"/>
                                 </h:panelGrid>
