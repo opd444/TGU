@@ -11,29 +11,30 @@
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
-                <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Estudiante" outcome="./../perfiles/vista-estudiante.xhtml" />                                        
-                    <p:menuitem value="Estudiante" outcome="./../perfiles/vista-estudiante.xhtml" />                    
-                    <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-estudiante.xhtml" />                        
-                    <p:menuitem value="Fases del Trabajo de Grado" outcome="./../perfiles/vista-estudiante.xhtml" />
-                    <p:menuitem value="2. Realización del Anteproyecto" outcome="2-realizacion-anteproyecto" />
-                </p:breadCrumb>
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Estudiante" outcome="./../perfiles/vista-estudiante.xhtml" />                                        
+                        <p:menuitem value="Estudiante" outcome="./../perfiles/vista-estudiante.xhtml" />                    
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-estudiante.xhtml" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-realizacion-anteproyecto" />
+                        <p:menuitem value="2. Realización del Anteproyecto" />
+                    </p:breadCrumb>
+                </h:form>
             </ui:define>
 
             <ui:define name="title">                                
             </ui:define>
 
-            <ui:define name="body">                                               
+            <ui:define name="body">
+
                 #{menuController.setOutPerfiles(true)}
                 
-                #{estudianteViewController.nombresApellidos(serviciosSimcaController.nombreUsuario)}
-                #{trabajodegradoController.trabajoAsignado(estudianteViewController.entityTrabajo.trabajoid)}
-                #{trabajodegradoController.incializar()}                
                 <h:form>                                                           
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
-                            #{estudianteViewController.entityTrabajo.trabajonombre}
-                        </div>                                         
+                            #{trabajodegradoController.trabajo.trabajonombre}
+                        </div>
+                        <p:growl id="growl" showDetail="true" life="5000"/>
                         <p:spacer height="25"/>
                         <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado">
                             <h:panelGrid columns="6" cellpadding="1" style="margin: 0 auto;">
@@ -44,27 +45,22 @@
                                 <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
                                 <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
 
-                                <p:button value="Presentación de la Idea" outcome="./../perfiles/vista-estudiante.xhtml" style="width: 105px;height: 96px; font-size: 13px;" disabled="#{trabajodegradoController.fases.primeraFase}" />                            
+                                <p:button value="Presentación de la Idea" outcome="./../perfiles/vista-estudiante.xhtml" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px;height: 96px; font-size: 13px;" />                            
 
                                 <p:commandButton type="button" value="Realización del Anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" >
-                                    <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
+                                    <p:effect type="highlight" event="click" for="pnlRealizacionAnteproyecto">
                                         <f:param name="mode" value="'show'" />
                                     </p:effect>
                                 </p:commandButton>
 
-                                <p:button value="Evaluación del Anteproyecto" outcome="3-evaluacion-anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Anteproyecto" outcome="fase-evaluacion-anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Ejecución del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Evaluación del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Finalizado" href="#" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                             </h:panelGrid>
                         </p:panel>      
                         <p:spacer height="25"/>
-                        <p:panel id="pnlPresentacionIdea" header="2. Realización del Anteproyecto" style=" font-size: 14px;" widgetVar="pnlPresentacionIdea">
-                            <!--<p:commandButton type="button" value="1. Presentación de la Idea" style="background-color:greenyellow">
-                                <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
-                                    <f:param name="mode" value="'show'" />
-                                </p:effect>
-                            </p:commandButton>-->
+                        <p:panel id="pnlRealizacionAnteproyecto" header="2. Realización del Anteproyecto" style=" font-size: 14px;" widgetVar="pnlRealizacionAnteproyecto">
                             <h:panelGrid columns="5" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Anteproyecto:" style="font-weight: bold;" />                                
                                 <p:button value="Diligenciar" icon="ui-icon-document" href="diligenciar-anteproyecto.xhtml" disabled="#{trabajodegradoController.btnDiligenciarAnteproyecto}" style="width: 120px;" />

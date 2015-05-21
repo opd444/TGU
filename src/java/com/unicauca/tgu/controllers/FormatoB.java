@@ -288,7 +288,7 @@ public class FormatoB {
     }
 
     public String crearContenidoFormatoB() {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap();
 
         map.put("titulo", titulo);
         map.put("estudiante1Id", usuEst1.getPersonacedula().toString());
@@ -359,13 +359,14 @@ public class FormatoB {
 //             se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
 //             se.enviarDiligenciadoRevisionIdea(nombretg);
 //             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "!Formato B diligenciado con Exito!", "Se le ha enviado un correo notificando dicha operación."));
-            return "fases-trabajo-de-grado";
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato B diligenciado con éxito."));
+            return "fase-evaluacion-anteproyecto";
+            
         } catch (Exception e) {
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Â¡Error!", "Lo sentimos, no se pudo guardar el formato B."));
-            //JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return "";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            return "diligenciar-formato-B";
         }
     }
 
@@ -406,11 +407,14 @@ public class FormatoB {
              se.enviarEditadoRevisionIdea(nombretg);
              }
              */
-//            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
-            return "fases-trabajo-de-grado";
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato B editado con éxito."));
+            return "fase-evaluacion-anteproyecto";
+            
         } catch (Exception e) {
-//            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            return "editar-formato-B";
         }
     }
 

@@ -239,7 +239,7 @@ public class EvaluadorController {
         
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
-            context.redirect("../evaluador/fases-trabajo-de-grado.xhtml");
+            context.redirect("../evaluador/fase-evaluacion-anteproyecto.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(DirectorController.class.getName()).log(Level.SEVERE, null, ex);
         }

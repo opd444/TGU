@@ -174,6 +174,8 @@ public class DirectorController implements Serializable {
         usuroltg.setPersonacedula(new Usuario(new BigDecimal(iddirector)));
 
         ejbFacade.create(usuroltg);
+        nombrenuevoTG = "";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Completado", "Trabajo de Grado creado con éxito."));
     }
 
     public boolean isModo() {
@@ -206,7 +208,7 @@ public class DirectorController implements Serializable {
 
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
-            context.redirect("../director/fases-trabajo-de-grado.xhtml");
+            context.redirect("../director/fase-presentacion-de-la-idea.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(DirectorController.class.getName()).log(Level.SEVERE, null, ex);
         }

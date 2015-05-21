@@ -31,13 +31,14 @@
                             <p:outputLabel value="Nombre del Trabajo de Grado:" />
                             <p:inputTextarea id="nombre" cols="45" rows="3" value="#{directorController.nombrenuevoTG}" label="nombre" />
                             <f:facet name="footer">
-                                <p:commandButton id="btnnuevotg" style="display: block; margin: 0 auto;" actionListener="#{directorController.crearTG}" value="Crear" icon="ui-icon-disk" update=":form:tablatgDirector" onclick="agregartest.hide()"/>              
+                                <p:commandButton id="btnnuevotg" style="display: block; margin: 0 auto;" action="#{directorController.crearTG}" value="Crear" icon="ui-icon-disk" update=":form:tablatgDirector" onclick="agregartest.hide()"/>              
                             </f:facet>                   
                         </h:panelGrid>
                     </h:form>
                 </p:dialog>
 
                 <h:form id="form">
+                    <p:growl id="growl" showDetail="true" life="5000"/>
                     <p:panel styleClass="paneltrabajo" >
                         <h:panelGrid style="margin: 0 auto;">
                             <p:menubar styleClass="menubarstyleClass">

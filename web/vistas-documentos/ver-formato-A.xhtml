@@ -4,7 +4,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <body>
 
@@ -14,6 +15,7 @@
                 <h:form>
                     <!-- ToDo miga de pan por programación -->
                     <p:breadCrumb styleClass="migaDePan">                        
+                        <p:menuitem value="Inicio" outcome="ver-formato-A" />
                         <p:menuitem value="Ver Formato A" />
                     </p:breadCrumb>   
                 </h:form>
@@ -109,13 +111,23 @@
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2" cellpadding="12" style="margin: 0 auto">
-                                    <p:button value="Volver" icon="ui-icon-arrowthick-1-w" style="font-size: 13px;"/>                                
-                                    <!--<p:button value="Volver" outcome="fases-trabajo-de-grado" icon="ui-icon-arrowthick-1-w" style="font-size: 13px;"/>-->
-                                    <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px;" />
+                                    <p:button value="Volver" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;" />
+                                    <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px; width: 120px;" actionListener="#{pDFBean.generarPDF()}" oncomplete="PF('dlgVerRutina').show();" />
                                 </h:panelGrid>
                             </h:panelGrid>
                         </p:panel>
                     </h:form>
+                    
+                    <h:form id="frmDescargarFormatoA">
+                        <p:dialog id="dlgVerRutina" header="Descargar Formato A" widgetVar="dlgVerRutina" position="center" modal="true" resizable="false" closeOnEscape="true">                            
+                            <c:if test="#{pDFBean.pdfFileName != 'sin-cargar'}">
+                                <object type="application/pdf" data="#{request.contextPath}/PDFServlet/#{pDFBean.pdfFileName}" height="600px" width="820px">
+                                    En tu navegador no se puede visualizar el pdf, <a href="#{request.contextPath}/PDFServlet/#{pDFBean.pdfFileName}">click</a> descarga un lector de pdf.
+                                </object>
+                            </c:if>
+                        </p:dialog>
+                    </h:form>
+                    
                 </p:panel>
             </ui:define>
         </ui:composition>

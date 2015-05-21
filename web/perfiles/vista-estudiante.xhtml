@@ -24,17 +24,19 @@
             <ui:define name="title">                                
             </ui:define>
 
-            <ui:define name="body">                
-                <!--#{estudianteViewController.nombresApellidos(serviciosSimcaController.nombreUsuario)}
+            <ui:define name="body">
+                #{estudianteViewController.nombresApellidos(serviciosSimcaController.nombreUsuario)}
                 #{trabajodegradoController.trabajoAsignado(estudianteViewController.entityTrabajo.trabajoid)}
                 #{trabajodegradoController.incializar()}                
-                #{estudianteViewController.loadTrabajoDeGrado()}-->
+                #{estudianteViewController.loadTrabajoDeGrado()}
+                #{menuController.setOutPerfiles(true)}
                 
                 <h:form id="fases">                                                           
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
-                            #{estudianteViewController.entityTrabajo.trabajonombre}
-                        </div>                                         
+                            #{trabajodegradoController.trabajo.trabajonombre}
+                        </div>
+                        <p:growl id="growl" showDetail="true" life="5000"/>
                         <p:spacer height="25"/>
                         <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado">
                             <h:panelGrid columns="6" cellpadding="1" style="margin: 0 auto;">
@@ -45,26 +47,21 @@
                                 <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
                                 <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
 
-                                <p:commandButton type="button" value="Presentación de la Idea" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" disabled="#{trabajodegradoController.fases.primeraFase}" >                            
+                                <p:commandButton type="button" value="Presentación de la Idea" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" >                            
                                     <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
                                         <f:param name="mode" value="'show'" />
                                     </p:effect>
                                 </p:commandButton>
                                 
-                                <p:button value="Realización del Anteproyecto" outcome="../estudiante/2-realizacion-anteproyecto.xhtml" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
-                                <p:button value="Evaluación del Anteproyecto" outcome="../estudiante/3-evaluacion-anteproyecto.xhtml" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
-                                <p:button value="Ejecución del Trabajo de Grado" href="4-ejecucion-trabajo-grado" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
-                                <p:button value="Evaluación del Trabajo de Grado" href="5-evaluacion-trabajo-grado" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
-                                <p:button value="Finalizado" href="6-finalizado" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Realización del Anteproyecto" outcome="../estudiante/fase-realizacion-anteproyecto.xhtml" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Anteproyecto" outcome="../estudiante/fase-evaluacion-anteproyecto.xhtml" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Ejecución del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Finalizado" href="#" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                             </h:panelGrid>
                         </p:panel>      
                         <p:spacer height="25"/>
                         <p:panel id="pnlPresentacionIdea" header="1. Presentación de la Idea" style=" font-size: 14px;" widgetVar="pnlPresentacionIdea">
-                            <!--<p:commandButton type="button" value="1. Presentación de la Idea" style="background-color:greenyellow">
-                                <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
-                                    <f:param name="mode" value="'show'" />
-                                </p:effect>
-                            </p:commandButton>-->
                             <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Formato A:" style="font-weight: bold;" />                                
                                 <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-formato-A.xhtml" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />

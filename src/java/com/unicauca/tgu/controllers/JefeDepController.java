@@ -193,7 +193,7 @@ public class JefeDepController {
           
           ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
-            context.redirect("../jefe-de-departamento/fases-trabajo-de-grado.xhtml");
+            context.redirect("../jefe-de-departamento/fase-presentacion-de-la-idea.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(DirectorController.class.getName()).log(Level.SEVERE, null, ex);
         }

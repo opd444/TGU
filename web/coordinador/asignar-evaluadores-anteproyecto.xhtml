@@ -24,12 +24,12 @@
                 </p:dialog>
                 <h:form>
                    <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                    <p:menuitem value="Inicio" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
                     <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />                      
-                    <p:menuitem value="Fases del Trabajo de Grado" 
-                                outcome="fases-trabajo-de-grado" />
-                    <p:menuitem value="Ver Anteproyecto" 
-                                outcome="./../vistas-documentos/ver-anteproyecto.xhtml" />
+                    <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                    <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-evaluacion-anteproyecto" />
+                    <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fase-evaluacion-anteproyecto" />
+                    <p:menuitem value="Asignación de evaluadores" />
                 </p:breadCrumb>              
                 </h:form>
             </ui:define>
@@ -43,12 +43,12 @@
                 <p:panel styleClass="paneltrabajo" >
                     
                     <div class="tituloContenido">                        
-                        <h:outputText value="Ver Anteproyecto"/> <br/>
+                        <h:outputText value="Asignación de evaluadores"/> <br/>
                     </div>
+                    <p:growl id="growl" showDetail="true" life="5000"/>
                     <p:spacer height="30"/>
                     
-                    <h:form enctype="multipart/form-data"> 
-                        <p:growl id="growl" sticky="true" showDetail="true"/>
+                    <h:form enctype="multipart/form-data">
                         <p:panel header="Información Actual" style="color: #181818;">
                             <br />
                             <h:panelGrid columns="2" style="margin: 0 auto">
@@ -88,7 +88,7 @@
                                 </p:commandLink>
                                 <p:outputLabel styleClass="subtitulosFormato" value="Docente Evaluador 1: *" />
 
-                                <p:autoComplete id="lista1"
+                                <p:autoComplete
                                                 value="#{anteproyecto.doc1}" label="Doc Evaluador 1"
                                                 completeMethod="#{anteproyecto.complete}"
                                                 var="est"
@@ -111,7 +111,7 @@
                                 </p:autoComplete> 
                                 <p:outputLabel styleClass="subtitulosFormato" value="Docente Evaluador 2: *" />
                                 
-                                <p:autoComplete id="lista2"
+                                <p:autoComplete 
                                                 value="#{anteproyecto.doc2}" label="Doc Evaluador 2"
                                                 completeMethod="#{anteproyecto.complete2}"
                                                 var="est"
@@ -126,7 +126,7 @@
                                                 requiredMessage="Por favor ingrese el nombre del segundo evaluador."
                                                 size="24"
                                                 >
-                                    <p:ajax event="itemSelect" listener="#{anteproyecto.handlerSelectDoc2}" process="#{anteproyecto.doc1}" />
+                                    <p:ajax event="itemSelect" listener="#{anteproyecto.handlerSelectDoc2}" />
                                     <p:ajax event="itemUnselect" listener="#{anteproyecto.handleUnSelectDoc2}" />
                                     <p:column>
                                         #{est.personanombres} #{est.personaapellidos}
@@ -134,17 +134,14 @@
                                 </p:autoComplete>
                             </h:panelGrid>
                             <br />
-                            <h:panelGrid  columns="2" style="margin: 0 auto;" cellpadding="5">  
-                                <p:button value="Cancelar" outcome="fases-trabajo-de-grado" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>
-                                <p:commandButton value="Guardar"  actionListener="#{anteproyecto.guardarevaluadores()}" icon="ui-icon-disk" style="font-size: 13px; width: 120px;"
-                                                 update="growl"/>
+                            <h:panelGrid  columns="2" style="margin: 0 auto;" cellpadding="5">
+                                <p:commandButton value="Guardar"  action="#{anteproyecto.guardarevaluadores()}" icon="ui-icon-disk" style="font-size: 13px; width: 120px;" update="growl"/>
+                                <p:button value="Cancelar" outcome="fase-evaluacion-anteproyecto" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>
                             </h:panelGrid> 
                         </p:panel>
                     </h:form>
                 </p:panel>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

@@ -11,13 +11,15 @@
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
-                <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
-                    <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
-                    <p:menuitem value="Trabajo de Grado" outcome="./../perfiles/vista-secretaria-general.xhtml" />
-                    <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-realizacion-anteproyecto" />
-                    <p:menuitem value="2. Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" />
-                </p:breadCrumb>
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
+                        <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
+                        <p:menuitem value="Trabajo de Grado" outcome="./../perfiles/vista-secretaria-general.xhtml" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-realizacion-anteproyecto" />
+                        <p:menuitem value="2. Realización del Anteproyecto" />
+                    </p:breadCrumb>
+                </h:form>
             </ui:define>
 
             <ui:define name="title">
@@ -30,10 +32,9 @@
                     <p:panel styleClass="paneltrabajo" >
                         
                         <div class="tituloContenido">                        
-                            #{estudianteViewController.entityTrabajo.trabajonombre}
+                            #{trabajodegradoController.trabajo.trabajonombre}
                         </div>
-                        
-                        <p:growl id="growl" sticky="true" showDetail="true" for="msg"/>
+                        <p:growl id="growl" showDetail="true" life="5000"/>
                         <p:spacer height="25"/>
                         
                         <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado">

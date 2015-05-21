@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.unicauca.tgu.Auxiliares.Servicio_Email;
 import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
@@ -35,13 +31,11 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.el.ELException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -49,10 +43,7 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
-/**
- *
- * @author pcblanco
- */
+
 @ManagedBean
 @ViewScoped
 public class Anteproyecto {
@@ -221,15 +212,13 @@ public class Anteproyecto {
         out.close();
     }
 
-    public void guardar() {
-
-        FacesContext context = FacesContext.getCurrentInstance();
+    public String guardar() {
 
         if (file != null && !"".equals(file.getFileName())) {
 
             try {
                 copiarArchivo();
-                Map<String, String> map = new HashMap<String, String>();
+                Map<String, String> map = new HashMap();
 
                 map.put("nombretg", nombretg);
                 if (TrabajodeGradoActual.director != null) {
@@ -248,6 +237,7 @@ public class Anteproyecto {
                 map.put("rutaarch", directorioanteproyectos + file.getFileName());
                 map.put("nombarch", file.getFileName());
                 map.put("numberOfUpdatesEst", "0");
+                map.put("avalado", "0");
 
                 Gson gson = new Gson();
                 String contenido = gson.toJson(map, Map.class);
@@ -264,24 +254,24 @@ public class Anteproyecto {
 //            if (TrabajodeGradoActual.director != null) {
 //                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
 //                se.enviarDiligenciadoAnteproyecto(nombretg);
-//            }          
-                context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Anteproyecto Diligenciado con Exito", ""));
-
-                /*  Para redireccionar despues de guardar
-                 ExternalContext extcontext = FacesContext.getCurrentInstance().getExternalContext();
-                 extcontext.redirect("fases-trabajo-de-grado.xhtml?trabajoid="+TrabajodeGradoActual.id);
-                 */
+//            }
+                
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Anteproyecto diligenciado con éxito."));
+                return "fase-realizacion-anteproyecto";
+                
             } catch (Exception e) {
-                System.out.println(e.getMessage());
-                context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "Ocurrio algun error al intentar  efectuar la operacion"));
+                
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+                return "diligenciar-anteproyecto";
             }
 
         } else {
-            context.addMessage("archivoant", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error : Archivo de anteproyecto es obligatorio", "Archivo de anteproyecto es obligatorio"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "El doc. del Anteproyecto es obligatorio."));
+            return "diligenciar-anteproyecto";
         }
     }
 
-    public void editar() {
+    public String editar() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         try {
@@ -323,18 +313,20 @@ public class Anteproyecto {
                     if (mapedicion.get("idEst1").equals(idEstudiante)) {
                         numberOfUpdatesEst = Integer.valueOf(mapedicion.get("numberOfUpdatesEst"));
                         numberOfUpdatesEst += 1;
+                        mapedicion.remove("numberOfUpdatesEst");
                         mapedicion.put("numberOfUpdatesEst", String.valueOf(numberOfUpdatesEst));
                     }
                 }
                 if (mapedicion.get("idEst2") != null && (numFormatosB == 2)) {
-                    if (mapedicion.get("idEst1").equals(idEstudiante)) {
+                    if (mapedicion.get("idEst2").equals(idEstudiante)) {
                         numberOfUpdatesEst = Integer.valueOf(mapedicion.get("numberOfUpdatesEst"));
                         numberOfUpdatesEst += 1;
+                        mapedicion.remove("numberOfUpdatesEst");
                         mapedicion.put("numberOfUpdatesEst", String.valueOf(numberOfUpdatesEst));
                     }
                 }
             }
-
+            mapedicion.put("avalado", "0");
             mapedicion.put("obj", objetivos);
 
             String contenido = gson.toJson(mapedicion, Map.class);
@@ -343,25 +335,26 @@ public class Anteproyecto {
 
             ejbFacadeProdTrab.edit(anteproyactual);
 
-            Servicio_Email se = new Servicio_Email();
-            se.setSubject("Anteproyecto del Trabajo de Grado" + nombretg + " Editado");
-
-            if (TrabajodeGradoActual.director != null) {
-                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
-                se.enviarEditadoAnteproyecto(nombretg);
-            }
-            if (numberOfUpdatesEst <= 3) {
-                context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Anteproyecto Editado con Exito", ""));
+//            Servicio_Email se = new Servicio_Email();
+//            se.setSubject("Anteproyecto del Trabajo de Grado" + nombretg + " Editado");
+//
+//            if (TrabajodeGradoActual.director != null) {
+//                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
+//                se.enviarEditadoAnteproyecto(nombretg);
+//            }
+            
+            if (numberOfUpdatesEst <= 3) {                
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Anteproyecto editado con éxito."));
+                return "fase-realizacion-anteproyecto";
             } else {
-                context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "Se ha alcanzado el nÃºmero mÃ¡ximo de ediciones, "
-                        + "el anteproyecto fue editado 3 veces"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Se ha alcanzado el número máximo de ediciones, el anteproyecto fue editado 3 veces."));
+                return "fase-realizacion-anteproyecto";
             }
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "Ocurrio algun error al intentar  efectuar la operacion"));
+        } catch (JsonSyntaxException | NumberFormatException | ELException | IOException e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            return "editar-anteproyecto";
         }
-
     }
 
     public void handleFileUpload(FileUploadEvent event) {
@@ -392,10 +385,6 @@ public class Anteproyecto {
 
         List<Usuario> ls = ejbFacadeUsuario.buscarEvaluadores(query);
         List<Usuario> usus = new ArrayList();
-
-        if (query.isEmpty()) {
-            doc1 = null;
-        }
 
         for (Usuario u : ls) {
             List<UsuarioRol> lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 1);
@@ -436,10 +425,6 @@ public class Anteproyecto {
         query = query.trim();
         query = query.toUpperCase();
 
-        if (query.isEmpty()) {
-            doc2 = null;
-        }
-
         List<Usuario> ls = ejbFacadeUsuario.buscarEvaluadores(query);
         List<Usuario> usus = new ArrayList();
 
@@ -478,9 +463,8 @@ public class Anteproyecto {
         return usus;
     }
 
-    public void guardarevaluadores() {
+    public String guardarevaluadores() {
 
-        FacesContext context = FacesContext.getCurrentInstance();
         try {
             Gson gson = new Gson();
             Map<String, String> mapedicion
@@ -525,14 +509,15 @@ public class Anteproyecto {
 //                se.setTo(doc2.getPersonacorreo());
 //                se.enviarAsignacionEvaluacionanteproyecto(nombretg);
 //            }
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Evaluadores Asignados correctamente"));
-            //ExternalContext extcontext = context.getExternalContext();
-            // extcontext.redirect("fases-trabajo-de-grado.xhtml");
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "La asignación de evaluadores fue exitosa."));
+            return "fase-evaluacion-anteproyecto";
+            
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "Ocurrio algun error al intentar  efectuar la operacion"));
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            return "asignar-evaluadores-anteproyecto";
         }
-
     }
 
     public void handlerSelectDoc1(SelectEvent e) {

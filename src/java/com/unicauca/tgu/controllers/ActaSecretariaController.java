@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.unicauca.tgu.Auxiliares.Servicio_Email;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.FormatosTablas.FormatoTablaActa;
 import com.unicauca.tgu.entities.Formatoproducto;
@@ -16,7 +12,9 @@ import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +24,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-/**
- *
- * @author pcblanco
- */
 @ManagedBean
 @ViewScoped
 public class ActaSecretariaController {
@@ -48,6 +42,12 @@ public class ActaSecretariaController {
     public ActaSecretariaController() {
         nombreDirector = TrabajodeGradoActual.director.getPersonanombres() + " " + TrabajodeGradoActual.director.getPersonaapellidos();
         nombreTrabajodeGrado = TrabajodeGradoActual.nombreTg;
+        numact = 1;
+        Calendar c = new GregorianCalendar();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        fechaact = c.getTime();        
     }
 
     public String getNombreTrabajodeGrado() {
@@ -100,7 +100,7 @@ public class ActaSecretariaController {
         return contenido;
     }
 
-    public void guardar() {
+    public String guardar() {
         try {
 
             String contenido = obtenerDatos();
@@ -111,31 +111,33 @@ public class ActaSecretariaController {
             prod.setTrabajoid(trab);
             ejbFacadeProdTrab.create(prod);
 
-            /*
-             Servicio_Email se = new Servicio_Email();
-             se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido diligenciada.");
-
-             if(est1!=null)
-             {  
-             se.setTo(est1.getPersonacorreo());
-             se.enviarDiligenciadoRevisionIdea(nombretg);
-             }
-             if(est2!=null)
-             {
-             se.setTo(est2.getPersonacorreo());
-             se.enviarDiligenciadoRevisionIdea(nombretg);
-             }
-             if(TrabajodeGradoActual.director!=null)
-             {
-             se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
-             se.enviarDiligenciadoRevisionIdea(nombretg);
-             }
-             */
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡Acta diligenciada con éxito!", "Se le ha enviado un correo a los involucrados en el trabajo de grado."));
+            
+//            Servicio_Email se = new Servicio_Email();
+//            se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido diligenciada.");
+//
+//            if(est1!=null)
+//            {  
+//            se.setTo(est1.getPersonacorreo());
+//            se.enviarDiligenciadoRevisionIdea(nombretg);
+//            }
+//            if(est2!=null)
+//            {
+//            se.setTo(est2.getPersonacorreo());
+//            se.enviarDiligenciadoRevisionIdea(nombretg);
+//            }
+//            if(TrabajodeGradoActual.director!=null)
+//            {
+//            se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
+//            se.enviarDiligenciadoRevisionIdea(nombretg);
+//            }
+            
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Acta de resolución asignada."));
+            return "diligenciar-acta-resolucion";
         } catch (Exception e) {
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡Error!", "Lo sentimos, no se pudo guardar el Acta."));
-            //JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            return "diligenciar-acta-resolucion";
         }
     }
 
@@ -157,5 +159,4 @@ public class ActaSecretariaController {
         }
         return lstact;
     }
-
 }

@@ -11,11 +11,11 @@
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
-                <h:form id="formMigaDirector">
-                    <p:breadCrumb id="migaDirector" styleClass="migaDePan">
+                <h:form id="formMigaCoord">
+                    <p:breadCrumb id="migaCoord" styleClass="migaDePan">
+                        <p:menuitem value="Inicio" outcome="vista-coordinador-de-programa" />
                         <p:menuitem value="Coordinador" outcome="vista-coordinador-de-programa" />
-                        <p:menuitem value="Coordinador" outcome="vista-coordinador-de-programa" />
-                        <p:menuitem value="Anteproyectos" />
+                        <p:menuitem value="#{coordinadorController.titulo}" />
                     </p:breadCrumb>
                 </h:form>
             </ui:define>
@@ -29,14 +29,14 @@
                     <p:panel styleClass="paneltrabajo" >
                         <h:panelGrid style="margin: 0 auto;">
                             <p:menubar styleClass="menubarstyleClass">
-                                <p:menuitem style="border-color: #808080" value="Anteproyectos sin asignacion de evaluadores" actionListener="#{coordinadorController.porAsignarEvaluadores()}"
-                                            update="tablacoord tituloVistaDirector :formMigaDirector:migaDirector" icon="ui-icon-folder-open"/>
+                                <p:menuitem style="border-color: #808080" value="Anteproyectos sin evaluadores asignados" actionListener="#{coordinadorController.porAsignarEvaluadores()}"
+                                            update="tablacoord tituloCoord :formMigaCoord:migaCoord" icon="ui-icon-folder-open"/>
                                 <p:menuitem style="border-color: #808080" value="Anteproyectos con evaluadores asignados"
-                                            update="tablacoord tituloVistaDirector :formMigaDirector:migaDirector" actionListener="#{coordinadorController.conEvaludaresAsignados()}" icon="ui-icon-folder-collapsed"/>
+                                            update="tablacoord tituloCoord :formMigaCoord:migaCoord" actionListener="#{coordinadorController.conEvaludaresAsignados()}" icon="ui-icon-folder-collapsed"/>
                             </p:menubar>
                         </h:panelGrid>
                         <p:spacer height="25"/>
-                        <h:outputLabel id="tituloVistaDirector" class="tituloContenido" value="Anteproyectos" />        
+                        <h:outputLabel id="tituloCoord" class="tituloContenido" value="#{coordinadorController.titulo}" />        
                         <p:spacer height="10"/>
                         <p:dataTable  styleClass="tabladirector" id="tablacoord" var="car" value="#{coordinadorController.anteproys}"
                                       paginator="true" rows="5" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24" emptyMessage="Lo sentimos, no hay trabajos registrados." style="font-size: 14px;">
@@ -60,16 +60,10 @@
                             <p:column headerText="Director"> 
                                 #{car.director}  
                             </p:column>
-
-                        </p:dataTable>   
-
+                        </p:dataTable>
                     </p:panel>
-
                 </h:form>
-
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

@@ -14,9 +14,9 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Inicio" outcome="./../perfiles/vista-evaluador.xhtml" />
                         <p:menuitem value="Evaluador" outcome="./../perfiles/vista-evaluador.xhtml" />
-                        <p:menuitem value="Evaluador" outcome="./../perfiles/vista-evaluador.xhtml" />
-                        <p:menuitem value="Trabajo de Grado" outcome="./../perfiles/vista-evaluador.xhtml" />
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-evaluador.xhtml" />
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-presentacion-de-la-idea" />
                         <p:menuitem value="1. Presentación de la Idea" />
                     </p:breadCrumb>
@@ -28,13 +28,13 @@
 
             <ui:define name="body">
                 #{menuController.setOutPerfiles(true)}
-                #{trabajodegradoController.incializar()}
 
                 <h:form id="fases">                                                           
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
                             #{trabajodegradoController.trabajo.trabajonombre}
-                        </div>                                         
+                        </div>
+                        <p:growl id="growl" showDetail="true" life="5000"/>
                         <p:spacer height="25"/>
                         <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado">
                             <h:panelGrid columns="6" cellpadding="1" style="margin: 0 auto;">
@@ -45,14 +45,14 @@
                                 <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
                                 <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
 
-                                <p:commandButton type="button" value="Presentación de la Idea" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" disabled="#{trabajodegradoController.fases.primeraFase}" >                            
+                                <p:commandButton type="button" value="Presentación de la Idea" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" >                            
                                     <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
                                         <f:param name="mode" value="'show'" />
                                     </p:effect>
                                 </p:commandButton>
 
                                 <p:button value="Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
-                                <p:button value="Evaluación del Anteproyecto" outcome="fases-trabajo-de-grado" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Anteproyecto" outcome="fase-evaluacion-anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Ejecución del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Evaluación del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Finalizado" href="#" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
@@ -60,11 +60,6 @@
                         </p:panel>      
                         <p:spacer height="25"/>
                         <p:panel id="pnlPresentacionIdea" header="1. Presentación de la Idea" style=" font-size: 14px;" widgetVar="pnlPresentacionIdea">
-                            <!--<p:commandButton type="button" value="1. Presentación de la Idea" style="background-color:greenyellow">
-                                <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
-                                    <f:param name="mode" value="'show'" />
-                                </p:effect>
-                            </p:commandButton>-->
                             <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Formato A:" style="font-weight: bold;" />
                                 <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-formato-A.xhtml?trabajoid=#{trabajodegradoController.trabajo.trabajoid}" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />                                
@@ -76,9 +71,8 @@
 
                         </p:panel>
                     </p:panel>
-
-
-                </h:form>                
+                </h:form>
+                
                 <h:form id="frmDescargarFormatoA">
                     <p:dialog id="dlgVerRutina" header="Descargar Formato A" widgetVar="dlgVerRutina" modal="true" position="top" resizable="false" closeOnEscape="true">                            
                         <c:if test="#{pDFBean.pdfFileName != 'sin-cargar'}">
@@ -89,8 +83,6 @@
                     </p:dialog>        
                 </h:form> 
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

@@ -10,7 +10,6 @@ import com.google.gson.reflect.TypeToken;
 import com.unicauca.tgu.Auxiliares.Servicio_Email;
 import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
-import com.unicauca.tgu.controllers.util.JsfUtil;
 import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Rol;
@@ -31,33 +30,26 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-/**
- *
- * @author pcblanco
- */
+
 @ManagedBean
 @ViewScoped
 public class RevisionIdeaController {
     
     @EJB
     private UsuarioRolTrabajogradoFacade ejbFacadeUsuroltrab;
-
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
-
     @EJB
     private TrabajodegradoFacade ejbFacadeTrabGrad;
-
     @EJB
     private UsuarioFacade ejbFacadeUsuario;
-    
     @EJB
     private TrabajogradoFaseFacade ejbFacadeTrabajoGradFase;
 
@@ -73,7 +65,7 @@ public class RevisionIdeaController {
     private String aprobado;
     private int idjefe;
     
-    private Productodetrabajo formatoactual;
+    private Productodetrabajo productoActual;
     
     public RevisionIdeaController() {
     }
@@ -92,10 +84,10 @@ public class RevisionIdeaController {
 
         if (lst.size() > 0) {               //verificar si ya hay guardardo el formato de revisión del formato A para este trabajo de grado
 
-            formatoactual = lst.get(0);
+            productoActual = lst.get(0);
 
             Gson gson = new Gson();
-            Map<String, String> decoded = gson.fromJson(formatoactual.getProductocontenido(), new TypeToken<Map<String, String>>() {
+            Map<String, String> decoded = gson.fromJson(productoActual.getProductocontenido(), new TypeToken<Map<String, String>>() {
             }.getType());
             
             if (decoded.get("numActa") != null) {
@@ -252,16 +244,16 @@ public class RevisionIdeaController {
         this.aprobado = aprobado;
     }
 
-    public Productodetrabajo getFormatoactual() {
-        return formatoactual;
+    public Productodetrabajo getProductoActual() {
+        return productoActual;
     }
 
-    public void setFormatoactual(Productodetrabajo formatoactual) {
-        this.formatoactual = formatoactual;
+    public void setProductoActual(Productodetrabajo productoActual) {
+        this.productoActual = productoActual;
     }
     
     public String obtenerDatos() {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap();
         
         map.put("numActa", Integer.toString(getNumActa()));
         
@@ -334,12 +326,11 @@ public class RevisionIdeaController {
 //                se.enviarDiligenciadoRevisionIdea(nombretg);
 //             }
             
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("ProductodetrabajoCreated"));
-            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"¡Revisión diligenciada con éxito!", "Se le ha enviado un correo notificando dicha operación."));
-            return "fases-trabajo-de-grado";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Revisión de la idea, diligenciada con éxito."));
+            return "fase-presentacion-de-la-idea";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            return "diligenciar-formato-revision-idea";
         }
     }
 
@@ -348,10 +339,10 @@ public class RevisionIdeaController {
         {
             String contenido = obtenerDatos();
             
-            formatoactual.setProductocontenido(contenido);
-            formatoactual.setProductoaprobado(BigInteger.valueOf(getResultado()));
+            productoActual.setProductocontenido(contenido);
+            productoActual.setProductoaprobado(BigInteger.valueOf(getResultado()));
             
-            ejbFacadeProdTrab.edit(formatoactual);
+            ejbFacadeProdTrab.edit(productoActual);
             
             if(getResultado() == 1) //Si fue aprobado
             {
@@ -380,11 +371,11 @@ public class RevisionIdeaController {
 //                se.enviarEditadoRevisionIdea(nombretg);
 //             }
             
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
-            return "fases-trabajo-de-grado";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Revisión de la idea, editada con éxito."));
+            return "fase-presentacion-de-la-idea";
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            return "editar-formato-revision-idea";
         }
     }
 }

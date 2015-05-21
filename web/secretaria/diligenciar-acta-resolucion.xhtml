@@ -37,9 +37,8 @@
 
                     <h:form>
                         <p:panel header="Campos con * son obligatorios" style="width: 100%; font-size: 14px;" >
-                            <p:growl id="growl" sticky="true" showDetail="true" />
-                            <p:messages/>
-
+                            <p:growl id="growl" showDetail="true" life="5000"/>
+                            
                             <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="15" >
 
                                 <p:outputLabel styleClass="subtitulosFormato" value="Nombre del trabajo de grado:" />
@@ -59,24 +58,23 @@
                             </h:panelGrid>
 
                             <h:panelGrid columns="2" style="margin: 0 auto;" cellpadding="8">
-                                <p:commandButton ajax="false" update="growl tablaactas" value="Guardar" action="#{actaSecretariaController.guardar()}" icon="ui-icon-disk"/>
+                                <p:commandButton update="growl tablaactas" value="Guardar" action="#{actaSecretariaController.guardar()}" icon="ui-icon-disk"/>
                                 <p:button value="Cancelar" outcome="fase-evaluacion-anteproyecto" icon="ui-icon-cancel"/>
                             </h:panelGrid>
                         </p:panel>
                         <p:spacer height="20"/>
-                        <div class="tituloContenido">  
-                            
-                        <h:outputText value="Actas Relacionadas al Trabajo de Grado"/> <br/>
-                    </div>                 
-                         <p:spacer height="10"/>
-                         <p:dataTable id="tablaactas" styleClass="tabladirector" var="car" value="#{actaSecretariaController.actas}"
-                                      paginator="true" rows="5" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24" emptyMessage="No hay actas registradas a este trabajo de grado." style="font-size: 14px;">
-                            <p:column  headerText="Fecha">
-                                <p:outputLabel value="#{car.fechaact}" />      
-                            </p:column>
-                            <p:column  headerText="Numero de Acta"> <!--filterBy="{car.trabajoGrado}"-->
-                                <p:outputLabel value="#{car.numacta}" />            
-                            </p:column>     
+                        <div class="tituloContenido">    
+                            <h:outputText value="Actas Relacionadas al Trabajo de Grado"/> <br/>
+                        </div>                 
+                        <p:spacer height="10"/>
+                        <p:dataTable id="tablaactas" styleClass="tabladirector" var="car" value="#{actaSecretariaController.actas}"
+                                     paginator="true" rows="5" paginatorPosition="bottom" rowsPerPageTemplate="5,10,15" emptyMessage="No hay actas asociadas a este trabajo de grado." style="font-size: 14px;">
+                            <p:column style="text-align: center" headerText="Fecha">
+                               <p:outputLabel value="#{car.fechaact}" />      
+                           </p:column>
+                           <p:column style="text-align: center" headerText="Número de Acta"> <!--filterBy="{car.trabajoGrado}"-->
+                               <p:outputLabel value="#{car.numacta}" />            
+                           </p:column>     
                         </p:dataTable>
                     </h:form>
                 </p:panel>       

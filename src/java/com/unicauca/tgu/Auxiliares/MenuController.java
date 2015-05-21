@@ -239,7 +239,7 @@ public class MenuController implements Serializable {
      * setOutcomePefil: define hacia donde redireccionar cuando se cambia el
      * perfil actual.
      */
-    private String setOutcomePefil(String rol) {
+    public String setOutcomePefil(String rol) {
         switch (rol) {
             case "Director":
                 return "vista-director";
