@@ -8,7 +8,9 @@ import com.unicauca.tgu.FormatosTablas.FormatoTablaActa;
 import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Trabajodegrado;
+import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
+import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ public class ActaSecretariaController {
 
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
+     @EJB
+    private TrabajogradoFaseFacade ejbFacadeTraFase1;
 
     private String nombreTrabajodeGrado;
     private String nombreDirector;
@@ -110,6 +114,23 @@ public class ActaSecretariaController {
             prod.setFormatoid(new Formatoproducto(BigDecimal.valueOf(5)));
             prod.setTrabajoid(trab);
             ejbFacadeProdTrab.create(prod);
+            
+            List<TrabajogradoFase> lst = ejbFacadeTraFase1.findAll();
+        
+        for(int i = 0; i < lst.size(); i++) {
+            if(lst.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+                if(lst.get(i).getFaseid().getFaseid().equals(BigDecimal.valueOf(3))) {
+                    lst.get(i).setEstado(BigInteger.ONE);
+                    ejbFacadeTraFase1.edit(lst.get(i));
+                    
+                }
+                if(lst.get(i).getFaseid().getFaseid().equals(BigDecimal.valueOf(4))) {
+                    lst.get(i).setEstado(BigInteger.ZERO);
+                    ejbFacadeTraFase1.edit(lst.get(i));
+                    
+                }
+            }
+        }
 
             
 //            Servicio_Email se = new Servicio_Email();
