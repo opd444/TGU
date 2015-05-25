@@ -44,6 +44,16 @@ public class EstudianteViewController {
         
 //        return usu.getPersonanombres() + usu.getPersonaapellidos();
     }
+    /**
+     * estTieneTG: se pregunta si el estudiante tiene o no asignado un trabajo de grado.
+     * @param usuarionombre
+     * @return 
+     */
+    public boolean estTieneTG(String usuarionombre) {
+        com.unicauca.tgu.entities.Usuario usu = ejbFacadeUsu.buscarPorUsuarionombre(usuarionombre);
+        
+        return !ejbFacadeURT.findbyUsuid(usu.getPersonacedula().intValue()).isEmpty();
+    }
 
     public Trabajodegrado getEntityTrabajo() {
         return entityTrabajo;
