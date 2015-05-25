@@ -43,7 +43,6 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
-
 @ManagedBean
 @ViewScoped
 public class Anteproyecto {
@@ -255,12 +254,11 @@ public class Anteproyecto {
 //                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
 //                se.enviarDiligenciadoAnteproyecto(nombretg);
 //            }
-                
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Anteproyecto diligenciado con éxito."));
                 return "fase-realizacion-anteproyecto";
-                
+
             } catch (Exception e) {
-                
+
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
                 return "diligenciar-anteproyecto";
             }
@@ -342,8 +340,7 @@ public class Anteproyecto {
 //                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
 //                se.enviarEditadoAnteproyecto(nombretg);
 //            }
-            
-            if (numberOfUpdatesEst <= 3) {                
+            if (numberOfUpdatesEst <= 3) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Anteproyecto editado con éxito."));
                 return "fase-realizacion-anteproyecto";
             } else {
@@ -497,7 +494,22 @@ public class Anteproyecto {
 
             ejbFacadeProdTrab.edit(anteproyactual);
 
-//        Servicio_Email se = new Servicio_Email();
+            Servicio_Email se = new Servicio_Email();
+            se.setSubject("El Trabajo de Grado: '" + nombretg + "' esta listo para la revision por parte de los evaluadores.");
+
+            if (est1 != null) {
+                se.setTo(TrabajodeGradoActual.est1.getPersonacorreo());
+                se.enviarNotificacionAsignacion(nombretg);
+            }
+            if (est2 != null) {
+                se.setTo(TrabajodeGradoActual.est2.getPersonacorreo());
+                se.enviarNotificacionAsignacion(nombretg);
+            }
+            if (directortg != null) {
+                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
+                se.enviarNotificacionAsignacion(nombretg);
+            }
+ 
 //        se.setSubject("Asignacion como evaluador de anteproyecto");
 //
 //            if (doc1 != null) {
@@ -509,12 +521,11 @@ public class Anteproyecto {
 //                se.setTo(doc2.getPersonacorreo());
 //                se.enviarAsignacionEvaluacionanteproyecto(nombretg);
 //            }
-            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "La asignación de evaluadores fue exitosa."));
             return "fase-evaluacion-anteproyecto";
-            
+
         } catch (Exception e) {
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
             return "asignar-evaluadores-anteproyecto";
         }
