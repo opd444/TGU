@@ -12,13 +12,15 @@
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
-                <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
-                    <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
-                    <p:menuitem value="Trabajo de Grado" outcome="./../perfiles/vista-secretaria-general.xhtml" />
-                    <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-presentacion-de-la-idea" />
-                    <p:menuitem value="1. Presentación de la Idea" outcome="fase-presentacion-de-la-idea" />
-                </p:breadCrumb>
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
+                        <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
+                        <p:menuitem value="Trabajo de Grado" outcome="./../perfiles/vista-secretaria-general.xhtml" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-presentacion-de-la-idea" />
+                        <p:menuitem value="1. Presentación de la Idea" />
+                    </p:breadCrumb>
+                </h:form>
             </ui:define>
 
             <ui:define name="title">
@@ -33,8 +35,7 @@
                         <div class="tituloContenido">                        
                             #{trabajodegradoController.trabajo.trabajonombre}
                         </div>
-                        
-                        <p:growl id="growl" sticky="true" showDetail="true" for="msg"/>
+                        <p:growl id="growl" showDetail="true" life="5000"/>
                         <p:spacer height="25"/>
                         
                         <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado">

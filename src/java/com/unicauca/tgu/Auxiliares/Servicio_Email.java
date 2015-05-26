@@ -166,4 +166,15 @@ public class Servicio_Email {
                   + " y ya se encuentra disponible para la asignacion de evaluadores.");
              sendEmail();
     }
+    
+    public void enviarNotificacionAsignacion(String nombretg) {
+       messagebody = String.format(bodyformat,  "El anteproyecto del trabajo de grado '<strong>"+nombretg+"</strong>' ya tiene evaluadores asignados y esta listo para revisión.");
+             sendEmail();
+    }
+    
+    public void enviarResultadoFormatoB(String nombretg, String resultado, String nombreEvaluador) {
+       messagebody = String.format(bodyformat,  "El anteproyecto del trabajo de grado '<strong>"+nombretg+"</strong>' ha sido: "+resultado+", por el evaluador: "+nombreEvaluador+".");
+             sendEmail();
+    }
+    
 }

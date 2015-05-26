@@ -12,28 +12,30 @@
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
-                <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />                                        
-                    <p:menuitem value="Jefe de Departamento" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />
-                    <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />      
-                    <p:menuitem value="Fases del Trabajo de Grado" 
-                                outcome="fases-trabajo-de-grado" />
-                    <p:menuitem value="3 Evaluacion del Anteproyecto" 
-                                outcome="3-evaluacion-anteproyecto" />
-                </p:breadCrumb>
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Inicio" outcome="./../perfiles/vista-director.xhtml" />
+                        <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-director.xhtml" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-evaluacion-anteproyecto" />
+                        <p:menuitem value="3. Evaluacion del Anteproyecto" />
+                    </p:breadCrumb>
+                </h:form>
             </ui:define>
 
             <ui:define name="title">                                
             </ui:define>
 
-            <ui:define name="body">                                               
+            <ui:define name="body">
+                
                 #{menuController.setOutPerfiles(true)}
+
                 <h:form>                                                           
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
-                            #{estudianteViewController.entityTrabajo.trabajonombre}
+                            #{trabajodegradoController.trabajo.trabajonombre}
                         </div>                                         
-                        <p:growl id="growl" sticky="true" showDetail="true" for="msg"/>
+                        <p:growl id="growl" showDetail="true" life="5000"/>
                         <p:spacer height="25"/>
                         <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado">
                             <h:panelGrid columns="6" cellpadding="1" style="margin: 0 auto;">
@@ -44,12 +46,11 @@
                                 <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
                                 <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
 
-                                <p:button value="Presentación de la Idea" outcome="fases-trabajo-de-grado" style="width: 105px;height: 96px; font-size: 13px;" disabled="#{trabajodegradoController.fases.primeraFase}" />                            
-
+                                <p:button value="Presentación de la Idea" outcome="fase-presentacion-de-la-idea" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px;height: 96px; font-size: 13px;" />
                                 <p:button value="Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
 
                                 <p:commandButton type="button" value="Evaluación del Anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" >
-                                    <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
+                                    <p:effect type="highlight" event="click" for="pnlEvaluacionAnteproyecto">
                                         <f:param name="mode" value="'show'" />
                                     </p:effect>
                                 </p:commandButton>
@@ -60,12 +61,7 @@
                             </h:panelGrid>
                         </p:panel>      
                         <p:spacer height="25"/>
-                        <p:panel id="pnlPresentacionIdea" header="3. Evaluación del Anteproyecto" style=" font-size: 14px;" widgetVar="pnlPresentacionIdea">
-                            <!--<p:commandButton type="button" value="1. Presentación de la Idea" style="background-color:greenyellow">
-                                <p:effect type="highlight" event="click" for="pnlPresentacionIdea">
-                                    <f:param name="mode" value="'show'" />
-                                </p:effect>
-                            </p:commandButton>-->
+                        <p:panel id="pnlEvaluacionAnteproyecto" header="3. Evaluación del Anteproyecto" style=" font-size: 14px;" widgetVar="pnlEvaluacionAnteproyecto">
                             <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Formato B (Evaluador 1):" style="font-weight: bold;" />                                                                                                
                                 <p:commandButton value="Ver" icon="ui-icon-comment" actionListener="#{formatoB.btnVerFormatoBEvaluador1()}" style="width: 120px;" disabled="#{trabajodegradoController.btnVerFormatoB1()}" />
@@ -82,11 +78,11 @@
                     <p:dialog id="dlgVerRutina" header="Descargar Formato B" widgetVar="dlgVerRutina" modal="true" position="top" resizable="false" closeOnEscape="true">                            
                         <c:if test="#{pdfFormatoB.pdfFileName != 'sin-cargar'}">
                             <object type="application/pdf" data="#{request.contextPath}/PDFServlet/#{pdfFormatoB.pdfFileName}" height="600px" width="820px">
-                                Tu navegador no puede mostrar el pdf, <a href="#{request.contextPath}/PDFServlet/#{pdfFormatoB.pdfFileName}">click</a> to download pdf instead.
+                                En tu navegador no se puede visualizar el pdf, <a href="#{request.contextPath}/PDFServlet/#{pdfFormatoB.pdfFileName}">click</a>  descarga un lector de pdf.
                             </object>   
                         </c:if>
                     </p:dialog>        
-                </h:form> 
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>

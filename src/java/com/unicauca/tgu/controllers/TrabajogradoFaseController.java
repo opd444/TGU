@@ -1,16 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.unicauca.tgu.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
+import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.TrabajogradoFase;
+import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -18,18 +18,15 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.primefaces.context.RequestContext;
 
-/**
- *
- * @author seven
- */
+
 @ManagedBean
 @SessionScoped
 public class TrabajogradoFaseController {
     @EJB
     private TrabajogradoFaseFacade ejbFacadeTraFase;
-    /**
-     * Creates a new instance of TrabajogradoFaseController
-     */
+    @EJB
+    private ProductodetrabajoFacade ejbFacadeProdTrab;
+    
     public TrabajogradoFaseController() {
         
     }
@@ -50,10 +47,30 @@ public class TrabajogradoFaseController {
                 }
             }
         }
+        
+        List<Productodetrabajo> lstProd = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 2);
+        
+        if (lstProd.size() > 0) {
+            
+            Productodetrabajo productoActual = lstProd.get(0);
+            
+            Gson gson = new Gson();
+            Map<String, String> map = gson.fromJson(productoActual.getProductocontenido(), new TypeToken<Map<String, String>>() {
+            }.getType());
+            
+            if (map.get("avalado") != null) {
+                map.remove("avalado");
+                map.put("avalado", "1");    //Se actualiza el campo "avalado" en aprobado.
+                String contenido = gson.toJson(map, Map.class);
+                productoActual.setProductocontenido(contenido);
+                ejbFacadeProdTrab.edit(productoActual);
+            }
+        }
+        
         mgb.incializar();
         FacesContext context = FacesContext.getCurrentInstance();
         RequestContext requestContext =RequestContext.getCurrentInstance();
-        context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Anteproyecto Avalado con Exito", ""));
+        context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Anteproyecto avalado con éxito."));
         requestContext.update("formularioavalar");
         
     }

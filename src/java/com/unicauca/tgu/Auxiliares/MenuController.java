@@ -239,7 +239,7 @@ public class MenuController implements Serializable {
      * setOutcomePefil: define hacia donde redireccionar cuando se cambia el
      * perfil actual.
      */
-    private String setOutcomePefil(String rol) {
+    public String setOutcomePefil(String rol) {
         switch (rol) {
             case "Director":
                 return "vista-director";
@@ -298,5 +298,28 @@ public class MenuController implements Serializable {
     public void setOutPerfiles(boolean outPerfiles) {
         this.outPerfiles = outPerfiles;
     }
-
+    /**
+     * outcomeCarpetaPefil: redirecciona hacia la carperta de cada perfil
+     * @return 
+     */
+    public String outcomeCarpetaPefil() {
+        String rol = VistaActual.rol;
+        switch (rol) {
+            case "Director":
+                return "director";
+            case "Estudiante":
+                return "estudiante";
+            case "Jefe de Departamento":
+                return "jefe-de-departamento";
+            case "Coordinador de Programa":
+                return "coordinador";
+            case "Evaluador":
+                return "evaluador";
+            case "Secretaria General":
+                return "secretaria";
+            case "Jurado":
+                return "jurado";
+        }
+        return null;
+    }
 }

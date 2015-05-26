@@ -13,10 +13,10 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Estudiante" outcome="./../perfiles/vista-estudiante.xhtml" />                                        
+                        <p:menuitem value="Inicio" outcome="./../perfiles/vista-estudiante.xhtml" />                                        
                         <p:menuitem value="Estudiante" outcome="./../perfiles/vista-estudiante.xhtml" />
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="./../perfiles/vista-estudiante.xhtml" />
-                        <p:menuitem value="2. Realización del Anteproyecto" outcome="2-realizacion-anteproyecto" />
+                        <p:menuitem value="2. Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" />
                         <p:menuitem value="Diligenciar Anteproyecto" />
                     </p:breadCrumb>              
                 </h:form>
@@ -38,7 +38,7 @@
                     <p:spacer height="30"/>
                     <h:form enctype="multipart/form-data">   
                         <p:panel style="width: 100%; font-size: 14px;" header="Campos con * son obligatorios">
-                            <p:growl id="growl" sticky="true" showDetail="true" />
+                            <p:growl id="growl" showDetail="true" life="5000"/>
                             <p:messages/>
                             
                             <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="15" >
@@ -52,10 +52,10 @@
                                 <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado: *" />
                                 <p:outputLabel value="#{anteproyecto.directortg}" />
                                 <p:outputLabel styleClass="subtitulosFormato" value="Objetivos: *" />
-                                <p:inputTextarea cols="50" rows="3" value="#{anteproyecto.objetivos}" required="true" validatorMessage="Debe ingresar los objetivos." style="display: block; margin: 0 auto;" />
+                                <p:inputTextarea cols="40" rows="3" value="#{anteproyecto.objetivos}" required="true" validatorMessage="Debe ingresar los objetivos." style="display: block; margin: 0 auto;" />
                                 <p:outputLabel styleClass="subtitulosFormato" value="Adjuntar anteproyecto: *" />
                                 <p:column>
-                                    <p:fileUpload required="true" fileUploadListener="#{anteproyecto.handleFileUpload}" auto="true"
+                                    <p:fileUpload required="true" fileUploadListener="#{anteproyecto.handleFileUpload}" auto="true" style="width: 135px;" 
                                                   allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf)$/" sizeLimit="31457280" label="Examinar..." update="nombarch"
                                                   invalidFileMessage="Tipo de Archivo no Valido, Agregue un archivo word o pdf" 
                                                   invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" validatorMessage="Debe adjuntar su documento de anteproyecto." />
@@ -64,8 +64,8 @@
                             </h:panelGrid>
                             <p:spacer height="10"/>
                             <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="13">
-                                <p:commandButton ajax="false" update="growl" value="Guardar" actionListener="#{anteproyecto.guardar()}" icon="ui-icon-disk" style="font-size: 13px; width: 120px;" />
-                                <p:button value="Cancelar" icon="ui-icon-cancel" outcome="2-realizacion-anteproyecto" style="font-size: 13px; width: 120px;"/>
+                                <p:commandButton update="growl" value="Guardar" action="#{anteproyecto.guardar()}" icon="ui-icon-disk" style="font-size: 13px; width: 120px;" />
+                                <p:button value="Cancelar" icon="ui-icon-cancel" outcome="fase-realizacion-anteproyecto" style="font-size: 13px; width: 120px;"/>
                             </h:panelGrid>
                         </p:panel>
                     </h:form>

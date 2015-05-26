@@ -15,16 +15,16 @@
                         <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
                         <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
                         <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-director.xhtml" />                        
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="Diligenciar Formato A" outcome="diligenciar-formato-A" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-presentacion-de-la-idea" />
+                        <p:menuitem value="1. Presentación de la Idea" outcome="fase-presentacion-de-la-idea" />
+                        <p:menuitem value="Diligenciar Formato A" />
                     </p:breadCrumb>              
                 </h:form>
             </ui:define>
 
             <ui:define name="title">
             </ui:define>
-
+            
             <ui:define name="body">
                 #{menuController.setOutPerfiles(true)}
                 <p:panel styleClass="paneltrabajo" >
@@ -34,7 +34,7 @@
                     </div>
                     <p:spacer height="30"/>
                     <h:form>
-                        <p:growl id="growl" sticky="true" showDetail="true"/>
+                        <p:growl id="growl" showDetail="true" life="5000"/>
                         <p:wizard backLabel="Anterior" nextLabel="Siguiente" style="font-size: 14px;">
                             <p:tab id="paso1" title="Paso 1">
                                 <p:panel header="Campos con * son obligatorios">
@@ -43,7 +43,7 @@
 
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
                                         <p:outputLabel styleClass="subtitulosFormato" value="Titulo del trabajo de grado: *"> </p:outputLabel>
-                                        <p:inputText style="font-weight: bold;" value="#{formatoA.nombretg}" required="true" requiredMessage="Por favor ingrese el titulo del Trabajo de Grado." size="26"> </p:inputText>
+                                        <p:inputText style="font-weight: bold;" value="#{formatoA.nombretg}" required="true" requiredMessage="Por favor ingrese el titulo del Trabajo de Grado." size="45"> </p:inputText>
 
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
 
@@ -60,7 +60,7 @@
                                                         maxResults="8"
                                                         required="true"
                                                         requiredMessage="Por favor ingrese el nombre del estudiante 1."
-                                                        size="24"
+                                                        size="30"
                                                         >
                                             <p:ajax event="itemSelect" listener="#{formatoA.handlerSelectest1}"></p:ajax>
                                             <p:ajax event="itemUnselect" listener="#{formatoA.handleUnSelectest1}"></p:ajax>
@@ -82,7 +82,7 @@
                                                         cache="true"
                                                         queryDelay="750"
                                                         maxResults="8"
-                                                        size="24"
+                                                        size="30"
                                                         >
                                             <p:ajax event="itemSelect" listener="#{formatoA.handlerSelectest2}"></p:ajax>
                                             <p:ajax event="itemUnselect" listener="#{formatoA.handleUnSelectest2}"></p:ajax>
@@ -208,7 +208,7 @@
                                 </p:panel>
                             </p:tab>
                         </p:wizard>
-                        <p:button value="Cancelar" outcome="fases-trabajo-de-grado" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
+                        <p:button value="Cancelar" outcome="fase-presentacion-de-la-idea" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
                     </h:form>         
                 </p:panel>                          
             </ui:define>

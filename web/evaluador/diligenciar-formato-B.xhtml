@@ -14,15 +14,14 @@
                     <p:breadCrumb styleClass="migaDePan">
                         <p:menuitem value="Evaluador" outcome="./../perfiles/vista-evaluador.xhtml" />
                         <p:menuitem value="Evaluador" outcome="./../perfiles/vista-evaluador.xhtml" />                        
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="Diligenciar Formato B" outcome="diligenciar-formato-B" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-evaluacion-anteproyecto" />
+                        <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fase-evaluacion-anteproyecto" />
+                        <p:menuitem value="Diligenciar Formato B" />
                     </p:breadCrumb>              
                 </h:form>
             </ui:define>
 
             <ui:define name="title">
-                Evaluación del Anteproyecto | Diligenciar Formato B
             </ui:define>
 
             <ui:define name="body">
@@ -31,11 +30,11 @@
                 
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
-                        <h:outputText value="FORMATO B: EVALUACIÓN DEL ANTEPROYECTO"/> <br/>
+                        <h:outputText value="Formato B: Evaluación del Anteproyecto"/> <br/>
                     </div>
                     <p:spacer height="30"/>
                     <h:form>
-                        <p:growl id="growl" sticky="true" showDetail="true"/>
+                        <p:growl id="growl" showDetail="true" life="5000"/>
                         <p:wizard backLabel="Anterior" nextLabel="Siguiente" style="font-size: 14px;">
                             <p:tab id="paso1" title="Paso 1">
                                 <p:panel header="Campos con * son obligatorios">
@@ -277,13 +276,10 @@
                                 </p:panel>
                             </p:tab>
                         </p:wizard>
-                        <p:button value="Cancelar" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
-                        <!--<p:button value="Cancelar" outcome="fases-trabajo-de-grado" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />-->
+                        <p:button value="Cancelar" outcome="fase-evaluacion-anteproyecto" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
                     </h:form>
                 </p:panel>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

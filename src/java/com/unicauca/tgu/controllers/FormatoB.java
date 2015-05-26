@@ -7,6 +7,7 @@ package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.unicauca.tgu.Auxiliares.Servicio_Email;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
@@ -89,7 +90,7 @@ public class FormatoB {
     public void init() {
         buscarFormatoA();
     }
-    
+
     public void buscarFormatoA() {
         List<Productodetrabajo> lstProdTrab = ejbFacadeProdTrab.findAll();
 
@@ -144,7 +145,7 @@ public class FormatoB {
             elementoConsideradoG = 0;
             elementoConsideradoH = 0;
             fecha = new Date();
-        }        
+        }
     }
 
     public int getElementoConsideradoA() {
@@ -288,7 +289,7 @@ public class FormatoB {
     }
 
     public String crearContenidoFormatoB() {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap();
 
         map.put("titulo", titulo);
         map.put("estudiante1Id", usuEst1.getPersonacedula().toString());
@@ -341,31 +342,29 @@ public class FormatoB {
             prod.setTrabajoid(trab);
             ejbFacadeProdTrab.create(prod);
 
-//             Servicio_Email se = new Servicio_Email();
-//             se.setSubject("Formato B del Trabajo de Grado: '"+titulo+"' ha sido diligenciada.");
-//
-//             if(est1!=null)
-//             {  
-//             se.setTo(est1.getPersonacorreo());
-//             se.enviarDiligenciadoRevisionIdea(nombretg);
-//             }
-//             if(est2!=null)
-//             {
-//             se.setTo(est2.getPersonacorreo());
-//             se.enviarDiligenciadoRevisionIdea(nombretg);
-//             }
-//             if(TrabajodeGradoActual.director!=null)
-//             {
-//             se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
-//             se.enviarDiligenciadoRevisionIdea(nombretg);
-//             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "!Formato B diligenciado con Exito!", "Se le ha enviado un correo notificando dicha operación."));
-            return "fases-trabajo-de-grado";
+            Servicio_Email se = new Servicio_Email();
+            se.setSubject("Formato B del Trabajo de Grado: '" + titulo + "' ha sido diligenciado.");
+
+            if (usuEst1 != null) {
+                se.setTo(usuEst1.getPersonacorreo());
+                se.enviarResultadoFormatoB(titulo, getAprobado(), evaluador);
+            }
+            if (usuEst2 != null) {
+                se.setTo(usuEst2.getPersonacorreo());
+                se.enviarResultadoFormatoB(titulo, getAprobado(), evaluador);
+            }
+            if (usuDir != null) {
+                se.setTo(usuDir.getPersonacorreo());
+                se.enviarResultadoFormatoB(titulo, getAprobado(), evaluador);
+            }
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato B diligenciado con éxito."));
+            return "fase-evaluacion-anteproyecto";
+
         } catch (Exception e) {
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Â¡Error!", "Lo sentimos, no se pudo guardar el formato B."));
-            //JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return "";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            return "diligenciar-formato-B";
         }
     }
 
@@ -386,31 +385,31 @@ public class FormatoB {
 //                ejbFacadeTrabajoGradFase.edit(trabfase);
 //            }
 
-            /*
-             Servicio_Email se = new Servicio_Email();
-             se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido editado.");
 
-             if(est1!=null)
-             {  
-             se.setTo(est1.getPersonacorreo());
-             se.enviarEditadoRevisionIdea(nombretg);
-             }
-             if(est2!=null)
-             {
-             se.setTo(est2.getPersonacorreo());
-             se.enviarEditadoRevisionIdea(nombretg);
-             }
-             if(TrabajodeGradoActual.director!=null)
-             {
-             se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
-             se.enviarEditadoRevisionIdea(nombretg);
-             }
-             */
-//            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
-            return "fases-trabajo-de-grado";
+//            Servicio_Email se = new Servicio_Email();
+//            se.setSubject("Formato B del Trabajo de Grado: '" + titulo + "' ha sido editado.");
+//
+//            if (usuEst1 != null) {
+//                se.setTo(usuEst1.getPersonacorreo());
+//                se.enviarResultadoFormatoB(titulo, getAprobado(), evaluador);
+//            }
+//            if (usuEst2 != null) {
+//                se.setTo(usuEst2.getPersonacorreo());
+//                se.enviarResultadoFormatoB(titulo, getAprobado(), evaluador);
+//            }
+//            if (usuDir != null) {
+//                se.setTo(usuDir.getPersonacorreo());
+//                se.enviarResultadoFormatoB(titulo, getAprobado(), evaluador);
+//            }
+            
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato B editado con éxito."));
+            return "fase-evaluacion-anteproyecto";
+
         } catch (Exception e) {
-//            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            return "editar-formato-B";
         }
     }
 

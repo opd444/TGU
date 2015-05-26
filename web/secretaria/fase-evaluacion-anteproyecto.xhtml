@@ -12,27 +12,29 @@
         <ui:composition template="./../plantillas/plantilla.xhtml">
             
             <ui:define name="menuprincipal">
-                <p:breadCrumb styleClass="migaDePan">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
                     <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
                     <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
                     <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-secretaria-general.xhtml" />                        
                     <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-evaluacion-anteproyecto" />
-                    <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fase-evaluacion-anteproyecto" />
-                </p:breadCrumb> 
+                    <p:menuitem value="3. Evaluación del Anteproyecto" />
+                </p:breadCrumb>
+                </h:form>
             </ui:define>
 
             <ui:define name="title">
             </ui:define>
             
             <ui:define name="body">
-                #{trabajodegradoController.incializar()}
                 #{menuController.setOutPerfiles(true)}
                 
                 <h:form id="fases">
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
                             #{trabajodegradoController.trabajo.trabajonombre}
-                        </div>                                         
+                        </div>
+                        <p:growl id="growl" showDetail="true" life="5000"/>
                         <p:spacer height="25"/>
                         <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado">
                             <h:panelGrid columns="6" cellpadding="1" style="margin: 0 auto;">

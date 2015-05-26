@@ -316,13 +316,12 @@ public class FormatoD {
             
             //TODO: Enviar al correo
             
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡Formato D diligenciado con éxito!", "Se le ha enviado un correo notificando dicha operación."));
-            return "fases-trabajo-de-grado";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato D diligenciado con éxito."));
+            return "fase-evaluacion-anteproyecto";
         } catch (Exception e) {
-
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "¡Error!", "Lo sentimos, no se pudo guardar el formato D."));
-            //JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return "";
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            return "diligenciar-formato-D";
         }
     }
     

@@ -13,12 +13,12 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />                                        
+                        <p:menuitem value="Inicio" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />                                        
                         <p:menuitem value="Jefe de Departamento" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />
                         <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />                        
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="1. Presentación de la Idea" outcome="fases-trabajo-de-grado" />
-                        <p:menuitem value="Editar Revisión de la idea" outcome="editar-formato-revision-idea" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-presentacion-de-la-idea" />
+                        <p:menuitem value="1. Presentación de la Idea" outcome="fase-presentacion-de-la-idea" />
+                        <p:menuitem value="Editar Revisión de la idea" />
                     </p:breadCrumb>              
                 </h:form>
             </ui:define>
@@ -36,7 +36,7 @@
 
                     <h:form enctype="multipart/form-data">
                         <p:panel header="Campos con * son obligatorios" style="width: 100%; font-size: 14px;" >
-                            <p:growl id="growl" sticky="true" showDetail="true" />
+                            <p:growl id="growl" showDetail="true" life="5000"/>
                             <p:messages/>
 
                             <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="15" >
@@ -69,8 +69,8 @@
                             </h:panelGrid>
                             
                             <h:panelGrid columns="2" style="margin: 0 auto;" cellpadding="8">
-                                <p:commandButton ajax="false" update="growl" value="Editar" action="#{revisionIdeaController.editar()}" icon="ui-icon-pencil"/>
-                                <p:button value="Cancelar"  icon="ui-icon-cancel" outcome="fases-trabajo-de-grado"/>
+                                <p:commandButton update="growl" value="Editar" action="#{revisionIdeaController.editar()}" icon="ui-icon-pencil"/>
+                                <p:button value="Cancelar"  icon="ui-icon-cancel" outcome="fase-presentacion-de-la-idea"/>
                             </h:panelGrid>
                         </p:panel>
                     </h:form>
