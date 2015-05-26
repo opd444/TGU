@@ -24,6 +24,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 @ManagedBean
@@ -38,7 +39,9 @@ public class ActaSecretariaController {
     private String nombreTrabajodeGrado;
     private String nombreDirector;
     private Date fechaact;
-    private int numact;  
+    private String resultado;
+    private int numact; 
+    private FormatoTablaActa acta;
 
     /**
      * Creates a new instance of ActaSecretariaController
@@ -86,6 +89,24 @@ public class ActaSecretariaController {
         this.numact = numact;
     }
 
+    public String getResultado() {
+        return resultado;
+    }
+
+    public void setResultado(String resultado) {
+        this.resultado = resultado;
+    }
+
+    public FormatoTablaActa getActa() {
+        return acta;
+    }
+
+    public void setActa(FormatoTablaActa acta) {
+        this.acta = acta;
+    }
+    
+    
+
     public String obtenerDatos() {
 
         Map<String, String> map = new HashMap<>();
@@ -97,6 +118,8 @@ public class ActaSecretariaController {
         map.put("nombredirector", nombreDirector);
 
         map.put("fecha", fechaact.toString());
+        
+        map.put("resultado", resultado);
 
         Gson gson = new Gson();
         String contenido = gson.toJson(map, Map.class);
@@ -115,6 +138,8 @@ public class ActaSecretariaController {
             prod.setTrabajoid(trab);
             ejbFacadeProdTrab.create(prod);
             
+            if(resultado.equals("1"))
+           { 
             List<TrabajogradoFase> lst = ejbFacadeTraFase1.findAll();
         
         for(int i = 0; i < lst.size(); i++) {
@@ -131,6 +156,7 @@ public class ActaSecretariaController {
                 }
             }
         }
+           }
 
             
 //            Servicio_Email se = new Servicio_Email();
@@ -161,6 +187,22 @@ public class ActaSecretariaController {
             return "diligenciar-acta-resolucion";
         }
     }
+    
+    public void eliminarActa()
+        {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+
+            ejbFacadeProdTrab.Eliminar_prod(acta.getIdprod());
+
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Acta Eliminada"));
+
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "Ocurrio algun error al intentar  efectuar la operacion"));
+        }
+
+    }    
 
     public List<FormatoTablaActa> getActas() {
         

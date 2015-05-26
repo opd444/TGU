@@ -29,13 +29,21 @@
             <ui:define name="body">
                 #{menuController.setOutPerfiles(true)}
 
+              
+                
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
                         <h:outputText value="Asignación de Acta"/> <br/>
                     </div>                 
                     <p:spacer height="30"/>                 
 
-                    <h:form>
+                    <h:form id="formp">
+                        
+                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                    <p:commandButton value="Si" type="button"  styleClass="ui-confirmdialog-yes" style="margin-left: 20px;" icon="ui-icon-check"  />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" style="margin-left: 20px;" icon="ui-icon-close" />
+                      </p:confirmDialog>
+                        
                         <p:panel header="Campos con * son obligatorios" style="width: 100%; font-size: 14px;" >
                             <p:growl id="growl" showDetail="true" life="5000"/>
                             
@@ -55,6 +63,11 @@
                                 <p:outputLabel styleClass="subtitulosFormato" value="Fecha: *" />
                                 <p:calendar navigator="true" value="#{actaSecretariaController.fechaact}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." />                              
 
+                                <p:outputLabel styleClass="subtitulosFormato" value="Resultado: *"/>
+                                <p:selectOneRadio id="aprobado" value="#{actaSecretariaController.resultado}">
+                                    <f:selectItem itemLabel="Aprobado" itemValue="1" />
+                                    <f:selectItem itemLabel="No aprobado" itemValue="0" />
+                                </p:selectOneRadio>
                             </h:panelGrid>
 
                             <h:panelGrid columns="2" style="margin: 0 auto;" cellpadding="8">
@@ -74,7 +87,13 @@
                            </p:column>
                            <p:column style="text-align: center" headerText="Número de Acta"> <!--filterBy="{car.trabajoGrado}"-->
                                <p:outputLabel value="#{car.numacta}" />            
-                           </p:column>     
+                           </p:column> 
+                           <p:column style="text-align: center" headerText="Acciones"> <!--filterBy="{car.trabajoGrado}"-->
+                               <p:commandLink  id="eliminar" action="#{actaSecretariaController.eliminarActa()}" value="Eliminar" style=" margin-left: 10px;color: #045491;" update=":formp:growl :formp:tablaactas">                                    
+                                   <f:setPropertyActionListener value="#{car}" target="#{actaSecretariaController.acta}" />                                  
+                                 <p:confirm header="Confirmation" message="Esta seguro que desea eliminar el acta de forma permanente?" icon="ui-icon-alert"/>       
+                         </p:commandLink>           
+                           </p:column> 
                         </p:dataTable>
                     </h:form>
                 </p:panel>       

@@ -54,4 +54,16 @@ public class ProductodetrabajoFacade extends AbstractFacade<Productodetrabajo> {
         {
         } 
     }
+     
+     public int Eliminar_prod(int prodid){
+        try
+        {
+            String queryString = "DELETE FROM PRODUCTODETRABAJO "+
+            " WHERE PRODUCTOID = "+prodid;
+            Query query = getEntityManager().createNativeQuery(queryString);  
+            return query.executeUpdate();
+        }finally 
+        {
+        } 
+    }
 }
