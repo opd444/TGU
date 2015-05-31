@@ -177,4 +177,10 @@ public class Servicio_Email {
              sendEmail();
     }
     
+    public void enviarDiligenciadoFormatoG(String nombretg) {
+        messagebody = String.format(bodyformat,  "Formato G: Remisión del Trabajo Final al Concejo de Facultad por el Jefe de Departamento del "
+                     + "Trabajo de Grado: '<strong>"+nombretg+"</strong>' ha sido diligenciada con éxito. "
+                + "'<strong>Pendiente de asignación de evaluadores</strong>'");
+             sendEmail();
+    }
 }

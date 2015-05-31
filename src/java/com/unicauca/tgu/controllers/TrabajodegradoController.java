@@ -141,21 +141,22 @@ public class TrabajodegradoController implements Serializable {
             return true;
         }
     }
-    
+
     public boolean getBtnVerAsignacionEval() {
         List<Productodetrabajo> lstProd1 = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 4);
-        if(lstProd1.size() > 0)
+        if (lstProd1.size() > 0) {
             return true;
-        else {
+        } else {
             List<Productodetrabajo> lstProd2 = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 3);
-            if (lstProd2.size() == 2)
+            if (lstProd2.size() == 2) {
                 return true;
-            else {
+            } else {
                 List<Productodetrabajo> lstProd3 = obtenerProductodeTrabajoporFormato(TrabajodeGradoActual.id, 2);
-                if (lstProd3.size() > 0)
+                if (lstProd3.size() > 0) {
                     return false;
-                else
+                } else {
                     return true;
+                }
             }
         }
     }
@@ -305,7 +306,6 @@ public class TrabajodegradoController implements Serializable {
     }
 
     // Formato: Carta Remision de Anteproyecto
-
     public boolean getBtnDiligenciarRemisionAnteproyecto() {
         if (getBtnVerRemisionAnteproyecto()) {
             List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 3);
@@ -353,4 +353,32 @@ public class TrabajodegradoController implements Serializable {
         }
     }
 
+    /**
+     * Formato G TODO: falta revisar las precondiciones para diligencar el
+     * Formato G si estas existen.
+     */
+    public boolean getBtnDiligenciarFormatoG() {
+        List<Productodetrabajo> lstProdTrab = ejbFacadePro.findAll();
+
+        for (int i = 0; i < lstProdTrab.size(); i++) {
+            if (lstProdTrab.get(i).getFormatoid().getFormatoid().equals(BigDecimal.valueOf(7))
+                    && lstProdTrab.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean getBtnEditarFormatoG() {
+        return !getBtnDiligenciarFormatoG();
+    }
+
+    public boolean getBtnVerFormatoG() {
+        return !getBtnDiligenciarFormatoG();
+    }
+
+    public boolean getBtnDescargarFormatoG() {
+        return !getBtnDiligenciarFormatoG();
+    }
 }

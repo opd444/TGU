@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Inicio" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />                                        
+                        <p:menuitem value="Jefe de Departamento" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />      
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-ejecucion-del-trabajo-de-grado" />
+                        <p:menuitem value="4. Ejecución del Trabajo de Grado" outcome="fase-ejecucion-del-trabajo-de-grado" />
+                        <p:menuitem value="Editar Formato G" />
+                    </p:breadCrumb>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">                
+            </ui:define>
+
+            <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}                                                
+                #{formatoG.prepararEdicion()}                
+                <p:panel styleClass="paneltrabajo" >
+                    <div class="tituloContenido">                        
+                        <h:outputText value="FORMATO G: REMISIÓN DEL TRABAJO FINAL AL CONCEJO DE FACULTAD POR EL JEFE DE DEPARTAMENTO"/> <br/>
+                    </div>
+                    <p:spacer height="30"/>
+                    <h:form>
+                        <p:growl id="growl" showDetail="true" life="5000"/>
+                        <p:wizard backLabel="Anterior" nextLabel="Siguiente" style="font-size: 14px;">
+                            <p:tab id="paso1" title="Paso 1">
+                                <p:panel header="Campos con * son obligatorios">
+                                    <p:messages />
+                                    <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="5">
+                                        
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Departamento: *"> </p:outputLabel>
+                                        <p:inputText style="font-weight: bold;" value="#{formatoG.departamento}" required="true" requiredMessage="Por favor ingrese el Departamento." size="45"> </p:inputText>
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />                                        
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Titulo:"> </p:outputLabel>
+                                        <p:outputLabel styleClass="subtitulosFormato" style="font-weight: bold;" value="#{formatoG.titulo}" />
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />                                        
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Estudiante 1:"> </p:outputLabel>
+                                        <p:outputLabel styleClass="subtitulosFormato" style="font-weight: bold;" value="#{formatoG.est1nomsapes}" />
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />                                        
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Estudiante 2:"> </p:outputLabel>
+                                        <p:outputLabel styleClass="subtitulosFormato" style="font-weight: bold;" value="#{formatoG.est2nomsapes}" />
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />                                        
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Director:"> </p:outputLabel>
+                                        <p:outputLabel styleClass="subtitulosFormato" style="font-weight: bold;" value="#{formatoG.directornomsapes}" />
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Jurado sugerido 1: *"> </p:outputLabel>
+                                        <p:autoComplete value="#{formatoG.jurado1}" label="Jurado 1"
+                                                        completeMethod="#{formatoG.complete}"
+                                                        var="est"
+                                                        itemValue="#{est}" dropdown="true"
+                                                        forceSelection="true"
+                                                        itemLabel="#{est.personanombres} #{est.personaapellidos}"
+                                                        converter="usuarioConverter"
+                                                        cache="true"
+                                                        queryDelay="750"
+                                                        maxResults="8"
+                                                        required="true"
+                                                        requiredMessage="Por favor ingrese el nombre del jurado sugerido 1."
+                                                        size="30"
+                                                        >
+                                            <p:ajax event="itemSelect" listener="#{formatoG.handlerSelectJurado1}"></p:ajax>
+                                            <p:ajax event="itemUnselect" listener="#{formatoG.handleUnSelectJurado1}"></p:ajax>
+                                            <p:column>
+                                                #{est.personanombres} #{est.personaapellidos}
+                                            </p:column>
+                                        </p:autoComplete> 
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Jurado sugerido 2: *"> </p:outputLabel>
+                                        <p:autoComplete value="#{formatoG.jurado2}" label="Jurado 2"
+                                                        completeMethod="#{formatoG.complete2}"
+                                                        var="est"
+                                                        itemValue="#{est}" dropdown="true"
+                                                        forceSelection="true"
+                                                        itemLabel="#{est.personanombres} #{est.personaapellidos}"
+                                                        converter="usuarioConverter"
+                                                        cache="true"
+                                                        queryDelay="750"
+                                                        maxResults="8"
+                                                        required="true"
+                                                        requiredMessage="Por favor ingrese el nombre del jurado sugerido 2."
+                                                        size="30"
+                                                        >
+                                            <p:ajax event="itemSelect" listener="#{formatoG.handlerSelectJurado2}"></p:ajax>
+                                            <p:ajax event="itemUnselect" listener="#{formatoG.handleUnSelectJurado2}"></p:ajax>
+                                            <p:column>
+                                                #{est.personanombres} #{est.personaapellidos}
+                                            </p:column>
+                                        </p:autoComplete> 
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />                                                                                
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+                            <p:tab id="paso2" title="Paso 2">
+                                <p:panel header="Campos con * son obligatorios">
+                                    <p:messages />
+                                    <h:panelGrid cellpadding="5">
+                                        <p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Observaciones: *"> </p:outputLabel>
+                                        <p:inputTextarea value="#{formatoG.observaciones}" required="true" label="Observaciones" styleClass="txtareaform" requiredMessage="Debe ingresar las observaciones."/>
+                                        
+                                        <p:separator style="border-color: white !important;" />
+                                        <p:column>
+                                            <p:outputLabel styleClass="subtitulosFormato" value="Fecha: *"> </p:outputLabel>
+                                            <p:calendar navigator="true" value="#{formatoG.fecha}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." style="margin-left: 10px; margin-right: 10px"/>
+                                        </p:column>
+                                        <p:separator style="border-color: white !important;" />
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>                            
+                            <p:tab id="paso3" title="Paso 3">
+                                <p:panel header="Confirmación de Datos">
+                                    <h:panelGrid cellpadding="7">
+                                        <p:fieldset legend="Departamento:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoG.departamento}"> </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Titulo:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoG.titulo}"> </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Estudiante 1:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoG.est1nomsapes}" > </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Estudiante 2:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoG.est2nomsapes}"> </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Director:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoG.directornomsapes}"> </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Jurado sugerido 1:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoG.jurado1nomsapes}"> </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Jurado sugerido 2:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoG.jurado2nomsapes}"> </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Observaciones:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoG.observaciones}"> </p:outputLabel>
+                                        </p:fieldset>                                       
+
+                                        <p:fieldset legend="Fecha" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoG.fecha}" >
+                                                <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                            </p:outputLabel>
+                                        </p:fieldset>
+                                    </h:panelGrid>
+                                    <p:commandButton style="display: block; margin: 0 auto;" value="Editar" update="growl" action="#{formatoG.btnEditar()}" icon="ui-icon-pencil"/>
+                                </p:panel>
+                            </p:tab>                            
+                        </p:wizard>
+                        <p:button value="Cancelar" outcome="fase-ejecucion-del-trabajo-de-grado" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
