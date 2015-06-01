@@ -312,18 +312,18 @@ public class FormatoG {
             prod.setTrabajoid(trab);
             ejbFacadeProdTrab.create(prod);
 
-            Servicio_Email se = new Servicio_Email();
-            se.setSubject("Formato G del Trabajo de Grado: '" + titulo + "' ha sido diligenciado.");
-
-            Usuario secretariaGeneral = buscarSecretariaGeneral();
-
-            if (secretariaGeneral != null) {
-                se.setTo(secretariaGeneral.getPersonacorreo());
-                se.enviarDiligenciadoFormatoG(titulo);
-            }
+//            Servicio_Email se = new Servicio_Email();
+//            se.setSubject("Formato G del Trabajo de Grado: '" + titulo + "' ha sido diligenciado.");
+//
+//            Usuario secretariaGeneral = buscarSecretariaGeneral();
+//
+//            if (secretariaGeneral != null) {
+//                se.setTo(secretariaGeneral.getPersonacorreo());
+//                se.enviarDiligenciadoFormatoG(titulo);
+//            }
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato G diligenciado con éxito."));
-            return "fase-ejecucion-del-trabajo-de-grado";
+            return "fase-4";
 
         } catch (Exception e) {
 
@@ -345,32 +345,32 @@ public class FormatoG {
     }
 
     public void btnAvalarEst1(TrabajodegradoController mgb) {
-        if (existeEst1) {
+        if (isExisteEst1()) {
             est1Avalado = true;
 
-            prepararEdicion();
-            String contenido = crearContenidoFormatoG();
-            prodtrab.setProductocontenido(contenido);
-            ejbFacadeProdTrab.edit(prodtrab);
-
+//            prepararEdicion();
+//            String contenido = crearContenidoFormatoG();
+//            prodtrab.setProductocontenido(contenido);
+//            ejbFacadeProdTrab.edit(prodtrab);
+//
             if (!existeEst2) {
-                actulualizarAlEstadoEvaluacion(mgb);
-                enviarCorreo();
+                actualizarAlEstadoEvaluacion(mgb);
+//                enviarCorreo();
             }
         }
     }
 
     public void btnAvalarEst2(TrabajodegradoController mgb) {
-        if (existeEst2) {
+        if (isExisteEst2()) {
             est2Avalado = true;
 
-            prepararEdicion();
-            String contenido = crearContenidoFormatoG();
-            prodtrab.setProductocontenido(contenido);
-            ejbFacadeProdTrab.edit(prodtrab);
+//            prepararEdicion();
+//            String contenido = crearContenidoFormatoG();
+//            prodtrab.setProductocontenido(contenido);
+//            ejbFacadeProdTrab.edit(prodtrab);
 
-            actulualizarAlEstadoEvaluacion(mgb);
-            enviarCorreo();
+            actualizarAlEstadoEvaluacion(mgb);
+//            enviarCorreo();
         }
     }
 
@@ -421,7 +421,7 @@ public class FormatoG {
 //                se.enviarResultadoFormatoB(titulo, getAprobado(), evaluador);
 //            }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato G editado con éxito."));
-            return "fase-ejecucion-del-trabajo-de-grado";
+            return "fase-4";
 
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
@@ -597,11 +597,29 @@ public class FormatoG {
     }
 
     public boolean isExisteEst1() {
-        return existeEst1;
+        if(existeEst1)
+        {
+            List<Productodetrabajo> lstProductos = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 6);
+            if (lstProductos.size() > 0)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
     }
 
     public boolean isExisteEst2() {
-        return existeEst2;
+        if(existeEst2)
+        {
+            List<Productodetrabajo> lstProductos = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 6);
+            if (lstProductos.size() > 0)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
     }
 
     public boolean isEst1Avalado() {
@@ -613,7 +631,7 @@ public class FormatoG {
         return est2Avalado;
     }
 
-    public void actulualizarAlEstadoEvaluacion(TrabajodegradoController mgb) {
+    public void actualizarAlEstadoEvaluacion(TrabajodegradoController mgb) {
         List<TrabajogradoFase> lst = ejbFacadeTraFase.findAll();
 
         for (int i = 0; i < lst.size(); i++) {

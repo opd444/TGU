@@ -11,6 +11,17 @@
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
+                <script type="text/javascript">
+                    function mostrarestado() {
+                        PF('statusDialog').show();
+                    }
+                    function ocultarestado() {
+                        PF('statusDialog').hide();
+                    }
+                </script>
+                <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
+                    <p:graphicImage library="img" name="ajax-loader.gif" />
+                </p:dialog>
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
                         <p:menuitem value="inicio" />
@@ -18,7 +29,7 @@
                         <p:menuitem value="Trabajos de Grado" />
                         <p:menuitem value="Fases del Trabajo de Grado" />
                         <p:menuitem value="4. Ejecucion del Trabajo de Grado" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-4" />
-                        <p:menuitem value="Ver Formato G" />
+                        <p:menuitem value="Ver Formato F" />
                     </p:breadCrumb>
                 </h:form>
             </ui:define>
@@ -31,7 +42,7 @@
                 #{formatoG.prepararEdicion()}     
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
-                        <h:outputText value="Formato G: Remisión del Trabajo Final a la Secretaria de la Facultad por el Jefe de Departamento"/> <br/>
+                        <h:outputText value="Formato F: Documento Final"/> <br/>
                     </div>
                     <p:spacer height="30"/>
 
@@ -60,11 +71,6 @@
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2">
-                                    <p:outputLabel value="Departamento:" styleClass="subtitulosFormato" />
-                                    <p:outputLabel value="#{formatoG.departamento}" style="margin-left: 5px" />
-                                </h:panelGrid>
-                                <br />
-                                <h:panelGrid columns="2">
                                     <p:outputLabel value="Titulo:" styleClass="subtitulosFormato" />
                                     <p:outputLabel value="#{formatoG.titulo}" style="margin-left: 5px" />
                                 </h:panelGrid>
@@ -85,23 +91,57 @@
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2">
-                                    <p:outputLabel value="Jurado sugerido 1:" styleClass="subtitulosFormato" />
-                                    <p:outputLabel value="#{formatoG.jurado1nomsapes}" style="margin-left: 5px" />
+                                    <p:outputLabel value="Se cumplen las condiciones de entrega?:" styleClass="subtitulosFormato"  />
+                                    <p:outputLabel value="#{formatoF.cumpleEntrega}" />
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2">
-                                    <p:outputLabel value="Jurado sugerido 2:" styleClass="subtitulosFormato" />
-                                    <p:outputLabel value="#{formatoG.jurado2nomsapes}" style="margin-left: 5px" />
+                                    <p:outputLabel value="Documentos y anexos terminados?:" styleClass="subtitulosFormato"  />
+                                    <p:outputLabel value="#{formatoF.cumpleDocyAnexos}" />
                                 </h:panelGrid>
                                 <br />
+                                
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel styleClass="subtitulosFormato" value="Monografía:" />
+                                    <p:commandLink id="btndesc1" style="margin-top: 20px; color: #045491;" value="#{formatoF.nombarchtrab}" rendered="#{formatoF.trabdown != null}"
+                                                           ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
+                                                           action="#{formatoF.preparardescarga(3)}">
+                                        <p:fileDownload value="#{formatoF.trabdown}" />
+                                        <p:graphicImage value="descargar.png" library="img" />
+                                    </p:commandLink>
+                                </h:panelGrid>
+                                <br />
+                                
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel styleClass="subtitulosFormato" value="Anexos:" />
+                                    <p:commandLink id="btndesc2" style="margin-top: 20px; color: #045491;" value="#{formatoF.nombarchanex}" rendered="#{formatoF.anexosdown != null}"
+                                                           ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
+                                                           action="#{formatoF.preparardescarga(1)}">
+                                        <p:fileDownload value="#{formatoF.anexosdown}" />
+                                        <p:graphicImage value="descargar.png" library="img" />
+                                    </p:commandLink>
+                                </h:panelGrid>
+                                <br />
+                                    
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel styleClass="subtitulosFormato" value="Artículos:" />
+                                    <p:commandLink id="btndesc3" style="margin-top: 20px; color: #045491;" value="#{formatoF.nombarchart}" rendered="#{formatoF.articulosdown != null}"
+                                                           ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
+                                                           action="#{formatoF.preparardescarga(2)}">
+                                        <p:fileDownload value="#{formatoF.articulosdown}" />
+                                        <p:graphicImage value="descargar.png" library="img" />
+                                    </p:commandLink>
+                                </h:panelGrid>
+                                <br />
+                                
                                 <h:panelGrid columns="2">
                                     <p:outputLabel value="Observaciones:" styleClass="subtitulosFormato"  />
-                                    <p:outputLabel value="#{formatoG.observaciones}" />
+                                    <p:outputLabel value="#{formatoF.obs}" />
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2">
                                     <p:outputLabel value="Fecha:" styleClass="subtitulosFormato" />
-                                    <p:outputLabel value="#{formatoG.fecha}" style="margin-left: 5px" >
+                                    <p:outputLabel value="#{formatoF.fecha}" style="margin-left: 5px" >
                                         <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
                                     </p:outputLabel>
                                 </h:panelGrid>

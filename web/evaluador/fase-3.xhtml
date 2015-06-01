@@ -18,7 +18,7 @@
                         <p:menuitem value="Evaluador" outcome="./../perfiles/vista-evaluador.xhtml" />
                         <p:menuitem value="Evaluador" outcome="./../perfiles/vista-evaluador.xhtml" />
                         <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-evaluador.xhtml" />
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-evaluacion-anteproyecto" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-3" />
                         <p:menuitem value="3. Evaluación del Anteproyecto" />
                     </p:breadCrumb>              
                 </h:form>
@@ -48,14 +48,14 @@
                                 <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
 
 
-                                <p:button value="Presentación de la Idea" outcome="fase-presentacion-de-la-idea" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
-                                <p:button value="Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:button value="Presentación de la Idea" outcome="fase-1" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:button value="Realización del Anteproyecto" outcome="fase-2" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
                                 <p:commandButton type="button" value="Evaluación del Anteproyecto" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" disabled="#{trabajodegradoController.fases.primeraFase}" >                            
                                     <p:effect type="highlight" event="click" for="pnlEvaluacionAnteproyecto">
                                         <f:param name="mode" value="'show'" />
                                     </p:effect>
                                 </p:commandButton>
-                                <p:button value="Ejecución del Trabajo de Grado" outcome="fase-ejecucion-del-trabajo-de-grado" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Ejecución del Trabajo de Grado" outcome="fase-4" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Evaluación del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Finalizado" href="#" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                             </h:panelGrid>
@@ -64,8 +64,8 @@
                         <p:panel id="pnlEvaluacionAnteproyecto" header="3. Evaluación del Anteproyecto" style=" font-size: 14px;" widgetVar="pnlEvaluacionAnteproyecto">
                             <h:panelGrid columns="5" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Formato B:" style="font-weight: bold;" />
-                                <p:button value="Diligenciar" icon="ui-icon-document" href="diligenciar-formato-B.xhtml" disabled="#{trabajodegradoController.btnDiligenciarFormatoB}" style="width: 120px;" />          
-                                <p:button value="Editar" icon="ui-icon-pencil" href="editar-formato-B.xhtml" disabled="#{trabajodegradoController.btnEditarFormatoB}" style="width: 120px;" />
+                                <p:button value="Diligenciar" icon="ui-icon-document" href="diligenciar-formato-B.xhtml" disabled="#{trabajodegradoController.btnDiligenciarFormatoB}" style="width: 120px;" rendered="#{!trabajodegradoController.btnDiligenciarFormatoB}" />          
+                                <p:button value="Editar" icon="ui-icon-pencil" href="editar-formato-B.xhtml" disabled="#{trabajodegradoController.btnEditarFormatoB}" style="width: 120px;" rendered="#{!trabajodegradoController.btnEditarFormatoB}" />
                                 <p:commandButton value="Ver" icon="ui-icon-comment" actionListener="#{formatoB.btnVerFormatoB(serviciosSimcaController.nombreUsuario)}" disabled="#{trabajodegradoController.btnVerFormatoB}" style="width: 120px;" /> 
                                 <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnDescargarFormatoB}" style="width: 120px;" actionListener="#{pdfFormatoB.pdfFormatoBEvaluador(serviciosSimcaController.nombreUsuario)}" oncomplete="PF('dlgVerRutina').show();" />
                             </h:panelGrid>

@@ -8,11 +8,11 @@
     <ui:composition>
         <br /> <br />        
         
-        <p:galleria style="margin: 0 auto;" value="#{procedimientoView.images}" var="image" panelWidth="580" panelHeight="487" showCaption="true">
+        <p:galleria style="margin: 0 auto;" value="#{procedimientoView.images}" var="image" panelWidth="580" panelHeight="487" showCaption="true" transitionInterval="10000" >
             <p:graphicImage name="../resources/img/#{image.name}" title="#{image.title}"/>
         </p:galleria>
         <br /> <br />        
-        Fases en los trabajos de grado y funciones especificas
-        <br /> <br />        
+        <!--Fases en los trabajos de grado y funciones especificas
+        <br /> <br />-->      
     </ui:composition>
 </html>

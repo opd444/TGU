@@ -26,7 +26,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,16 +56,19 @@ public class PDFBean {
     private String txtObjetivos; //
     private String txtAportes; //
     private String txtTiempo; //
-    private String txtCondiciones = "*";
+    private String txtCondiciones; //
     private String txtRecursos; //
     private String txtFinanciacion; //
     private String txtObservaciones; //
-    private String txtFecha; //   
-
+    private Date fechaFormato; //  
+    SimpleDateFormat formateador;
+    
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
     
     public PDFBean() {
+        fechaFormato = new Date();
+        formateador = new SimpleDateFormat("EEEE, d 'de' MMMM 'de' yyyy");
     }
 
     public String getPdfFileName() {
@@ -117,6 +124,9 @@ public class PDFBean {
             if (decoded.get("tiempo") != null) {
                 txtTiempo = decoded.get("tiempo");
             }
+            if (decoded.get("condiciones") != null) {
+                txtCondiciones = decoded.get("condiciones");
+            }            
             if (decoded.get("recursos") != null) {
                 txtRecursos = decoded.get("recursos");
             }
@@ -127,14 +137,18 @@ public class PDFBean {
                 txtObservaciones = decoded.get("observaciones");
             }
             if (decoded.get("fecha") != null) {
-                txtFecha = decoded.get("fecha");
+                String fechaAux = decoded.get("fecha");
+                try {
+                    fechaFormato = formateador.parse(fechaAux);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         }
-        txtCondiciones = "*";
     }
 
     public void generarPDF() {
-        obtenerDatosFormatoA();
+                obtenerDatosFormatoA();
         try {
             File file = File.createTempFile("Formato-A", ".pdf");
 
@@ -298,14 +312,15 @@ public class PDFBean {
             document.add(pphObservaciones);
             /**/
             Paragraph pphFecha = new Paragraph("FECHA:", font);
-            Chunk fecha = new Chunk(txtFecha, font);
+            Chunk fecha = new Chunk(formateador.format(fechaFormato), font);
             fecha.setUnderline(0.2f, -2f);
             pphFecha.add(" ");
             pphFecha.add(fecha);
             document.add(pphFecha);
             /**/
-            document.add(new Paragraph("FIRMA:  ______________________", font));
-            document.add(new Paragraph("  (Proponente(s) del trabajo de grado)", font));
+            document.add(new Paragraph("\n"));
+            document.add(new Paragraph("FIRMA:  ________________________", font));
+            document.add(new Paragraph("        (Proponente(s) del trabajo de grado)", font));
 
             /**/
             document.close();

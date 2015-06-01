@@ -66,6 +66,7 @@ public class FormatoA {
     private String objetivos;
     private String aportes;
     private int tiempo;
+    private String condiciones;
     private String recursos;
     private String financiacion;
     private String observaciones;
@@ -131,6 +132,9 @@ public class FormatoA {
             }
             if (decoded.get("tiempo") != null) {
                 tiempo = Integer.parseInt(decoded.get("tiempo"));
+            }
+            if (decoded.get("condiciones") != null) {
+                condiciones = decoded.get("condiciones");
             }
             if (decoded.get("recursos") != null) {
                 recursos = decoded.get("recursos");
@@ -227,6 +231,14 @@ public class FormatoA {
     public void setAportes(String aportes) {
         this.aportes = aportes;
     }
+
+    public String getCondiciones() {
+        return condiciones;
+    }
+
+    public void setCondiciones(String condiciones) {
+        this.condiciones = condiciones;
+    }    
 
     public int getTiempo() {
         return tiempo;
@@ -346,7 +358,7 @@ public class FormatoA {
 //            }
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato A editado con éxito."));
-            return "fase-presentacion-de-la-idea";
+            return "fase-1";
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
             return "editar-formato-A";
@@ -377,6 +389,7 @@ public class FormatoA {
         map.put("objetivos", getObjetivos().trim());
         map.put("aportes", getAportes().trim());
         map.put("tiempo", getTiempo() + "");
+        map.put("condiciones", getCondiciones().trim());
         map.put("recursos", getRecursos().trim());
         map.put("financiacion", getFinanciacion().trim());
         map.put("observaciones", getObservaciones().trim());
@@ -433,7 +446,7 @@ public class FormatoA {
 //            }
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato A diligenciado con éxito."));
-            return "fase-presentacion-de-la-idea";
+            return "fase-1";
         } catch (Exception e) {
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));

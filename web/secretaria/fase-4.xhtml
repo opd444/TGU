@@ -16,7 +16,7 @@
                         <p:menuitem value="Inicio" outcome="./../perfiles/vista-secretaria-general.xhtml" />                                        
                         <p:menuitem value="Secretaria General" outcome="./../perfiles/vista-secretaria-general.xhtml" />
                         <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-secretaria-general.xhtml" />      
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-ejecucion-del-trabajo-de-grado" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-4" />
                         <p:menuitem value="4. Ejecución del Trabajo de Grado" />
                     </p:breadCrumb>
                 </h:form>
@@ -43,11 +43,11 @@
                                 <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
                                 <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
 
-                                <p:button value="Presentación de la Idea" outcome="fase-presentacion-de-la-idea" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px;height: 96px; font-size: 13px;" />                            
-                                <p:button value="Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
-                                <p:button value="Evaluación del Anteproyecto" outcome="fase-evaluacion-anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Presentación de la Idea" outcome="fase-1" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px;height: 96px; font-size: 13px;" />                            
+                                <p:button value="Realización del Anteproyecto" outcome="fase-2" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Anteproyecto" outcome="fase-3" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
 
-                                <p:button value="Ejecución del Trabajo de Grado" outcome="fase-ejecucion-del-trabajo-de-grado" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" />                                
+                                <p:button value="Ejecución del Trabajo de Grado" outcome="fase-4" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" />                                
 
                                 <p:button value="Evaluación del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Finalizado" href="#" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
@@ -55,25 +55,18 @@
                         </p:panel>
                         <p:spacer height="25"/>
                         <p:panel id="pnlEjecucionDelTrabajoDeGrado" header="4. Ejecución del Trabajo de Grado" style=" font-size: 14px;" widgetVar="pnlEjecucionDelTrabajoDeGrado">
-                            <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
-                                <h:outputText value="Formato G:" style="font-weight: bold;" />
-                                <p:button value="Ver" icon="ui-icon-comment" outcome="/vistas-documentos/ver-formato-G.xhtml" disabled="#{trabajodegradoController.btnVerFormatoG}" style="width: 120px;" /> 
-                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnDescargarFormatoG}" style="width: 120px;" />
+                            <h:panelGrid columns="1" cellpadding="5" cellspacing="5" >
+                                <h:outputText value="Avalar el estado de los requisitos de los estudiantes a sustentar" style="font-weight: bold;" />
                             </h:panelGrid>
+                            <h:panelGrid columns="3" cellpadding="5" cellspacing="5" >
+                                <h:outputText value="Estudiante 1:" style="font-weight: bold;" />
+                                <h:outputText value="#{formatoG.est1nomsapes}" />
+                                <p:commandButton id="btnAvalEst1" value="Avalar" icon="ui-icon-check" onclick="PF('Avalar1').show()" style="width: 120px;" disabled="#{!formatoG.existeEst1}" />
 
-                            <p:separator style="border-color: white !important;" />
-
-                            <p:panel header="Avalar el estado de los requisitos de los estudiantes a sustentar" >
-                                <h:panelGrid columns="3" cellpadding="5" cellspacing="5" >
-                                    <h:outputText value="Estudiante 1:" style="font-weight: bold;" />
-                                    <h:outputText value="#{formatoG.est1nomsapes}" style="font-weight: bold;" />
-                                    <p:commandButton id="btnAvalEst1" value="Avalar" onclick="PF('Avalar1').show()" style="width: 120px;" disabled="#{!formatoG.existeEst1}" />
-
-                                    <h:outputText value="Estudiante 2:" style="font-weight: bold;" />
-                                    <h:outputText value="#{formatoG.est2nomsapes}" style="font-weight: bold;" />
-                                    <p:commandButton id="btnAvalEst2" value="Avalar" onclick="PF('Avalar2').show()" style="width: 120px;" disabled="#{!formatoG.existeEst2}" />
-                                </h:panelGrid>
-                            </p:panel>
+                                <h:outputText value="Estudiante 2:" style="font-weight: bold;" rendered="#{formatoG.existeEst2}" />
+                                <h:outputText value="#{formatoG.est2nomsapes}" rendered="#{formatoG.existeEst2}" />
+                                <p:commandButton id="btnAvalEst2" value="Avalar" icon="ui-icon-check" onclick="PF('Avalar2').show()" style="width: 120px;" disabled="#{!formatoG.existeEst2}" rendered="#{formatoG.existeEst2}" />
+                            </h:panelGrid>
                         </p:panel>
                     </p:panel>
                     

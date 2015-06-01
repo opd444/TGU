@@ -16,8 +16,8 @@
                         <p:menuitem value="Inicio" outcome="./../perfiles/vista-evaluador.xhtml" />
                         <p:menuitem value="Evaluador" outcome="./../perfiles/vista-evaluador.xhtml" />
                         <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-evaluador.xhtml" />
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-evaluacion-anteproyecto" />
-                        <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fase-evaluacion-anteproyecto"/>
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-3" />
+                        <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fase-3"/>
                         <p:menuitem value="Editar Formato B" />
                     </p:breadCrumb>              
                 </h:form>
@@ -170,13 +170,13 @@
                                         <p:separator style="border-color: white !important;" />
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Observaciones:" />
-                                        <p:inputTextarea cols="40" rows="3" value="#{formatoB.observaciones}"/>
+                                        <p:inputTextarea cols="60" rows="3" value="#{formatoB.observaciones}"/>
 
                                         <p:separator style="border-color: white !important;" />
                                         <p:separator style="border-color: white !important;" />
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Fecha: *"> </p:outputLabel>
-                                        <p:calendar navigator="true" value="#{formatoB.fecha}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." style="margin-left: 10px; margin-right: 10px"/>
+                                        <p:calendar navigator="true" value="#{formatoB.fecha}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." style="margin-right: 10px"/>
 
                                         <p:separator style="border-color: white !important;" />
                                         <p:separator style="border-color: white !important;" />
@@ -207,59 +207,35 @@
                                         </p:fieldset>
 
                                         <p:fieldset legend="Presentación y aportes (¿Están indicados con claridad?):" toggleable="true" styleClass="txtareaform"> 
-                                            <p:selectOneRadio id="aprobadoA_CD" value="#{formatoB.elementoConsideradoA}" disabled="true">                                        
-                                                <f:selectItem itemLabel="Si" itemValue="1" />
-                                                <f:selectItem itemLabel="No" itemValue="0" />
-                                            </p:selectOneRadio>
+                                            <p:outputLabel value="#{formatoB.elementoConsideradoA=='1' ? 'Si' : 'No'}" />
                                         </p:fieldset>
 
                                         <p:fieldset legend="Objetivos (¿Establecidos claramente?):" toggleable="true" styleClass="txtareaform"> 
-                                            <p:selectOneRadio id="aprobadoB_CD" value="#{formatoB.elementoConsideradoB}" disabled="true">                                        
-                                                <f:selectItem itemLabel="Si" itemValue="1" />
-                                                <f:selectItem itemLabel="No" itemValue="0" />
-                                            </p:selectOneRadio>
+                                            <p:outputLabel value="#{formatoB.elementoConsideradoB=='1' ? 'Si' : 'No'}" />
                                         </p:fieldset>   
 
                                         <p:fieldset legend="Metodología (¿Se indica expilícitamente?):" toggleable="true" styleClass="txtareaform"> 
-                                            <p:selectOneRadio id="aprobadoC_CD" value="#{formatoB.elementoConsideradoC}" disabled="true">                                        
-                                                <f:selectItem itemLabel="Si" itemValue="1" />
-                                                <f:selectItem itemLabel="No" itemValue="0" />
-                                            </p:selectOneRadio>
+                                            <p:outputLabel value="#{formatoB.elementoConsideradoC=='1' ? 'Si' : 'No'}" />
                                         </p:fieldset>   
 
                                         <p:fieldset legend="Condiciones de entrega (¿Se establecen claramente?):" toggleable="true" styleClass="txtareaform"> 
-                                            <p:selectOneRadio id="aprobadoD_CD" value="#{formatoB.elementoConsideradoD}" disabled="true">                                        
-                                                <f:selectItem itemLabel="Si" itemValue="1" />
-                                                <f:selectItem itemLabel="No" itemValue="0" />
-                                            </p:selectOneRadio>
+                                            <p:outputLabel value="#{formatoB.elementoConsideradoD=='1' ? 'Si' : 'No'}" />
                                         </p:fieldset>   
 
                                         <p:fieldset legend="Monografía (¿Tiene una estructura adecuada?):" toggleable="true" styleClass="txtareaform"> 
-                                            <p:selectOneRadio id="aprobadoE_CD" value="#{formatoB.elementoConsideradoE}" disabled="true">                                        
-                                                <f:selectItem itemLabel="Si" itemValue="1" />
-                                                <f:selectItem itemLabel="No" itemValue="0" />
-                                            </p:selectOneRadio>
+                                            <p:outputLabel value="#{formatoB.elementoConsideradoE=='1' ? 'Si' : 'No'}" />
                                         </p:fieldset>   
 
                                         <p:fieldset legend="Cronograma (¿Se expresa en forma clara y completa?):" toggleable="true" styleClass="txtareaform"> 
-                                            <p:selectOneRadio id="aprobadoF_CD" value="#{formatoB.elementoConsideradoF}" disabled="true">                                        
-                                                <f:selectItem itemLabel="Si" itemValue="1" />
-                                                <f:selectItem itemLabel="No" itemValue="0" />
-                                            </p:selectOneRadio>
+                                            <p:outputLabel value="#{formatoB.elementoConsideradoF=='1' ? 'Si' : 'No'}" />
                                         </p:fieldset>   
 
                                         <p:fieldset legend="Patrocinio (¿Existe?):" toggleable="true" styleClass="txtareaform"> 
-                                            <p:selectOneRadio id="aprobadoG_CD" value="#{formatoB.elementoConsideradoG}" disabled="true">                                        
-                                                <f:selectItem itemLabel="Si" itemValue="1" />
-                                                <f:selectItem itemLabel="No" itemValue="0" />
-                                            </p:selectOneRadio>
+                                            <p:outputLabel value="#{formatoB.elementoConsideradoG=='1' ? 'Si' : 'No'}" />
                                         </p:fieldset>   
 
                                         <p:fieldset legend="Concepto general:" toggleable="true" styleClass="txtareaform"> 
-                                            <p:selectOneRadio id="aprobadoH_CD" value="#{formatoB.elementoConsideradoH}" disabled="true" >                                        
-                                                <f:selectItem itemLabel="Aprobado" itemValue="1" />
-                                                <f:selectItem itemLabel="No Aprobado" itemValue="0" />
-                                            </p:selectOneRadio>                                            
+                                            <p:outputLabel value="#{formatoB.elementoConsideradoH=='1' ? 'Aprobado' : 'No aprobado'}" />                                         
                                         </p:fieldset>   
 
                                         <p:fieldset legend="Observaciones:" toggleable="true" styleClass="txtareaform"> 
@@ -270,8 +246,8 @@
                                             <p:outputLabel value="#{formatoB.fecha}" >
                                                 <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
                                             </p:outputLabel>                                            
-                                        </p:fieldset>   
-
+                                        </p:fieldset>
+                                        
                                         <p:fieldset legend="Nombre del evaluador:" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoB.evaluador}"> </p:outputLabel>
                                         </p:fieldset>                                        
@@ -280,7 +256,7 @@
                                 </p:panel>
                             </p:tab>
                         </p:wizard>
-                        <p:button value="Cancelar" outcome="fase-evaluacion-anteproyecto" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
+                        <p:button value="Cancelar" outcome="fase-3" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
                     </h:form>
                 </p:panel>
             </ui:define>

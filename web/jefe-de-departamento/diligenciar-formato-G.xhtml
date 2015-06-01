@@ -16,8 +16,8 @@
                         <p:menuitem value="Inicio" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />                                        
                         <p:menuitem value="Jefe de Departamento" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />
                         <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />      
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-ejecucion-del-trabajo-de-grado" />
-                        <p:menuitem value="4. Ejecución del Trabajo de Grado" outcome="fase-ejecucion-del-trabajo-de-grado" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-4" />
+                        <p:menuitem value="4. Ejecución del Trabajo de Grado" outcome="fase-4" />
                         <p:menuitem value="Diligenciar Formato G" />
                     </p:breadCrumb>
                 </h:form>
@@ -30,7 +30,7 @@
                 #{menuController.setOutPerfiles(true)}
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
-                        <h:outputText value="FORMATO G: REMISIÓN DEL TRABAJO FINAL AL CONCEJO DE FACULTAD POR EL JEFE DE DEPARTAMENTO"/> <br/>
+                        <h:outputText value="Formato G: Remisión del Trabajo Final a la Secretaria de la Facultad por el Jefe de Departamento"/> <br/>
                     </div>
                     <p:spacer height="30"/>
                     <h:form>
@@ -172,7 +172,7 @@
                                 </p:panel>
                             </p:tab>                            
                         </p:wizard>
-                        <p:button value="Cancelar" outcome="fase-ejecucion-del-trabajo-de-grado" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
+                        <p:button value="Cancelar" outcome="fase-4" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
                     </h:form>
                 </p:panel>
             </ui:define>

@@ -5,8 +5,8 @@
  */
 package com.unicauca.tgu.Auxiliares;
 
+import com.unicauca.tgu.entities.Fase;
 import com.unicauca.tgu.entities.Usuario;
-import java.math.BigDecimal;
 
 /**
  *
@@ -19,4 +19,5 @@ public class TrabajodeGradoActual {
          public static Usuario est1 ;
          public static Usuario est2 ;
          public static Usuario director;
+         public static Fase fase;
 }

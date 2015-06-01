@@ -342,24 +342,24 @@ public class FormatoB {
             prod.setTrabajoid(trab);
             ejbFacadeProdTrab.create(prod);
 
-            Servicio_Email se = new Servicio_Email();
-            se.setSubject("Formato B del Trabajo de Grado: '" + titulo + "' ha sido diligenciado.");
-
-            if (usuEst1 != null) {
-                se.setTo(usuEst1.getPersonacorreo());
-                se.enviarResultadoFormatoB(titulo, getAprobado(), evaluador);
-            }
-            if (usuEst2 != null) {
-                se.setTo(usuEst2.getPersonacorreo());
-                se.enviarResultadoFormatoB(titulo, getAprobado(), evaluador);
-            }
-            if (usuDir != null) {
-                se.setTo(usuDir.getPersonacorreo());
-                se.enviarResultadoFormatoB(titulo, getAprobado(), evaluador);
-            }
+//            Servicio_Email se = new Servicio_Email();
+//            se.setSubject("Formato B del Trabajo de Grado: '" + titulo + "' ha sido diligenciado.");
+//
+//            if (usuEst1 != null) {
+//                se.setTo(usuEst1.getPersonacorreo());
+//                se.enviarResultadoFormatoB(titulo, getAprobado(), evaluador);
+//            }
+//            if (usuEst2 != null) {
+//                se.setTo(usuEst2.getPersonacorreo());
+//                se.enviarResultadoFormatoB(titulo, getAprobado(), evaluador);
+//            }
+//            if (usuDir != null) {
+//                se.setTo(usuDir.getPersonacorreo());
+//                se.enviarResultadoFormatoB(titulo, getAprobado(), evaluador);
+//            }
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato B diligenciado con éxito."));
-            return "fase-evaluacion-anteproyecto";
+            return "fase-3";
 
         } catch (Exception e) {
 
@@ -404,7 +404,7 @@ public class FormatoB {
             
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato B editado con éxito."));
-            return "fase-evaluacion-anteproyecto";
+            return "fase-3";
 
         } catch (Exception e) {
 

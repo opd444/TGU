@@ -85,7 +85,8 @@ public class FormatoF {
     private ProductodetrabajoFacade ejbFacadeProdTrab;
 
     public FormatoF() {
-
+        cumpleEntrega = "No";
+        cumpleDocyAnexos = "No";
     }
 
     @PostConstruct
@@ -463,8 +464,8 @@ public class FormatoF {
 //                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
 //                se.enviarDiligenciadoAnteproyecto(nombretg);
 //            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Anteproyecto diligenciado con éxito."));
-            return "fase-ejecucion-del-trabajo-de-grado";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato F diligenciado con éxito."));
+            return "fase-4";
 
         } catch (Exception e) {
 
@@ -512,7 +513,7 @@ public class FormatoF {
 //                se.enviarEditadoAnteproyecto(nombretg);
 //            }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato F editado con éxito."));
-            return "fase-ejecucion-del-trabajo-de-grado";
+            return "fase-4";
 
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));

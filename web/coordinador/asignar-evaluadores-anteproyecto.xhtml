@@ -27,8 +27,8 @@
                     <p:menuitem value="Inicio" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
                     <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />                      
                     <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
-                    <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-evaluacion-anteproyecto" />
-                    <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fase-evaluacion-anteproyecto" />
+                    <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-3" />
+                    <p:menuitem value="3. Evaluación del Anteproyecto" outcome="fase-3" />
                     <p:menuitem value="Asignación de evaluadores" />
                 </p:breadCrumb>              
                 </h:form>
@@ -136,7 +136,7 @@
                             <br />
                             <h:panelGrid  columns="2" style="margin: 0 auto;" cellpadding="5">
                                 <p:commandButton value="Guardar"  action="#{anteproyecto.guardarevaluadores()}" icon="ui-icon-disk" style="font-size: 13px; width: 120px;" update="growl"/>
-                                <p:button value="Cancelar" outcome="fase-evaluacion-anteproyecto" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>
+                                <p:button value="Cancelar" outcome="fase-3" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>
                             </h:panelGrid> 
                         </p:panel>
                     </h:form>

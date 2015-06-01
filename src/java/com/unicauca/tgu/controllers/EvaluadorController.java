@@ -9,14 +9,17 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
-import com.unicauca.tgu.FormatosTablas.FormatoTablaEvaluador;
-import com.unicauca.tgu.FormatosTablas.FormatoTablaJefe;
+import com.unicauca.tgu.FormatosTablas.TablaPerfil;
+import com.unicauca.tgu.entities.Fase;
 import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Trabajodegrado;
+import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.Usuario;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
+import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -45,12 +48,12 @@ public class EvaluadorController {
     private ProductodetrabajoFacade productoTrabEJB;
     @EJB
     private UsuarioFacade ejbFacadeUsu;
-    
     @EJB
-    private com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade usuRolTgEJB;
+    private UsuarioRolTrabajogradoFacade usuRolTgEJB;
+    @EJB
+    private TrabajogradoFaseFacade ejbFacadeTrabFase;
     
-    List<FormatoTablaEvaluador> trabajos;
-    
+    private List<TablaPerfil> trabajos;
     private Usuario evaluador;
     private String titulo;
     boolean modo;
@@ -107,10 +110,10 @@ public class EvaluadorController {
         return false;
     }
     
-     public List<FormatoTablaEvaluador> getAnteproyectos() {
+     public List<TablaPerfil> getAnteproyectos() {
        
         trabajos = new ArrayList();
-        FormatoTablaEvaluador f;
+        TablaPerfil f;
         int cont, temp;
         List<Productodetrabajo> lstProductos = new ArrayList();
         List<Productodetrabajo> lstAux1 = productoTrabEJB.ObtenerProdsTrabajoPor_formatoID(2);
@@ -155,7 +158,7 @@ public class EvaluadorController {
         for(Productodetrabajo t : lstProductos)
         { 
             cont = 0;
-            f = new FormatoTablaEvaluador();
+            f = new TablaPerfil();
 
             List<UsuarioRolTrabajogrado> lst = usuRolTgEJB.findbytrabajoId(t.getTrabajoid().getTrabajoid().intValue());
 
@@ -206,13 +209,21 @@ public class EvaluadorController {
                         }
                     }
                 }
+                List<TrabajogradoFase> lstTrabFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(t.getTrabajoid().getTrabajoid().intValue());
+                int x = 999;
+                for (TrabajogradoFase tg : lstTrabFase) {
+                    if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x) {
+                        f.setEstado(tg.getFaseid());
+                        x = tg.getFaseid().getFaseorden().intValue();
+                    }
+                }
                 trabajos.add(f);
             }
         }
         return trabajos;
     }
 
-    public void setAnteproyectos(List<FormatoTablaEvaluador> trabajos) {
+    public void setAnteproyectos(List<TablaPerfil> trabajos) {
         this.trabajos = trabajos;
     }
 
@@ -237,12 +248,14 @@ public class EvaluadorController {
         idusu = (Integer)event.getComponent().getAttributes().get("iddirector");
         if(idusu!=-1)TrabajodeGradoActual.director = ejbFacadeUsu.buscarporUsuid(idusu).get(0);
         
+        TrabajodeGradoActual.fase = (Fase) event.getComponent().getAttributes().get("fase");
+        
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
-            context.redirect("../evaluador/fase-evaluacion-anteproyecto.xhtml");
+            context.redirect("../evaluador/fase-"+TrabajodeGradoActual.fase.getFaseorden().intValue()+".xhtml");
         } catch (IOException ex) {
             Logger.getLogger(DirectorController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }        
     }
 
     public String getTitulo() {

@@ -17,7 +17,7 @@
                         <p:menuitem value="Inicio" outcome="./../perfiles/vista-director.xhtml" />
                         <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
                         <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-director.xhtml" />                        
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-evaluacion-anteproyecto" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-3" />
                         <p:menuitem value="3. Evaluacion del Anteproyecto" />
                     </p:breadCrumb>
                 </h:form>
@@ -46,8 +46,8 @@
                                 <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
                                 <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
 
-                                <p:button value="Presentación de la Idea" outcome="fase-presentacion-de-la-idea" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px;height: 96px; font-size: 13px;" />
-                                <p:button value="Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Presentación de la Idea" outcome="fase-1" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:button value="Realización del Anteproyecto" outcome="fase-2" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
 
                                 <p:commandButton type="button" value="Evaluación del Anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" >
                                     <p:effect type="highlight" event="click" for="pnlEvaluacionAnteproyecto">
@@ -55,7 +55,7 @@
                                     </p:effect>
                                 </p:commandButton>
 
-                                <p:button value="Ejecución del Trabajo de Grado" href="fase-ejecucion-trabajo-grado.xhtml" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Ejecución del Trabajo de Grado" outcome="fase-4" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Evaluación del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Finalizado" href="#" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                             </h:panelGrid>

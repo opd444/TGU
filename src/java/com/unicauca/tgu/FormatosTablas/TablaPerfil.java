@@ -1,27 +1,34 @@
 package com.unicauca.tgu.FormatosTablas;
-
+import com.unicauca.tgu.entities.Fase;
 import java.util.Date;
 
-public class FormatoTablaEvaluador
+public class TablaPerfil
 {
     private Date fecha;
     private String trabajoGrado;
     private String director;
     private String est1;
     private String est2;
-    private boolean aprobado;
+    private Fase estado;
     private int trabajoGradoId;
+    private int directorId;
     private int est1Id;
     private int est2Id;
-    private int directorId;
-    
-    public FormatoTablaEvaluador() {
+    private boolean aprobado;
+
+    public TablaPerfil() {
+        fecha = new Date();
+        trabajoGrado = "";
+        director = "";
+        est1 = "";
+        est2 = "";
+        estado = new Fase();
         est1Id = -1;
         est2Id = -1;
         directorId = -1;
-        aprobado = false;        
+        aprobado = false;
     }
-        
+    
     public Date getFecha() {
         return fecha;
     }
@@ -62,12 +69,12 @@ public class FormatoTablaEvaluador
         this.est2 = est2;
     }
 
-    public boolean isAprobado() {
-        return aprobado;
+    public Fase getEstado() {
+        return estado;
     }
 
-    public void setAprobado(boolean aprobado) {
-        this.aprobado = aprobado;
+    public void setEstado(Fase estado) {
+        this.estado = estado;
     }
 
     public int getTrabajoGradoId() {
@@ -76,6 +83,14 @@ public class FormatoTablaEvaluador
 
     public void setTrabajoGradoId(int trabajoGradoId) {
         this.trabajoGradoId = trabajoGradoId;
+    }
+
+    public int getDirectorId() {
+        return directorId;
+    }
+
+    public void setDirectorId(int directorId) {
+        this.directorId = directorId;
     }
 
     public int getEst1Id() {
@@ -94,11 +109,11 @@ public class FormatoTablaEvaluador
         this.est2Id = est2Id;
     }
 
-    public int getDirectorId() {
-        return directorId;
+    public boolean isAprobado() {
+        return aprobado;
     }
 
-    public void setDirectorId(int directorId) {
-        this.directorId = directorId;
+    public void setAprobado(boolean aprobado) {
+        this.aprobado = aprobado;
     }
 }

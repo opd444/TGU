@@ -15,7 +15,7 @@
                         <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
                         <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
                         <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-director.xhtml" />                        
-                        <p:menuitem value="4. Ejecucion del Trabajo de Grado" outcome="fase-ejecucion-del-trabajo-de-grado" />
+                        <p:menuitem value="4. Ejecucion del Trabajo de Grado" outcome="fase-4" />
                         <p:menuitem value="Diligenciar Formato F" />
                     </p:breadCrumb>              
                 </h:form>
@@ -40,7 +40,6 @@
                                     <p:messages />
                                     <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="12">
 
-
                                         <p:outputLabel styleClass="subtitulosFormato" value="Titulo del trabajo de grado: *"> </p:outputLabel>
                                         <p:outputLabel style="font-weight: bold;" value="#{formatoF.nombretg}"  />
 
@@ -54,9 +53,7 @@
                                         <p:outputLabel value="#{formatoF.nomEst2}" rendered="#{formatoF.nomEst2.length()>0}"/>
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Fecha" />
-                                        <p:calendar navigator="true" value="#{formatoF.fecha}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." style="margin-left: 10px; margin-right: 10px"/>
-
-
+                                        <p:calendar navigator="true" value="#{formatoF.fecha}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." style="margin-right: 10px"/>
 
                                     </h:panelGrid>
                                 </p:panel>
@@ -64,11 +61,7 @@
 
                             <p:tab id="paso2" title="Paso 2" >
                                 <p:panel header="Campos con * son obligatorios">
-                                    <p:spacer height="20" width="500" />
-                                    <p:messages for="tabarchivos"/>
-                                    <p:message for="conds" />
-                                    <p:spacer height="20" width="500" />
-                                    <p:message for="docs" />
+                                    <p:messages />
                                     <h:panelGrid style="margin: 0 auto;" columnClasses="label, value" cellpadding="12" columns="2">
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Se cumplen las condiciones de entrega?:" for="conds"/>
@@ -85,7 +78,7 @@
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Trabajo de Grado *" />
                                         <p:column>
-                                            <p:fileUpload id="trabgrad" required="true" fileUploadListener="#{formatoF.handleFileUpload}" auto="true" style="width: 340px;" 
+                                            <p:fileUpload id="trabgrad" required="true" fileUploadListener="#{formatoF.handleFileUpload}" mode="advanced" uploadLabel="Actualizar" cancelLabel="Cancelar" multiple="false"
                                                           allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf|rar|zip|tar)$/" sizeLimit="31457280" label="Examinar..." update="nombarchtrab"
                                                           invalidFileMessage="Tipo de Archivo no Valido, Agregue un archivo word,pdf o comprimido" 
                                                           invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" validatorMessage="Debe adjuntar el archivo de trabajo de grado." />
@@ -94,7 +87,7 @@
                                         
                                         <p:outputLabel styleClass="subtitulosFormato" value="Anexos *" />
                                         <p:column>
-                                            <p:fileUpload id="anexos" required="true" fileUploadListener="#{formatoF.handleFileUpload}" auto="true" style="width: 340px;" 
+                                            <p:fileUpload id="anexos" required="true" fileUploadListener="#{formatoF.handleFileUpload}" mode="advanced" uploadLabel="Actualizar" cancelLabel="Cancelar" multiple="false"
                                                           allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf|rar|zip|tar)$/" sizeLimit="31457280" label="Examinar..." update="nombarchanex"
                                                           invalidFileMessage="Tipo de Archivo no Valido, Agregue un archivo word,pdf o comprimido" 
                                                           invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" validatorMessage="Debe adjuntar el archivo de anexos." />
@@ -103,18 +96,18 @@
                                        
                                         <p:outputLabel styleClass="subtitulosFormato" value="Articulos *" />
                                         <p:column>
-                                            <p:fileUpload id="articulos" required="true" fileUploadListener="#{formatoF.handleFileUpload}" auto="true" style="width: 340px;" 
+                                            <p:fileUpload id="articulos" required="true" fileUploadListener="#{formatoF.handleFileUpload}" mode="advanced" uploadLabel="Actualizar" cancelLabel="Cancelar" multiple="false"
                                                           allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf|rar|zip|tar)$/" sizeLimit="31457280" label="Examinar..." update="nombarchart"
                                                           invalidFileMessage="Tipo de Archivo no Valido, Agregue un archivo word,pdf o comprimido" 
                                                           invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" validatorMessage="Debe adjuntar el archivo de articulos." />
                                             <p:outputLabel style="display: block; margin: 0 auto;" id="nombarchart" value="#{formatoF.nombarchart}"/>
                                         </p:column>
                                         
-                                        <p:outputLabel styleClass="subtitulosFormato" value="URL Repositorio de Codigo" />
-                                        <p:inputText value="#{formatoF.urlrep}" style="width: 100%"/>
+                                        <p:outputLabel styleClass="subtitulosFormato" value="URL Repositorio de Codigo:" />
+                                        <p:inputText value="#{formatoF.urlrep}" style="width: 90%"/>
                                         
                                         <p:outputLabel styleClass="subtitulosFormato" value="Observaciones:" />
-                                        <p:inputTextarea value="#{formatoF.obs}" style="width: 100%" autoResize="true"/>
+                                        <p:inputTextarea value="#{formatoF.obs}" rows="3" cols="60" autoResize="true"/>
                                         
                                     </h:panelGrid>
                                 </p:panel>
@@ -145,7 +138,7 @@
                                         </p:fieldset> 
                                         
                                          <p:fieldset legend="URL Repositorio" toggleable="true" styleClass="txtareaform"> 
-                                            <p:outputLabel value="#{formatoF.obs}"> </p:outputLabel>
+                                             <p:outputLabel value="#{formatoF.urlrep}"> </p:outputLabel>
                                         </p:fieldset> 
                                         
                                         <p:fieldset legend="Observaciones" toggleable="true" styleClass="txtareaform"> 
@@ -163,7 +156,7 @@
                                 </p:panel>
                             </p:tab>
                         </p:wizard>
-                        <p:button value="Cancelar" outcome="fase-ejecucion-del-trabajo-de-grado" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
+                        <p:button value="Cancelar" outcome="fase-4" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
                     </h:form>         
                 </p:panel>                          
             </ui:define>

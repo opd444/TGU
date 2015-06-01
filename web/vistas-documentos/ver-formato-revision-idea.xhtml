@@ -17,8 +17,8 @@
                         <p:menuitem value="#{menuController.rolActual}" />
                         <p:menuitem value="Trabajos de Grado" />
                         <p:menuitem value="Fases del Trabajo de Grado" />
-                        <p:menuitem value="1. Presentación de la Idea" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-presentacion-de-la-idea" />
-                        <p:menuitem value="Ver Formato de Revision de la Idea" outcome="ver-formato-revision-idea" />
+                        <p:menuitem value="1. Presentación de la Idea" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-1" />
+                        <p:menuitem value="Ver Formato de Revision de la Idea" />
                     </p:breadCrumb>   
                 </h:form>
             </ui:define>
@@ -74,7 +74,7 @@
                             </h:panelGrid>
                             <br />
                             <h:panelGrid columns="2" cellpadding="12" style="margin: 0 auto">
-                                <p:button value="Volver" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-presentacion-de-la-idea" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>
+                                <p:button value="Volver" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-1" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;"/>
                                 <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px; width: 120px;" />
                             </h:panelGrid>
                         </p:panel>

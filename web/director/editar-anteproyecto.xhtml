@@ -16,8 +16,8 @@
                         <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
                         <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
                         <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-director.xhtml" />                        
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-realizacion-anteproyecto" />
-                        <p:menuitem value="2. Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-2" />
+                        <p:menuitem value="2. Realización del Anteproyecto" outcome="fase-2" />
                         <p:menuitem value="Editar Anteproyecto" />
                     </p:breadCrumb>              
                 </h:form>
@@ -50,7 +50,7 @@
                                 <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado: *" />
                                 <p:outputLabel value="#{anteproyecto.directortg}" />
                                 <p:outputLabel styleClass="subtitulosFormato" value="Objetivos: *" />
-                                <p:inputTextarea cols="50" rows="3" value="#{anteproyecto.objetivos}" required="true" validatorMessage="Debe ingresar los objetivos." style="display: block; margin: 0 auto;" />
+                                <p:inputTextarea cols="60" rows="4" value="#{anteproyecto.objetivos}" required="true" validatorMessage="Debe ingresar los objetivos." style="display: block; margin: 0 auto;" />
                                 <p:outputLabel styleClass="subtitulosFormato" value="Adjuntar anteproyecto: *" />
                                 <p:column>    
                                     <p:fileUpload required="true" fileUploadListener="#{anteproyecto.handleFileUpload}" auto="true"
@@ -69,7 +69,7 @@
                                                  icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">
                                     <p:fileDownload value="#{anteproyecto.filedown}" />
                                 </p:commandButton>
-                                <p:button value="Cancelar" icon="ui-icon-cancel" outcome="fase-realizacion-anteproyecto" style="font-size: 13px; width: 120px;"/>
+                                <p:button value="Cancelar" icon="ui-icon-cancel" outcome="fase-2" style="font-size: 13px; width: 120px;"/>
                             </h:panelGrid>
                         </p:panel>
                     </h:form>

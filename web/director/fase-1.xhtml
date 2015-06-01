@@ -2,42 +2,40 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <body>
-
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
-                        <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
-                        <p:menuitem value="Trabajo de Grado" outcome="./../perfiles/vista-secretaria-general.xhtml" />
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-presentacion-de-la-idea" />
+                        <p:menuitem value="Inicio" outcome="./../perfiles/vista-director.xhtml" />
+                        <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-director.xhtml" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-1" />
                         <p:menuitem value="1. Presentación de la Idea" />
                     </p:breadCrumb>
                 </h:form>
             </ui:define>
 
-            <ui:define name="title">
+            <ui:define name="title">                
             </ui:define>
 
-            <ui:define name="body">
-                
+            <ui:define name="body">          
+
                 #{menuController.setOutPerfiles(true)}
-                <h:form id="fases">                                                                               
+                
+                <h:form id="fases">
                     <p:panel styleClass="paneltrabajo" >
-                        
                         <div class="tituloContenido">                        
                             #{trabajodegradoController.trabajo.trabajonombre}
-                        </div>
+                        </div>      
                         <p:growl id="growl" showDetail="true" life="5000"/>
                         <p:spacer height="25"/>
-                        
                         <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado">
                             <h:panelGrid columns="6" cellpadding="1" style="margin: 0 auto;">
                                 <p:graphicImage value="../resources/img/1.png" style="width: 96px;" />
@@ -52,37 +50,42 @@
                                         <f:param name="mode" value="'show'" />
                                     </p:effect>
                                 </p:commandButton>
-                                <p:button value="Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
-                                <p:button value="Evaluación del Anteproyecto" outcome="fase-evaluacion-anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
-                                <p:button value="Ejecución del Trabajo de Grado" outcome="fase-ejecucion-del-trabajo-de-grado" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+
+                                <p:button value="Realización del Anteproyecto" outcome="fase-2" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Anteproyecto" outcome="fase-3" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Ejecución del Trabajo de Grado" outcome="fase-4" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Evaluación del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Finalizado" href="#" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                             </h:panelGrid>
-                        </p:panel>
+                        </p:panel>      
                         <p:spacer height="25"/>
                         <p:panel id="pnlPresentacionIdea" header="1. Presentación de la Idea" style=" font-size: 14px;" widgetVar="pnlPresentacionIdea">
-                            
-                            <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
+                            <h:panelGrid columns="4" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Formato A:" style="font-weight: bold;" />
+                                <p:button value="Diligenciar" icon="ui-icon-document" outcome="diligenciar-formato-A.xhtml" disabled="#{trabajodegradoController.btnDiligenciarFormatoA}" style="width: 120px;" rendered="#{!trabajodegradoController.btnDiligenciarFormatoA}" />          
+                                <p:button value="Editar" icon="ui-icon-pencil" href="editar-formato-A.xhtml" disabled="#{trabajodegradoController.btnEditarFormatoA}" style="width: 120px;" rendered="#{!trabajodegradoController.btnEditarFormatoA}" />
                                 <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-formato-A.xhtml" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" />                                
                                 <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoA}" style="width: 120px;" actionListener="#{pDFBean.generarPDF()}" oncomplete="PF('dlgVerRutina').show();" />
+                            </h:panelGrid>
+                            <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Revisión de la idea:" style="font-weight: bold;" />
                                 <p:button value="Ver" href="../vistas-documentos/ver-formato-revision-idea.xhtml" icon="ui-icon-comment" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
-                                <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />
+                                <p:button value="Descargar" href="#" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerRevisionFormatoA}" style="width: 120px;" />                                                                
                             </h:panelGrid>
-                            
                         </p:panel>
                     </p:panel>
                 </h:form>
+                
                 <h:form id="frmDescargarFormatoA">
                     <p:dialog id="dlgVerRutina" header="Descargar Formato A" widgetVar="dlgVerRutina" modal="true" position="top" resizable="false" closeOnEscape="true">                            
                         <c:if test="#{pDFBean.pdfFileName != 'sin-cargar'}">
                             <object type="application/pdf" data="#{request.contextPath}/PDFServlet/#{pDFBean.pdfFileName}" height="600px" width="820px">
-                                Your browser can't display pdf, <a href="#{request.contextPath}/PDFServlet/#{pDFBean.pdfFileName}">click</a> to download pdf instead.
+                                En tu navegador no se puede visualizar el pdf, <a href="#{request.contextPath}/PDFServlet/#{pDFBean.pdfFileName}">click</a> descarga un lector de pdf.
                             </object>
                         </c:if>
                     </p:dialog>
                 </h:form>
+                
             </ui:define>
         </ui:composition>
     </body>

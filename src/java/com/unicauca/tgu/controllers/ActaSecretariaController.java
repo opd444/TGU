@@ -33,14 +33,14 @@ public class ActaSecretariaController {
 
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
-     @EJB
+    @EJB
     private TrabajogradoFaseFacade ejbFacadeTraFase1;
 
     private String nombreTrabajodeGrado;
     private String nombreDirector;
     private Date fechaact;
     private String resultado;
-    private int numact; 
+    private String numact;
     private FormatoTablaActa acta;
 
     /**
@@ -49,12 +49,13 @@ public class ActaSecretariaController {
     public ActaSecretariaController() {
         nombreDirector = TrabajodeGradoActual.director.getPersonanombres() + " " + TrabajodeGradoActual.director.getPersonaapellidos();
         nombreTrabajodeGrado = TrabajodeGradoActual.nombreTg;
-        numact = 1;
+        numact = "1A";
+        resultado = "0";
         Calendar c = new GregorianCalendar();
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
-        fechaact = c.getTime();        
+        fechaact = c.getTime();
     }
 
     public String getNombreTrabajodeGrado() {
@@ -81,11 +82,11 @@ public class ActaSecretariaController {
         this.fechaact = fechaact;
     }
 
-    public int getNumact() {
+    public String getNumact() {
         return numact;
     }
 
-    public void setNumact(int numact) {
+    public void setNumact(String numact) {
         this.numact = numact;
     }
 
@@ -104,21 +105,19 @@ public class ActaSecretariaController {
     public void setActa(FormatoTablaActa acta) {
         this.acta = acta;
     }
-    
-    
 
     public String obtenerDatos() {
 
         Map<String, String> map = new HashMap<>();
 
-        map.put("numacta", Integer.toString(numact));
+        map.put("numacta", numact);
 
         map.put("nombretg", TrabajodeGradoActual.nombreTg);
 
         map.put("nombredirector", nombreDirector);
 
         map.put("fecha", fechaact.toString());
-        
+
         map.put("resultado", resultado);
 
         Gson gson = new Gson();
@@ -137,28 +136,26 @@ public class ActaSecretariaController {
             prod.setFormatoid(new Formatoproducto(BigDecimal.valueOf(5)));
             prod.setTrabajoid(trab);
             ejbFacadeProdTrab.create(prod);
-            
-            if(resultado.equals("1"))
-           { 
-            List<TrabajogradoFase> lst = ejbFacadeTraFase1.findAll();
-        
-        for(int i = 0; i < lst.size(); i++) {
-            if(lst.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
-                if(lst.get(i).getFaseid().getFaseid().equals(BigDecimal.valueOf(3))) {
-                    lst.get(i).setEstado(BigInteger.ONE);
-                    ejbFacadeTraFase1.edit(lst.get(i));
-                    
-                }
-                if(lst.get(i).getFaseid().getFaseid().equals(BigDecimal.valueOf(4))) {
-                    lst.get(i).setEstado(BigInteger.ZERO);
-                    ejbFacadeTraFase1.edit(lst.get(i));
-                    
+
+            if (resultado.equals("1")) {
+                List<TrabajogradoFase> lst = ejbFacadeTraFase1.findAll();
+
+                for (int i = 0; i < lst.size(); i++) {
+                    if (lst.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+                        if (lst.get(i).getFaseid().getFaseid().equals(BigDecimal.valueOf(3))) {
+                            lst.get(i).setEstado(BigInteger.ONE);
+                            ejbFacadeTraFase1.edit(lst.get(i));
+
+                        }
+                        if (lst.get(i).getFaseid().getFaseid().equals(BigDecimal.valueOf(4))) {
+                            lst.get(i).setEstado(BigInteger.ZERO);
+                            ejbFacadeTraFase1.edit(lst.get(i));
+
+                        }
+                    }
                 }
             }
-        }
-           }
 
-            
 //            Servicio_Email se = new Servicio_Email();
 //            se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido diligenciada.");
 //
@@ -177,19 +174,16 @@ public class ActaSecretariaController {
 //            se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
 //            se.enviarDiligenciadoRevisionIdea(nombretg);
 //            }
-            
-            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Acta de resolución asignada."));
             return "diligenciar-acta-resolucion";
         } catch (Exception e) {
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
             return "diligenciar-acta-resolucion";
         }
     }
-    
-    public void eliminarActa()
-        {
+
+    public void eliminarActa() {
 
         FacesContext context = FacesContext.getCurrentInstance();
         try {
@@ -202,14 +196,14 @@ public class ActaSecretariaController {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "Ocurrio algun error al intentar  efectuar la operacion"));
         }
 
-    }    
+    }
 
     public List<FormatoTablaActa> getActas() {
-        
+
         List<Productodetrabajo> lst = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 5);
         List<FormatoTablaActa> lstact = new ArrayList<>();
         FormatoTablaActa act;
-        
+
         Gson gson = new Gson();
         Map<String, String> map;
 
@@ -217,7 +211,7 @@ public class ActaSecretariaController {
             map = gson.fromJson(p.getProductocontenido(), new TypeToken<Map<String, String>>() {
             }.getType());
 
-            act = new FormatoTablaActa(p.getProductoid().intValue(),Integer.parseInt(map.get("numacta")),map.get("fecha"));
+            act = new FormatoTablaActa(p.getProductoid().intValue(), map.get("numacta"), map.get("fecha"));
             lstact.add(act);
         }
         return lstact;

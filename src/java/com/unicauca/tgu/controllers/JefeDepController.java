@@ -1,18 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.unicauca.tgu.controllers;
 
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
-import com.unicauca.tgu.FormatosTablas.FormatoTablaJefe;
+import com.unicauca.tgu.FormatosTablas.TablaPerfil;
+import com.unicauca.tgu.entities.Fase;
 import com.unicauca.tgu.entities.Productodetrabajo;
-import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
-import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
@@ -31,18 +25,12 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-/**
- *
- * @author pcblanco
- */
 @ManagedBean
 @ViewScoped
 public class JefeDepController {
 
     @EJB
     private UsuarioRolTrabajogradoFacade ejbFacade;
-    @EJB
-    private TrabajodegradoFacade ejbFacadetrabgrad;
     @EJB
     private UsuarioFacade ejbFacadeusuario;
     @EJB
@@ -53,7 +41,7 @@ public class JefeDepController {
     private boolean modo;           
     private String titulotablaJefe;
     private String titulotabla;
-    private List<FormatoTablaJefe> trabs1;
+    private List<TablaPerfil> trabs;
 
      public JefeDepController() {
     }  
@@ -92,11 +80,11 @@ public class JefeDepController {
       titulotablaJefe = "Lista de ideas revisadas";
     }
 
-    public List<FormatoTablaJefe> getTrabsJefe() {
+    public List<TablaPerfil> getTrabsJefe() {
 
-        trabs1 = new ArrayList();
+        trabs = new ArrayList();
         int cont;     
-        FormatoTablaJefe f;
+        TablaPerfil f;
         List<Productodetrabajo> lstProductos = new ArrayList();
         List<Productodetrabajo> lstAux1 = productoTrabEJB.ObtenerProdsTrabajoPor_formatoID(0);
         
@@ -122,7 +110,7 @@ public class JefeDepController {
         for(Productodetrabajo t : lstProductos)
         {
             cont = 0;
-            f = new FormatoTablaJefe();                  //sacamos la informacion general tanto jefe depto, director y los estud.
+            f = new TablaPerfil();                  //sacamos la informacion general tanto jefe depto, director y los estud.
             
             List<UsuarioRolTrabajogrado> lst = ejbFacade.findbytrabajoId(t.getTrabajoid().getTrabajoid().intValue());
             
@@ -164,36 +152,53 @@ public class JefeDepController {
                         break;
                     }
                 }
-                trabs1.add(f);
+
+                int x = 999;
+                for (TrabajogradoFase tg : lstTrabFase) {
+                    if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x) {
+                        f.setEstado(tg.getFaseid());
+                        x = tg.getFaseid().getFaseorden().intValue();
+                    }
+                }
+                
+                trabs.add(f);
             }
         }
-        return trabs1;
+        return trabs;
     }
 
-    public void setTrabsJefe(List<FormatoTablaJefe> trabs1) {
-        this.trabs1 = trabs1;
+    public void setTrabsJefe(List<TablaPerfil> trabs) {
+        this.trabs = trabs;
     }
 
     public void contenidoTgJefe(ActionEvent event)  //guardar informacion del trabajo de grado que se esta tratando
-            {
-            //Agregamos los datos del trabajo de grado para no enviar por url.                          
-          TrabajodeGradoActual.id = (Integer)event.getComponent().getAttributes().get("idtrabajo");
-          TrabajodeGradoActual.nombreTg = (String)event.getComponent().getAttributes().get("nombretrab");
-          
-          //Agregamos el primer estudiante a la clase estatica 
-          int idusu = (Integer)event.getComponent().getAttributes().get("est1");
-          if(idusu!=-1)TrabajodeGradoActual.est1 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
-          
-          //Agregamos el segundo estudiante si hay uno
-          idusu = (Integer)event.getComponent().getAttributes().get("est2");
-          if(idusu!=-1)TrabajodeGradoActual.est2 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
-          
-          idusu = (Integer)event.getComponent().getAttributes().get("iddirector");
-          if(idusu!=-1)TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
-          
-          ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+    {
+        //Agregamos los datos del trabajo de grado para no enviar por url.                          
+        TrabajodeGradoActual.id = (Integer) event.getComponent().getAttributes().get("idtrabajo");
+        TrabajodeGradoActual.nombreTg = (String) event.getComponent().getAttributes().get("nombretrab");
+
+        //Agregamos el primer estudiante a la clase estatica 
+        int idusu = (Integer) event.getComponent().getAttributes().get("est1");
+        if (idusu != -1) {
+            TrabajodeGradoActual.est1 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
+        }
+
+        //Agregamos el segundo estudiante si hay uno
+        idusu = (Integer) event.getComponent().getAttributes().get("est2");
+        if (idusu != -1) {
+            TrabajodeGradoActual.est2 = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
+        }
+
+        idusu = (Integer) event.getComponent().getAttributes().get("iddirector");
+        if (idusu != -1) {
+            TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
+        }
+
+        TrabajodeGradoActual.fase = (Fase) event.getComponent().getAttributes().get("fase");
+
+        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
-            context.redirect("../jefe-de-departamento/fase-presentacion-de-la-idea.xhtml");
+            context.redirect("../jefe-de-departamento/fase-" + TrabajodeGradoActual.fase.getFaseorden().intValue() + ".xhtml");
         } catch (IOException ex) {
             Logger.getLogger(DirectorController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.unicauca.tgu.FormatosTablas;
 
 import java.text.DateFormat;
@@ -13,21 +8,17 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author pcblanco
- */
 public class FormatoTablaActa {
     
     private int idprod;
-    private int numacta;
+    private String numacta;
     private String fechaact;
 
-    public int getNumacta() {
+    public String getNumacta() {
         return numacta;
     }
 
-    public void setNumacta(int numacta) {
+    public void setNumacta(String numacta) {
         this.numacta = numacta;
     }
 
@@ -57,15 +48,9 @@ public class FormatoTablaActa {
         this.idprod = idprod;
     }
 
-    public FormatoTablaActa(int idprod, int numacta, String fechaact) {
+    public FormatoTablaActa(int idprod, String numacta, String fechaact) {
         this.idprod = idprod;
         this.numacta = numacta;
         this.fechaact = fechaact;
     }
-    
-    
-    
-    
-    
-    
 }

@@ -15,8 +15,8 @@
                         <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
                         <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
                         <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-director.xhtml" />                        
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-presentacion-de-la-idea" />
-                        <p:menuitem value="1. Presentación de la Idea" outcome="fase-presentacion-de-la-idea" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-1" />
+                        <p:menuitem value="1. Presentación de la Idea" outcome="fase-1" />
                         <p:menuitem value="Diligenciar Formato A" />
                     </p:breadCrumb>              
                 </h:form>
@@ -124,6 +124,11 @@
                                             <p:outputLabel value="meses." />
                                         </p:column>
                                         <p:separator style="border-color: white !important;" />
+                                        
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Condiciones de entrega: *"> </p:outputLabel>
+                                        <p:inputTextarea value="#{formatoA.condiciones}" required="true" label="Condiciones entrega" styleClass="txtareaform" requiredMessage="Debe ingresar las condiciones de entrega para desarrollar su trabajo de grado."/>
+                                        <p:separator style="border-color: white !important;" />
+                                        
                                     </h:panelGrid>
                                 </p:panel>
                             </p:tab>
@@ -185,7 +190,11 @@
                                         <p:fieldset legend="Tiempo estimado de realización" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoA.tiempo} meses"> </p:outputLabel>
                                         </p:fieldset>
-
+                                        
+                                        <p:fieldset legend="Condiciones de entrega" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoA.condiciones}"> </p:outputLabel>
+                                        </p:fieldset>
+                                        
                                         <p:fieldset legend="Recursos requeridos" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoA.recursos}"> </p:outputLabel>
                                         </p:fieldset>
@@ -208,7 +217,7 @@
                                 </p:panel>
                             </p:tab>
                         </p:wizard>
-                        <p:button value="Cancelar" outcome="fase-presentacion-de-la-idea" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
+                        <p:button value="Cancelar" outcome="fase-1" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
                     </h:form>         
                 </p:panel>                          
             </ui:define>

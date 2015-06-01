@@ -266,7 +266,7 @@ public class Anteproyecto {
 //                se.enviarDiligenciadoAnteproyecto(nombretg);
 //            }
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Anteproyecto diligenciado con éxito."));
-                return "fase-realizacion-anteproyecto";
+                return "fase-2";
 
             } catch (Exception e) {
 
@@ -352,10 +352,10 @@ public class Anteproyecto {
 //            }
             if (numberOfUpdatesEst <= 3) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Anteproyecto editado con éxito."));
-                return "fase-realizacion-anteproyecto";
+                return "fase-2";
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Se ha alcanzado el número máximo de ediciones, el anteproyecto fue editado 3 veces."));
-                return "fase-realizacion-anteproyecto";
+                return "fase-2";
             }
 
         } catch (Exception e) {
@@ -504,21 +504,21 @@ public class Anteproyecto {
 
             ejbFacadeProdTrab.edit(anteproyactual);
 
-            Servicio_Email se = new Servicio_Email();
-            se.setSubject("El Trabajo de Grado: '" + nombretg + "' esta listo para la revision por parte de los evaluadores.");
-
-            if (est1 != null) {
-                se.setTo(TrabajodeGradoActual.est1.getPersonacorreo());
-                se.enviarNotificacionAsignacion(nombretg);
-            }
-            if (est2 != null) {
-                se.setTo(TrabajodeGradoActual.est2.getPersonacorreo());
-                se.enviarNotificacionAsignacion(nombretg);
-            }
-            if (directortg != null) {
-                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
-                se.enviarNotificacionAsignacion(nombretg);
-            }
+//            Servicio_Email se = new Servicio_Email();
+//            se.setSubject("El Trabajo de Grado: '" + nombretg + "' esta listo para la revision por parte de los evaluadores.");
+//
+//            if (est1 != null) {
+//                se.setTo(TrabajodeGradoActual.est1.getPersonacorreo());
+//                se.enviarNotificacionAsignacion(nombretg);
+//            }
+//            if (est2 != null) {
+//                se.setTo(TrabajodeGradoActual.est2.getPersonacorreo());
+//                se.enviarNotificacionAsignacion(nombretg);
+//            }
+//            if (directortg != null) {
+//                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
+//                se.enviarNotificacionAsignacion(nombretg);
+//            }
  
 //        se.setSubject("Asignacion como evaluador de anteproyecto");
 //
@@ -532,7 +532,7 @@ public class Anteproyecto {
 //                se.enviarAsignacionEvaluacionanteproyecto(nombretg);
 //            }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "La asignación de evaluadores fue exitosa."));
-            return "fase-evaluacion-anteproyecto";
+            return "fase-3";
 
         } catch (Exception e) {
 

@@ -30,7 +30,7 @@ public class TrabajogradoFaseController {
     public TrabajogradoFaseController() {
         
     }
-    public void btnAvalar(TrabajodegradoController mgb) { // TODO Refactorizar con cosulta directa en el facade
+    public String btnAvalar(TrabajodegradoController mgb) { // TODO Refactorizar con cosulta directa en el facade
         List<TrabajogradoFase> lst = ejbFacadeTraFase.findAll();
         
         for(int i = 0; i < lst.size(); i++) {
@@ -66,12 +66,14 @@ public class TrabajogradoFaseController {
                 ejbFacadeProdTrab.edit(productoActual);
             }
         }
-        
+        /*
         mgb.incializar();
         FacesContext context = FacesContext.getCurrentInstance();
         RequestContext requestContext =RequestContext.getCurrentInstance();
         context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Anteproyecto avalado con éxito."));
         requestContext.update("formularioavalar");
-        
+        */
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Anteproyecto avalado con éxito."));
+        return "fase-3";       
     }
 }

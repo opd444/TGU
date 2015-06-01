@@ -53,7 +53,7 @@ public class RevisionIdeaController {
     @EJB
     private TrabajogradoFaseFacade ejbFacadeTrabajoGradFase;
 
-    private int numActa;
+    private String numActa;
     private String nombretg;
     private BigDecimal trabajoid;
     private Usuario est1;
@@ -77,7 +77,7 @@ public class RevisionIdeaController {
         ServiciosSimcaController s =  (ServiciosSimcaController)context.getApplication().evaluateExpressionGet(context, "#{serviciosSimcaController}", ServiciosSimcaController.class);
         idjefe = s.getUsulog().getPersonacedula().intValue();
                 
-        numActa = 1;
+        numActa = "1A";
         resultado = 1;
         
         List<Productodetrabajo> lst = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 1);
@@ -91,7 +91,7 @@ public class RevisionIdeaController {
             }.getType());
             
             if (decoded.get("numActa") != null) {
-                resultado = Integer.parseInt(decoded.get("numActa"));
+                numActa = decoded.get("numActa");
             }
             if (decoded.get("nombre") != null) {
                 nombretg = decoded.get("nombre");
@@ -157,11 +157,11 @@ public class RevisionIdeaController {
         this.ejbFacadeUsuario = ejbFacadeUsuario;
     }
 
-    public int getNumActa() {
+    public String getNumActa() {
         return numActa;
     }
 
-    public void setNumActa(int numActa) {
+    public void setNumActa(String numActa) {
         this.numActa = numActa;
     }
 
@@ -255,7 +255,7 @@ public class RevisionIdeaController {
     public String obtenerDatos() {
         Map<String, String> map = new HashMap();
         
-        map.put("numActa", Integer.toString(getNumActa()));
+        map.put("numActa", getNumActa());
         
         map.put("nombre", TrabajodeGradoActual.nombreTg);
         //
@@ -327,7 +327,7 @@ public class RevisionIdeaController {
 //             }
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Revisión de la idea, diligenciada con éxito."));
-            return "fase-presentacion-de-la-idea";
+            return "fase-1";
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
             return "diligenciar-formato-revision-idea";
@@ -372,7 +372,7 @@ public class RevisionIdeaController {
 //             }
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Revisión de la idea, editada con éxito."));
-            return "fase-presentacion-de-la-idea";
+            return "fase-1";
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
             return "editar-formato-revision-idea";

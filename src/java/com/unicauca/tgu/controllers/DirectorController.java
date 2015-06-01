@@ -2,14 +2,16 @@ package com.unicauca.tgu.controllers;
 
 import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
-import com.unicauca.tgu.FormatosTablas.FormatoTablaDirector;
-import com.unicauca.tgu.FormatosTablas.FormatoTablaJefe;
+import com.unicauca.tgu.FormatosTablas.TablaPerfil;
+import com.unicauca.tgu.entities.Fase;
 import com.unicauca.tgu.entities.Rol;
 import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.Usuario;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
+import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.io.IOException;
 
@@ -35,18 +37,15 @@ import javax.faces.event.ActionEvent;
 public class DirectorController implements Serializable {
 
     @EJB
-    private com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade ejbFacade;
-
+    private UsuarioRolTrabajogradoFacade ejbFacadeUsuRolTrab;
     @EJB
-    private com.unicauca.tgu.jpacontroller.TrabajodegradoFacade ejbFacadetrabgrad;
-
+    private TrabajodegradoFacade ejbFacadetrabgrad;
     @EJB
-    private com.unicauca.tgu.jpacontroller.UsuarioFacade ejbFacadeusuario;
-    
+    private UsuarioFacade ejbFacadeusuario;
     @EJB
     private TrabajogradoFaseFacade ejbFacadeTraFase;
 
-    private List<FormatoTablaDirector> trabs;
+    private List<TablaPerfil> trabs;
     //int modo;             // 0 para la seccion de trabajos en curso y 1 para trabajos terminados
     private boolean modo;             // 0 para la seccion de trabajos en curso y 1 para trabajos terminados
     private String titulotablaDirector;
@@ -71,7 +70,7 @@ public class DirectorController implements Serializable {
         fecha = new Date();
     }
 
-    public List<FormatoTablaDirector> getTrabsDirector() {
+    public List<TablaPerfil> getTrabsDirector() {
         trabs = new ArrayList();
 
         List<Trabajodegrado> trabstemp;
@@ -87,11 +86,11 @@ public class DirectorController implements Serializable {
         }
 
         int cont;
-        FormatoTablaDirector f = new FormatoTablaDirector();
+        TablaPerfil f;
 
         for (Trabajodegrado t : trabstemp) {
             cont = 0;
-            f = new FormatoTablaDirector();                  //sacamos la informacion general tanto director y los estud.
+            f = new TablaPerfil();                  //sacamos la informacion general tanto director y los estud.
             f.setFecha(t.getUsuarioRolTrabajogradoList().get(0).getFechaasignacion());
             f.setTrabajoGradoId(t.getUsuarioRolTrabajogradoList().get(0).getTrabajoid().getTrabajoid().intValue());
             f.setTrabajoGrado(t.getUsuarioRolTrabajogradoList().get(0).getTrabajoid().getTrabajonombre());
@@ -105,24 +104,24 @@ public class DirectorController implements Serializable {
                     f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());
                 }
             }
-            if (modo == false) {
+            //if (modo == false) {
                 List<TrabajogradoFase> tgfs = t.getTrabajogradoFaseList();
                 int x = 999;
                 for (TrabajogradoFase tg : tgfs) {
                     if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x) {
-                        f.setEstado(tg.getFaseid().getFasenombre());
+                        f.setEstado(tg.getFaseid());
                         x = tg.getFaseid().getFaseorden().intValue();
                     }
                 }
-            } else {
+            /*} else {
                 f.setEstado("Finalizado");
-            }
+            }*/
             trabs.add(f);
         }
         return trabs;
     }
 
-    public void setTrabs(List<FormatoTablaDirector> trabs) {
+    public void setTrabs(List<TablaPerfil> trabs) {
         this.trabs = trabs;
     }
 
@@ -161,21 +160,34 @@ public class DirectorController implements Serializable {
     }
 
     public void crearTG() {
-        Trabajodegrado trab = new Trabajodegrado();
-        trab.setTrabajonombre(nombrenuevoTG.trim());
-        trab.setTrabajoid(BigDecimal.ZERO);
-        ejbFacadetrabgrad.create(trab);
+        try
+        {
+            if(nombrenuevoTG.length() > 0)
+            {
+                Trabajodegrado trab = new Trabajodegrado();
+                trab.setTrabajonombre(nombrenuevoTG.trim());
+                trab.setTrabajoid(BigDecimal.ZERO);
+                ejbFacadetrabgrad.create(trab);
 
-        trab = ejbFacadetrabgrad.findbyNombreTg(nombrenuevoTG.trim());
+                trab = ejbFacadetrabgrad.findbyNombreTg(nombrenuevoTG.trim());
 
-        UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);      //agregando director
-        usuroltg.setRolid(new Rol(BigDecimal.ZERO));
-        usuroltg.setTrabajoid(trab);
-        usuroltg.setPersonacedula(new Usuario(new BigDecimal(iddirector)));
+                UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);      //agregando director
+                usuroltg.setRolid(new Rol(BigDecimal.ZERO));
+                usuroltg.setTrabajoid(trab);
+                usuroltg.setPersonacedula(new Usuario(new BigDecimal(iddirector)));
 
-        ejbFacade.create(usuroltg);
-        nombrenuevoTG = "";
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Completado", "Trabajo de Grado creado con éxito."));
+                ejbFacadeUsuRolTrab.create(usuroltg);
+                nombrenuevoTG = "";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Completado", "Trabajo de Grado creado con éxito."));
+            }
+            else
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Información", "Debe ingresar el nombre del Trabajo de Grado."));
+        
+       }
+        catch(Exception e)
+        {
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+        }
     }
 
     public boolean isModo() {
@@ -205,10 +217,12 @@ public class DirectorController implements Serializable {
         }
 
         TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(iddirector).get(0);
-
+        
+        TrabajodeGradoActual.fase = (Fase) event.getComponent().getAttributes().get("fase");
+        
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
-            context.redirect("../director/fase-presentacion-de-la-idea.xhtml");
+            context.redirect("../director/fase-"+TrabajodeGradoActual.fase.getFaseorden().intValue()+".xhtml");
         } catch (IOException ex) {
             Logger.getLogger(DirectorController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -3,10 +3,15 @@ package com.unicauca.tgu.controllers;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
-import com.unicauca.tgu.FormatosTablas.FormatoTablaJefe;
+import com.unicauca.tgu.FormatosTablas.TablaPerfil;
+import com.unicauca.tgu.entities.Fase;
 import com.unicauca.tgu.entities.Productodetrabajo;
+import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
+import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +33,13 @@ public class CoordinadorController {
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
     @EJB
-    private com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade ejbFacadeUsuRolTg;
+    private UsuarioRolTrabajogradoFacade ejbFacadeUsuRolTg;
     @EJB
-    private com.unicauca.tgu.jpacontroller.UsuarioFacade ejbFacadeusuario;
+    private UsuarioFacade ejbFacadeusuario;
+    @EJB
+    private TrabajogradoFaseFacade ejbFacadeTrabFase;
 
-    private List<FormatoTablaJefe> anteproys;
+    private List<TablaPerfil> anteproys;
     private int modo;    // 0 SIN ASIGNAER EVAL, 1 ASIGNADOS
     private String titulo;
 
@@ -41,7 +48,7 @@ public class CoordinadorController {
         modo = 0;
     }
 
-    public List<FormatoTablaJefe> getAnteproys() {
+    public List<TablaPerfil> getAnteproys() {
 
         anteproys = new ArrayList();
 
@@ -50,14 +57,14 @@ public class CoordinadorController {
         if (tem.size() > 0) {
 
             int cont = 0;
-            FormatoTablaJefe f;
+            TablaPerfil f;
 
             for (Productodetrabajo t : tem) {
                 
                 if(trabajoDeGradoAvalado(t.getProductocontenido())) {
                 
                     cont = 0;
-                    f = new FormatoTablaJefe();                  //sacamos la informacion general tanto jefe depto, director y los estud.
+                    f = new TablaPerfil();                  //sacamos la informacion general tanto jefe depto, director y los estud.
 
                     List<UsuarioRolTrabajogrado> lst = ejbFacadeUsuRolTg.findbytrabajoId(t.getTrabajoid().getTrabajoid().intValue());
 
@@ -82,6 +89,15 @@ public class CoordinadorController {
                                 f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());
                             }
                         }
+                        
+                        List<TrabajogradoFase> lstTrabFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(t.getTrabajoid().getTrabajoid().intValue());
+                        int x = 999;
+                        for (TrabajogradoFase tg : lstTrabFase) {
+                            if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x) {
+                                f.setEstado(tg.getFaseid());
+                                x = tg.getFaseid().getFaseorden().intValue();
+                            }
+                        }
 
                         if (modo == 0) {
                             if (!trabajoDeGradoAsignado(t.getProductocontenido())) {
@@ -90,6 +106,7 @@ public class CoordinadorController {
                         } else if (trabajoDeGradoAsignado(t.getProductocontenido())) {
                             anteproys.add(f);
                         }
+                        
                     }
                 }
             }
@@ -98,7 +115,7 @@ public class CoordinadorController {
         return anteproys;
     }
 
-    public void setAnteproys(List<FormatoTablaJefe> anteproys) {
+    public void setAnteproys(List<TablaPerfil> anteproys) {
         this.anteproys = anteproys;
     }
     
@@ -144,9 +161,11 @@ public class CoordinadorController {
             TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
         }
 
+        TrabajodeGradoActual.fase = (Fase) event.getComponent().getAttributes().get("fase");
+        
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
-            context.redirect("../coordinador/fase-evaluacion-anteproyecto.xhtml");
+            context.redirect("../coordinador/fase-"+TrabajodeGradoActual.fase.getFaseorden().intValue()+".xhtml");
         } catch (IOException ex) {
             Logger.getLogger(DirectorController.class.getName()).log(Level.SEVERE, null, ex);
         }

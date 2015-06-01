@@ -18,8 +18,8 @@
                         <p:menuitem value="inicio" />
                         <p:menuitem value="#{menuController.rolActual}" />
                         <p:menuitem value="Trabajos de Grado" />
-                        <p:menuitem value="Fases del Trabajo de Grado" />
-                        <p:menuitem value="1. Presentación de la Idea" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-presentacion-de-la-idea" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-1" />
+                        <p:menuitem value="1. Presentación de la Idea" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-1" />
                         <p:menuitem value="Ver Formato A" outcome="ver-formato-A" />
                     </p:breadCrumb>   
                 </h:form>
@@ -97,7 +97,9 @@
                                     <p:outputLabel value="#{formatoA.tiempo} meses." style="margin-left: 5px" />
                                 </h:panelGrid>
                                 <br />
-                                <!--<p:outputLabel value="Condiciones de entrega:" style="font-weight:bold" />-->
+                                <p:outputLabel value="Condiciones de entrega" styleClass="subtitulosFormato"  />
+                                <p:outputLabel value="#{formatoA.condiciones}"/>
+                                <br />
                                 <p:outputLabel value="Recursos requeridos:" styleClass="subtitulosFormato"  />
                                 <p:outputLabel value="#{formatoA.recursos}"/>
                                 <br />
@@ -115,7 +117,7 @@
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2" cellpadding="12" style="margin: 0 auto">                                    
-                                    <p:button value="Volver" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-presentacion-de-la-idea" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;" />
+                                    <p:button value="Volver" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-1" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;" />
                                     <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px; width: 120px;" actionListener="#{pDFBean.generarPDF()}" oncomplete="PF('dlgVerRutina').show();" />
                                 </h:panelGrid>
                             </h:panelGrid>

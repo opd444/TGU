@@ -119,7 +119,18 @@ public class TrabajodegradoController implements Serializable {
     public boolean getBtnDiligenciarFormatoF() {
         return verificarProductodeTrabajo(trabajoid.intValue(), 6);
      }
-
+    
+    public boolean getBtnEditarFormatoF() {
+        return !getBtnDiligenciarFormatoF();
+     }
+    
+    public boolean getBtnVerFormatoF() {
+        return getBtnEditarFormatoF();
+     }
+    
+    public boolean getBtnDescargarFormatoF() {
+        return getBtnEditarFormatoF();
+     }
 
     public boolean getBtnDiligenciarAnteproyecto() {
         List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(TrabajodeGradoActual.id, 2);
@@ -335,6 +346,16 @@ public class TrabajodegradoController implements Serializable {
             } else {
                 return true;
             }
+        } else {
+            return true;
+        }
+    }
+    
+    public boolean getBtnEditarRemisionAnteproyecto()
+    {
+        List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 4);
+        if (lstProductos.size() > 0) {
+            return false;
         } else {
             return true;
         }

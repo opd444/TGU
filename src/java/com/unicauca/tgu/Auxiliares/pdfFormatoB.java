@@ -64,8 +64,9 @@ public class pdfFormatoB {
     private int txtelementoConsideradoG;
     private int txtelementoConsideradoH;
     private String txtobservaciones;
-    private Date txtfecha;
     private String txtevaluador;
+     private Date fechaFormato; //  
+    SimpleDateFormat formateador;
 
     private String pdfFileName = "Formato-B.pdf";
     @EJB
@@ -74,6 +75,8 @@ public class pdfFormatoB {
     private UsuarioFacade ejbFacadeUsu;
 
     public pdfFormatoB() {
+        fechaFormato = new Date();
+        formateador = new SimpleDateFormat("EEEE, d 'de' MMMM 'de' yyyy");
     }
 
     public String getPdfFileName() {
@@ -356,8 +359,7 @@ public class pdfFormatoB {
             Paragraph pphFecha = new Paragraph();
             Chunk fechaTitulo = new Chunk("FECHA:", fontTG);
             pphFecha.add(fechaTitulo);
-
-            Chunk fecha = new Chunk(txtfecha.toString(), font);
+            Chunk fecha = new Chunk(formateador.format(fechaFormato), font);
             fecha.setUnderline(0.2f, -2f);
             pphFecha.add(" ");
             pphFecha.add(fecha);
@@ -372,9 +374,10 @@ public class pdfFormatoB {
             pphNomEval.add(nomEval);
             document.add(pphNomEval);
             /**/
+            document.add(new Paragraph("\n"));
             Paragraph pphFirma = new Paragraph();
             Chunk firmaTitulo = new Chunk("FIRMA:", fontTG);
-            Chunk firmaRaya = new Chunk("  ______________________", font);
+            Chunk firmaRaya = new Chunk("  _________________________", font);
             pphFirma.add(firmaTitulo);
             pphFirma.add(firmaRaya);
             document.add(pphFirma);
@@ -438,7 +441,12 @@ public class pdfFormatoB {
                         txtobservaciones = decoded.get("observaciones");
                     }
                     if (decoded.get("fecha") != null) {
-                        txtfecha = new Date();
+                        String fechaAux = decoded.get("fecha");
+                        try {
+                            fechaFormato = formateador.parse(fechaAux);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                     if (decoded.get("evaluador") != null) {
                         txtevaluador = decoded.get("evaluador");

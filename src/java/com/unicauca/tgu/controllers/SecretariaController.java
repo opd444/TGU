@@ -2,12 +2,16 @@ package com.unicauca.tgu.controllers;
 
 import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
-import com.unicauca.tgu.FormatosTablas.FormatoTablaJefe;
-import com.unicauca.tgu.FormatosTablas.FormatoTablaSecretaria;
+import com.unicauca.tgu.FormatosTablas.TablaPerfil;
+import com.unicauca.tgu.entities.Fase;
 import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Usuario;
+import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
+import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +32,13 @@ public class SecretariaController
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
     @EJB
-    private com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade ejbFacadeUsuRolTg;
+    private UsuarioRolTrabajogradoFacade ejbFacadeUsuRolTg;
     @EJB
-    private com.unicauca.tgu.jpacontroller.UsuarioFacade ejbFacadeusuario;
+    private UsuarioFacade ejbFacadeusuario;
+    @EJB
+    private TrabajogradoFaseFacade ejbFacadeTrabFase;
     
-    private List<FormatoTablaSecretaria> anteproys;
+    private List<TablaPerfil> anteproys;
     
     private Usuario secretaria;
     private String titulo;
@@ -50,10 +56,10 @@ public class SecretariaController
         titulo = "Anteproyectos por aprobar";
     }
     
-    public List<FormatoTablaSecretaria> getAnteproyectos()
+    public List<TablaPerfil> getAnteproyectos()
     {
         anteproys = new ArrayList();
-        FormatoTablaSecretaria f;
+        TablaPerfil f;
         int cont;
         List<Productodetrabajo> lstProductos = new ArrayList();
         List<Productodetrabajo> lstAux1 = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_formatoID(4);    //Se obtienen todos los productos con el formato: Acta de remisión. 
@@ -79,7 +85,7 @@ public class SecretariaController
         for(Productodetrabajo t : lstProductos)
         {
             cont = 0;
-            f = new FormatoTablaSecretaria();
+            f = new TablaPerfil();
 
             List<UsuarioRolTrabajogrado> lst = ejbFacadeUsuRolTg.findbytrabajoId(t.getTrabajoid().getTrabajoid().intValue());
             if (lst.size() > 0)
@@ -103,7 +109,15 @@ public class SecretariaController
                         f.setEst2(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
                         f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());
                     }
-                }                
+                }
+                List<TrabajogradoFase> lstTrabFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(t.getTrabajoid().getTrabajoid().intValue());
+                int x = 999;
+                for (TrabajogradoFase tg : lstTrabFase) {
+                    if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x) {
+                        f.setEstado(tg.getFaseid());
+                        x = tg.getFaseid().getFaseorden().intValue();
+                    }
+                }
                 anteproys.add(f);                 
             }
         }
@@ -134,15 +148,17 @@ public class SecretariaController
             TrabajodeGradoActual.director = ejbFacadeusuario.buscarporUsuid(idusu).get(0);
         }
 
+        TrabajodeGradoActual.fase = (Fase) event.getComponent().getAttributes().get("fase");
+        
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
-            context.redirect("../secretaria/fase-evaluacion-anteproyecto.xhtml");
+            context.redirect("../secretaria/fase-"+TrabajodeGradoActual.fase.getFaseorden().intValue()+".xhtml");
         } catch (IOException ex) {
             Logger.getLogger(DirectorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void setAnteproyectos(List<FormatoTablaSecretaria> anteproys) {
+    public void setAnteproyectos(List<TablaPerfil> anteproys) {
         this.anteproys = anteproys;
     }
 

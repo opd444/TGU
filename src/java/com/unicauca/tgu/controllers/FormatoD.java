@@ -317,7 +317,7 @@ public class FormatoD {
             //TODO: Enviar al correo
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato D diligenciado con éxito."));
-            return "fase-evaluacion-anteproyecto";
+            return "fase-3";
         } catch (Exception e) {
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
@@ -332,11 +332,12 @@ public class FormatoD {
             productoActual.setProductocontenido(contenido);
             ejbFacadeProdTrab.edit(productoActual);
 //          TODO: Enviar al correo
-//          JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TrabajodegradoUpdated"));
-            return "fases-trabajo-de-grado";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato D editado con éxito."));
+            return "fase-3";
         } catch (Exception e) {
-//          JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+            
+            
+            return "editar-formato-D";
         }
     }
 }

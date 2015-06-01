@@ -7,9 +7,14 @@ package com.unicauca.tgu.Auxiliares;
 
 import com.unicauca.tgu.controllers.util.JsfUtil;
 import com.unicauca.tgu.entities.Rol;
+import com.unicauca.tgu.entities.Trabajodegrado;
+import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.UsuarioRol;
+import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.RolFacade;
+import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import com.unicauca.tgu.serviciosSimca.ServiciosSimca_Service;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -42,6 +47,10 @@ public class ServiciosSimcaController {
     private RolFacade ejbFacadeRol;
     @EJB
     private UsuarioRolFacade ejbFacadeUsuRol;
+    @EJB
+    private UsuarioRolTrabajogradoFacade ejbFacadeURT;
+    @EJB
+    private TrabajogradoFaseFacade ejbFacadeTrabFase;
 
     private String nombreUsuario;
     private String contrasenia;
@@ -105,7 +114,7 @@ public class ServiciosSimcaController {
                 
                 VistaActual.rol = roles.get(0).getRolnombre();
                 String vistaX = setOutcomePefil(roles.get(0).getRolnombre());
-                FacesContext.getCurrentInstance().getExternalContext().redirect("faces/perfiles/"+vistaX+".xhtml");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("faces/"+vistaX+".xhtml");
                 
             } catch (IOException ex) {
                 Logger.getLogger(ServiciosSimcaController.class.getName()).log(Level.SEVERE, null, ex);
@@ -114,7 +123,7 @@ public class ServiciosSimcaController {
 //            return "newjsf";
             return null;
         } else {
-            JsfUtil.addErrorMessage("Nombre de ususario o Contraseña incorrectos");
+            JsfUtil.addErrorMessage("Nombre de usuario o Contraseña incorrectos");
             return null;
         }
 
@@ -162,19 +171,42 @@ public class ServiciosSimcaController {
     private String setOutcomePefil(String rol) {
         switch (rol) {
             case "Director":
-                return "vista-director";
+                return "perfiles/vista-director";
             case "Estudiante":
-                return "vista-estudiante";
+            {
+                if(ejbFacadeURT.findbyUsuid(usulog.getPersonacedula().intValue()) != null)
+                {
+                    List<UsuarioRolTrabajogrado> list = ejbFacadeURT.findbyUsuid(usulog.getPersonacedula().intValue());
+                    if(list.size() > 0)
+                    {
+                        Trabajodegrado t = list.get(0).getTrabajoid();
+                        List<TrabajogradoFase> lstTrabFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(t.getTrabajoid().intValue());
+                        int x = 2;
+                        for (TrabajogradoFase tg : lstTrabFase) {
+                            if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x)
+                                x = tg.getFaseid().getFaseorden().intValue();
+                        }
+                        if(x==1)
+                            return "perfiles/vista-estudiante"; 
+                        else
+                            return "estudiante/fase-"+x;
+                    }
+                    else
+                        return "perfiles/vista-estudiante";
+                }
+                else
+                    return "perfiles/vista-estudiante";
+            }
             case "Jefe de Departamento":
-                return "vista-jefe-de-departamento";
+                return "perfiles/vista-jefe-de-departamento";
             case "Coordinador de Programa":
-                return "vista-coordinador-de-programa";
+                return "perfiles/vista-coordinador-de-programa";
             case "Evaluador":
-                return "vista-evaluador";
+                return "perfiles/vista-evaluador";
             case "Secretaria General":
-                return "vista-secretaria-general";
+                return "perfiles/vista-secretaria-general";
             case "Jurado":
-                return "vista-jurado";
+                return "perfiles/vista-jurado";
         }
         return null;
     }

@@ -14,25 +14,27 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Inicio" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />                                        
-                        <p:menuitem value="Jefe de Departamento" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />
-                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />      
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-evaluacion-anteproyecto" />
-                        <p:menuitem value="3 Evaluacion del Anteproyecto" />
+                        <p:menuitem value="Inicio" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                        <p:menuitem value="Coordinador" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-coordinador-de-programa.xhtml" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-3" />
+                        <p:menuitem value="3. Evaluación del Anteproyecto" />
                     </p:breadCrumb>
                 </h:form>
             </ui:define>
 
-            <ui:define name="title">                                
+            <ui:define name="title">
+
             </ui:define>
 
-            <ui:define name="body">                                               
+            <ui:define name="body">
                 #{menuController.setOutPerfiles(true)}
-                <h:form>                                                           
+
+                <h:form id="fases">
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        
                             #{trabajodegradoController.trabajo.trabajonombre}
-                        </div>                                         
+                        </div>                 
                         <p:growl id="growl" showDetail="true" life="5000"/>
                         <p:spacer height="25"/>
                         <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado">
@@ -44,22 +46,30 @@
                                 <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
                                 <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
 
-                                <p:button value="Presentación de la Idea" outcome="fase-presentacion-de-la-idea" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px;height: 96px; font-size: 13px;" />                            
-                                <p:button value="Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
-
-                                <p:commandButton type="button" value="Evaluación del Anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" >
+                                <p:button value="Presentación de la Idea" outcome="fase-1" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:button value="Realización del Anteproyecto" outcome="fase-2"  disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:commandButton type="button" value="Evaluación del Anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;">                            
                                     <p:effect type="highlight" event="click" for="pnlEvaluacionAnteproyecto">
                                         <f:param name="mode" value="'show'" />
                                     </p:effect>
                                 </p:commandButton>
-
-                                <p:button value="Ejecución del Trabajo de Grado" outcome="fase-ejecucion-del-trabajo-de-grado" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Ejecución del Trabajo de Grado" outcome="fase-4" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Evaluación del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Finalizado" href="#" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                             </h:panelGrid>
                         </p:panel>      
                         <p:spacer height="25"/>
                         <p:panel id="pnlEvaluacionAnteproyecto" header="3. Evaluación del Anteproyecto" style=" font-size: 14px;" widgetVar="pnlEvaluacionAnteproyecto">
+
+                            <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
+                                <h:outputText value="Anteproyecto: " style="font-weight: bold;" />
+                                <p:button value="#{trabajodegradoController.tituloBtnAsignacionEval}" icon="ui-icon-comment" href="asignar-evaluadores-anteproyecto.xhtml" disabled="#{trabajodegradoController.btnVerAsignacionEval}" style="width: 280px;" />                                
+                                <p:commandButton id="btndesc" value="Descargar" rendered="#{anteproyecto.filedown != null}" style="width: 120px;"
+                                                 ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
+                                                 icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">
+                                    <p:fileDownload value="#{anteproyecto.filedown}" />
+                                </p:commandButton>
+                            </h:panelGrid>
                             <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Formato B (Evaluador 1):" style="font-weight: bold;" />                                                                                                
                                 <p:commandButton value="Ver" icon="ui-icon-comment" actionListener="#{formatoB.btnVerFormatoBEvaluador1()}" style="width: 120px;" disabled="#{trabajodegradoController.btnVerFormatoB1()}" />
@@ -69,9 +79,17 @@
                                 <p:commandButton value="Ver" icon="ui-icon-comment" actionListener="#{formatoB.btnVerFormatoBEvaluador2()}" disabled="#{trabajodegradoController.btnVerFormatoB2()}" style="width: 120px;" />
                                 <p:commandButton id="d2" value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoB2()}" style="width: 120px;" actionListener="#{pdfFormatoB.pdfFormatoBEvaluador2()}" oncomplete="PF('dlgVerRutina').show();"/>
                             </h:panelGrid>
+                            <h:panelGrid columns="4" cellpadding="5" cellspacing="5">
+                                <h:outputText value="Formato D: " style="font-weight: bold;" />
+                                <p:button value="Diligenciar" icon="ui-icon-document" href="diligenciar-formato-D.xhtml" disabled="#{trabajodegradoController.btnDiligenciarRemisionAnteproyecto}" style="width: 120px;" rendered="#{!trabajodegradoController.btnDiligenciarRemisionAnteproyecto}" />                                
+                                <p:button value="Editar" icon="ui-icon-pencil" href="editar-formato-D.xhtml" disabled="#{trabajodegradoController.btnEditarRemisionAnteproyecto}" style="width: 120px;" rendered="#{!trabajodegradoController.btnEditarRemisionAnteproyecto}" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-formato-D.xhtml" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
+                                <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
+                            </h:panelGrid>
+                            
                         </p:panel>
                     </p:panel>
-                </h:form>
+                </h:form> 
                 <h:form id="frmDescargarFormatoA">
                     <p:dialog id="dlgVerRutina" header="Descargar Formato B" widgetVar="dlgVerRutina" modal="true" position="top" resizable="false" closeOnEscape="true">                            
                         <c:if test="#{pdfFormatoB.pdfFileName != 'sin-cargar'}">
@@ -80,7 +98,7 @@
                             </object>   
                         </c:if>
                     </p:dialog>        
-                </h:form> 
+                </h:form>
             </ui:define>
         </ui:composition>
     </body>
