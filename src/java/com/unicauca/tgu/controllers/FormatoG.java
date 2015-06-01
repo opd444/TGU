@@ -13,10 +13,12 @@ import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Rol;
 import com.unicauca.tgu.entities.Trabajodegrado;
+import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.Usuario;
 import com.unicauca.tgu.entities.UsuarioRol;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
+import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
@@ -37,6 +39,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -70,6 +73,11 @@ public class FormatoG {
      */
     // Adicionales
     private Productodetrabajo prodtrab;
+
+    private boolean existeEst1;
+    private boolean existeEst2;
+    private boolean est1Avalado;
+    private boolean est2Avalado;
     //
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
@@ -79,12 +87,18 @@ public class FormatoG {
     private UsuarioRolFacade ejbFacadeUsuRol;
     @EJB
     private UsuarioRolTrabajogradoFacade ejbFacadeUsuRolTrab;
+    @EJB
+    private TrabajogradoFaseFacade ejbFacadeTraFase;
 
     public FormatoG() {
     }
 
     @PostConstruct
     public void init() {
+        existeEst1 = false;
+        existeEst2 = false;
+        est1Avalado = false;
+        est2Avalado = false;
         buscarFormatoA();
     }
 
@@ -112,10 +126,12 @@ public class FormatoG {
             if (decoded.get("idestud1") != null) {
                 int personacedulaEst1 = Integer.valueOf(decoded.get("idestud1"));
                 estudiante1 = ejbFacadeUsu.buscarporUsuid(personacedulaEst1).get(0);
+                existeEst1 = true;
             }
             if (decoded.get("idestud2") != null) {
                 int personacedulaEst2 = Integer.valueOf(decoded.get("idestud2"));
                 estudiante2 = ejbFacadeUsu.buscarporUsuid(personacedulaEst2).get(0);
+                existeEst2 = true;
             }
             if (decoded.get("iddirector") != null) {
                 int personacedulaDir = Integer.valueOf(decoded.get("iddirector"));
@@ -247,9 +263,11 @@ public class FormatoG {
         map.put("titulo", titulo);
         map.put("estudiante1Id", estudiante1.getPersonacedula().toString());
         map.put("estudiante1", est1nomsapes);
+        map.put("estudiante1avalado", String.valueOf(est1Avalado));
         if (estudiante2 != null) {
             map.put("estudiante2Id", estudiante2.getPersonacedula().toString());
             map.put("estudiante2", est2nomsapes);
+            map.put("estudiante2avalado", String.valueOf(est2Avalado));
         }
         map.put("directorId", director.getPersonacedula().toString());
         map.put("director", directornomsapes);
@@ -296,14 +314,14 @@ public class FormatoG {
 
             Servicio_Email se = new Servicio_Email();
             se.setSubject("Formato G del Trabajo de Grado: '" + titulo + "' ha sido diligenciado.");
-            
+
             Usuario secretariaGeneral = buscarSecretariaGeneral();
 
             if (secretariaGeneral != null) {
                 se.setTo(secretariaGeneral.getPersonacorreo());
                 se.enviarDiligenciadoFormatoG(titulo);
             }
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato G diligenciado con éxito."));
             return "fase-ejecucion-del-trabajo-de-grado";
 
@@ -313,19 +331,72 @@ public class FormatoG {
             return "diligenciar-formato-G";
         }
     }
-    
+
     public Usuario buscarSecretariaGeneral() {
         List<UsuarioRol> items = ejbFacadeUsuRol.findAll();
-        for(UsuarioRol item : items) {
+        for (UsuarioRol item : items) {
             // Rolid = 6, Rolnombre = Secretaria General
-            if(item.getRolid().equals(BigInteger.valueOf(6))) {
+            if (item.getRolid().equals(BigInteger.valueOf(6))) {
                 BigInteger personacedula = item.getPersonacedula();
                 return ejbFacadeUsu.buscarporUsuid(personacedula.intValue()).get(0);
             }
         }
         return null;
     }
-    
+
+    public void btnAvalarEst1(TrabajodegradoController mgb) {
+        if (existeEst1) {
+            est1Avalado = true;
+
+            prepararEdicion();
+            String contenido = crearContenidoFormatoG();
+            prodtrab.setProductocontenido(contenido);
+            ejbFacadeProdTrab.edit(prodtrab);
+
+            if (!existeEst2) {
+                actulualizarAlEstadoEvaluacion(mgb);
+                enviarCorreo();
+            }
+        }
+    }
+
+    public void btnAvalarEst2(TrabajodegradoController mgb) {
+        if (existeEst2) {
+            est2Avalado = true;
+
+            prepararEdicion();
+            String contenido = crearContenidoFormatoG();
+            prodtrab.setProductocontenido(contenido);
+            ejbFacadeProdTrab.edit(prodtrab);
+
+            actulualizarAlEstadoEvaluacion(mgb);
+            enviarCorreo();
+        }
+    }
+
+    /**
+     * Enviar correo a docente
+     * Enviar correo a Estudiate 1
+     * Enviar correo a Estudiate 2
+     */
+    public void enviarCorreo() {
+        Servicio_Email se = new Servicio_Email();
+        se.setSubject("El trabajo final: '" + titulo + "' cumple con los requisitos para sustentar.");
+
+        if (director != null) {
+            se.setTo(director.getPersonacorreo());
+            se.enviarActualizarAlEstadoEvaluacion(titulo);
+        }
+        if (estudiante1 != null) {
+            se.setTo(estudiante1.getPersonacorreo());
+            se.enviarActualizarAlEstadoEvaluacion(titulo);
+        }
+        if (estudiante2 != null) {
+            se.setTo(estudiante2.getPersonacorreo());
+            se.enviarActualizarAlEstadoEvaluacion(titulo);
+        }
+    }
+
     public String btnEditar() {
         try {
             String contenido = crearContenidoFormatoG();
@@ -360,7 +431,7 @@ public class FormatoG {
 
     public void prepararEdicion() {
         prepararbtnVerFormatoG();
-    }   
+    }
 
     public void prepararbtnVerFormatoG() {
         List<Productodetrabajo> lstProdTrab = ejbFacadeProdTrab.findAll();
@@ -382,8 +453,14 @@ public class FormatoG {
                 if (decoded.get("estudiante1") != null) {
                     est1nomsapes = decoded.get("estudiante1");
                 }
+                if (decoded.get("estudiante1avalado") != null) {
+                    est1Avalado = Boolean.valueOf(decoded.get("estudiante1avalado"));
+                }
                 if (decoded.get("estudiante2") != null) {
                     est2nomsapes = decoded.get("estudiante2");
+                }
+                if (decoded.get("estudiante2avalado") != null) {
+                    est2Avalado = Boolean.valueOf(decoded.get("estudiante2avalado"));
                 }
                 if (decoded.get("director") != null) {
                     directornomsapes = decoded.get("director");
@@ -517,5 +594,48 @@ public class FormatoG {
     public void handleUnSelectJurado2(UnselectEvent e) {
         jurado2 = null;
         jurado2nomsapes = null;
+    }
+
+    public boolean isExisteEst1() {
+        return existeEst1;
+    }
+
+    public boolean isExisteEst2() {
+        return existeEst2;
+    }
+
+    public boolean isEst1Avalado() {
+        prepararEdicion();
+        return est1Avalado;
+    }
+
+    public boolean isEst2Avalado() {
+        return est2Avalado;
+    }
+
+    public void actulualizarAlEstadoEvaluacion(TrabajodegradoController mgb) {
+        List<TrabajogradoFase> lst = ejbFacadeTraFase.findAll();
+
+        for (int i = 0; i < lst.size(); i++) {
+            if (lst.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+                if (lst.get(i).getFaseid().getFaseid().equals(BigDecimal.valueOf(4))) {
+                    lst.get(i).setEstado(BigInteger.ONE);
+                    ejbFacadeTraFase.edit(lst.get(i));
+
+                }
+                if (lst.get(i).getFaseid().getFaseid().equals(BigDecimal.valueOf(5))) {
+                    lst.get(i).setEstado(BigInteger.ZERO);
+                    ejbFacadeTraFase.edit(lst.get(i));
+
+                }
+            }
+        }
+
+        mgb.incializar();
+        FacesContext context = FacesContext.getCurrentInstance();
+        RequestContext requestContext = RequestContext.getCurrentInstance();
+        context.addMessage("msg", new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Estudiante avalado con éxito."));
+        requestContext.update("formularioavalar");
+
     }
 }

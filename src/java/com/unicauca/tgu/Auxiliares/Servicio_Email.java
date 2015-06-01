@@ -183,4 +183,10 @@ public class Servicio_Email {
                 + "'<strong>Pendiente de asignación de evaluadores</strong>'");
              sendEmail();
     }
+    
+    public void enviarActualizarAlEstadoEvaluacion(String nombretg) {
+        messagebody = String.format(bodyformat,  "El trabajo final: '" + nombretg + "' cumple con los requisitos para sustentar. "
+                     + "el sistema ha habilitado la fase de Evaluación de Trabajo de Grado");
+             sendEmail();
+    }
 }
