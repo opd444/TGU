@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Inicio" outcome="./../perfiles/vista-secretaria-general.xhtml" />                                        
+                        <p:menuitem value="Secretaria General" outcome="./../perfiles/vista-secretaria-general.xhtml" />
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-secretaria-general.xhtml" />      
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-ejecucion-del-trabajo-de-grado" />
+                        <p:menuitem value="4. Ejecución del Trabajo de Grado" />
+                    </p:breadCrumb>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">                
+            </ui:define>
+
+            <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
+                <h:form id="formularioavalar" >
+                    <p:panel styleClass="paneltrabajo" >
+                        <div class="tituloContenido">                        
+                            #{trabajodegradoController.trabajo.trabajonombre}
+                        </div>                                         
+                        <p:growl id="growl" showDetail="true" life="5000"/>
+                        <p:spacer height="25"/>
+                        <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado">
+                            <h:panelGrid columns="6" cellpadding="1" style="margin: 0 auto;">
+                                <p:graphicImage value="../resources/img/1.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/2.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/3.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/4.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
+
+                                <p:button value="Presentación de la Idea" outcome="fase-presentacion-de-la-idea" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px;height: 96px; font-size: 13px;" />                            
+                                <p:button value="Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Anteproyecto" outcome="fase-evaluacion-anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+
+                                <p:button value="Ejecución del Trabajo de Grado" outcome="fase-ejecucion-del-trabajo-de-grado" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" />                                
+
+                                <p:button value="Evaluación del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Finalizado" href="#" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                            </h:panelGrid>                        
+                        </p:panel>
+                        <p:spacer height="25"/>
+                        <p:panel id="pnlEjecucionDelTrabajoDeGrado" header="4. Ejecución del Trabajo de Grado" style=" font-size: 14px;" widgetVar="pnlEjecucionDelTrabajoDeGrado">
+                            <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
+                                <h:outputText value="Formato G:" style="font-weight: bold;" />
+                                <p:button value="Ver" icon="ui-icon-comment" outcome="/vistas-documentos/ver-formato-G.xhtml" disabled="#{trabajodegradoController.btnVerFormatoG}" style="width: 120px;" /> 
+                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnDescargarFormatoG}" style="width: 120px;" />
+                            </h:panelGrid>
+
+                            <p:separator style="border-color: white !important;" />
+
+                            <p:panel header="Avalar el estado de los requisitos de los estudiantes a sustentar" >
+                                <h:panelGrid columns="3" cellpadding="5" cellspacing="5" >
+                                    <h:outputText value="Estudiante 1:" style="font-weight: bold;" />
+                                    <h:outputText value="#{formatoG.est1nomsapes}" style="font-weight: bold;" />
+                                    <p:commandButton id="btnAvalEst1" value="Avalar" onclick="PF('Avalar1').show()" style="width: 120px;" disabled="#{!formatoG.existeEst1}" />
+
+                                    <h:outputText value="Estudiante 2:" style="font-weight: bold;" />
+                                    <h:outputText value="#{formatoG.est2nomsapes}" style="font-weight: bold;" />
+                                    <p:commandButton id="btnAvalEst2" value="Avalar" onclick="PF('Avalar2').show()" style="width: 120px;" disabled="#{!formatoG.existeEst2}" />
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:panel>
+                    </p:panel>
+                    
+                    <p:dialog header="Avalar Estudiante 1: #{formatoG.est1nomsapes}" showEffect="scale" modal="true"  widgetVar="Avalar1" resizable="false">
+                        <br />
+                        <p:outputLabel value="¿El Estudiante 1: #{formatoG.est1nomsapes} cumple con los requisitos para sustentar?"/>
+                        <br /><br />
+                        <h:panelGrid columns="2" cellspacing="10" cellpadding="10" style="margin: 0 auto">
+                            <p:commandButton id="btnAceptar1" value="Si" icon="ui-icon-check" action="#{formatoG.btnAvalarEst1(trabajodegradoController)}" oncomplete="PF('Avalar1').hide()" />
+                            <p:commandButton id="btnCancelar1" value="No" icon="ui-icon-cancel" onclick="PF('Avalar1').hide()" />
+                        </h:panelGrid>
+                    </p:dialog>
+                    
+                    <p:dialog header="Avalar Estudiante 2: #{formatoG.est2nomsapes}" showEffect="scale" modal="true"  widgetVar="Avalar2" resizable="false">
+                        <br />
+                        <p:outputLabel value="¿El Estudiante 2: #{formatoG.est2nomsapes} cumple con los requisitos para sustentar?"/>
+                        <br /><br />
+                        <h:panelGrid columns="2" cellspacing="10" cellpadding="10" style="margin: 0 auto">
+                            <p:commandButton id="btnAceptar2" value="Si" icon="ui-icon-check" action="#{formatoG.btnAvalarEst2(trabajodegradoController)}" />
+                            <p:commandButton id="btnCancelar2" value="No" icon="ui-icon-cancel" onclick="PF('Avalar2').hide()"/>
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
