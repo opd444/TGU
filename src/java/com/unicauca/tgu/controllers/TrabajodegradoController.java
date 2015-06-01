@@ -86,7 +86,8 @@ public class TrabajodegradoController implements Serializable {
         }
         return true;
     }
-
+    
+     
     public boolean getBtnVerRevisionFormatoA() {
         return !verificarProductodeTrabajo(trabajoid.intValue(), 1);
     }
@@ -114,6 +115,11 @@ public class TrabajodegradoController implements Serializable {
             return true;
         }
     }
+    
+    public boolean getBtnDiligenciarFormatoF() {
+        return verificarProductodeTrabajo(trabajoid.intValue(), 6);
+     }
+
 
     public boolean getBtnDiligenciarAnteproyecto() {
         List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(TrabajodeGradoActual.id, 2);

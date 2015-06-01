@@ -63,8 +63,8 @@
                                 <p:outputLabel styleClass="subtitulosFormato" value="Fecha: *" />
                                 <p:calendar navigator="true" value="#{actaSecretariaController.fechaact}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." />                              
 
-                                <p:outputLabel styleClass="subtitulosFormato" value="Resultado: *"/>
-                                <p:selectOneRadio id="aprobado" value="#{actaSecretariaController.resultado}">
+                                <p:outputLabel styleClass="subtitulosFormato" value="Resultado: *" for="aprobado"/>
+                                <p:selectOneRadio id="aprobado" value="#{actaSecretariaController.resultado}" required="true">
                                     <f:selectItem itemLabel="Aprobado" itemValue="1" />
                                     <f:selectItem itemLabel="No aprobado" itemValue="0" />
                                 </p:selectOneRadio>

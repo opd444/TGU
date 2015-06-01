@@ -69,7 +69,7 @@ public class Anteproyecto {
     private String rutaarch;
     private boolean archivomodificado = false;
     private Productodetrabajo anteproyactual;
-    private final String directorioanteproyectos = "D:\\Archivos_TGU\\Anteproyectos\\";
+    private String directorioanteproyectos;
     private Usuario doc1;
     private Usuario doc2;
 
@@ -79,6 +79,7 @@ public class Anteproyecto {
     @PostConstruct
     public void init() {
 
+        directorioanteproyectos = "D:\\Archivos_TGU\\Anteproyectos\\"+TrabajodeGradoActual.nombreTg+"\\";
         List<Productodetrabajo> lst = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 2);
         if (lst.size() > 0) {
             Gson gson = new Gson();
@@ -196,7 +197,17 @@ public class Anteproyecto {
         return filedown;
     }
 
-    public void copiarArchivo() throws FileNotFoundException, IOException {
+    public void copiarArchivo() throws FileNotFoundException, IOException, Exception {
+       
+        File f = new File(directorioanteproyectos);
+        Exception IOException = null;
+
+        if (!f.exists()) {
+            if (!f.mkdirs()) {
+                throw IOException;
+            }
+        }
+        
         OutputStream out = new FileOutputStream(new File(directorioanteproyectos + file.getFileName()));
         InputStream in = file.getInputstream();
 
@@ -300,9 +311,8 @@ public class Anteproyecto {
                 List<UsuarioRolTrabajogrado> lst = ejbFacadeUsuRolTrab.findAll();
                 int numFormatosB = 0;
 
-                for (int i = 0; i < lst.size(); i++) {
-                    if (lst.get(i).getRolid().getRolid().equals(BigDecimal.valueOf(4))
-                            && lst.get(i).getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
+                for (UsuarioRolTrabajogrado lst1 : lst) {
+                    if (lst1.getRolid().getRolid().equals(BigDecimal.valueOf(4)) && lst1.getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
                         numFormatosB += 1;
                     }
                 }
@@ -348,7 +358,7 @@ public class Anteproyecto {
                 return "fase-realizacion-anteproyecto";
             }
 
-        } catch (JsonSyntaxException | NumberFormatException | ELException | IOException e) {
+        } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
             return "editar-anteproyecto";
         }
