@@ -47,11 +47,11 @@
                     </div>
                     <p:spacer height="30"/>
                     <h:form enctype="multipart/form-data">
-                        <p:growl id="growl" showDetail="true" life="5000"/>
+                        <p:growl id="growl" showDetail="false" life="5000"/>
                         <p:wizard backLabel="Anterior" nextLabel="Siguiente" style="font-size: 14px;">
                             <p:tab id="paso1" title="Paso 1">
                                 <p:panel header="Campos con * son obligatorios">
-                                    <p:messages />
+                                    <p:growl id="growl1" showDetail="false" life="5000"/>
                                     <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="12">
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Titulo del trabajo de grado: *"> </p:outputLabel>
@@ -75,7 +75,7 @@
 
                             <p:tab id="paso2" title="Paso 2">
                                 <p:panel header="Campos con * son obligatorios">
-                                     <p:messages />
+                                    <p:growl id="growl2" showDetail="false" life="5000"/>
                                     <h:panelGrid style="margin: 0 auto;" columnClasses="label, value" cellpadding="12" columns="2">
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Se cumplen las condiciones de entrega?:" for="conds"/>
@@ -92,7 +92,7 @@
 
                                         <p:outputLabel styleClass="subtitulosFormato" value="Trabajo de Grado *" />
                                         <p:column>
-                                            <p:fileUpload id="trabgrad" required="true" fileUploadListener="#{formatoF.handleFileUpload}" mode="advanced" uploadLabel="Actualizar" cancelLabel="Cancelar" multiple="false"
+                                            <p:fileUpload id="trabgrad" required="true" fileUploadListener="#{formatoF.handleFileUpload}" mode="advanced" uploadLabel="Subir" cancelLabel="Cancelar" multiple="false"
                                                           allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf|rar|zip|tar)$/" sizeLimit="31457280" label="Examinar..." update="nombarchtrab"
                                                           invalidFileMessage="Tipo de Archivo no Valido, Agregue un archivo word,pdf o comprimido" 
                                                           invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" validatorMessage="Debe adjuntar el archivo de trabajo de grado." />
@@ -101,7 +101,7 @@
                                         
                                         <p:outputLabel styleClass="subtitulosFormato" value="Anexos *" />
                                         <p:column>
-                                            <p:fileUpload id="anexos" required="true" fileUploadListener="#{formatoF.handleFileUpload}" mode="advanced" uploadLabel="Actualizar" cancelLabel="Cancelar" multiple="false"
+                                            <p:fileUpload id="anexos" required="true" fileUploadListener="#{formatoF.handleFileUpload}" mode="advanced" uploadLabel="Subir" cancelLabel="Cancelar" multiple="false"
                                                           allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf|rar|zip|tar)$/" sizeLimit="31457280" label="Examinar..." update="nombarchanex"
                                                           invalidFileMessage="Tipo de Archivo no Valido, Agregue un archivo word,pdf o comprimido" 
                                                           invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" validatorMessage="Debe adjuntar el archivo de anexos." />
@@ -110,7 +110,7 @@
                                        
                                         <p:outputLabel styleClass="subtitulosFormato" value="Articulos *" />
                                         <p:column>
-                                            <p:fileUpload id="articulos" required="true" fileUploadListener="#{formatoF.handleFileUpload}" mode="advanced" uploadLabel="Actualizar" cancelLabel="Cancelar" multiple="false"
+                                            <p:fileUpload id="articulos" required="true" fileUploadListener="#{formatoF.handleFileUpload}" mode="advanced" uploadLabel="Subir" cancelLabel="Cancelar" multiple="false"
                                                           allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf|rar|zip|tar)$/" sizeLimit="31457280" label="Examinar..." update="nombarchart"
                                                           invalidFileMessage="Tipo de Archivo no Valido, Agregue un archivo word,pdf o comprimido" 
                                                           invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" validatorMessage="Debe adjuntar el archivo de articulos." />

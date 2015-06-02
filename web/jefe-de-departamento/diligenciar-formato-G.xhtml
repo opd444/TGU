@@ -16,8 +16,8 @@
                         <p:menuitem value="Inicio" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />                                        
                         <p:menuitem value="Jefe de Departamento" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />
                         <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-jefe-de-departamento.xhtml" />      
-                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-4" />
-                        <p:menuitem value="4. Ejecución del Trabajo de Grado" outcome="fase-4" />
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-5" />
+                        <p:menuitem value="5. Evaluación del Trabajo de Grado" outcome="fase-5" />
                         <p:menuitem value="Diligenciar Formato G" />
                     </p:breadCrumb>
                 </h:form>
@@ -34,15 +34,15 @@
                     </div>
                     <p:spacer height="30"/>
                     <h:form>
-                        <p:growl id="growl" showDetail="true" life="5000"/>
+                        <p:growl id="growl" showDetail="false" life="5000"/>
                         <p:wizard backLabel="Anterior" nextLabel="Siguiente" style="font-size: 14px;">
                             <p:tab id="paso1" title="Paso 1">
                                 <p:panel header="Campos con * son obligatorios">
-                                    <p:messages />
+                                    <p:growl id="growl1" showDetail="false" life="5000"/>
                                     <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="5">
                                         
                                         <p:outputLabel styleClass="subtitulosFormato" value="Departamento: *"> </p:outputLabel>
-                                        <p:inputText style="font-weight: bold;" value="#{formatoG.departamento}" required="true" requiredMessage="Por favor ingrese el Departamento." size="45"> </p:inputText>
+                                        <p:inputText value="#{formatoG.departamento}" required="true" requiredMessage="Por favor ingrese el Departamento." size="45"> </p:inputText>
 
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />                                        
                                         <p:outputLabel styleClass="subtitulosFormato" value="Titulo:"> </p:outputLabel>
@@ -50,15 +50,15 @@
 
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />                                        
                                         <p:outputLabel styleClass="subtitulosFormato" value="Estudiante 1:"> </p:outputLabel>
-                                        <p:outputLabel styleClass="subtitulosFormato" style="font-weight: bold;" value="#{formatoG.est1nomsapes}" />
+                                        <p:outputLabel value="#{formatoG.est1nomsapes}" />
 
-                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />                                        
-                                        <p:outputLabel styleClass="subtitulosFormato" value="Estudiante 2:"> </p:outputLabel>
-                                        <p:outputLabel styleClass="subtitulosFormato" style="font-weight: bold;" value="#{formatoG.est2nomsapes}" />
+                                        <p:separator rendered="#{formatoG.existeEst2}" style="border-color: white !important;" /><p:separator rendered="#{formatoG.existeEst2}" style="border-color: white !important;" />                                        
+                                        <p:outputLabel rendered="#{formatoG.existeEst2}" styleClass="subtitulosFormato" value="Estudiante 2:"> </p:outputLabel>
+                                        <p:outputLabel rendered="#{formatoG.existeEst2}" value="#{formatoG.est2nomsapes}" />
 
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />                                        
                                         <p:outputLabel styleClass="subtitulosFormato" value="Director:"> </p:outputLabel>
-                                        <p:outputLabel styleClass="subtitulosFormato" style="font-weight: bold;" value="#{formatoG.directornomsapes}" />
+                                        <p:outputLabel value="#{formatoG.directornomsapes}" />
 
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
                                         <p:outputLabel styleClass="subtitulosFormato" value="Jurado sugerido 1: *"> </p:outputLabel>
@@ -112,11 +112,11 @@
                             </p:tab>
                             <p:tab id="paso2" title="Paso 2">
                                 <p:panel header="Campos con * son obligatorios">
-                                    <p:messages />
+                                    <p:growl id="growl2" showDetail="false" life="5000"/>
                                     <h:panelGrid cellpadding="5">
                                         <p:separator style="border-color: white !important;" />
-                                        <p:outputLabel styleClass="subtitulosFormato" value="Observaciones: *"> </p:outputLabel>
-                                        <p:inputTextarea value="#{formatoG.observaciones}" required="true" label="Observaciones" styleClass="txtareaform" requiredMessage="Debe ingresar las observaciones."/>
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Observaciones:" > </p:outputLabel>
+                                        <p:inputTextarea value="#{formatoG.observaciones}" styleClass="txtareaform" />
                                         
                                         <p:separator style="border-color: white !important;" />
                                         <p:column>
@@ -172,12 +172,10 @@
                                 </p:panel>
                             </p:tab>                            
                         </p:wizard>
-                        <p:button value="Cancelar" outcome="fase-4" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
+                        <p:button value="Cancelar" outcome="fase-5" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
                     </h:form>
                 </p:panel>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

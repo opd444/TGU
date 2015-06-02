@@ -36,15 +36,11 @@
 
                     <h:form enctype="multipart/form-data">
                         <p:panel header="Campos con * son obligatorios" style="width: 100%; font-size: 14px;" >
-                            <p:growl id="growl" showDetail="true" life="5000"/>
-                            <p:messages/>
-
+                            <p:growl id="growl" showDetail="false" life="5000"/>
                             <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="15" >
                                 
                                 <p:outputLabel styleClass="subtitulosFormato" value="Número de acta de la reunión: *" />
-                                <p:inputText value="#{revisionIdeaController.numActa}" required="true" label="Numero de acta" validatorMessage="Este número de acta ya existe." size="4" requiredMessage="Debe ingresar el número de acta.">
-                                    <f:convertNumber integerOnly="true" type="number" />
-                                </p:inputText >
+                                <p:inputText value="#{revisionIdeaController.numActa}" required="true" label="Numero de acta" size="4" requiredMessage="Debe ingresar el número de acta." />
                                 
                                 <p:outputLabel styleClass="subtitulosFormato" value="Titulo del trabajo de grado: *" />
                                 <p:outputLabel value="#{revisionIdeaController.nombretg}" style="font-weight: bold;" />
@@ -66,8 +62,11 @@
                                 </p:selectOneRadio>
                                 <p:outputLabel styleClass="subtitulosFormato" value="Observaciones:" />
                                 <p:inputTextarea cols="60" rows="3" value="#{revisionIdeaController.observaciones}"/>
+                                
+                                <p:outputLabel styleClass="subtitulosFormato" value="Fecha: *"> </p:outputLabel>
+                                <p:calendar navigator="true" value="#{revisionIdeaController.fecha}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" maxdate="#{revisionIdeaController.today}" requiredMessage="Debe ingresar la fecha en que diligencia este formato." />
                             </h:panelGrid>
-                            
+                            <p:spacer height="10"/>
                             <h:panelGrid columns="2" style="margin: 0 auto;" cellpadding="8">
                                 <p:commandButton update="growl" value="Editar" action="#{revisionIdeaController.editar()}" icon="ui-icon-pencil"/>
                                 <p:button value="Cancelar"  icon="ui-icon-cancel" outcome="fase-1"/>

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
@@ -16,15 +11,17 @@ import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.Usuario;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
-import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,10 +33,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-/**
- *
- * @author seven
- */
 @ManagedBean
 @SessionScoped
 public class FormatoB {
@@ -69,17 +62,13 @@ public class FormatoB {
     private String evaluador;
     // Adicionales
     private String usunomEvaluador;
-
     private Productodetrabajo prodtrab;
-
     private String aprobado;
 
     @EJB
     private ProductodetrabajoFacade ejbFacadeProdTrab;
     @EJB
     private UsuarioFacade ejbFacadeUsu;
-    @EJB
-    private TrabajodegradoFacade ejbFacadeTrabGrad;
     @EJB
     private UsuarioRolTrabajogradoFacade ejbFacadeUsuroltrab;
 
@@ -136,6 +125,7 @@ public class FormatoB {
             if (decoded.get("nombredirector") != null) {
                 director = decoded.get("nombredirector");
             }
+                        
             elementoConsideradoA = 0;
             elementoConsideradoB = 0;
             elementoConsideradoC = 0;
@@ -363,7 +353,7 @@ public class FormatoB {
 
         } catch (Exception e) {
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocurrio un problema al efectuar dicha operación.", ""));
             return "diligenciar-formato-B";
         }
     }
@@ -408,7 +398,7 @@ public class FormatoB {
 
         } catch (Exception e) {
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocurrio un problema al efectuar dicha operación.", ""));
             return "editar-formato-B";
         }
     }
@@ -544,7 +534,12 @@ public class FormatoB {
                         observaciones = decoded.get("observaciones");
                     }
                     if (decoded.get("fecha") != null) {
-                        fecha = new Date();
+                        SimpleDateFormat formateador = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+                        try {
+                            fecha = (Date) formateador.parse(decoded.get("fecha"));
+                        } catch (ParseException ex) {
+                            Logger.getLogger(FormatoA.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                     if (decoded.get("evaluador") != null) {
                         evaluador = decoded.get("evaluador");
@@ -553,5 +548,8 @@ public class FormatoB {
                 }
             }
         }
+    }
+    public Date getToday() {
+        return new Date();
     }
 }

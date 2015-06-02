@@ -34,11 +34,11 @@
                     </div>
                     <p:spacer height="30"/>
                     <h:form>
-                        <p:growl id="growl" showDetail="true" life="5000"/>
+                        <p:growl id="growl" showDetail="false" life="5000"/>
                         <p:wizard backLabel="Anterior" nextLabel="Siguiente" style="font-size: 14px;">
                             <p:tab id="paso1" title="Paso 1">
                                 <p:panel header="Campos con * son obligatorios">
-                                    <p:messages />
+                                    <p:growl id="growl1" showDetail="false" life="5000"/>
                                     <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="5">
 
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
@@ -59,7 +59,7 @@
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
                                         
                                         <p:outputLabel styleClass="subtitulosFormato" value="Linea de desarrollo: *"> </p:outputLabel>
-                                        <p:inputTextarea value="#{formatoD.lineaDesarrollo}" label="Linea" rows="3" cols="55" />
+                                        <p:inputTextarea value="#{formatoD.lineaDesarrollo}" label="Linea" rows="3" cols="55" required="true" requiredMessage="Debe ingresar la linea de desarrollo." />
 
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
                                     </h:panelGrid>
@@ -68,14 +68,16 @@
 
                             <p:tab id="paso2" title="Paso 2">
                                 <p:panel header="Campos con * son obligatorios" >
-                                    <p:messages />
+                                    <p:growl id="growl2" showDetail="false" life="5000"/>
                                     <br />
-                                    <p:outputLabel styleClass="subtitulosFormato" value="ELEMENTOS EVALUADOS"/>
+                                    <h:panelGrid style="margin: 0 auto;">
+                                        <p:outputLabel styleClass="subtitulosFormato" value="ELEMENTOS EVALUADOS"/>
+                                    </h:panelGrid>
                                     <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="5">
                                         <p:separator style="border-color: white !important;" />
                                         <p:separator style="border-color: white !important;" />
 
-                                        <p:outputLabel styleClass="subtitulosFormato" value="Estructura (¿Consta de las partes pertinentes?):" />                               
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Estructura (¿Consta de las partes pertinentes?): *" />                               
                                         <p:selectOneRadio id="aprobadoEst" value="#{formatoD.elementoConsideradoA}">  
                                             <f:selectItem itemLabel="Si" itemValue="1" />
                                             <f:selectItem itemLabel="No" itemValue="0" />
@@ -84,7 +86,7 @@
                                         <p:separator style="border-color: white !important;" />
                                         <p:separator style="border-color: white !important;" />
 
-                                        <p:outputLabel styleClass="subtitulosFormato" value="Concepto del Departamento (¿Fue satisfactorio?):"/>
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Concepto del Departamento (¿Fue satisfactorio?): *"/>
                                         <p:selectOneRadio id="aprobadoDept" value="#{formatoD.elementoConsideradoB}">                                        
                                             <f:selectItem itemLabel="Si" itemValue="1" />
                                             <f:selectItem itemLabel="No" itemValue="0" />
@@ -93,7 +95,7 @@
                                         <p:separator style="border-color: white !important;" />
                                         <p:separator style="border-color: white !important;" />
 
-                                        <p:outputLabel styleClass="subtitulosFormato" value="Concepto de los Evaluadores (¿Fue satisfactorio?):"/>
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Concepto de los Evaluadores (¿Fue satisfactorio?): *"/>
                                         <p:selectOneRadio id="aprobadoEval" value="#{formatoD.elementoConsideradoC}">                                        
                                             <f:selectItem itemLabel="Si" itemValue="1" />
                                             <f:selectItem itemLabel="No" itemValue="0" />
@@ -108,11 +110,12 @@
                             
                             <p:tab id="paso3" title="Paso 3">
                                 <p:panel header="Campos con * son obligatorios" >
+                                    <p:growl id="growl3" showDetail="false" life="5000"/>
                                     <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="5">
                                         <p:separator style="border-color: white !important;" />
                                         <p:separator style="border-color: white !important;" />
                                         
-                                        <p:outputLabel styleClass="subtitulosFormato" value="Concepto general"/>                                        
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Concepto general: *"/>                                        
                                         <p:selectOneRadio id="aprobadoGeneral" value="#{formatoD.elementoConsideradoD}">                                        
                                             <f:selectItem itemLabel="Aprobado" itemValue="1" />
                                             <f:selectItem itemLabel="No Aprobado" itemValue="0" />

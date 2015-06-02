@@ -174,25 +174,16 @@ public class ServiciosSimcaController {
                 return "perfiles/vista-director";
             case "Estudiante":
             {
-                if(ejbFacadeURT.findbyUsuid(usulog.getPersonacedula().intValue()) != null)
+                List<UsuarioRolTrabajogrado> list = ejbFacadeURT.findByUsuid_Rolid(usulog.getPersonacedula().intValue(), 1);
+                if(!list.isEmpty())
                 {
-                    List<UsuarioRolTrabajogrado> list = ejbFacadeURT.findbyUsuid(usulog.getPersonacedula().intValue());
-                    if(list.size() > 0)
-                    {
-                        Trabajodegrado t = list.get(0).getTrabajoid();
-                        List<TrabajogradoFase> lstTrabFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(t.getTrabajoid().intValue());
-                        int x = 2;
-                        for (TrabajogradoFase tg : lstTrabFase) {
-                            if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x)
-                                x = tg.getFaseid().getFaseorden().intValue();
-                        }
-                        if(x==1)
-                            return "perfiles/vista-estudiante"; 
-                        else
-                            return "estudiante/fase-"+x;
+                    List<TrabajogradoFase> lstTrabFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(list.get(0).getTrabajoid().getTrabajoid().intValue());
+                    int x = 999;
+                    for (TrabajogradoFase tg : lstTrabFase) {
+                        if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x)
+                            x = tg.getFaseid().getFaseorden().intValue();
                     }
-                    else
-                        return "perfiles/vista-estudiante";
+                    return "estudiante/fase-"+x;
                 }
                 else
                     return "perfiles/vista-estudiante";

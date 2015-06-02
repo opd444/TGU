@@ -15,12 +15,15 @@ import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Calendar;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -57,7 +60,8 @@ public class FormatoD {
     private int idCoord;
 
     public FormatoD() {
-        
+        fecha = new Date();
+        idCoord = -1;
     }
     
     @PostConstruct
@@ -120,12 +124,15 @@ public class FormatoD {
             if (decoded.get("observaciones") != null) {
                 observaciones = decoded.get("observaciones");
             }
+            if (decoded.get("fecha") != null) {
+                SimpleDateFormat formateador = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+                try {
+                    fecha = (Date) formateador.parse(decoded.get("fecha"));
+                } catch (ParseException ex) {
+                    Logger.getLogger(FormatoA.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
-        Calendar c = new GregorianCalendar();
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        fecha = c.getTime();
     }
     
     public String getTitulo() {
@@ -265,7 +272,7 @@ public class FormatoD {
     }
     
     public String obtenerDatos() {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap();
 
         map.put("titulo", titulo);
         map.put("estudiante1", estudiante1);
@@ -294,19 +301,19 @@ public class FormatoD {
         try {
 
             String contenido = obtenerDatos();
+            
             Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
-
-            UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);
-            Usuario usuCoordinador = null;
-
-            if (idCoord == -1) {
-                usuCoordinador = ejbFacadeUsu.find((int) idCoord);
-
-                usuroltg.setRolid(new Rol(BigDecimal.valueOf(3)));                            //agregando al Coordinador
+            
+            if (idCoord != -1) {
+                UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);
                 usuroltg.setTrabajoid(trab);
-                usuroltg.setPersonacedula(new Usuario(usuCoordinador.getPersonacedula()));
-
-                ejbFacadeUsuroltrab.create(usuroltg);
+                Usuario usuCoordinador = ejbFacadeUsu.find(new BigDecimal(idCoord));
+                
+                if(usuCoordinador != null) {
+                    usuroltg.setRolid(new Rol(BigDecimal.valueOf(3)));                            //agregando al Coordinador
+                    usuroltg.setPersonacedula(usuCoordinador);
+                    ejbFacadeUsuroltrab.create(usuroltg);
+                }
             }
 
             Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.ZERO, contenido);
@@ -320,7 +327,7 @@ public class FormatoD {
             return "fase-3";
         } catch (Exception e) {
             
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocurrio un problema al efectuar dicha operación.", ""));
             return "diligenciar-formato-D";
         }
     }
@@ -335,9 +342,12 @@ public class FormatoD {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato D editado con éxito."));
             return "fase-3";
         } catch (Exception e) {
-            
-            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocurrio un problema al efectuar dicha operación.", ""));
             return "editar-formato-D";
         }
+    }
+    
+    public Date getToday() {
+        return new Date();
     }
 }

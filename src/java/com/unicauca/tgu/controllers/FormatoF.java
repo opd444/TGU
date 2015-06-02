@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -100,7 +101,7 @@ public class FormatoF {
         }
 
         fecha = new Date();
-        directorioformatoF = "D:\\Archivos_TGU\\FormatoF\\" + TrabajodeGradoActual.nombreTg + "\\";
+        directorioformatoF = "D:\\Archivos_TGU\\Monografias\\" + TrabajodeGradoActual.nombreTg + "\\";
 
         FacesContext context = FacesContext.getCurrentInstance();
         ServiciosSimcaController s = (ServiciosSimcaController) context.getApplication().evaluateExpressionGet(context, "#{serviciosSimcaController}", ServiciosSimcaController.class);
@@ -152,8 +153,9 @@ public class FormatoF {
             }
 
             if (decoded.containsKey("fecha")) {
+                SimpleDateFormat formateador = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
                 try {
-                    fecha = new SimpleDateFormat("dd-MM-yyyy").parse(decoded.get("fecha"));
+                    fecha = (Date) formateador.parse(decoded.get("fecha"));
                 } catch (ParseException ex) {
                     Logger.getLogger(FormatoA.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -408,6 +410,8 @@ public class FormatoF {
         map.put("cumpleEntrega", cumpleEntrega);
 
         map.put("obs", obs);
+        map.put("fecha", fecha.toString());
+        
         if (archivomodificadoanex) {
             map.put("rutaarchanexos", directorioformatoF + anexos.getFileName());
             map.put("nombarchanex", anexos.getFileName());
@@ -469,7 +473,7 @@ public class FormatoF {
 
         } catch (Exception e) {
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocurrio un problema al efectuar dicha operación.", ""));
             return "diligenciar-formato-F";
         }
     }
@@ -516,7 +520,7 @@ public class FormatoF {
             return "fase-4";
 
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocurrio un problema al efectuar dicha operación.", ""));
             return "editar-formato-F";
         }
     }

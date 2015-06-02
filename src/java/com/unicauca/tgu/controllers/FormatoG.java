@@ -8,6 +8,7 @@ package com.unicauca.tgu.controllers;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.unicauca.tgu.Auxiliares.Servicio_Email;
+import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
@@ -25,10 +26,13 @@ import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -68,6 +72,8 @@ public class FormatoG {
     private String jurado2nomsapes;
     private String observaciones;
     private Date fecha;
+    
+    private int idJefeDepto;
     /**
      * Creates a new instance of FormatoG
      */
@@ -91,15 +97,20 @@ public class FormatoG {
     private TrabajogradoFaseFacade ejbFacadeTraFase;
 
     public FormatoG() {
+        fecha = new Date();
     }
 
     @PostConstruct
     public void init() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ServiciosSimcaController s =  (ServiciosSimcaController)context.getApplication().evaluateExpressionGet(context, "#{serviciosSimcaController}", ServiciosSimcaController.class);
+        idJefeDepto = s.getUsulog().getPersonacedula().intValue();
         existeEst1 = false;
         existeEst2 = false;
         est1Avalado = false;
         est2Avalado = false;
         buscarFormatoA();
+        prepararEdicion();
     }
 
     public void buscarFormatoA() {
@@ -147,8 +158,6 @@ public class FormatoG {
             if (decoded.get("nombredirector") != null) {
                 directornomsapes = decoded.get("nombredirector");
             }
-
-            fecha = new Date();
         }
     }
 
@@ -288,25 +297,7 @@ public class FormatoG {
         try {
             String contenido = crearContenidoFormatoG();
             Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
-
-            UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);
-
-            if (jurado1 != null) {
-                usuroltg.setRolid(new Rol(BigDecimal.valueOf(7)));                            //agregando al Jurado 1
-                usuroltg.setTrabajoid(trab);
-                usuroltg.setPersonacedula(new Usuario(jurado1.getPersonacedula()));
-
-                ejbFacadeUsuRolTrab.create(usuroltg);
-            }
-
-            if (jurado2 != null) {
-                usuroltg.setRolid(new Rol(BigDecimal.valueOf(7)));                            //agregando al Jurado 2
-                usuroltg.setTrabajoid(trab);
-                usuroltg.setPersonacedula(new Usuario(jurado2.getPersonacedula()));
-
-                ejbFacadeUsuRolTrab.create(usuroltg);
-            }
-
+            
             Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.ZERO, contenido);
             prod.setFormatoid(new Formatoproducto(BigDecimal.valueOf(7)));                  // agregando el formato g
             prod.setTrabajoid(trab);
@@ -323,11 +314,11 @@ public class FormatoG {
 //            }
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato G diligenciado con éxito."));
-            return "fase-4";
+            return "fase-5";
 
         } catch (Exception e) {
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocurrio un problema al efectuar dicha operación.", ""));
             return "diligenciar-formato-G";
         }
     }
@@ -421,10 +412,10 @@ public class FormatoG {
 //                se.enviarResultadoFormatoB(titulo, getAprobado(), evaluador);
 //            }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato G editado con éxito."));
-            return "fase-4";
+            return "fase-5";
 
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocurrio un problema al efectuar dicha operación.", ""));
             return "editar-formato-G";
         }
     }
@@ -434,58 +425,59 @@ public class FormatoG {
     }
 
     public void prepararbtnVerFormatoG() {
-        List<Productodetrabajo> lstProdTrab = ejbFacadeProdTrab.findAll();
+        List<Productodetrabajo> lstProdTrab = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 7);
 
-        for (Productodetrabajo ProdTrab : lstProdTrab) {
+        if(lstProdTrab.size() > 0) {
+            prodtrab = lstProdTrab.get(0);
+            Gson gson = new Gson();
+            Map<String, String> decoded = gson.fromJson(prodtrab.getProductocontenido(), new TypeToken<Map<String, String>>() {
+            }.getType());
             // Buscando el Formato G para el trabajo de grado actual
-            if (ProdTrab.getFormatoid().getFormatoid().equals(BigDecimal.valueOf(7)) && ProdTrab.getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {
-                prodtrab = ProdTrab;
-                Gson gson = new Gson();
-                Map<String, String> decoded = gson.fromJson(prodtrab.getProductocontenido(), new TypeToken<Map<String, String>>() {
-                }.getType());
-                // Buscando el Formato G para el trabajo de grado actual
-                if (decoded.get("departamento") != null) {
-                    departamento = decoded.get("departamento");
-                }
-                if (decoded.get("titulo") != null) {
-                    titulo = decoded.get("titulo");
-                }
-                if (decoded.get("estudiante1") != null) {
-                    est1nomsapes = decoded.get("estudiante1");
-                }
-                if (decoded.get("estudiante1avalado") != null) {
-                    est1Avalado = Boolean.valueOf(decoded.get("estudiante1avalado"));
-                }
-                if (decoded.get("estudiante2") != null) {
-                    est2nomsapes = decoded.get("estudiante2");
-                }
-                if (decoded.get("estudiante2avalado") != null) {
-                    est2Avalado = Boolean.valueOf(decoded.get("estudiante2avalado"));
-                }
-                if (decoded.get("director") != null) {
-                    directornomsapes = decoded.get("director");
-                }
+            if (decoded.get("departamento") != null) {
+                departamento = decoded.get("departamento");
+            }
+            if (decoded.get("titulo") != null) {
+                titulo = decoded.get("titulo");
+            }
+            if (decoded.get("estudiante1") != null) {
+                est1nomsapes = decoded.get("estudiante1");
+            }
+            if (decoded.get("estudiante1avalado") != null) {
+                est1Avalado = Boolean.valueOf(decoded.get("estudiante1avalado"));
+            }
+            if (decoded.get("estudiante2") != null) {
+                est2nomsapes = decoded.get("estudiante2");
+            }
+            if (decoded.get("estudiante2avalado") != null) {
+                est2Avalado = Boolean.valueOf(decoded.get("estudiante2avalado"));
+            }
+            if (decoded.get("director") != null) {
+                directornomsapes = decoded.get("director");
+            }
+            if (decoded.get("jurado1Id") != null) {
+                int personacedulaDir = Integer.valueOf(decoded.get("jurado1Id"));
+                jurado1 = ejbFacadeUsu.buscarporUsuid(personacedulaDir).get(0);
+            }
+            if (decoded.get("jurado1") != null) {
+                jurado1nomsapes = decoded.get("jurado1");
+            }
+            if (decoded.get("jurado2Id") != null) {
+                int personacedulaDir = Integer.valueOf(decoded.get("jurado2Id"));
+                jurado2 = ejbFacadeUsu.buscarporUsuid(personacedulaDir).get(0);
+            }
+            if (decoded.get("jurado2") != null) {
+                jurado2nomsapes = decoded.get("jurado2");
+            }
 
-                if (decoded.get("jurado1Id") != null) {
-                    int personacedulaDir = Integer.valueOf(decoded.get("jurado1Id"));
-                    jurado1 = ejbFacadeUsu.buscarporUsuid(personacedulaDir).get(0);
-                }
-                if (decoded.get("jurado1") != null) {
-                    jurado1nomsapes = decoded.get("jurado1");
-                }
-                if (decoded.get("jurado2Id") != null) {
-                    int personacedulaDir = Integer.valueOf(decoded.get("jurado2Id"));
-                    jurado2 = ejbFacadeUsu.buscarporUsuid(personacedulaDir).get(0);
-                }
-                if (decoded.get("jurado2") != null) {
-                    jurado2nomsapes = decoded.get("jurado2");
-                }
-
-                if (decoded.get("observaciones") != null) {
-                    observaciones = decoded.get("observaciones");
-                }
-                if (decoded.get("fecha") != null) {
-                    fecha = new Date();
+            if (decoded.get("observaciones") != null) {
+                observaciones = decoded.get("observaciones");
+            }
+            if (decoded.get("fecha") != null) {
+                SimpleDateFormat formateador = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+                try {
+                    fecha = (Date) formateador.parse(decoded.get("fecha"));
+                } catch (ParseException ex) {
+                    Logger.getLogger(FormatoA.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -494,32 +486,20 @@ public class FormatoG {
     public List<Usuario> complete(String query) {
         query = query.trim();
         query = query.toUpperCase();
+        
+        if (query.isEmpty()) {
+            jurado1 = null;
+        }
 
-        List<Usuario> ls = ejbFacadeUsu.buscarEvaluadores(query);
+        List<Usuario> ls = ejbFacadeUsu.buscarJurados(idJefeDepto, query);
         List<Usuario> usus = new ArrayList();
 
         for (Usuario u : ls) {
-            List<UsuarioRol> lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 1);
-            if (!lstTrab1.isEmpty()) {
+            if(u.getPersonacedula().intValue() == director.getPersonacedula().intValue())
                 continue;
-            }
-            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 5);
-            if (!lstTrab1.isEmpty()) {
+            List<UsuarioRol> lstTrab = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 7);
+            if (lstTrab.isEmpty())
                 continue;
-            }
-            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 6);
-            if (!lstTrab1.isEmpty()) {
-                continue;
-            }
-            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 8);
-            if (!lstTrab1.isEmpty()) {
-                continue;
-            }
-            List<UsuarioRolTrabajogrado> lstTrabs = ejbFacadeUsuRolTrab.findByUsuid_Rolid(u.getPersonacedula().intValue(), 4);
-            if (lstTrabs.size() > 3) //Para evitar que se asigne un evaluador con 3 trabajos de grado.
-            {
-                continue;
-            }
             usus.add(u);
         }
 
@@ -536,32 +516,20 @@ public class FormatoG {
     public List<Usuario> complete2(String query) {
         query = query.trim();
         query = query.toUpperCase();
-
-        List<Usuario> ls = ejbFacadeUsu.buscarEvaluadores(query);
+        
+        if (query.isEmpty()) {
+            jurado2 = null;
+        }
+        
+        List<Usuario> ls = ejbFacadeUsu.buscarJurados(idJefeDepto, query);
         List<Usuario> usus = new ArrayList();
 
         for (Usuario u : ls) {
-            List<UsuarioRol> lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 1);
-            if (!lstTrab1.isEmpty()) {
+            if(u.getPersonacedula().intValue() == director.getPersonacedula().intValue())
                 continue;
-            }
-            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 5);
-            if (!lstTrab1.isEmpty()) {
+            List<UsuarioRol> lstTrab = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 7);
+            if (lstTrab.isEmpty())
                 continue;
-            }
-            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 6);
-            if (!lstTrab1.isEmpty()) {
-                continue;
-            }
-            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 8);
-            if (!lstTrab1.isEmpty()) {
-                continue;
-            }
-            List<UsuarioRolTrabajogrado> lstTrabs = ejbFacadeUsuRolTrab.findByUsuid_Rolid(u.getPersonacedula().intValue(), 4);
-            if (lstTrabs.size() > 3) //Para evitar que se asigne un evaluador con 3 trabajos de grado.
-            {
-                continue;
-            }
             usus.add(u);
         }
 

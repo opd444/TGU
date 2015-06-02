@@ -72,13 +72,18 @@ public class Anteproyecto {
     private String directorioanteproyectos;
     private Usuario doc1;
     private Usuario doc2;
+    private int idCoord;
 
     public Anteproyecto() {
     }
 
     @PostConstruct
     public void init() {
-
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        ServiciosSimcaController s =  (ServiciosSimcaController)context.getApplication().evaluateExpressionGet(context, "#{serviciosSimcaController}", ServiciosSimcaController.class);
+        idCoord = s.getUsulog().getPersonacedula().intValue();
+        
         directorioanteproyectos = "D:\\Archivos_TGU\\Anteproyectos\\"+TrabajodeGradoActual.nombreTg+"\\";
         List<Productodetrabajo> lst = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 2);
         if (lst.size() > 0) {
@@ -270,12 +275,12 @@ public class Anteproyecto {
 
             } catch (Exception e) {
 
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocurrio un problema al efectuar dicha operación.", ""));
                 return "diligenciar-anteproyecto";
             }
 
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "El doc. del Anteproyecto es obligatorio."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El documento del Anteproyecto es obligatorio.", ""));
             return "diligenciar-anteproyecto";
         }
     }
@@ -354,12 +359,12 @@ public class Anteproyecto {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Anteproyecto editado con éxito."));
                 return "fase-2";
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Se ha alcanzado el número máximo de ediciones, el anteproyecto fue editado 3 veces."));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se ha alcanzado el número máximo de ediciones, el anteproyecto fue editado 3 veces.", ""));
                 return "fase-2";
             }
 
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocurrio un problema al efectuar dicha operación.", ""));
             return "editar-anteproyecto";
         }
     }
@@ -390,31 +395,19 @@ public class Anteproyecto {
         query = query.trim();
         query = query.toUpperCase();
 
-        List<Usuario> ls = ejbFacadeUsuario.buscarEvaluadores(query);
+        List<Usuario> ls = ejbFacadeUsuario.buscarEvaluadores(idCoord, query);
         List<Usuario> usus = new ArrayList();
 
         for (Usuario u : ls) {
-            List<UsuarioRol> lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 1);
-            if (!lstTrab1.isEmpty()) {
+            
+            if(u.getPersonacedula().intValue() == TrabajodeGradoActual.director.getPersonacedula().intValue())
                 continue;
-            }
-            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 5);
-            if (!lstTrab1.isEmpty()) {
+            List<UsuarioRol> lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 4);
+            if (lstTrab1.isEmpty())
                 continue;
-            }
-            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 6);
-            if (!lstTrab1.isEmpty()) {
-                continue;
-            }
-            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 8);
-            if (!lstTrab1.isEmpty()) {
-                continue;
-            }
             List<UsuarioRolTrabajogrado> lstTrabs = ejbFacadeUsuroltrab.findByUsuid_Rolid(u.getPersonacedula().intValue(), 4);
             if (lstTrabs.size() > 3) //Para evitar que se asigne un evaluador con 3 trabajos de grado.
-            {
                 continue;
-            }
             usus.add(u);
         }
 
@@ -432,31 +425,18 @@ public class Anteproyecto {
         query = query.trim();
         query = query.toUpperCase();
 
-        List<Usuario> ls = ejbFacadeUsuario.buscarEvaluadores(query);
+        List<Usuario> ls = ejbFacadeUsuario.buscarEvaluadores(idCoord, query);
         List<Usuario> usus = new ArrayList();
 
         for (Usuario u : ls) {
-            List<UsuarioRol> lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 1);
-            if (!lstTrab1.isEmpty()) {
+            if(u.getPersonacedula().intValue() == TrabajodeGradoActual.director.getPersonacedula().intValue())
                 continue;
-            }
-            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 5);
-            if (!lstTrab1.isEmpty()) {
+            List<UsuarioRol> lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 4);
+            if (lstTrab1.isEmpty())
                 continue;
-            }
-            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 6);
-            if (!lstTrab1.isEmpty()) {
-                continue;
-            }
-            lstTrab1 = ejbFacadeUsuRol.findByUsuid_Rolid(u.getPersonacedula().intValue(), 8);
-            if (!lstTrab1.isEmpty()) {
-                continue;
-            }
             List<UsuarioRolTrabajogrado> lstTrabs = ejbFacadeUsuroltrab.findByUsuid_Rolid(u.getPersonacedula().intValue(), 4);
             if (lstTrabs.size() > 3) //Para evitar que se asigne un evaluador con 3 trabajos de grado.
-            {
                 continue;
-            }
             usus.add(u);
         }
 
@@ -536,7 +516,7 @@ public class Anteproyecto {
 
         } catch (Exception e) {
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocurrio un problema al efectuar dicha operación.", ""));
             return "asignar-evaluadores-anteproyecto";
         }
     }

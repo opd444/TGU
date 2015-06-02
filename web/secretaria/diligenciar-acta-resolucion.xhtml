@@ -36,23 +36,25 @@
                     <p:spacer height="30"/>                 
 
                     <h:form id="formp">
-                        
-                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
-                    <p:commandButton value="Si" type="button"  styleClass="ui-confirmdialog-yes" style="margin-left: 20px;" icon="ui-icon-check"  />
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" style="margin-left: 20px;" icon="ui-icon-close" />
-                      </p:confirmDialog>
-                        
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                            <h:panelGrid columns="2" cellpadding="10" cellspacing="10" style="margin: 0 auto;">
+                                <p:commandButton value="Si" type="button"  styleClass="ui-confirmdialog-yes" icon="ui-icon-check"  />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </h:panelGrid>
+                        </p:confirmDialog>
+
                         <p:panel header="Campos con * son obligatorios" style="width: 100%; font-size: 14px;" >
-                            <p:growl id="growl" showDetail="true" life="5000"/>
-                            
+                            <p:growl id="growl" showDetail="false" life="5000"/>
+
                             <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="15" >
 
                                 <p:outputLabel styleClass="subtitulosFormato" value="Nombre del trabajo de grado:" />
                                 <p:outputLabel value="#{actaSecretariaController.nombreTrabajodeGrado}"/> 
-                                
+
                                 <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado: *" />
                                 <p:outputLabel value="#{actaSecretariaController.nombreDirector}"/>
-                                
+
                                 <p:outputLabel styleClass="subtitulosFormato" value="Número de acta  *" />
                                 <p:inputText value="#{actaSecretariaController.numact}" required="true" label="Numero de acta" size="4" requiredMessage="Debe ingresar el número de acta." />
 
@@ -79,17 +81,18 @@
                         <p:dataTable id="tablaactas" styleClass="tabladirector" var="car" value="#{actaSecretariaController.actas}"
                                      paginator="true" rows="5" paginatorPosition="bottom" rowsPerPageTemplate="5,10,15" emptyMessage="No hay actas asociadas a este trabajo de grado." style="font-size: 14px;">
                             <p:column style="text-align: center" headerText="Fecha">
-                               <p:outputLabel value="#{car.fechaact}" />      
-                           </p:column>
-                           <p:column style="text-align: center" headerText="Número de Acta"> <!--filterBy="{car.trabajoGrado}"-->
-                               <p:outputLabel value="#{car.numacta}" />            
-                           </p:column> 
-                           <p:column style="text-align: center" headerText="Acciones"> <!--filterBy="{car.trabajoGrado}"-->
-                               <p:commandLink  id="eliminar" action="#{actaSecretariaController.eliminarActa()}" value="Eliminar" style=" margin-left: 10px;color: #045491;" update=":formp:growl :formp:tablaactas">                                    
-                                   <f:setPropertyActionListener value="#{car}" target="#{actaSecretariaController.acta}" />                                  
-                                 <p:confirm header="Confirmation" message="Esta seguro que desea eliminar el acta de forma permanente?" icon="ui-icon-alert"/>       
-                         </p:commandLink>           
-                           </p:column> 
+                                <p:outputLabel value="#{car.fechaact}" />      
+                            </p:column>
+                            <p:column style="text-align: center" headerText="Número de Acta"> <!--filterBy="{car.trabajoGrado}"-->
+                                <p:outputLabel value="#{car.numacta}" />            
+                            </p:column> 
+                            <p:column style="text-align: center" headerText="Acciones"> <!--filterBy="{car.trabajoGrado}"-->
+                                <p:commandLink  id="eliminar" action="#{actaSecretariaController.eliminarActa()}" style=" margin-left: 10px;color: #045491;" update=":formp:growl :formp:tablaactas">                                    
+                                    <f:setPropertyActionListener value="#{car}" target="#{actaSecretariaController.acta}" />
+                                    <h:graphicImage value="../resources/img/delete.png" style="width: 25px; height: 30px;" alt="Eliminar" title="Eliminar" />
+                                    <p:confirm header="Confirmación" message="¿Está seguro que desea eliminar dicha acta de forma permanente?" icon="ui-icon-alert"/>       
+                                </p:commandLink>           
+                            </p:column> 
                         </p:dataTable>
                     </h:form>
                 </p:panel>       

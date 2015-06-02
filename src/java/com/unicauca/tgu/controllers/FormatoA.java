@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -146,8 +147,9 @@ public class FormatoA {
                 observaciones = decoded.get("observaciones");
             }
             if (decoded.get("fecha") != null) {
+                SimpleDateFormat formateador = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
                 try {
-                    fecha = new SimpleDateFormat("dd-MM-yyyy").parse(decoded.get("fecha"));
+                    fecha = (Date) formateador.parse(decoded.get("fecha"));
                 } catch (ParseException ex) {
                     Logger.getLogger(FormatoA.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -536,5 +538,9 @@ public class FormatoA {
 
     public void handleUnSelectest2(UnselectEvent e) {
         //est2 = null;
+    }
+    
+    public Date getToday() {
+        return new Date();
     }
 }

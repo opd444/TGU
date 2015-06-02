@@ -356,6 +356,7 @@ public class pdfFormatoB {
             pphObservaciones.add(observaciones);
             document.add(pphObservaciones);
             /**/
+            document.add(new Paragraph("\n"));
             Paragraph pphFecha = new Paragraph();
             Chunk fechaTitulo = new Chunk("FECHA:", fontTG);
             pphFecha.add(fechaTitulo);

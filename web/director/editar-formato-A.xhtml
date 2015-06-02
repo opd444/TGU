@@ -7,7 +7,6 @@
       xmlns:f="http://java.sun.com/jsf/core">
 
     <body>
-
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
@@ -19,13 +18,13 @@
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-1" />
                         <p:menuitem value="1. Presentación de la Idea" outcome="fase-1" />
                         <p:menuitem value="Editar Formato A" />
-                    </p:breadCrumb>
+                    </p:breadCrumb>              
                 </h:form>
             </ui:define>
 
             <ui:define name="title">
             </ui:define>
-
+            
             <ui:define name="body">
                 #{menuController.setOutPerfiles(true)}
                 <p:panel styleClass="paneltrabajo" >
@@ -39,7 +38,7 @@
                         <p:wizard backLabel="Anterior" nextLabel="Siguiente" style="font-size: 14px;">
                             <p:tab id="paso1" title="Paso 1">
                                 <p:panel header="Campos con * son obligatorios">
-                                    <p:messages />
+                                    <p:growl id="growl1" showDetail="false" life="5000"/>
                                     <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="5">
 
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
@@ -94,7 +93,7 @@
 
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
 
-                                        <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado: *"> </p:outputLabel>
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado:"> </p:outputLabel>
                                         <p:outputLabel value="#{formatoA.nombreDirector}"> </p:outputLabel>
                                         <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
                                     </h:panelGrid>
@@ -103,7 +102,7 @@
 
                             <p:tab id="paso2" title="Paso 2">
                                 <p:panel header="Campos con * son obligatorios">
-                                    <p:messages />
+                                    <p:growl id="growl2" showDetail="false" life="8000"/>
                                     <h:panelGrid style="margin: 0 auto;" columnClasses="label, value" cellpadding="5">
                                         <p:separator style="border-color: white !important;" />
                                         <p:outputLabel styleClass="subtitulosFormato" value="Objetivos: *"> </p:outputLabel>
@@ -129,13 +128,14 @@
                                         <p:outputLabel styleClass="subtitulosFormato" value="Condiciones de entrega: *"> </p:outputLabel>
                                         <p:inputTextarea value="#{formatoA.condiciones}" required="true" label="Condiciones entrega" styleClass="txtareaform" requiredMessage="Debe ingresar las condiciones de entrega para desarrollar su trabajo de grado."/>
                                         <p:separator style="border-color: white !important;" />
+                                        
                                     </h:panelGrid>
                                 </p:panel>
                             </p:tab>
 
                             <p:tab id="paso3" title="Paso 3">
                                 <p:panel header="Campos con * son obligatorios">
-                                    <p:messages />
+                                    <p:growl id="growl3" showDetail="false" life="8000"/>
                                     <h:panelGrid cellpadding="5">
                                         <p:separator style="border-color: white !important;" />
                                         <p:outputLabel styleClass="subtitulosFormato" value="Recursos requeridos: *"> </p:outputLabel>
@@ -152,7 +152,7 @@
                                         <p:separator style="border-color: white !important;" />
                                         <p:column>
                                             <p:outputLabel styleClass="subtitulosFormato" value="Fecha: *"> </p:outputLabel>
-                                            <p:calendar navigator="true" value="#{formatoA.fecha}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." style="margin-left: 10px; margin-right: 10px"/>
+                                            <p:calendar navigator="true" value="#{formatoA.fecha}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" maxdate="#{formatoA.today}" requiredMessage="Debe ingresar la fecha en que diligencia este formato." style="margin-left: 10px; margin-right: 10px"/>
                                         </p:column>
                                         <p:separator style="border-color: white !important;" />
                                     </h:panelGrid>
@@ -194,7 +194,7 @@
                                         <p:fieldset legend="Condiciones de entrega" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoA.condiciones}"> </p:outputLabel>
                                         </p:fieldset>
-
+                                        
                                         <p:fieldset legend="Recursos requeridos" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoA.recursos}"> </p:outputLabel>
                                         </p:fieldset>
@@ -219,9 +219,8 @@
                         </p:wizard>
                         <p:button value="Cancelar" outcome="fase-1" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
                     </h:form>         
-                </p:panel>
-
-            </ui:define>  
+                </p:panel>                          
+            </ui:define>
         </ui:composition>
     </body>
 </html>

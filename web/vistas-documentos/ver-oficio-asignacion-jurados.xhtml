@@ -18,8 +18,8 @@
                         <p:menuitem value="Trabajos de Grado" />
                         <p:menuitem value="Fases del Trabajo de Grado" />
                         <p:menuitem value="5. Evaluación del Trabajo de Grado" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-5" />
-                        <p:menuitem value="Ver Formato G" />
-                    </p:breadCrumb>
+                        <p:menuitem value="Ver Oficio de Asignación de Jurados" />
+                    </p:breadCrumb>   
                 </h:form>
             </ui:define>
 
@@ -27,11 +27,13 @@
             </ui:define>
 
             <ui:define name="body">
+                <f:metadata>
+                    <f:viewParam name="productoid" value="#{trabajodegradoController.trabajoid}" />
+                </f:metadata>
                 #{menuController.setOutPerfiles(true)}
-                #{formatoG.prepararEdicion()}     
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
-                        <h:outputText value="Formato G: Remisión del Trabajo Final a la Secretaria de la Facultad por el Jefe de Departamento"/> <br/>
+                        <h:outputText value="Ver Oficio de Asignación de Jurados"/> <br/>
                     </div>
                     <p:spacer height="30"/>
 
@@ -55,64 +57,82 @@
                             <br />
                             <h:panelGrid style="margin-left: 10px;">
                                 <h:panelGrid columns="2">
-                                    <p:outputLabel value="FORMATO G: " styleClass="subtitulosFormato" />
-                                    <p:outputLabel value="Remisión del Trabajo Final al Concejo de Facultad por el Jefe de Departamento" style="margin-left: 5px" />
+                                    <p:outputLabel value="OFICIO: " styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="Asignación de Jurados Evaluadores" style="margin-left: 5px" />
                                 </h:panelGrid>
                                 <br />
+                                <br />
                                 <h:panelGrid columns="2">
-                                    <p:outputLabel value="Departamento:" styleClass="subtitulosFormato" />
-                                    <p:outputLabel value="#{formatoG.departamento}" style="margin-left: 5px" />
+                                    <p:outputLabel value="Número de oficio" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{oficioAsignacionJurados.numOficio}" style="margin-left: 5px"/>
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2">
                                     <p:outputLabel value="Titulo:" styleClass="subtitulosFormato" />
-                                    <p:outputLabel value="#{formatoG.titulo}" style="margin-left: 5px" />
+                                    <p:outputLabel value="#{oficioAsignacionJurados.nombretg}" style="margin-left: 5px"/>
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2">
-                                    <p:outputLabel value="Estudiante 1:" styleClass="subtitulosFormato" />
-                                    <p:outputLabel value="#{formatoG.est1nomsapes}" style="margin-left: 5px" />
+                                    <p:outputLabel value="Estudiante(s):" styleClass="subtitulosFormato" />
+                                    <p:column>
+                                        <p:outputLabel value="#{oficioAsignacionJurados.est1.personanombres} #{oficioAsignacionJurados.est1.personaapellidos}" style="margin-left: 5px"/> <br />
+                                        <p:outputLabel value="#{oficioAsignacionJurados.est2.personanombres} #{oficioAsignacionJurados.est2.personaapellidos}" style="margin-left: 5px"/>
+                                    </p:column>
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2">
-                                    <p:outputLabel value="Estudiante 2:" styleClass="subtitulosFormato" />
-                                    <p:outputLabel value="#{formatoG.est2nomsapes}" style="margin-left: 5px" />
+                                    <p:outputLabel value="Director del trabajo:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{oficioAsignacionJurados.director.personanombres} #{oficioAsignacionJurados.director.personaapellidos}" style="margin-left: 5px"/>
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2">
-                                    <p:outputLabel value="Director:" styleClass="subtitulosFormato" />
-                                    <p:outputLabel value="#{formatoG.directornomsapes}" style="margin-left: 5px" />
+                                    <p:outputLabel value="Jurado 1 asignado:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{oficioAsignacionJurados.jurado1.personanombres} #{oficioAsignacionJurados.jurado1.personaapellidos}"/>
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2">
-                                    <p:outputLabel value="Jurado sugerido 1:" styleClass="subtitulosFormato" />
-                                    <p:outputLabel value="#{formatoG.jurado1nomsapes}" style="margin-left: 5px" />
+                                    <p:outputLabel value="Jurado 2 asignado:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{oficioAsignacionJurados.jurado2.personanombres} #{oficioAsignacionJurados.jurado2.personaapellidos}"/>
+                                </h:panelGrid>
+                                <br /> <br />
+                                <p:outputLabel value="POSIBLES FECHAS DE SUSTENTACION" styleClass="subtitulosFormato" />
+                                <br />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Fecha 1:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{oficioAsignacionJurados.fecha1}" style="margin-left: 5px" >
+                                        <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                    </p:outputLabel>
                                 </h:panelGrid>
                                 <br />
                                 <h:panelGrid columns="2">
-                                    <p:outputLabel value="Jurado sugerido 2:" styleClass="subtitulosFormato" />
-                                    <p:outputLabel value="#{formatoG.jurado2nomsapes}" style="margin-left: 5px" />
+                                    <p:outputLabel value="Fecha 1:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{oficioAsignacionJurados.fecha2}" style="margin-left: 5px" >
+                                        <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                    </p:outputLabel>
                                 </h:panelGrid>
                                 <br />
-                                <h:panelGrid columns="2">
-                                    <p:outputLabel value="Observaciones:" styleClass="subtitulosFormato"  />
-                                    <p:outputLabel value="#{formatoG.observaciones}" />
+                                <h:panelGrid columns="2" rendered="#{oficioAsignacionJurados.fecha3 != null}">
+                                    <p:outputLabel value="Fecha 2:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{oficioAsignacionJurados.fecha3}" style="margin-left: 5px" >
+                                        <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                    </p:outputLabel>
                                 </h:panelGrid>
                                 <br />
+                                <br />
                                 <h:panelGrid columns="2">
-                                    <p:outputLabel value="Fecha:" styleClass="subtitulosFormato" />
-                                    <p:outputLabel value="#{formatoG.fecha}" style="margin-left: 5px" >
+                                    <p:outputLabel value="Fecha del oficio:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{oficioAsignacionJurados.fechaOficio}" style="margin-left: 5px" >
                                         <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
                                     </p:outputLabel>
                                 </h:panelGrid>
                                 <br />
                             </h:panelGrid>
-                            <h:panelGrid columns="2" cellpadding="12" style="margin: 0 auto">
-                                <p:button value="Volver" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-5" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;" />                             
-                                <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px; width: 120px;" />
+                            <h:panelGrid columns="2" cellpadding="12" style="margin: 0 auto">                                    
+                                <p:button value="Volver" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-5" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;" />
+                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px; width: 120px;" />
                             </h:panelGrid>
                         </p:panel>
-                    </h:form>
+                    </h:form>                    
                 </p:panel>
             </ui:define>
         </ui:composition>

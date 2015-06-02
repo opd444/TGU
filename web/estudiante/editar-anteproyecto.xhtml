@@ -47,30 +47,29 @@
                     </div>                 
                     <p:spacer height="30"/>
                     <h:form enctype="multipart/form-data">   
-
                         <p:panel style="width: 100%; font-size: 14px;" header="Campos con * son obligatorios">
-                            <p:growl id="growl" sticky="true" showDetail="true"/>
+                            <p:growl id="growl" showDetail="false" life="5000"/>
                             <p:messages/>
-                            
+
                             <h:panelGrid style="margin: 0 auto;" columns="2" cellpadding="15" >
-                                <p:outputLabel styleClass="subtitulosFormato" value="Nombre del trabajo de grado: *" />
+                                <p:outputLabel styleClass="subtitulosFormato" value="Nombre del trabajo de grado:" />
                                 <p:outputLabel style="font-weight: bold" value="#{anteproyecto.nombretg}" />
-                                <p:outputLabel styleClass="subtitulosFormato" value="Nombre de los estudiantes: *" />
+                                <p:outputLabel styleClass="subtitulosFormato" value="Nombre de los estudiantes:" />
                                 <p:column>
                                     <p:outputLabel value="#{anteproyecto.est1}" /> <br />
                                     <p:outputLabel value="#{anteproyecto.est2}" />
                                 </p:column>
-                                <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado: *" />
+                                <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado:" />
                                 <p:outputLabel value="#{anteproyecto.directortg}" />
                                 <p:outputLabel styleClass="subtitulosFormato" value="Objetivos: *" />
-                                <p:inputTextarea cols="60" rows="3" value="#{anteproyecto.objetivos}" required="true" validatorMessage="Debe ingresar los objetivos." style="display: block; margin: 0 auto;" />
+                                <p:inputTextarea value="#{anteproyecto.objetivos}" rows="3" cols="55" required="true" requiredMessage="Debe ingresar los objetivos." />
+                                
                                 <p:outputLabel styleClass="subtitulosFormato" value="Adjuntar anteproyecto: *" />
                                 <p:column>    
-                                    <p:fileUpload required="true" fileUploadListener="#{anteproyecto.handleFileUpload}" mode="advanced" uploadLabel="Actualizar" cancelLabel="Cancelar" multiple="false"
+                                    <p:fileUpload required="true" fileUploadListener="#{anteproyecto.handleFileUpload}" mode="advanced" uploadLabel="Subir" cancelLabel="Cancelar" multiple="false"
                                                 allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf)$/" sizeLimit="31457280" label="Examinar..." update="nombarch"
                                                 invalidFileMessage="Tipo de Archivo no Valido, Agregue un archivo word o pdf" 
-                                                invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" 
-                                                  />
+                                                invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" requiredMessage="Debe adjuntar su documento de anteproyecto." />
                                     <p:outputLabel id="nombarch" value="#{anteproyecto.nombarch}"> </p:outputLabel> <br />
                                 </p:column>
                             </h:panelGrid>

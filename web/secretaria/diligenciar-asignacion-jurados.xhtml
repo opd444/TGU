@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
+                        <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-secretaria-general.xhtml" />                        
+                        <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-5" />
+                        <p:menuitem value="5. Evaluación del Trabajo de Grado" outcome="fase-5" />
+                        <p:menuitem value="Diligenciar oficio de asignación de jurados" />
+                    </p:breadCrumb>   
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">               
+            </ui:define>
+
+            <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
+
+                <p:panel styleClass="paneltrabajo" >
+                    <div class="tituloContenido">                        
+                        <h:outputText value="Diligenciar oficio de asignación de jurados"/> <br/>
+                    </div>                 
+                    <p:spacer height="30"/>                    
+                    <h:form enctype="multipart/form-data">
+                        <p:growl id="growl" showDetail="false" life="5000"/>
+                        <p:wizard backLabel="Anterior" nextLabel="Siguiente" style="font-size: 14px;">
+                            <p:tab id="paso1" title="Paso 1">
+                                <p:panel header="Campos con * son obligatorios">
+                                    <p:growl id="growl1" showDetail="false" life="5000"/>
+                                    <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="5">
+                                        
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Número de oficio: *" />
+                                        <p:inputText value="#{oficioAsignacionJurados.numOficio}" required="true" label="Numero de acta" size="4" requiredMessage="Debe ingresar el número de acta." />
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Titulo del trabajo de grado:" />
+                                        <p:outputLabel value="#{oficioAsignacionJurados.nombretg}" style="font-weight: bold;" />
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Nombre de los estudiantes:"/>
+                                        <p:column>
+                                            <p:outputLabel value="#{oficioAsignacionJurados.est1.personanombres} #{oficioAsignacionJurados.est1.personaapellidos}" /> <br />
+                                            <p:outputLabel value="#{oficioAsignacionJurados.est2.personanombres} #{oficioAsignacionJurados.est2.personaapellidos}" />
+                                        </p:column>
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Director del trabajo de grado:" />
+                                        <p:outputLabel value="#{oficioAsignacionJurados.director.personanombres} #{oficioAsignacionJurados.director.personaapellidos}"/>
+                                        
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Jurado Evaluador 1: *" />
+                                        <p:autoComplete
+                                                value="#{oficioAsignacionJurados.jurado1}" label="Doc Evaluador 1"
+                                                completeMethod="#{oficioAsignacionJurados.complete}"
+                                                var="est"
+                                                itemValue="#{est}" dropdown="true"
+                                                forceSelection="true"
+                                                itemLabel="#{est.personanombres} #{est.personaapellidos}"
+                                                converter="usuarioConverter"
+                                                cache="true"
+                                                queryDelay="750"
+                                                maxResults="8"
+                                                required="true"
+                                                requiredMessage="Por favor ingrese el nombre del primer evaluador."
+                                                size="24"
+                                                >
+                                            <p:ajax event="itemSelect" listener="#{oficioAsignacionJurados.handlerSelectDoc1}" /> 
+                                            <p:ajax event="itemUnselect" listener="#{oficioAsignacionJurados.handleUnSelectDoc1}" />
+                                            <p:column>
+                                                #{est.personanombres} #{est.personaapellidos}
+                                            </p:column>
+                                        </p:autoComplete> 
+                                        
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Jurado Evaluador 2: *" />
+                                        <p:autoComplete 
+                                                value="#{oficioAsignacionJurados.jurado2}" label="Doc Evaluador 2"
+                                                completeMethod="#{oficioAsignacionJurados.complete2}"
+                                                var="est"
+                                                itemValue="#{est}" dropdown="true"
+                                                forceSelection="true"
+                                                itemLabel="#{est.personanombres} #{est.personaapellidos}"
+                                                converter="usuarioConverter"
+                                                cache="true"
+                                                queryDelay="750"
+                                                maxResults="8"
+                                                required="true"
+                                                requiredMessage="Por favor ingrese el nombre del segundo evaluador."
+                                                size="24"
+                                                >
+                                            <p:ajax event="itemSelect" listener="#{oficioAsignacionJurados.handlerSelectDoc2}" />
+                                            <p:ajax event="itemUnselect" listener="#{oficioAsignacionJurados.handleUnSelectDoc2}" />
+                                            <p:column>
+                                                #{est.personanombres} #{est.personaapellidos}
+                                            </p:column>
+                                        </p:autoComplete>
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+                            <p:tab id="paso2" title="Paso 2">
+                                <p:panel header="Campos con * son obligatorios">
+                                    <p:growl id="growl2" showDetail="false" life="5000"/>
+                                    <h:panelGrid style="margin: 0 auto;">
+                                        <p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="POSIBLES FECHAS DE SUSTENTACIÓN"/>
+                                    </h:panelGrid>
+                                    <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="5">
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Fecha 1: *" />
+                                        <p:calendar navigator="true" value="#{oficioAsignacionJurados.fecha1}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" mindate="#{oficioAsignacionJurados.today}" requiredMessage="Debe ingresar la primera fecha posible de sustentación." />
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Fecha 2: *" />
+                                        <p:calendar navigator="true" value="#{oficioAsignacionJurados.fecha2}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" mindate="#{oficioAsignacionJurados.today}" requiredMessage="Debe ingresar otra fecha posible de sustentación." />
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Fecha 3:" />
+                                        <p:calendar navigator="true" value="#{oficioAsignacionJurados.fecha3}" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" mindate="#{oficioAsignacionJurados.today}" />
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Fecha del oficio: *" />
+                                        <p:calendar navigator="true" value="#{oficioAsignacionJurados.fechaOficio}" required="true" label="Fecha" pattern="dd-MM-yyyy" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." />
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+                            
+                            <p:tab id="paso3" title="Paso 3">
+                                <p:panel header="Confirmación de Datos">
+                                    <h:panelGrid cellpadding="7">
+                                        
+                                        <p:fieldset legend="Número del oficio:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{oficioAsignacionJurados.numOficio}" />
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Fecha del Oficio" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{oficioAsignacionJurados.fechaOficio}" >
+                                                <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                            </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Titulo del trabajo de grado:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{oficioAsignacionJurados.nombretg}" /> 
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Nombre del Estudiante 1:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{oficioAsignacionJurados.est1.personanombres} #{oficioAsignacionJurados.est1.personaapellidos}" />
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Nombre del Estudiante 2:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{oficioAsignacionJurados.est2.personanombres} #{oficioAsignacionJurados.est2.personaapellidos}" />
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Nombre del Jurado asignado 1:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{oficioAsignacionJurados.jurado1.personanombres} #{oficioAsignacionJurados.jurado1.personaapellidos}" />
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Nombre del Jurado asignado 2:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{oficioAsignacionJurados.jurado2.personanombres} #{oficioAsignacionJurados.jurado2.personaapellidos}" />
+                                        </p:fieldset>
+                                        <br />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="POSIBLES FECHAS DE SUSTENTACIÓN"/>
+                                        <br />
+                                        <p:fieldset legend="Fecha posible 1" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{oficioAsignacionJurados.fecha1}" >
+                                                <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                            </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Fecha posible 2" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{oficioAsignacionJurados.fecha2}" >
+                                                <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                            </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Fecha posible 3" toggleable="true" styleClass="txtareaform" rendered="#{oficioAsignacionJurados.fecha3 != null}"> 
+                                            <p:outputLabel value="#{oficioAsignacionJurados.fecha3}" >
+                                                <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                            </p:outputLabel>
+                                        </p:fieldset>
+                                        <p:commandButton style="display: block; margin: 0 auto;" value="Guardar" update="growl" action="#{oficioAsignacionJurados.guardar()}" icon="ui-icon-disk"/>
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+                        </p:wizard>
+                        <p:button value="Cancelar" outcome="fase-5" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
+                    </h:form>
+                </p:panel>       
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

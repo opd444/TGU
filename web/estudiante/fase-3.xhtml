@@ -50,7 +50,7 @@
                                 <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
                                 <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
 
-                                <p:button value="Presentación de la Idea" outcome="./../perfiles/vista-estudiante.xhtml" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px;height: 96px; font-size: 13px;" />                            
+                                <p:button value="Presentación de la Idea" outcome="fase-1" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px;height: 96px; font-size: 13px;" />                            
                                 <p:button value="Realización del Anteproyecto" outcome="fase-2" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
 
                                 <p:commandButton type="button" value="Evaluación del Anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" >
@@ -60,7 +60,7 @@
                                 </p:commandButton>
 
                                 <p:button value="Ejecución del Trabajo de Grado" outcome="fase-4" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
-                                <p:button value="Evaluación del Trabajo de Grado" href="#" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Trabajo de Grado" outcome="fase-5" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Finalizado" href="#" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                             </h:panelGrid>
                         </p:panel>      
@@ -74,6 +74,10 @@
                                 <h:outputText value="Formato B (Evaluador 2):" style="font-weight: bold;" />                                                                                                
                                 <p:commandButton value="Ver" icon="ui-icon-comment" actionListener="#{formatoB.btnVerFormatoBEvaluador2()}" disabled="#{trabajodegradoController.btnVerFormatoB2()}" style="width: 120px;" />
                                 <p:commandButton id="d2" value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnVerFormatoB2()}" style="width: 120px;" actionListener="#{pdfFormatoB.pdfFormatoBEvaluador2()}" oncomplete="PF('dlgVerRutina').show();"/>
+                                
+                                <h:outputText value="Formato D: " style="font-weight: bold;" />
+                                <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-formato-D.xhtml" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
+                                <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
                             </h:panelGrid>
                         </p:panel>
                     </p:panel>

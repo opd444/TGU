@@ -47,10 +47,10 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         }
     }
     
-    public List<Usuario> buscarEvaluadores(String consulta) {
+    public List<Usuario> buscarEvaluadores(int idUsuActual, String consulta) {
         try {
             String queryString = "SELECT * FROM Usuario "
-                    + "where upper(personanombres)||' '||upper(personaapellidos)"
+                    + "where personacedula!=" + idUsuActual + " and upper(personanombres)||' '||upper(personaapellidos)"
                     + " like '%" + consulta + "%'";
             Query query = getEntityManager().createNativeQuery(queryString, Usuario.class);
             //System.out.println("ERR"+Long.valueOf(usuid.intValue()+""));
@@ -82,5 +82,17 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         } finally {
             // em.close();
         }        
+    }
+    
+    public List<Usuario> buscarJurados(int idUsuActual, String consulta) {
+        try {
+            String queryString = "SELECT * FROM Usuario "
+                    + "where personacedula!=" + idUsuActual + " and upper(personanombres)||' '||upper(personaapellidos)"
+                    + " like '%" + consulta + "%'";
+            Query query = getEntityManager().createNativeQuery(queryString, Usuario.class);
+            return query.getResultList();
+        } finally {
+            // em.close();
+        }
     }
 }

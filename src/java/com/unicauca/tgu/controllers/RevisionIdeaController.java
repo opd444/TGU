@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.unicauca.tgu.controllers;
 
 import com.google.gson.Gson;
@@ -24,12 +19,15 @@ import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Calendar;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -68,6 +66,7 @@ public class RevisionIdeaController {
     private Productodetrabajo productoActual;
     
     public RevisionIdeaController() {
+        fecha = new Date();
     }
 
     @PostConstruct
@@ -78,7 +77,7 @@ public class RevisionIdeaController {
         idjefe = s.getUsulog().getPersonacedula().intValue();
                 
         numActa = "1A";
-        resultado = 1;
+        resultado = 0;
         
         List<Productodetrabajo> lst = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 1);
 
@@ -116,13 +115,15 @@ public class RevisionIdeaController {
             if (decoded.get("observaciones") != null) {
                 observaciones = decoded.get("observaciones");
             }
+            if (decoded.get("fecha") != null) {
+                SimpleDateFormat formateador = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+                try {
+                    fecha = (Date) formateador.parse(decoded.get("fecha"));
+                } catch (ParseException ex) {
+                    Logger.getLogger(FormatoA.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
-        
-        Calendar c = new GregorianCalendar();
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        fecha = c.getTime();
     }
 
     public UsuarioRolTrabajogradoFacade getEjbFacadeUsuroltrab() {
@@ -251,6 +252,14 @@ public class RevisionIdeaController {
     public void setProductoActual(Productodetrabajo productoActual) {
         this.productoActual = productoActual;
     }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
     
     public String obtenerDatos() {
         Map<String, String> map = new HashMap();
@@ -275,6 +284,7 @@ public class RevisionIdeaController {
         map.put("nombredirector", getNombreDirector());
         map.put("resultado", Integer.toString(getResultado()));
         map.put("observaciones", getObservaciones());
+        map.put("fecha", getFecha().toString());
         
         Gson gson = new Gson();
         String contenido = gson.toJson(map, Map.class);
@@ -329,7 +339,7 @@ public class RevisionIdeaController {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Revisión de la idea, diligenciada con éxito."));
             return "fase-1";
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocurrio un problema al efectuar dicha operación.", ""));
             return "diligenciar-formato-revision-idea";
         }
     }
@@ -374,8 +384,12 @@ public class RevisionIdeaController {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Revisión de la idea, editada con éxito."));
             return "fase-1";
         } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocurrio un problema al efectuar dicha operación.", ""));
             return "editar-formato-revision-idea";
         }
+    }
+    
+    public Date getToday() {
+        return new Date();
     }
 }

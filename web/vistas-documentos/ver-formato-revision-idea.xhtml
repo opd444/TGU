@@ -71,6 +71,13 @@
                                 <p:outputLabel value="#{revisionIdeaController.aprobado}" />
                                 <p:outputLabel value="Observaciones:" styleClass="subtitulosFormato" />
                                 <p:outputLabel value="#{revisionIdeaController.observaciones}" />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Fecha:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{formatoA.fecha}" style="margin-left: 5px" >
+                                        <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                    </p:outputLabel>
+                                </h:panelGrid>
+                                <br />
                             </h:panelGrid>
                             <br />
                             <h:panelGrid columns="2" cellpadding="12" style="margin: 0 auto">

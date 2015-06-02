@@ -3,20 +3,24 @@ package com.unicauca.tgu.controllers;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.unicauca.tgu.Auxiliares.Servicio_Email;
+import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.FormatosTablas.FormatoTablaActa;
 import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
+import com.unicauca.tgu.entities.Rol;
 import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.TrabajogradoFase;
+import com.unicauca.tgu.entities.Usuario;
+import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +28,6 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 @ManagedBean
@@ -35,27 +38,33 @@ public class ActaSecretariaController {
     private ProductodetrabajoFacade ejbFacadeProdTrab;
     @EJB
     private TrabajogradoFaseFacade ejbFacadeTraFase1;
-
+    @EJB
+    private UsuarioRolTrabajogradoFacade ejbFacadeUsuroltrab;
+    @EJB
+    private UsuarioFacade ejbFacadeUsu;
+    
     private String nombreTrabajodeGrado;
     private String nombreDirector;
     private Date fechaact;
     private String resultado;
     private String numact;
     private FormatoTablaActa acta;
-
+    private int idSecretaria;
+    
     /**
      * Creates a new instance of ActaSecretariaController
      */
     public ActaSecretariaController() {
+        idSecretaria = -1;
+        FacesContext context = FacesContext.getCurrentInstance();
+        ServiciosSimcaController s =  (ServiciosSimcaController)context.getApplication().evaluateExpressionGet(context, "#{serviciosSimcaController}", ServiciosSimcaController.class);
+        idSecretaria = s.getUsulog().getPersonacedula().intValue();
+
         nombreDirector = TrabajodeGradoActual.director.getPersonanombres() + " " + TrabajodeGradoActual.director.getPersonaapellidos();
         nombreTrabajodeGrado = TrabajodeGradoActual.nombreTg;
         numact = "1A";
         resultado = "0";
-        Calendar c = new GregorianCalendar();
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        fechaact = c.getTime();
+        fechaact = new Date();
     }
 
     public String getNombreTrabajodeGrado() {
@@ -131,7 +140,22 @@ public class ActaSecretariaController {
 
             String contenido = obtenerDatos();
             Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
-
+            
+            if (idSecretaria != -1) {
+                
+                List<UsuarioRolTrabajogrado> lst = ejbFacadeUsuroltrab.findByUsuid_Rolid_Trabid(idSecretaria, 6, TrabajodeGradoActual.id);
+                if(lst.isEmpty()) {
+                    Usuario usuSecretaria = ejbFacadeUsu.find(new BigDecimal(idSecretaria));
+                    if(usuSecretaria != null) {
+                        UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fechaact);
+                        usuroltg.setTrabajoid(trab);
+                        usuroltg.setRolid(new Rol(BigDecimal.valueOf(6)));                            //agregando la Secretaria
+                        usuroltg.setPersonacedula(usuSecretaria);
+                        ejbFacadeUsuroltrab.create(usuroltg);
+                    }
+                }
+            }
+            
             Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.ZERO, contenido);
             prod.setFormatoid(new Formatoproducto(BigDecimal.valueOf(5)));
             prod.setTrabajoid(trab);
@@ -174,11 +198,11 @@ public class ActaSecretariaController {
 //            se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
 //            se.enviarDiligenciadoRevisionIdea(nombretg);
 //            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Acta de resolución asignada."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta de resolución asignada con éxito.", ""));
             return "diligenciar-acta-resolucion";
         } catch (Exception e) {
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocurrio un problema al efectuar dicha operación.", ""));
             return "diligenciar-acta-resolucion";
         }
     }
@@ -187,13 +211,19 @@ public class ActaSecretariaController {
 
         FacesContext context = FacesContext.getCurrentInstance();
         try {
-
             ejbFacadeProdTrab.Eliminar_prod(acta.getIdprod());
-
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Acta Eliminada"));
+            
+            if(ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(TrabajodeGradoActual.id, 5).isEmpty())
+            {
+                List<UsuarioRolTrabajogrado> lst = ejbFacadeUsuroltrab.findByUsuid_Rolid_Trabid(idSecretaria, 6, TrabajodeGradoActual.id);
+                if(!lst.isEmpty()) {
+                    ejbFacadeUsuroltrab.remove(lst.get(0));
+                }
+            }
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta Eliminada con éxito.", ""));
 
         } catch (Exception e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Error", "Ocurrio algun error al intentar  efectuar la operacion"));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Ocurrio un problema al efectuar dicha operación.", ""));
         }
 
     }

@@ -408,4 +408,48 @@ public class TrabajodegradoController implements Serializable {
     public boolean getBtnDescargarFormatoG() {
         return !getBtnDiligenciarFormatoG();
     }
+    
+    /**
+     * FORMATO: Oficio de Asignación de Jurados, realizado por la Secretaria.
+     * @return Boolean
+     */
+    
+    public boolean getBtnDiligenciarOficioAsigJurados()
+    {
+        if(getBtnEditarOficioAsigJurados() == false)
+        {
+            List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 7);
+            if (lstProductos.size() > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        else
+            return false;
+    }
+
+    public boolean getBtnEditarOficioAsigJurados() {
+        List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 8);
+        if (lstProductos.size() > 0)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean getBtnVerOficioAsigJurados() {
+        List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 8);
+        if (lstProductos.size() > 0)
+            return true;
+        else
+            return false;
+    }
+    
+    public boolean getBtnDescargarOficioAsigJurados() {
+        List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 8);
+        if (lstProductos.size() > 0)
+            return true;
+        else
+            return false;
+    }
 }
