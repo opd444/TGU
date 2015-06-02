@@ -29,7 +29,7 @@
                         <p:menuitem value="Estudiante" outcome="./../perfiles/vista-estudiante.xhtml" />                                        
                         <p:menuitem value="Estudiante" outcome="./../perfiles/vista-estudiante.xhtml" />
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="./../perfiles/vista-estudiante.xhtml" />
-                        <p:menuitem value="2. Realización del Anteproyecto" outcome="2-realizacion-anteproyecto" />
+                        <p:menuitem value="2. Realización del Anteproyecto" outcome="fase-realizacion-anteproyecto" />
                         <p:menuitem value="Editar Anteproyecto" />
                     </p:breadCrumb>              
                 </h:form>
@@ -82,7 +82,7 @@
                                                 icon="ui-icon-arrowthick-1-s" action="#{anteproyecto.preparardescarga()}">
                                     <p:fileDownload value="#{anteproyecto.filedown}" />
                                 </p:commandButton>
-                                <p:button value="Cancelar" icon="ui-icon-cancel" outcome="2-realizacion-anteproyecto" style="font-size: 13px; width: 120px;"/>
+                                <p:button value="Cancelar" icon="ui-icon-cancel" outcome="fase-realizacion-anteproyecto" style="font-size: 13px; width: 120px;"/>
                             </h:panelGrid>
                         </p:panel>
                     </h:form>
