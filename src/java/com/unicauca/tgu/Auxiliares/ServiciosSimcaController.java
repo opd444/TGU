@@ -105,7 +105,7 @@ public class ServiciosSimcaController {
                 
                 VistaActual.rol = roles.get(0).getRolnombre();
                 String vistaX = setOutcomePefil(roles.get(0).getRolnombre());
-                FacesContext.getCurrentInstance().getExternalContext().redirect("perfiles/"+vistaX+".xhtml");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("faces/perfiles/"+vistaX+".xhtml");
                 
             } catch (IOException ex) {
                 Logger.getLogger(ServiciosSimcaController.class.getName()).log(Level.SEVERE, null, ex);

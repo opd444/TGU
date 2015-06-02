@@ -87,7 +87,11 @@ public class FormatoF {
         nombretg = TrabajodeGradoActual.nombreTg;
         nomEst1 = TrabajodeGradoActual.est1.getPersonanombres() + " " + TrabajodeGradoActual.est1.getPersonaapellidos();
         nomDirector = TrabajodeGradoActual.director.getPersonanombres() + " " + TrabajodeGradoActual.director.getPersonaapellidos();
-        nomEst2 = TrabajodeGradoActual.est2.getPersonanombres() + " " + TrabajodeGradoActual.est2.getPersonaapellidos();
+        
+        if(TrabajodeGradoActual.est2 != null) {
+            nomEst2 = TrabajodeGradoActual.est2.getPersonanombres() + " " + TrabajodeGradoActual.est2.getPersonaapellidos();
+        }
+        
         fecha = new Date();
         directorioformatoF = "D:\\Archivos_TGU\\FormatoF\\" + TrabajodeGradoActual.nombreTg + "\\";
 
