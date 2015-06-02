@@ -55,6 +55,11 @@
                     <p:spacer height="25"/>
                     <p:panel id="pnlEjecucionDelTrabajoDeGrado" header="4. Ejecución del Trabajo de Grado" style=" font-size: 14px;" widgetVar="pnlEjecucionDelTrabajoDeGrado">
                         <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
+                           
+                           <h:outputText value="Formato F(Documento Final):" style="font-weight: bold;" />
+                           <p:button value="Diligenciar" icon="ui-icon-document" outcome="diligenciar-formato-F.xhtml" disabled="#{trabajodegradoController.btnDiligenciarFormatoF}" style="width: 120px;" />                                        
+                           <p:button value="Editar" icon="ui-icon-pencil" outcome="editar-formato-F.xhtml" style="width: 120px;" disabled="#{!trabajodegradoController.btnDiligenciarFormatoF}"/>                                 
+                            
                             <h:outputText value="Formato G:" style="font-weight: bold;" />
                             <p:button value="Ver" icon="ui-icon-comment" outcome="/vistas-documentos/ver-formato-G.xhtml" disabled="#{trabajodegradoController.btnVerFormatoG}" style="width: 120px;" /> 
                             <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnDescargarFormatoG}" style="width: 120px;" />

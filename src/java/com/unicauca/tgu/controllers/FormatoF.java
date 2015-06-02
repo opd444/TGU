@@ -401,7 +401,7 @@ public class FormatoF {
 //                se.enviarDiligenciadoAnteproyecto(nombretg);
 //            }
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Anteproyecto diligenciado con éxito."));
-                return "fase-ejecucion-trabajo-grado";
+                return "fase-ejecucion-del-trabajo-de-grado";
 
             } catch (Exception e) {
 
@@ -447,7 +447,7 @@ public class FormatoF {
 //                se.enviarEditadoAnteproyecto(nombretg);
 //            }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Formato F editado con éxito."));
-            return "fase-ejecucion-trabajo-grado";
+            return "fase-ejecucion-del-trabajo-de-grado";
 
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
