@@ -14,8 +14,12 @@
                 <h:form>
                     <!-- ToDo miga de pan por programación -->
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Inicio" />
-                        <p:menuitem value="Ver Formato D" />
+                        <p:menuitem value="inicio" />
+                        <p:menuitem value="#{menuController.rolActual}" />
+                        <p:menuitem value="Trabajos de Grado" />
+                        <p:menuitem value="Fases del Trabajo de Grado" />
+                        <p:menuitem value="3. Evaluacion del Anteproyecto" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-evaluacion-anteproyecto" />
+                        <p:menuitem value="Ver Formato D" outcome="ver-formato-D" />
                     </p:breadCrumb>
                 </h:form>
             </ui:define>

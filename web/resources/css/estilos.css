@@ -314,3 +314,11 @@ body {
     float:left;
 
 }
+
+.ui-breadcrumb .ui-icon-home 
+{
+    background-image: url("../img/home.png"); 
+    background-size: 18px 18px;
+    width: 17px;
+    background-position: 0; /* asuming bandeau.png is a single image */
+}

@@ -322,4 +322,7 @@ public class MenuController implements Serializable {
         }
         return null;
     }
+    public String getRolActual() {
+        return VistaActual.rol;
+    }
 }

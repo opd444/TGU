@@ -15,8 +15,12 @@
                 <h:form>
                     <!-- ToDo miga de pan por programación -->
                     <p:breadCrumb styleClass="migaDePan">                        
-                        <p:menuitem value="Inicio" outcome="ver-formato-A" />
-                        <p:menuitem value="Ver Formato A" />
+                        <p:menuitem value="inicio" />
+                        <p:menuitem value="#{menuController.rolActual}" />
+                        <p:menuitem value="Trabajos de Grado" />
+                        <p:menuitem value="Fases del Trabajo de Grado" />
+                        <p:menuitem value="1. Presentación de la Idea" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-presentacion-de-la-idea" />
+                        <p:menuitem value="Ver Formato A" outcome="ver-formato-A" />
                     </p:breadCrumb>   
                 </h:form>
             </ui:define>
@@ -117,7 +121,7 @@
                             </h:panelGrid>
                         </p:panel>
                     </h:form>
-                    
+
                     <h:form id="frmDescargarFormatoA">
                         <p:dialog id="dlgVerRutina" header="Descargar Formato A" widgetVar="dlgVerRutina" position="center" modal="true" resizable="false" closeOnEscape="true">                            
                             <c:if test="#{pDFBean.pdfFileName != 'sin-cargar'}">
@@ -127,7 +131,7 @@
                             </c:if>
                         </p:dialog>
                     </h:form>
-                    
+
                 </p:panel>
             </ui:define>
         </ui:composition>

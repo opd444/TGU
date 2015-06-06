@@ -13,8 +13,12 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                        <p:menuitem value="Inicio" />
-                        <p:menuitem value="Ver Formato B" />
+                        <p:menuitem value="inicio" />
+                        <p:menuitem value="#{menuController.rolActual}" />
+                        <p:menuitem value="Trabajos de Grado" />
+                        <p:menuitem value="Fases del Trabajo de Grado" />
+                        <p:menuitem value="3. Evaluacion del Anteproyecto" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-evaluacion-anteproyecto" />
+                        <p:menuitem value="Ver Formato B" outcome="ver-formato-B" />
                     </p:breadCrumb>              
                 </h:form>
             </ui:define>

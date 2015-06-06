@@ -11,7 +11,16 @@
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
-                miga de pan
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="inicio" />
+                        <p:menuitem value="#{menuController.rolActual}" />
+                        <p:menuitem value="Trabajos de Grado" />
+                        <p:menuitem value="Fases del Trabajo de Grado" />
+                        <p:menuitem value="4. Ejecucion del Trabajo de Grado" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-ejecucion-del-trabajo-de-grado" />
+                        <p:menuitem value="Ver Formato G" outcome="ver-formato-G" />
+                    </p:breadCrumb>
+                </h:form>
             </ui:define>
 
             <ui:define name="title">                
@@ -99,9 +108,9 @@
                                 <br />
                             </h:panelGrid>
                             <h:panelGrid columns="2" cellpadding="12" style="margin: 0 auto">
-                                    <p:button value="Volver" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-ejecucion-del-trabajo-de-grado" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;" />                             
-                                    <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px; width: 120px;" />
-                                </h:panelGrid>
+                                <p:button value="Volver" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-ejecucion-del-trabajo-de-grado" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;" />                             
+                                <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px; width: 120px;" />
+                            </h:panelGrid>
                         </p:panel>
                     </h:form>
                 </p:panel>
