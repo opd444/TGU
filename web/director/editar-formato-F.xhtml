@@ -77,24 +77,43 @@
 
                             <p:tab id="paso2" title="Paso 2">
                                 <p:panel header="Campos con * son obligatorios">
-                                    <p:messages />
+                                    <p:spacer height="20" width="500" />
+                                    <p:messages for="tabarchivos"/>
+                                    <p:message for="conds" />
+                                    <p:spacer height="20" width="500" />
+                                    <p:message for="docs" />
                                     <h:panelGrid style="margin: 0 auto;" columnClasses="label, value" cellpadding="12" columns="2">
 
-                                        <p:outputLabel styleClass="subtitulosFormato" value="El trabajo cumple con las condiciones de entrega?:" for="conds"/>
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Se cumplen las condiciones de entrega?:" for="conds"/>
                                         <p:selectOneRadio id="conds" value="#{formatoF.cumpleEntrega}" required="true">
                                             <f:selectItem itemLabel="Si" itemValue="Si" />
                                             <f:selectItem itemLabel="No" itemValue="No" />
                                         </p:selectOneRadio>
 
-                                        <p:outputLabel styleClass="subtitulosFormato" value="Documentos y anexos totalmente terminados?:" for="docs"/>
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Documentos y anexos terminados?:" for="docs"/>
                                         <p:selectOneRadio id="docs" value="#{formatoF.cumpleDocyAnexos}" required="true">
                                             <f:selectItem itemLabel="Si" itemValue="Si" />
                                             <f:selectItem itemLabel="No" itemValue="No" />
                                         </p:selectOneRadio>
 
-                                        <p:outputLabel styleClass="subtitulosFormato" value="Adjuntar Anexos *" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Trabajo de Grado *" />
+                                        <p:column width="400">
+                                            <p:fileUpload id="trabgrad" required="true" fileUploadListener="#{formatoF.handleFileUpload}" auto="true" style="width: 340px;" 
+                                                          allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf|rar|zip|tar)$/" sizeLimit="31457280" label="Examinar..." update="nombarchtrab"
+                                                          invalidFileMessage="Tipo de Archivo no Valido. Agregue un archivo word,excel,pdf o comprimido" 
+                                                          invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" validatorMessage="Debe adjuntar el archivo de trabajo de grado." />
+
+                                            <p:commandLink id="nombarchtrab" value="#{formatoF.nombarchtrab}" rendered="#{formatoF.trabdown != null}"
+                                                           ajax="false" onclick="PrimeFaces.monitorDownload(mostrarestado, ocultarestado);" 
+                                                           action="#{formatoF.preparardescarga(3)}">
+                                                <p:fileDownload value="#{formatoF.trabdown}" />
+                                            </p:commandLink>
+
+                                          </p:column>
+                                        
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Anexos *" />
                                         <p:column>
-                                            <p:fileUpload id="anexos" required="true" fileUploadListener="#{formatoF.handleFileUpload}" auto="true" style="width: 135px;" 
+                                            <p:fileUpload id="anexos" required="true" fileUploadListener="#{formatoF.handleFileUpload}" auto="true" style="width: 340px;" 
                                                           allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf|rar|zip|tar)$/" sizeLimit="31457280" label="Examinar..." update="nombarchanex"
                                                           invalidFileMessage="Tipo de Archivo no Valido. Agregue un archivo word,excel,pdf o comprimido" 
                                                           invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" validatorMessage="Debe adjuntar el archivo de anexos." />
@@ -107,9 +126,9 @@
 
                                           </p:column>
 
-                                        <p:outputLabel styleClass="subtitulosFormato" value="Adjuntar Articulos *" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Articulos *" />
                                         <p:column>
-                                            <p:fileUpload id="articulos" required="true" fileUploadListener="#{formatoF.handleFileUpload}" auto="true" style="width: 135px;" 
+                                            <p:fileUpload id="articulos" required="true" fileUploadListener="#{formatoF.handleFileUpload}" auto="true" style="width: 340px;" 
                                                           allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf|rar|zip|tar)$/" sizeLimit="31457280" label="Examinar..." update="nombarchart"
                                                           invalidFileMessage="Tipo de Archivo no Valido. Agregue un archivo word,excel,pdf o comprimido" 
                                                           invalidSizeMessage="El archivo excede le tamaño permitido(30MG)" validatorMessage="Debe adjuntar el archivo de articulos." />
@@ -146,6 +165,10 @@
                                             <p:outputLabel value="#{formatoF.cumpleDocyAnexos}"> </p:outputLabel>
                                         </p:fieldset>
 
+                                         <p:fieldset legend="Archivo de Trabajo de Grado" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoF.nombarchtrab}"> </p:outputLabel>
+                                        </p:fieldset>
+                                        
                                           <p:fieldset legend="Archivo de Anexos" toggleable="true" styleClass="txtareaform"> 
                                              <p:outputLabel value="#{formatoF.nombarchanex}"> </p:outputLabel>
                                         </p:fieldset> 

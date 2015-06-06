@@ -41,6 +41,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
@@ -63,15 +64,20 @@ public class FormatoF {
     private Date fecha;
     private UploadedFile anexos;
     private UploadedFile articulos;
+    private UploadedFile trabajogrado;
     private StreamedContent anexosdown;
     private StreamedContent articulosdown;
+    private StreamedContent trabdown;
     private String nombarchanex;
     private String nombarchart;
+    private String nombarchtrab;
     private boolean archivomodificadoanex;
     private boolean archivomodificadoart;
+    private boolean archivomodificadotrab;
     private String directorioformatoF;
     private String rutaarchanex;
     private String rutaarchart;
+    private String rutaarchtrab;
     private String urlrep;
     private Productodetrabajo productoActual;
 
@@ -87,11 +93,11 @@ public class FormatoF {
         nombretg = TrabajodeGradoActual.nombreTg;
         nomEst1 = TrabajodeGradoActual.est1.getPersonanombres() + " " + TrabajodeGradoActual.est1.getPersonaapellidos();
         nomDirector = TrabajodeGradoActual.director.getPersonanombres() + " " + TrabajodeGradoActual.director.getPersonaapellidos();
-        
-        if(TrabajodeGradoActual.est2 != null) {
+
+        if (TrabajodeGradoActual.est2 != null) {
             nomEst2 = TrabajodeGradoActual.est2.getPersonanombres() + " " + TrabajodeGradoActual.est2.getPersonaapellidos();
         }
-        
+
         fecha = new Date();
         directorioformatoF = "D:\\Archivos_TGU\\FormatoF\\" + TrabajodeGradoActual.nombreTg + "\\";
 
@@ -113,7 +119,7 @@ public class FormatoF {
             if (decoded.containsKey("nombarchanex")) {
                 nombarchanex = decoded.get("nombarchanex");
             }
-            
+
             if (decoded.containsKey("rutaarchart")) {
                 rutaarchart = decoded.get("rutaarchart");
             }
@@ -121,15 +127,22 @@ public class FormatoF {
                 nombarchart = decoded.get("nombarchart");
             }
 
+            if (decoded.containsKey("rutaarchtrab")) {
+                rutaarchtrab = decoded.get("rutaarchtrab");
+            }
+            if (decoded.containsKey("nombarchtrab")) {
+                nombarchtrab = decoded.get("nombarchtrab");
+            }
+
             if (decoded.containsKey("obs")) {
                 obs = decoded.get("obs");
             }
 
-            if (decoded.containsKey("urlrep") ) {
+            if (decoded.containsKey("urlrep")) {
                 urlrep = decoded.get("urlrep");
             }
 
-            if (decoded.containsKey("cumpleDocyAnexos") ) {
+            if (decoded.containsKey("cumpleDocyAnexos")) {
                 cumpleDocyAnexos = decoded.get("cumpleDocyAnexos");
             }
 
@@ -144,10 +157,17 @@ public class FormatoF {
                     Logger.getLogger(FormatoA.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            if(!"".equals(nombarchanex))preparardescarga(1);
-            if(!"".equals(nombarchart))preparardescarga(2);
+            if (!"".equals(nombarchanex)) {
+                preparardescarga(1);
+            }
+            if (!"".equals(nombarchart)) {
+                preparardescarga(2);
+            }
+            if (!"".equals(nombarchtrab)) {
+                preparardescarga(3);
+            }
         }
-        
+
     }
 
     public String getNombretg() {
@@ -238,7 +258,6 @@ public class FormatoF {
         this.articulosdown = articulosdown;
     }
 
-    
     public StreamedContent getAnexosdown() {
         return anexosdown;
     }
@@ -255,50 +274,77 @@ public class FormatoF {
         this.nombarchart = nombarchart;
     }
 
-    
-    
+    public StreamedContent getTrabdown() {
+        return trabdown;
+    }
+
+    public void setTrabdown(StreamedContent trabdown) {
+        this.trabdown = trabdown;
+    }
+
+    public String getNombarchtrab() {
+        return nombarchtrab;
+    }
+
+    public void setNombarchtrab(String nombarchtrab) {
+        this.nombarchtrab = nombarchtrab;
+    }
+
     public void handleFileUpload(FileUploadEvent event) {
         UIComponent f = event.getComponent();
-        
-        if(f.getId().equals("anexos")){
-            anexos = event.getFile(); 
+
+        if (f.getId().equals("anexos")) {
+            anexos = event.getFile();
             nombarchanex = anexos.getFileName();
             archivomodificadoanex = true;
             if (anexosdown != null) {
-            preparardescarga(1);
-          } 
+                preparardescarga(1);
+            }
         }
-        if(f.getId().equals("articulos"))
-        {
-        articulos= event.getFile(); 
-        nombarchart = articulos.getFileName();
-        archivomodificadoart = true;
-        if (articulosdown != null) {
-            preparardescarga(2);
+        if (f.getId().equals("articulos")) {
+            articulos = event.getFile();
+            nombarchart = articulos.getFileName();
+            archivomodificadoart = true;
+            if (articulosdown != null) {
+                preparardescarga(2);
+            }
         }
+        if (f.getId().equals("trabgrad")) {
+            trabajogrado = event.getFile();
+            nombarchtrab = trabajogrado.getFileName();
+            archivomodificadotrab = true;
+            if (trabdown != null) {
+                preparardescarga(3);
+            }
         }
     }
 
     public void preparardescarga(int archivo) {   // 1 anexos   - 2 articulos 
         try {
-            
-            if(archivo==1)
-            {
-            if (archivomodificadoanex) {
-                anexosdown.getStream().close();
-                anexosdown = new DefaultStreamedContent(anexos.getInputstream(), "application/pdf", nombarchanex);
-            } else {
-                anexosdown = new DefaultStreamedContent(new FileInputStream(rutaarchanex), "application/pdf", nombarchanex);
-             }
+
+            if (archivo == 1) {
+                if (archivomodificadoanex) {
+                    anexosdown.getStream().close();
+                    anexosdown = new DefaultStreamedContent(anexos.getInputstream(), "application/pdf", nombarchanex);
+                } else {
+                    anexosdown = new DefaultStreamedContent(new FileInputStream(rutaarchanex), "application/pdf", nombarchanex);
+                }
             }
-            if(archivo==2)
-            {
-            if (archivomodificadoart) {
-                articulosdown.getStream().close();
-                articulosdown = new DefaultStreamedContent(articulos.getInputstream(), "application/pdf", nombarchart);
-            } else {
-                articulosdown = new DefaultStreamedContent(new FileInputStream(rutaarchanex), "application/pdf", nombarchart);
-             }
+            if (archivo == 2) {
+                if (archivomodificadoart) {
+                    articulosdown.getStream().close();
+                    articulosdown = new DefaultStreamedContent(articulos.getInputstream(), "application/pdf", nombarchart);
+                } else {
+                    articulosdown = new DefaultStreamedContent(new FileInputStream(rutaarchanex), "application/pdf", nombarchart);
+                }
+            }
+            if (archivo == 3) {
+                if (archivomodificadotrab) {
+                    trabdown.getStream().close();
+                    trabdown = new DefaultStreamedContent(trabajogrado.getInputstream(), "application/pdf", nombarchtrab);
+                } else {
+                    trabdown = new DefaultStreamedContent(new FileInputStream(rutaarchtrab), "application/pdf", nombarchtrab);
+                }
             }
         } catch (Exception e) {
         }
@@ -317,14 +363,16 @@ public class FormatoF {
         }
 
         OutputStream out;
-        InputStream in;        
-        if(archivo==1){
-        out = new FileOutputStream(new File(directorioformatoF + anexos.getFileName()));
-        in = anexos.getInputstream();
-        }
-        else{
-        out = new FileOutputStream(new File(directorioformatoF + articulos.getFileName()));
-        in = articulos.getInputstream();
+        InputStream in;
+        if (archivo == 1) {
+            out = new FileOutputStream(new File(directorioformatoF + anexos.getFileName()));
+            in = anexos.getInputstream();
+        } else if (archivo == 2) {
+            out = new FileOutputStream(new File(directorioformatoF + articulos.getFileName()));
+            in = articulos.getInputstream();
+        } else {
+            out = new FileOutputStream(new File(directorioformatoF + trabajogrado.getFileName()));
+            in = trabajogrado.getInputstream();
         }
 
         int read = 0;
@@ -359,24 +407,30 @@ public class FormatoF {
         map.put("cumpleEntrega", cumpleEntrega);
 
         map.put("obs", obs);
-        if(archivomodificadoanex){
+        if (archivomodificadoanex) {
             map.put("rutaarchanexos", directorioformatoF + anexos.getFileName());
             map.put("nombarchanex", anexos.getFileName());
-        }
-        else {
+        } else {
             map.put("rutaarchanexos", rutaarchanex);
             map.put("nombarchanex", nombarchanex);
         }
-        
-        if(archivomodificadoart){
+
+        if (archivomodificadoart) {
             map.put("rutaarchart", directorioformatoF + articulos.getFileName());
             map.put("nombarchart", articulos.getFileName());
-        }
-        else {
+        } else {
             map.put("rutaarchart", rutaarchart);
             map.put("nombarchart", nombarchart);
         }
-        
+
+        if (archivomodificadotrab) {
+            map.put("rutaarchtrab", directorioformatoF + trabajogrado.getFileName());
+            map.put("nombarchtrab", trabajogrado.getFileName());
+        } else {
+            map.put("rutaarchtrab", rutaarchtrab);
+            map.put("nombarchtrab", nombarchtrab);
+        }
+
         map.put("urlrep", urlrep);
 
         Gson gson = new Gson();
@@ -385,17 +439,22 @@ public class FormatoF {
 
     public String guardar() {
 
-        if (anexos != null && !"".equals(anexos.getFileName())) {
-
-            try {
+        try {
+            if (anexos != null) {
                 copiarArchivo(1);
-                if (articulos != null)copiarArchivo(2);
-                
-                Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.ZERO, obtenerDatos());
-                prod.setFormatoid(new Formatoproducto(BigDecimal.valueOf(6)));
-                prod.setTrabajoid(new Trabajodegrado(BigDecimal.valueOf(TrabajodeGradoActual.id)));
+            }
+            if (articulos != null) {
+                copiarArchivo(2);
+            }
+            if (trabajogrado != null) {
+                copiarArchivo(3);
+            }
 
-                ejbFacadeProdTrab.create(prod);
+            Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.ZERO, obtenerDatos());
+            prod.setFormatoid(new Formatoproducto(BigDecimal.valueOf(6)));
+            prod.setTrabajoid(new Trabajodegrado(BigDecimal.valueOf(TrabajodeGradoActual.id)));
+
+            ejbFacadeProdTrab.create(prod);
 
 //                Servicio_Email se = new Servicio_Email();
 //                se.setSubject("Anteproyecto del Trabajo de Grado" + nombretg + " Diligenciado");
@@ -404,18 +463,13 @@ public class FormatoF {
 //                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
 //                se.enviarDiligenciadoAnteproyecto(nombretg);
 //            }
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Anteproyecto diligenciado con éxito."));
-                return "fase-ejecucion-del-trabajo-de-grado";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Anteproyecto diligenciado con éxito."));
+            return "fase-ejecucion-del-trabajo-de-grado";
 
-            } catch (Exception e) {
+        } catch (Exception e) {
 
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
-                return "diligenciar-formato-F";
-            }
-
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "El doc. del Anteproyecto es obligatorio."));
-            return "diligenciar-anteproyecto";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
+            return "diligenciar-formato-F";
         }
     }
 
@@ -438,7 +492,14 @@ public class FormatoF {
                 copiarArchivo(2);
 
             }
-            
+
+            if (archivomodificadotrab) {
+                File f = new File(rutaarchtrab);
+                f.delete();
+                copiarArchivo(3);
+
+            }
+
             productoActual.setProductocontenido(obtenerDatos());
 
             ejbFacadeProdTrab.edit(productoActual);
@@ -456,6 +517,20 @@ public class FormatoF {
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "Ocurrio un problema al efectuar dicha operación."));
             return "editar-formato-F";
+        }
+    }
+
+    public String onFlowProcess(FlowEvent event) {
+        if (!event.getOldStep().equals("paso2")) {
+            return event.getNewStep();
+        }
+        if (trabajogrado!=null && anexos!=null && articulos!=null) {
+            return event.getNewStep();
+        } else {
+            if(trabajogrado==null)FacesContext.getCurrentInstance().addMessage("tabarchivos", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incompleto : Falta el archivo del trabajo de grado",""));
+            if(anexos==null)FacesContext.getCurrentInstance().addMessage("tabarchivos", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incompleto : Falta el archivo de anexos",""));
+            if(articulos==null)FacesContext.getCurrentInstance().addMessage("tabarchivos", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incompleto : Falta el archivo de articulos",""));
+            return event.getOldStep();
         }
     }
 }
