@@ -21,7 +21,7 @@ import javax.servlet.ServletContext;
 @ViewScoped
 public class ProcedimientoView {
     
-    private List<String> images;
+    private List<DetalleImagen> images;
     /**
      * Creates a new instance of ProcedimientoView
      */
@@ -31,14 +31,14 @@ public class ProcedimientoView {
      
     @PostConstruct
     public void init() {
-        images = new ArrayList<String>();
+        images = new ArrayList<DetalleImagen>();
         
-        images.add("AprobacionDeAnteproyecto.png");
-        images.add("EjecucionDeTrabajoDeGrado.png");
-        images.add("EvaluacionDelTrabajoDeGrado.png");
+        images.add(new DetalleImagen("AprobacionDeAnteproyecto.png","","Aprobación del Anteproyecto"));
+        images.add(new DetalleImagen("EjecucionDeTrabajoDeGrado.png","","Ejecución del Trabajo de Grado"));
+        images.add(new DetalleImagen("EvaluacionDelTrabajoDeGrado.png","","Evaluación del Trabajo de Grado"));
     }
  
-    public List<String> getImages() {
+    public List<DetalleImagen> getImages() {
         return images;
     }
 }

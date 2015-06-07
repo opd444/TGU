@@ -6,11 +6,13 @@
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition>
-        <br /> <br />
-        Fases o procedimientos en los trabajos de grado y funciones especificas
         <br /> <br />        
-        <p:galleria style="margin: 0 auto;" value="#{procedimientoView.images}" var="image" panelWidth="500" panelHeight="313" showCaption="true">
-            <p:graphicImage name="../resources/img/#{image}" alt="Image Description for #{image}" title="#{image}"/>
+        
+        <p:galleria style="margin: 0 auto;" value="#{procedimientoView.images}" var="image" panelWidth="580" panelHeight="487" showCaption="true">
+            <p:graphicImage name="../resources/img/#{image.name}" title="#{image.title}"/>
         </p:galleria>
+        <br /> <br />        
+        Fases en los trabajos de grado y funciones especificas
+        <br /> <br />        
     </ui:composition>
 </html>
