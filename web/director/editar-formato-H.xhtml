@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
+                        <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
+                        <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-director.xhtml" />                        
+                        <p:menuitem value="5. Evaluación del Trabajo de Grado" outcome="fase-5" />
+                        <p:menuitem value="Editar Formato H" />
+                    </p:breadCrumb>              
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">
+            </ui:define>
+
+            <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
+
+                <p:panel styleClass="paneltrabajo" >
+                    <div class="tituloContenido">                        
+                        <h:outputText value="FORMATO H: Constancia del Director del Trabajo y Jurados de que el material entregado corresponde a la versión sustentada"/> <br/>
+                    </div>                 
+                    <p:spacer height="30"/>                    
+                    <h:form enctype="multipart/form-data">
+                        <p:growl id="growl" showDetail="false" life="5000"/>
+                        <p:wizard backLabel="Anterior" nextLabel="Siguiente" style="font-size: 14px;">
+                            <p:tab id="paso1" title="Paso 1">
+                                <p:panel header="Campos con * son obligatorios">
+                                    <p:growl id="growl1" showDetail="false" life="5000"/>
+                                    <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="5">
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Titulo:" />
+                                        <p:outputLabel value="#{formatoH.titulo}" style="font-weight: bold;" />
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Director:" />
+                                        <p:outputLabel value="#{formatoH.directornomsapes}"/>
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Estudiante(s):"/>
+                                        <p:column>
+                                            <p:outputLabel value="#{formatoH.est1nomsapes}" /> <br />
+                                            <p:outputLabel value="#{formatoH.est2nomsapes}" />
+                                        </p:column>
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Observaciones:" />
+                                        <p:inputTextarea value="#{formatoH.observaciones}" />
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Fecha: *" />
+                                        <p:calendar navigator="true" value="#{formatoH.fecha}" 
+                                                    required="true" 
+                                                    label="Fecha" 
+                                                    pattern="dd-MM-yyyy" 
+                                                    showOn="button" 
+                                                    timeZone="America/Bogota" 
+                                                    locale="es_CO" 
+                                                    size="12" 
+                                                    mindate="#{formatoH.today}" 
+                                                    requiredMessage="Debe ingresar la fecha." />
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+                            <p:tab id="paso2" title="Paso 2">
+                                <p:panel header="Campos con * son obligatorios">
+                                    <p:growl id="growl2" showDetail="false" life="5000"/>
+                                    <h:panelGrid style="margin: 0 auto;">
+                                        <p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Estado constancia de que el material entregado corresponde a la versión sustentada"/>
+                                    </h:panelGrid>
+                                    <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="label, value" cellpadding="5">
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Estado director (#{formatoH.directornomsapes}): *" />
+                                        <p:selectOneRadio id="estadoDirector" value="#{formatoH.estadoDirector}"  layout="grid" columns="1">
+                                            <f:selectItems value="#{formatoH.estados}" var="c" itemLabel="#{estadoDirector}" itemValue="#{estadoDirector}"/>
+                                        </p:selectOneRadio>
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Estado Jurado 1 (#{formatoH.jurado1nomsapes}): *" />
+                                        <p:selectOneRadio id="estadoJurado1" value="#{formatoH.estadoJurado1}"  layout="grid" columns="1">
+                                            <f:selectItems value="#{formatoH.estados}" var="c" itemLabel="#{estadoJurado1}" itemValue="#{estadoJurado1}"/>
+                                        </p:selectOneRadio>
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Estado Jurado 2 (#{formatoH.jurado2nomsapes}): *" />
+                                        <p:selectOneRadio id="estadoJurado2" value="#{formatoH.estadoJurado2}"  layout="grid" columns="1">
+                                            <f:selectItems value="#{formatoH.estados}" var="c" itemLabel="#{estadoJurado2}" itemValue="#{estadoJurado2}"/>
+                                        </p:selectOneRadio>
+
+                                        <p:separator style="border-color: white !important;" /><p:separator style="border-color: white !important;" />
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+
+                            <p:tab id="paso3" title="Paso 3">
+                                <p:panel header="Confirmación de Datos">
+                                    <h:panelGrid cellpadding="7">
+
+                                        <p:fieldset legend="Titulo:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoH.titulo}" /> 
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Director:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoH.directornomsapes}" />
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Estudiante 1:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoH.est1nomsapes}" />
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Estudiante 2:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoH.est2nomsapes}" />
+                                        </p:fieldset>
+
+                                        <br />
+
+                                        <p:fieldset legend="Observaciones:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoH.observaciones}" />
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Fecha:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoH.fecha}" >
+                                                <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                            </p:outputLabel>
+                                        </p:fieldset>
+
+                                        <br />
+
+                                        <p:fieldset legend="Estado director (#{formatoH.directornomsapes}):" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoH.estadoDirector}" />
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Estado Jurado 1 (#{formatoH.jurado1nomsapes}):" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoH.estadoJurado1}" />
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Estado Jurado 2 (#{formatoH.jurado2nomsapes}):" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{formatoH.estadoJurado2}" />
+                                        </p:fieldset>
+
+                                        <p:commandButton style="display: block; margin: 0 auto;" value="Editar" update="growl" action="#{formatoH.btnEditar(trabajodegradoController)}" icon="ui-icon-disk"/>
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+                        </p:wizard>
+                        <p:button value="Cancelar" outcome="fase-5" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

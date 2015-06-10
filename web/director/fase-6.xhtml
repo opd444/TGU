@@ -17,7 +17,7 @@
                         <p:menuitem value="Director" outcome="./../perfiles/vista-director.xhtml" />
                         <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-director.xhtml" /> 
                         <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-5" />
-                        <p:menuitem value="5. Evaluación del Trabajo de Grado" />
+                        <p:menuitem value="6. Finalizado" />
                     </p:breadCrumb>
                 </h:form>
             </ui:define>
@@ -48,33 +48,10 @@
                                 <p:button value="Realización del Anteproyecto" outcome="fase-2" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Evaluación del Anteproyecto" outcome="fase-3" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
                                 <p:button value="Ejecución del Trabajo de Grado" outcome="fase-4" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
-                                <p:button value="Evaluación del Trabajo de Grado" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px; background-color:greenyellow;" />
-                                <p:button value="Finalizado" href="#" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Trabajo de Grado" outcome="fase-5" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Finalizado" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px; background-color:greenyellow;" />
                             </h:panelGrid>                        
                         </p:panel>
-
-                        <p:spacer height="25"/>
-
-                        <p:panel id="pnlEvaluacionDelTrabajoDeGrado" header="5. Evaluación del Trabajo de Grado" style=" font-size: 14px;" widgetVar="pnlEvaluaciónDelTrabajoDeGrado">                       
-                            <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
-                                <h:outputText value="Formato G:" style="font-weight: bold;" />
-                                <p:button value="Ver" icon="ui-icon-comment" outcome="/vistas-documentos/ver-formato-G.xhtml" disabled="#{trabajodegradoController.btnVerFormatoG}" style="width: 120px;" />
-                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{trabajodegradoController.btnDescargarFormatoG}" style="width: 120px;" />
-                            </h:panelGrid>
-                            <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
-                                <h:outputText value="Oficio asignación de jurados:" style="font-weight: bold;" />
-                                <p:button value="Ver" icon="ui-icon-comment" outcome="/vistas-documentos/ver-oficio-asignacion-jurados.xhtml" disabled="#{!trabajodegradoController.btnVerOficioAsigJurados}" style="width: 120px;" />
-                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{!trabajodegradoController.btnDescargarOficioAsigJurados}" style="width: 120px;" />
-                            </h:panelGrid> 
-                            <h:panelGrid columns="5" cellpadding="5" cellspacing="5">
-                                <h:outputText value="Formato H:" style="font-weight: bold;" />
-                                <p:button value="Diligenciar" icon="ui-icon-document" outcome="diligenciar-formato-H" disabled="#{false}" style="width: 120px;" rendered="#{true}" /> 
-                                <p:button value="Editar" icon="ui-icon-pencil" outcome="editar-formato-H" disabled="#{false}" style="width: 120px;" rendered="#{true}" />
-                                <p:button value="Ver" icon="ui-icon-comment" outcome="/vistas-documentos/ver-formato-H.xhtml" disabled="#{false}" style="width: 120px;" />
-                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{false}" style="width: 120px;" />
-                            </h:panelGrid>
-                        </p:panel>
-
                     </p:panel>
                 </h:form>
             </ui:define>
