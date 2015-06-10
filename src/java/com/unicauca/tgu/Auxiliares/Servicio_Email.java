@@ -5,6 +5,7 @@
  */
 package com.unicauca.tgu.Auxiliares;
 
+import java.util.Date;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -169,6 +170,16 @@ public class Servicio_Email {
     
     public void enviarNotificacionAsignacion(String nombretg) {
        messagebody = String.format(bodyformat,  "El anteproyecto del trabajo de grado '<strong>"+nombretg+"</strong>' ya tiene evaluadores asignados y esta listo para revisión.");
+             sendEmail();
+    }
+    
+    public void enviarNotificacionAsignacionJurados(String nombretg,Date fecha1,Date fecha2,Date fecha3) {
+       messagebody = String.format(bodyformat,  "El Trabajo de grado '<strong>"+nombretg+"</strong>' ya tiene jurados asignados y estas son las posibles fechas de sustentación: <br/><br/>"+fecha1+"<br/>"+fecha2+"<br/>"+fecha3+"<br/><br/> Por favor ingrese al sistema para revisar el oficio de asignacion como jurado");
+             sendEmail();
+    }
+    
+    public void enviarNotificacionAsignacionJuradosADirectorEstudiantes(String nombretg,Date fecha1,Date fecha2,Date fecha3) {
+       messagebody = String.format(bodyformat,  "El Trabajo de grado '<strong>"+nombretg+"</strong>' ya tiene jurados asignados y estas son las posibles fechas de sustentación: <br/><br/>"+fecha1+"<br/>"+fecha2+"<br/>"+fecha3+"<br/><br/>");
              sendEmail();
     }
     
