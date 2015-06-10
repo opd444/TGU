@@ -3,6 +3,7 @@ package com.unicauca.tgu.controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.unicauca.tgu.Auxiliares.Servicio_Email;
 import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.entities.Formatoproducto;
@@ -85,6 +86,7 @@ public class OficioAsignacionJurados
         director = TrabajodeGradoActual.director;
         nombreJurado1 = "";
         nombreJurado2 = "";
+        
         
         fecha1 = null;
         fecha2 = null;
@@ -439,6 +441,39 @@ public class OficioAsignacionJurados
             
             //AQUI SE ENVIA EL CORREO CEPEDA. Req. 56 y 57
             
+//            Servicio_Email se = new Servicio_Email();
+//            se.setSubject("Usted ha sido seleccionado para evaluar el proyecto de grado: '" + nombretg+'"');
+//
+//            if (jurado1 != null) {
+//                se.setTo(jurado1.getPersonacorreo());
+//                se.enviarNotificacionAsignacionJurados(nombretg, fecha1, fecha2, fecha3);
+//            }
+//            if (jurado2 != null) {
+//                se.setTo(jurado2.getPersonacorreo());
+//                se.enviarNotificacionAsignacionJurados(nombretg, fecha1, fecha2, fecha3);
+//            }
+//            
+//            Servicio_Email se1 = new Servicio_Email();
+//            se1.setSubject("El trabajo de grado: '" + nombretg+'"'+" se le acaban de asignar jurados");
+//            
+//            if (director != null) {
+//                se1.setTo(director.getPersonacorreo());
+//                se1.enviarNotificacionAsignacionJuradosADirectorEstudiantes(nombretg, fecha1, fecha2, fecha3);
+//            }
+//            
+//            if (est1 != null) {
+//                se1.setTo(est1.getPersonacorreo());
+//                se1.enviarNotificacionAsignacionJuradosADirectorEstudiantes(nombretg, fecha1, fecha2, fecha3);
+//            }
+//            
+//            if (est2 != null) {
+//                se1.setTo(est2.getPersonacorreo());
+//                se1.enviarNotificacionAsignacionJuradosADirectorEstudiantes(nombretg, fecha1, fecha2, fecha3);
+//            }
+
+            
+            
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Oficio de asignación de jurados, diligenciado con éxito."));
             return "fase-5";
         } 
@@ -495,6 +530,36 @@ public class OficioAsignacionJurados
             ejbFacadeProdTrab.edit(productoActual);
             
             //AQUI SE ENVIA EL CORREO CEPEDA. Req. 56 y 57
+            
+//            Servicio_Email se = new Servicio_Email();
+//            se.setSubject("Usted ha sido seleccionado para evaluar el proyecto de grado: '" + nombretg+'"');
+//
+//            if (jurado1 != null) {
+//                se.setTo(jurado1.getPersonacorreo());
+//                se.enviarNotificacionAsignacionJurados(nombretg, fecha1, fecha2, fecha3);
+//            }
+//            if (jurado2 != null) {
+//                se.setTo(jurado2.getPersonacorreo());
+//                se.enviarNotificacionAsignacionJurados(nombretg, fecha1, fecha2, fecha3);
+//            }
+//            
+//            Servicio_Email se1 = new Servicio_Email();
+//            se1.setSubject("El trabajo de grado: '" + nombretg+'"'+" se le acaban de asignar jurados");
+//            
+//            if (director != null) {
+//                se1.setTo(director.getPersonacorreo());
+//                se1.enviarNotificacionAsignacionJuradosADirectorEstudiantes(nombretg, fecha1, fecha2, fecha3);
+//            }
+//            
+//            if (est1 != null) {
+//                se1.setTo(est1.getPersonacorreo());
+//                se1.enviarNotificacionAsignacionJuradosADirectorEstudiantes(nombretg, fecha1, fecha2, fecha3);
+//            }
+//            
+//            if (est2 != null) {
+//                se1.setTo(est2.getPersonacorreo());
+//                se1.enviarNotificacionAsignacionJuradosADirectorEstudiantes(nombretg, fecha1, fecha2, fecha3);
+//            }
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Oficio de asignación de jurados, editado con éxito."));
             return "fase-5";
