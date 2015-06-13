@@ -8,15 +8,12 @@ package com.unicauca.tgu.jpacontroller;
 import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -54,7 +51,46 @@ public class TrabajodegradoFacade extends AbstractFacade<Trabajodegrado> {
         }
     }
 
-    public List<Trabajodegrado> getTrabajosTerminados() {
+   
+
+    public List<Trabajodegrado> getTrabajosTerminadosporDirectorId(int idusu) {
+        return getTrabajosTerminadosoEnCursoporRolId(idusu, 1, 0);
+    }
+
+    public List<Trabajodegrado> getTrabajosEnCursoPorDirectorId(int idusu) {
+        return getTrabajosTerminadosoEnCursoporRolId(idusu, 0, 0);
+    }
+    
+    public List<Trabajodegrado> getTrabajosTerminadosporJuradoId(int idusu) {
+        return getTrabajosTerminadosoEnCursoporRolId(idusu, 1, 7);
+    }
+
+    public List<Trabajodegrado> getTrabajosEnCursoPorJuradoId(int idusu) {
+        return getTrabajosTerminadosoEnCursoporRolId(idusu, 0, 7);
+    }
+
+    public List<Trabajodegrado> getTrabajosTerminadosoEnCursoporRolId(int idusu, int modo,int rol) {
+        List<Trabajodegrado> lst;
+        if (modo == 1) {
+            lst = getTrabajosTerminados();
+        } else {
+            lst = getTrabajosEnCurso();
+        }
+
+        List<Trabajodegrado> ret = new ArrayList();
+
+        for (Trabajodegrado t : lst) {
+            for (UsuarioRolTrabajogrado u : t.getUsuarioRolTrabajogradoList()) {
+                if (u.getPersonacedula().getPersonacedula().intValue() == idusu && u.getRolid().getRolid().intValue() == rol) {                               //filtramos trabajos de grado terminados por un director(IDrol = 0)
+                    ret.add(t);
+                    break;
+                }
+            }
+        }
+        return ret;
+    }
+    
+     public List<Trabajodegrado> getTrabajosTerminados() {
         return getTrabajosTerminadosoEncurso(1);
     }
 
@@ -87,34 +123,5 @@ public class TrabajodegradoFacade extends AbstractFacade<Trabajodegrado> {
         } else {
             return terminados;
         }
-    }
-
-    public List<Trabajodegrado> getTrabajosTerminadosporDirectorId(int idusu) {
-        return getTrabajosTerminadosoEnCursoporDirectorId(idusu, 1);
-    }
-
-    public List<Trabajodegrado> getTrabajosEnCursoPorDirectorId(int idusu) {
-        return getTrabajosTerminadosoEnCursoporDirectorId(idusu, 0);
-    }
-
-    public List<Trabajodegrado> getTrabajosTerminadosoEnCursoporDirectorId(int idusu, int modo) {
-        List<Trabajodegrado> lst;
-        if (modo == 1) {
-            lst = getTrabajosTerminados();
-        } else {
-            lst = getTrabajosEnCurso();
-        }
-
-        List<Trabajodegrado> ret = new ArrayList();
-
-        for (Trabajodegrado t : lst) {
-            for (UsuarioRolTrabajogrado u : t.getUsuarioRolTrabajogradoList()) {
-                if (u.getPersonacedula().getPersonacedula().intValue() == idusu && u.getRolid().getRolid().intValue() == 0) {                               //filtramos trabajos de grado terminados por un director(IDrol = 0)
-                    ret.add(t);
-                    break;
-                }
-            }
-        }
-        return ret;
     }
 }

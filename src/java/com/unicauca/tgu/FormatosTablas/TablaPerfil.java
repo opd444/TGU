@@ -1,6 +1,11 @@
 package com.unicauca.tgu.FormatosTablas;
 import com.unicauca.tgu.entities.Fase;
+import com.unicauca.tgu.entities.Trabajodegrado;
+import com.unicauca.tgu.entities.TrabajogradoFase;
+import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class TablaPerfil
 {
@@ -116,4 +121,51 @@ public class TablaPerfil
     public void setAprobado(boolean aprobado) {
         this.aprobado = aprobado;
     }
+    
+    public List<TablaPerfil> llenarTabla(List<Trabajodegrado> trabstemp)
+            
+    {
+            List<TablaPerfil> trabs;
+            trabs = new ArrayList();
+             int cont;     
+             TablaPerfil f;
+             
+         for (Trabajodegrado t : trabstemp) {
+            cont = 0;
+            f = new TablaPerfil();                  //sacamos la informacion general tanto Jurado y los estud.
+            f.setFecha(t.getUsuarioRolTrabajogradoList().get(0).getFechaasignacion());
+            f.setTrabajoGradoId(t.getUsuarioRolTrabajogradoList().get(0).getTrabajoid().getTrabajoid().intValue());
+            f.setTrabajoGrado(t.getUsuarioRolTrabajogradoList().get(0).getTrabajoid().getTrabajonombre());
+
+            for (UsuarioRolTrabajogrado l : t.getUsuarioRolTrabajogradoList()) {
+                if (l.getRolid().getRolid().intValue() == 0) //director
+                {
+                    f.setDirector(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
+                    f.setDirectorId(l.getPersonacedula().getPersonacedula().intValue());
+                } else if (l.getRolid().getRolid().intValue() == 1 && cont == 0) //Estudiante 1
+                {
+                    f.setEst1(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
+                    f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
+                    cont++;
+                } else if (l.getRolid().getRolid().intValue() == 1 && cont == 1) //estudiante 2
+                {
+                    f.setEst2(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
+                    f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());
+                }
+            }
+            List<TrabajogradoFase> tgfs = t.getTrabajogradoFaseList();
+            int x = 999;
+            for (TrabajogradoFase tg : tgfs) {
+                if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x) {
+                    f.setEstado(tg.getFaseid());
+                    x = tg.getFaseid().getFaseorden().intValue();
+                }
+            }
+
+            trabs.add(f);
+        }
+        return trabs; 
+    }
+          
+      
 }

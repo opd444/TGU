@@ -14,11 +14,9 @@
             <ui:define name="menuprincipal">
                 <h:form>
                     <p:breadCrumb styleClass="migaDePan">
-                    <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
-                    <p:menuitem value="Secretaria" outcome="./../perfiles/vista-secretaria-general.xhtml" />
-                    <p:menuitem value="Trabajos de Grado" outcome="./../perfiles/vista-secretaria-general.xhtml" />                        
-                    <p:menuitem value="Fases del Trabajo de Grado" outcome="fase-3" />
-                    <p:menuitem value="3. Evaluación del Anteproyecto" />
+                    <p:menuitem value="Jurado" outcome="./../perfiles/vista-jurado.xhtml" />   
+                    <p:menuitem value="Jurado" outcome="./../perfiles/vista-jurado.xhtml" />  
+                    <p:menuitem value="3. Evaluación del Anteproyecto"  />                    
                 </p:breadCrumb>
                 </h:form>
             </ui:define>
@@ -77,8 +75,6 @@
                                 <p:button value="Ver" icon="ui-icon-comment" href="../vistas-documentos/ver-formato-D.xhtml" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
                                 <p:button value="Descargar" icon="ui-icon-arrowthickstop-1-s" href="#" disabled="#{trabajodegradoController.btnVerRemisionAnteproyecto}" style="width: 120px;" />
                               
-                                <h:outputText value="Acta de resolución:" style="font-weight: bold;" />    
-                                <p:button value="Asignar" icon="ui-icon-plus" href="diligenciar-acta-resolucion.xhtml" disabled="#{trabajodegradoController.btnVerAsignarActaResolucion}" style="width: 120px;" />
                            </h:panelGrid>
                             
                         </p:panel>

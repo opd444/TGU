@@ -131,6 +131,20 @@ public class TrabajodegradoController implements Serializable {
     public boolean getBtnDescargarFormatoF() {
         return getBtnEditarFormatoF();
      }
+    
+    public boolean getBtnDiligenciarActaSustentacion(){
+        return verificarProductodeTrabajo(trabajoid.intValue(), 9);
+     }
+    
+    public boolean getBtnEditarActaSustentacion() {
+        return getBtnDiligenciarActaSustentacion();
+     }
+    
+    public boolean getBtnVerActaSustentacion() {
+        return getBtnEditarActaSustentacion();
+     }
+    
+    /// -.-!
 
     public boolean getBtnDiligenciarAnteproyecto() {
         List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(TrabajodeGradoActual.id, 2);

@@ -84,3 +84,12 @@ body
     background-color: whitesmoke; 
     border-color: #808080;
 }
+
+.columnalab{
+    width: 350px;
+}
+
+.columnaval{
+    width: auto;
+}
+

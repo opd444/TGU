@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+
+
+            <ui:define name="menuprincipal">
+                <h:form id="formMigaJurado">
+                    
+                    <p:breadCrumb id="migaJurado" styleClass="migaDePan">
+                        <p:menuitem value="Jurado" outcome="./../perfiles/vista-jurado.xhtml" />                                        
+                        <p:menuitem value="Jurado" outcome="./../perfiles/vista-jurado.xhtml" />                                        
+                        <p:menuitem value="5. Evaluación del trabajo de grado" outcome="fase-5" />
+                        <p:menuitem value="Diligenciar Acta de Sustentación"  />
+            
+                    </p:breadCrumb>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">
+
+            </ui:define>
+
+            <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
+
+                <p:panel styleClass="paneltrabajo" >
+                    <div class="tituloContenido">                        
+                        <h:outputText value="Diligenciar Acta de Sustentación"/> <br/>
+                    </div>                 
+                    <p:spacer height="30"/>                    
+                    <h:form>
+                        <p:growl id="growl" showDetail="false" life="5000"/>
+                        <p:wizard backLabel="Anterior" nextLabel="Siguiente" style="font-size: 14px;">
+                            <p:tab id="paso1" title="Paso 1">
+                                <p:panel header="Campos con * son obligatorios">
+                                    <p:growl id="growl1" showDetail="false" life="5000"/>
+                                    <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="columnalab, columnaval" cellpadding="15" >
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Los jurados del trabajo de grado titulado:" />
+                                        <p:outputLabel value="#{actaSustentacionController.nombreTrabajodeGrado}" />
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Hacen constar que se realizó la sustentación del trabajo de grado en la fehca y hora: *" />
+                                        <p:calendar navigator="true" value="#{actaSustentacionController.fechasus}" required="true" label="Fecha" pattern="dd-MM-yyyy HH:mm:ss" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha de sustentacion." />
+                                           
+                                        <p:outputLabel styleClass="subtitulosFormato" value="De el(los) señor(res):" />               
+                                        
+                                        <p:column>
+                                            <p:outputLabel value="- #{actaSustentacionController.nombreEst1}" rendered="#{actaSustentacionController.nombreEst1.length()>0}" /> <br />
+                                            <p:outputLabel value="- #{actaSustentacionController.nombreEst2}" rendered="#{actaSustentacionController.nombreEst2.length()>0}" />
+                                        </p:column>
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+                            <p:tab id="paso2" title="Paso 2">
+                                <p:panel header="Campos con * son obligatorios">
+                                    <p:growl id="growl2" showDetail="false" life="5000"/>
+
+                                    <h:panelGrid style="margin: 0 auto;" columns="2" columnClasses="columnalab, columnaval" cellpadding="15">
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Obteniendo el concepto de: *"/>
+                                        <p:selectOneRadio id="aprobado" value="#{actaSustentacionController.aprobado}" required="true">
+                                            <f:selectItem itemLabel="Aprobado" itemValue="Aprobado" />
+                                            <f:selectItem itemLabel="No aprobado" itemValue="No aprobado" />
+                                        </p:selectOneRadio>
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Para constancia se firma en Popayán, en la fecha y hora: *" />
+                                        <p:calendar navigator="true" value="#{actaSustentacionController.fechafirm}" required="true" label="Fecha" pattern="dd-MM-yyyy HH:mm:ss" showOn="button" timeZone="America/Bogota" locale="es_CO" size="12" requiredMessage="Debe ingresar la fecha en que diligencia este formato." />
+                                        
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Bajo la Direcccion de:" />
+                                        <p:outputLabel value="#{actaSustentacionController.nombreDirector}" />
+
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Jurado 1:" />
+                                        <p:outputLabel value="#{actaSustentacionController.nomJurado1}" />
+                                        
+                                        <p:outputLabel styleClass="subtitulosFormato" value="Jurado 2:" />
+                                        <p:outputLabel value="#{actaSustentacionController.nomJurado2}" />
+                                        
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+
+                            <p:tab id="paso3" title="Paso 3">
+                                <p:panel header="Confirmación de Datos">
+                                    <h:panelGrid cellpadding="7">
+
+                                        <p:fieldset legend="Nombre del Trabajo de Grado" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{actaSustentacionController.nombreTrabajodeGrado}" />
+                                        </p:fieldset>
+
+                                        <p:fieldset legend="Fecha de sustentación" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{actaSustentacionController.fechasus}" >
+                                                <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                            </p:outputLabel>
+                                        </p:fieldset>
+                                        
+                                        <p:fieldset legend="Nombre del Estudiante 1" toggleable="true" styleClass="txtareaform" rendered="#{actaSustentacionController.nombreEst1.length()>0}" > 
+                                            <p:outputLabel value="#{actaSustentacionController.nombreEst1}" />
+                                        </p:fieldset>
+                                        
+                                        <p:fieldset legend="Nombre del Estudiante 2" toggleable="true" styleClass="txtareaform" rendered="#{actaSustentacionController.nombreEst2.length()>0}"> 
+                                            <p:outputLabel value="#{actaSustentacionController.nombreEst2}" />
+                                        </p:fieldset>
+                                        
+                                        <p:fieldset legend="Concepto" toggleable="true" styleClass="txtareaform" >
+                                            <p:outputLabel value="#{actaSustentacionController.aprobado}" />
+                                        </p:fieldset>
+                                        
+                                        <p:fieldset legend="Fecha de Diligenciación:" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{actaSustentacionController.fechasus}" >
+                                                <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                            </p:outputLabel>
+                                        </p:fieldset>
+                                        
+                                        <p:fieldset legend="Nombre del Jurado 1" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{actaSustentacionController.nomJurado1}" />
+                                        </p:fieldset>
+                                        
+                                        <p:fieldset legend="Nombre del Jurado 2" toggleable="true" styleClass="txtareaform"> 
+                                            <p:outputLabel value="#{actaSustentacionController.nomJurado2}" />
+                                        </p:fieldset>
+                                        
+                                        <p:commandButton style="display: block; margin: 0 auto;" value="Guardar" update="growl" action="#{actaSustentacionController.guardar()}" icon="ui-icon-disk"/>
+                                    </h:panelGrid>
+                                </p:panel>
+                            </p:tab>
+                        </p:wizard>
+                        <p:button value="Cancelar" outcome="fase-5" style="margin-top: 20px; display: block; margin: 0 auto; font-size: 14px;" icon="ui-icon-cancel" />
+                    </h:form>
+                </p:panel>    
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

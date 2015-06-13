@@ -1,22 +1,70 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <body>
 
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
-                menuprincipal
+                <h:form id="formMigaJurado">
+                    <p:breadCrumb id="migaJurado" styleClass="migaDePan">
+                        <p:menuitem value="Jurado" outcome="vista-jurado" />                                        
+                        <p:menuitem value="Jefe de Departamento" outcome="vista-jurado" />
+                        <p:menuitem value="#{juradoController.titulotablaJurado}" />
+                    </p:breadCrumb>
+                </h:form>
             </ui:define>
 
             <ui:define name="title">
-                title
+           
             </ui:define>
 
             <ui:define name="body">
-                body
+                <h:form id="form">
+                    <p:growl id="growl" showDetail="true" life="5000"/>
+                    <p:panel styleClass="paneltrabajo" >
+                        <h:panelGrid style="margin: 0 auto;">
+                            <p:menubar styleClass="menubarstyleClass">
+                                <p:menuitem style="border-color: #808080" value="Ver Trabajos en Curso" actionListener="#{juradoController.trabajosenCurso()}"
+                                            update="tablatgJurado tituloVistaJurado :formMigaJurado:migaJurado" icon="ui-icon-folder-open"/>
+                                <p:menuitem style="border-color: #808080" value="Ver Trabajos Terminados" actionListener="#{juradoController.trabajosTerminados()}"
+                                            update="tablatgJurado tituloVistaJurado :formMigaJurado:migaJurado" icon="ui-icon-folder-collapsed"/>              
+                            </p:menubar>
+                        </h:panelGrid>
+                        <p:spacer height="25"/>
+                        <h:outputLabel id="tituloVistaJurado" class="tituloContenido" value="#{juradoController.titulotablaJurado}" />        
+                        <p:spacer height="10"/>
+                        <p:dataTable  styleClass="tablaDirector" id="tablatgJurado" var="car" value="#{juradoController.trabsJurado}"
+                                      paginator="#{juradoController.modo}" rows="#{juradoController.filas}" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24" emptyMessage="Lo sentimos, no hay trabajos registrados." style="font-size: 14px;">
+                            <p:column style="width: 80px;" headerText="Fecha">
+                                <h:outputText value="#{car.fecha}">
+                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column style="width: 275px;" headerText="Trabajo de Grado"> <!--filterBy="{car.trabajoGrado}"-->
+                                <p:commandLink actionListener="#{juradoController.contenidoTgJurado}" value="#{car.trabajoGrado}" style="color: #045491;">                                     
+                                    <f:attribute name="idtrabajo" value="#{car.trabajoGradoId}" />    
+                                    <f:attribute name="nombretrab" value="#{car.trabajoGrado}" />
+                                    <f:attribute name="est1" value="#{car.est1Id}" />
+                                    <f:attribute name="iddirector" value="#{car.directorId}" />
+                                    <f:attribute name="est2" value="#{car.est2Id}" />
+                                    <f:attribute name="fase" value="#{car.estado}" />
+                                </p:commandLink>
+                            </p:column>
+                            <p:column style="width: 150px;" headerText="Estudiantes" > <!--filterBy="{car.est1 or car.est2}"-->
+                                #{car.est1} <br /> #{car.est2}      
+                            </p:column>
+                            <p:column headerText="Fase" style="text-align: center">
+                                <h:outputText style="text-align: center;" value="#{car.estado.fasenombre}" />   
+                            </p:column>        
+                        </p:dataTable>                        
+                    </p:panel>
+                </h:form> 
             </ui:define>
 
         </ui:composition>
