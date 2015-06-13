@@ -29,9 +29,9 @@
                     <p:panel styleClass="paneltrabajo" >
                         <h:panelGrid style="margin: 0 auto;">
                             <p:menubar styleClass="menubarstyleClass">
-                                <p:menuitem style="border-color: #808080" value="Lista de ideas por revisar" actionListener="#{jefeDepController.ideasPorRevisar()}"
+                                <p:menuitem style="border-color: #808080" value="Trabajos de Grado en Curso" actionListener="#{jefeDepController.trabajosenCurso()}"
                                             update="tablatgJefe tituloVistaJefe :formMigaJefe:migaJefe" icon="ui-icon-folder-open"/>
-                                <p:menuitem style="border-color: #808080" value="Lista de ideas revisadas" actionListener="#{jefeDepController.ideasRevisadas()}"
+                                <p:menuitem style="border-color: #808080" value="Trabajos de Grado Terminados" actionListener="#{jefeDepController.trabajosTerminados()}"
                                             update="tablatgJefe tituloVistaJefe :formMigaJefe:migaJefe" icon="ui-icon-folder-collapsed"/>
                             </p:menubar>
                         </h:panelGrid>
@@ -55,15 +55,12 @@
                                     <f:attribute name="fase" value="#{car.estado}" />
                                 </p:commandLink>
                             </p:column>
-                            <p:column rendered="#{!jefeDepController.modo}" style="width: 140px;" headerText="Director">
+                            <p:column  style="width: 140px;" headerText="Director">
                                 #{car.director}    
                             </p:column>
                             <p:column style="width: 140px;" headerText="Estudiantes">
                                 #{car.est1} <br /> #{car.est2}    
-                            </p:column>
-                            <p:column rendered="#{jefeDepController.modo}" style="width: 70px; text-align: center;" headerText="Aprobada">
-                                <h:selectBooleanCheckbox id="checkbox" value="#{car.aprobado}" disabled="true" />
-                            </p:column>
+                            </p:column>                        
                         </p:dataTable>
                     </p:panel>
                 </h:form>

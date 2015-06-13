@@ -25,6 +25,10 @@
             </ui:define>
 
             <ui:define name="body">
+                #{estudianteViewController.nombresApellidos(serviciosSimcaController.nombreUsuario)}
+                #{trabajodegradoController.trabajoAsignado(estudianteViewController.entityTrabajo.trabajoid)}
+                #{trabajodegradoController.incializar()}                
+                #{estudianteViewController.loadTrabajoDeGrado()}
                 #{menuController.setOutPerfiles(true)}
                 <h:form id="formularioavalar" >
                     <p:panel styleClass="paneltrabajo" >

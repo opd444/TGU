@@ -112,6 +112,8 @@ public class TrabajodegradoFacade extends AbstractFacade<Trabajodegrado> {
                     break;
                 }
             }
+            t.getUsuarioRolTrabajogradoList().size();
+            t.getProductodetrabajoList().size();
             if (!band) {
                 terminados.add(t);
             } else {

@@ -46,7 +46,7 @@ public class EstudianteViewController {
     }
     /**
      * estTieneTG: se pregunta si el estudiante tiene o no asignado un trabajo de grado.
-     * @param usuarionombre
+     * @param usuarionombre carnicoro
      * @return 
      */
     public boolean estTieneTG(String usuarionombre) {

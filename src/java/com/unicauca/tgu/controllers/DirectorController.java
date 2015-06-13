@@ -75,49 +75,13 @@ public class DirectorController implements Serializable {
 
         List<Trabajodegrado> trabstemp;
 
-        if (modo == true) {
+        if (modo) {
             trabstemp = ejbFacadetrabgrad.getTrabajosTerminadosporDirectorId(iddirector);
         } else {
             trabstemp = ejbFacadetrabgrad.getTrabajosEnCursoPorDirectorId(iddirector);
-            /*if((trabstemp.size()+1) <= 3)
-                numMaxTrabPermitidos = false;
-            else
-               numMaxTrabPermitidos = true;*/
         }
-
-        int cont;
-        TablaPerfil f;
-
-        for (Trabajodegrado t : trabstemp) {
-            cont = 0;
-            f = new TablaPerfil();                  //sacamos la informacion general tanto director y los estud.
-            f.setFecha(t.getUsuarioRolTrabajogradoList().get(0).getFechaasignacion());
-            f.setTrabajoGradoId(t.getUsuarioRolTrabajogradoList().get(0).getTrabajoid().getTrabajoid().intValue());
-            f.setTrabajoGrado(t.getUsuarioRolTrabajogradoList().get(0).getTrabajoid().getTrabajonombre());
-            for (UsuarioRolTrabajogrado l : t.getUsuarioRolTrabajogradoList()) {
-                if (l.getRolid().getRolid().intValue() == 1 && cont == 0) {
-                    f.setEst1(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
-                    f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
-                    cont++;
-                } else if (l.getRolid().getRolid().intValue() == 1 && cont == 1) {
-                    f.setEst2(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
-                    f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());
-                }
-            }
-            //if (modo == false) {
-                List<TrabajogradoFase> tgfs = t.getTrabajogradoFaseList();
-                int x = 999;
-                for (TrabajogradoFase tg : tgfs) {
-                    if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x) {
-                        f.setEstado(tg.getFaseid());
-                        x = tg.getFaseid().getFaseorden().intValue();
-                    }
-                }
-            /*} else {
-                f.setEstado("Finalizado");
-            }*/
-            trabs.add(f);
-        }
+        TablaPerfil f = new TablaPerfil();
+        trabs = f.llenarTabla(trabstemp);
         return trabs;
     }
 

@@ -3,16 +3,10 @@ package com.unicauca.tgu.controllers;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.FormatosTablas.TablaPerfil;
 import com.unicauca.tgu.entities.Fase;
-import com.unicauca.tgu.entities.Productodetrabajo;
-import com.unicauca.tgu.entities.TrabajogradoFase;
-import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
-import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
-import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
+import com.unicauca.tgu.entities.Trabajodegrado;
+import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
-import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,17 +24,12 @@ import javax.faces.event.ActionEvent;
 public class JefeDepController {
 
     @EJB
-    private UsuarioRolTrabajogradoFacade ejbFacade;
-    @EJB
     private UsuarioFacade ejbFacadeusuario;
     @EJB
-    private TrabajogradoFaseFacade ejbFacadeTrabFase;
-    @EJB
-    private ProductodetrabajoFacade productoTrabEJB;
+    private TrabajodegradoFacade ejbFacadetrabgrad;
     
     private boolean modo;           
     private String titulotablaJefe;
-    private String titulotabla;
     private List<TablaPerfil> trabs;
 
      public JefeDepController() {
@@ -49,15 +38,7 @@ public class JefeDepController {
     @PostConstruct
     public void init() {
         modo = false;
-        titulotablaJefe = "Lista de ideas por revisar";
-    }
-
-    public String getTitulotabla() {
-        return titulotabla;
-    }
-
-    public void setTitulotabla(String titulotabla) {
-        this.titulotabla = titulotabla;
+        titulotablaJefe = "Trabajos de Grado en Curso";
     }
 
     public boolean isModo() {
@@ -68,102 +49,32 @@ public class JefeDepController {
         this.modo = modo;
     }
     
-    public void ideasPorRevisar()
-    {
-      modo = false;
-      titulotablaJefe = "Lista de ideas por revisar";
+    public void trabajosenCurso() {
+        modo = false;
+        titulotablaJefe = "Trabajos de Grado en Curso";
     }
-    
-    public void ideasRevisadas()
-    {
-      modo = true;
-      titulotablaJefe = "Lista de ideas revisadas";
+
+    public void trabajosTerminados() {
+        modo = true;
+        titulotablaJefe = "Trabajos de Grado Terminados";
     }
 
     public List<TablaPerfil> getTrabsJefe() {
 
         trabs = new ArrayList();
-        int cont;     
-        TablaPerfil f;
-        List<Productodetrabajo> lstProductos = new ArrayList();
-        List<Productodetrabajo> lstAux1 = productoTrabEJB.ObtenerProdsTrabajoPor_formatoID(0);
-        
-        if(modo == false) //Ideas por revisar
-        {
-            for(Productodetrabajo p : lstAux1)
-            {                
-                List<Productodetrabajo> lstAux2 = productoTrabEJB.ObtenerProdsTrabajoPor_trabajoID_formatoID(p.getTrabajoid().getTrabajoid().intValue(),1);
-                if(lstAux2.isEmpty())   //Sino tiene el formato Revision Idea asociado.
-                    lstProductos.add(p);
-            }
-        }
-        else    //Ideas ya revisadas
-        {
-            for(Productodetrabajo p : lstAux1)
-            {                
-                List<Productodetrabajo> lstAux2 = productoTrabEJB.ObtenerProdsTrabajoPor_trabajoID_formatoID(p.getTrabajoid().getTrabajoid().intValue(),1);
-                if(!lstAux2.isEmpty())   //Si tiene el formato Revision Idea asociado.
-                    lstProductos.add(p);
-            }
-        }
-        
-        for(Productodetrabajo t : lstProductos)
-        {
-            cont = 0;
-            f = new TablaPerfil();                  //sacamos la informacion general tanto jefe depto, director y los estud.
-            
-            List<UsuarioRolTrabajogrado> lst = ejbFacade.findbytrabajoId(t.getTrabajoid().getTrabajoid().intValue());
-            
-            if(lst.size() > 0)
-            {
-                f.setFecha(lst.get(0).getFechaasignacion());
-                f.setTrabajoGradoId(lst.get(0).getTrabajoid().getTrabajoid().intValue());
-                f.setTrabajoGrado(lst.get(0).getTrabajoid().getTrabajonombre());
 
-                for(UsuarioRolTrabajogrado l : lst)
-                {
-                        if(l.getRolid().getRolid().intValue() == 0)  //director
-                      {
-                          f.setDirector(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
-                          f.setDirectorId(l.getPersonacedula().getPersonacedula().intValue());   
-                      }   
-                    else if(l.getRolid().getRolid().intValue() == 1 && cont ==0)           //Estudiante 1
-                          { 
-                           f.setEst1(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
-                           f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
-                           cont ++;
-                          }
-                      else if(l.getRolid().getRolid().intValue() == 1 && cont ==1)      //estudiante 2
-                       { 
-                           f.setEst2(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
-                           f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());                      
-                       }
-                }
-                
-                List<TrabajogradoFase> lstTrabFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(t.getTrabajoid().getTrabajoid().intValue());
-                for(TrabajogradoFase tf : lstTrabFase)
-                {
-                    if(tf.getFaseid().getFaseid().equals(BigDecimal.valueOf(1)))
-                    {
-                        if(tf.getEstado().equals(BigInteger.valueOf(1)))
-                            f.setAprobado(true);
-                        else
-                            f.setAprobado(false);
-                        break;
-                    }
-                }
+        List<Trabajodegrado> trabstemp;
 
-                int x = 999;
-                for (TrabajogradoFase tg : lstTrabFase) {
-                    if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x) {
-                        f.setEstado(tg.getFaseid());
-                        x = tg.getFaseid().getFaseorden().intValue();
-                    }
-                }
-                
-                trabs.add(f);
-            }
+        if (modo == true) {
+            trabstemp = ejbFacadetrabgrad.getTrabajosTerminados();
+        } else {
+            trabstemp = ejbFacadetrabgrad.getTrabajosEnCurso();
         }
+
+        TablaPerfil f = new TablaPerfil();
+
+        trabs = f.llenarTabla(trabstemp);
+
         return trabs;
     }
 
