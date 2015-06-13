@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">              
+                        <p:menuitem value="#{menuController.rolActual}" outcome="./../perfiles/vista-#{menuController.outcomeCarpetaPefil()}.xhtml" />                                        
+                        <p:menuitem value="#{menuController.rolActual}" outcome="./../perfiles/vista-#{menuController.outcomeCarpetaPefil()}.xhtml" />                                        
+                        <p:menuitem value="5. Evaluación del trabajo de grado"  outcome="/#{menuController.outcomeCarpetaPefil()}/fase-5" />
+                        <p:menuitem value="Ver Acta de Sustentación" />
+                    </p:breadCrumb>   
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">                
+            </ui:define>
+
+            <ui:define name="body">
+                <f:metadata>
+                    <f:viewParam name="productoid" value="#{trabajodegradoController.trabajoid}" />
+                </f:metadata>
+                #{menuController.setOutPerfiles(true)}
+                <p:panel styleClass="paneltrabajo" >
+                    <div class="tituloContenido">                        
+                        <h:outputText value="Ver Acta de Sustentación"/> <br/>
+                    </div>
+                    <p:spacer height="30"/>
+
+                    <h:form >   
+                        <p:panel header="Información Actual" style="color: #181818;">
+                            <br />
+                            <h:panelGrid columns="2" style="margin: 0 auto">
+                                <p:graphicImage value="../resources/img/logo-unicauca-negro.png" style="width: 96px; margin-right: 60px" />
+                                <p:column>
+                                    <div align="center">
+                                        <p:outputLabel value="Universidad del Cauca" styleClass="subtitulosFormato" /><br />
+                                        <p:outputLabel value="Facultad de Ingeniería Electrónica y" styleClass="subtitulosFormato" /><br />
+                                        <p:outputLabel value="Telecomunicaciones" styleClass="subtitulosFormato" />
+                                    </div>
+                                </p:column>
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid style="margin: 0 auto">
+                                <p:outputLabel value="TRABAJO DE GRADO" styleClass="subtitulosFormato" />
+                            </h:panelGrid>
+                            <br />
+                            <h:panelGrid style="margin-left: 10px;">
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="OFICIO: " styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="Asignación de Jurados Evaluadores" style="margin-left: 5px" />
+                                </h:panelGrid>
+                                <br />
+                                <br />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Titulo:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{actaSustentacionController.nombreTrabajodeGrado}" style="margin-left: 5px"/>
+                                </h:panelGrid>
+                                <br />
+
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Fecha de Sustentación" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{actaSustentacionController.fechasus}" style="margin-left: 5px" >
+                                        <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                    </p:outputLabel>
+                                </h:panelGrid>
+
+                                <br />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Estudiante(s):" styleClass="subtitulosFormato" />
+                                    <p:column>
+                                        <p:outputLabel value="#{actaSustentacionController.nombreEst1}" style="margin-left: 5px"/> <br />
+                                        <p:outputLabel value="#{actaSustentacionController.nombreEst2}" style="margin-left: 5px"/>
+                                    </p:column>
+                                </h:panelGrid>
+                                <br />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Concepto:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{actaSustentacionController.aprobado}" style="margin-left: 5px"/>
+                                </h:panelGrid>
+                                <br />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Fecha de Diligenciación:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{actaSustentacionController.fechafirm}" style="margin-left: 5px" >
+                                        <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
+                                    </p:outputLabel>
+                                </h:panelGrid>
+                                 <br />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Director del trabajo de grado:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{actaSustentacionController.nombreDirector}"/>
+                                </h:panelGrid>
+                                <br />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Jurado 1:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{actaSustentacionController.nomJurado1}"/>
+                                </h:panelGrid>
+                                <br />
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Jurado 2:" styleClass="subtitulosFormato" />
+                                    <p:outputLabel value="#{actaSustentacionController.nomJurado2}"/>
+                                </h:panelGrid>
+                                <br /> <br />
+
+                            </h:panelGrid>
+                            <h:panelGrid columns="2" cellpadding="12" style="margin: 0 auto">                                    
+                                <p:button value="Volver" outcome="/#{menuController.outcomeCarpetaPefil()}/fase-5" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;" />
+                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" style="font-size: 13px; width: 120px;" />
+                            </h:panelGrid>
+                        </p:panel>
+                    </h:form>                    
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

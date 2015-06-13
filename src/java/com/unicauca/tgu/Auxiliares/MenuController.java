@@ -5,7 +5,6 @@
  */
 package com.unicauca.tgu.Auxiliares;
 
-import com.unicauca.tgu.controllers.DirectorController;
 import com.unicauca.tgu.entities.Rol;
 import com.unicauca.tgu.entities.UsuarioRol;
 import com.unicauca.tgu.jpacontroller.RolFacade;
@@ -22,13 +21,9 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -86,6 +81,7 @@ public class MenuController implements Serializable {
         }
 
         DefaultSubMenu perfiles = new DefaultSubMenu("Perfiles");
+        
         perfiles.setStyle("background-color: lightcyan;");
 
         for (Rol rolItem : roles) {
@@ -100,6 +96,13 @@ public class MenuController implements Serializable {
             setStyleItem();
             initMenu = false; // para el bucle de redireccionamiento
         }
+        
+            DefaultMenuItem item = new DefaultMenuItem("Proceso");
+            item.setCommand("#{menuController.cmdProceso}");
+            item.setUpdate("formMenu");
+            item.setStyle("background-color: #DCDCFF;");
+            items.add(item);
+            perfiles.addElement(item);
 
         model.addElement(perfiles);
     }
@@ -201,7 +204,15 @@ public class MenuController implements Serializable {
             }
         }
     }
-
+    
+    public void cmdProceso() {
+        for (DefaultMenuItem item : items) {
+            if (item.getValue().equals("Proceso")) {
+                cambioPerfil(item);
+            }
+        }
+    }
+    
     /**
      * itemsSetDefaultStyle: fija color por defecto para cada item en perfiles
      */
@@ -255,6 +266,8 @@ public class MenuController implements Serializable {
                 return "vista-secretaria-general";
             case "Jurado":
                 return "vista-jurado";
+            case "Proceso":
+                return "vista-proceso";
         }
         return null;
     }
@@ -286,6 +299,9 @@ public class MenuController implements Serializable {
                     break;
                 case "Jurado":
                     cmdJurado();
+                    break;
+                case "Proceso":
+                    cmdProceso();
                     break;
             }
         }
@@ -319,6 +335,8 @@ public class MenuController implements Serializable {
                 return "secretaria";
             case "Jurado":
                 return "jurado";
+            case "Proceso":
+                return "proceso";
         }
         return null;
     }

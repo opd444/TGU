@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form id="formMigaJurado">
+                    <p:breadCrumb id="migaJurado" styleClass="migaDePan">
+                        <p:menuitem value="Proceso" outcome="vista-proceso" />                                        
+                        <p:menuitem value="Proceso" outcome="vista-proceso" />
+                    </p:breadCrumb>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">                                
+            </ui:define>
+
+            <ui:define name="body">
+        
+                <p:panel styleClass="paneltrabajo" >
+                    <p:spacer height="25"/>
+                        <h:outputLabel  class="tituloContenido" value="Flujo de procesos de un trabajo de grado" />        
+                        <p:spacer height="30"/>
+                
+                    <h:outputLabel  class="subtitulosFormato" value="Haga click en una de las imagenes para ver en tamaño completo" />        
+                    <p:spacer height="30"/>
+                    <h:form>
+
+                        <p:contentFlow var="image" value="#{procedimientoView.images}" style="background-color: #0F2E4C; margin-top: 20px;">
+                                <p:graphicImage value="../resources/img/#{image.name}" styleClass="content" />
+                                <div class="caption" style="color: #D20005;">#{image.title}</div>
+                            </p:contentFlow>
+
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
