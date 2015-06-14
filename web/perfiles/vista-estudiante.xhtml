@@ -20,7 +20,8 @@
             <ui:define name="title">                                
             </ui:define>
 
-            <ui:define name="body">                                
+            <ui:define name="body">   
+                #{validarPerfiles.validarPerfil("Estudiante")}
                 <p:panel styleClass="paneltrabajo" rendered="#{!estudianteViewController.estTieneTG(serviciosSimcaController.nombreUsuario)}">
                     <div class="tituloContenido">                        
                         Lo sentimos, aun no tiene un trabajo de grado asignado.

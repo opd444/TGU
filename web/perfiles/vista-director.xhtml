@@ -24,6 +24,7 @@
             </ui:define>
 
             <ui:define name="body">
+                #{validarPerfiles.validarPerfil("Director")}
                 <p:dialog showEffect="fade" hideEffect="explode" position="center" widgetVar="agregartest" header="Crear nuevo Trabajo de Grado" modal="true" resizable="false" >
                     <h:form>
                         <h:panelGrid columns="2" cellpadding="10">

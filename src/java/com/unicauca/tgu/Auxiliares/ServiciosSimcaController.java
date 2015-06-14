@@ -88,7 +88,6 @@ public class ServiciosSimcaController {
 
             HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             httpSession.setAttribute("nombreUsuario", usu.getNombreUsuario());
-            httpSession.setAttribute("rol", usu.getRol());
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getSessionMap().put("login", nombreUsuario);
 
@@ -113,6 +112,7 @@ public class ServiciosSimcaController {
                 }
                 
                 VistaActual.rol = roles.get(0).getRolnombre();
+                httpSession.setAttribute("rol", roles.get(0).getRolnombre());
                 String vistaX = setOutcomePefil(roles.get(0).getRolnombre());
                 FacesContext.getCurrentInstance().getExternalContext().redirect("faces/"+vistaX+".xhtml");
                 

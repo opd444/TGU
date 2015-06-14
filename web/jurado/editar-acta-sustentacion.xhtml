@@ -28,8 +28,8 @@
             </ui:define>
 
             <ui:define name="body">
-                #{menuController.setOutPerfiles(true)}
-
+                #{menuController.setOutPerfiles(true)}                                
+                #{validarPerfiles.validarPerfil("Jurado")}                
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
                         <h:outputText value="Editar Acta de Sustentación"/> <br/>

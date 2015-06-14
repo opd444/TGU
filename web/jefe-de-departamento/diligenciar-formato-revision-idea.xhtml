@@ -27,7 +27,8 @@
             </ui:define>
 
             <ui:define name="body">
-                #{menuController.setOutPerfiles(true)}                
+                #{menuController.setOutPerfiles(true)}    
+                #{validarPerfiles.validarPerfil("Jefe de Departamento")}                
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
                         <h:outputText value="Formato: Revisión de la idea"/> <br/>

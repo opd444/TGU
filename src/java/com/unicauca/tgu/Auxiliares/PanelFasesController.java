@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.Application;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.NoneScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
@@ -30,7 +31,7 @@ import org.primefaces.component.panel.Panel;
  * @author seven
  */
 @ManagedBean
-@ViewScoped
+//@NoneScoped
 public class PanelFasesController implements Serializable {
 
     private Panel panel;
@@ -45,9 +46,10 @@ public class PanelFasesController implements Serializable {
     private FasesTrabajoDeGrado1 fasesTG;
 
     public PanelFasesController() {
+        
     }
 
-    @PostConstruct
+    //@PostConstruct
     public void init() {
         fases = ejbFacadeFase.faseOrderByOrden();
 
@@ -82,6 +84,7 @@ public class PanelFasesController implements Serializable {
     }
 
     public Panel getPaneltoFase(int orden) {
+        init();
         // Creando los nombres de las fases
         String buttonStyle = "width: 105px; height: 96px; font-size: 13px; ";
         String buttonSelectedStyle = buttonStyle + " background-color:greenyellow; ";

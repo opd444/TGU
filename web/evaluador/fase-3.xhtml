@@ -30,7 +30,7 @@
             <ui:define name="body">
                 #{menuController.setOutPerfiles(true)}
                 #{trabajodegradoController.setUsunomEval(serviciosSimcaController.nombreUsuario)}
-                
+                #{validarPerfiles.validarPerfil("Evaluador")} 
                 <h:form>                    
                     <p:panel styleClass="paneltrabajo" >
                         <div class="tituloContenido">                        

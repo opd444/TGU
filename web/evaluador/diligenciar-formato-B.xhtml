@@ -26,8 +26,8 @@
 
             <ui:define name="body">
                 #{menuController.setOutPerfiles(true)} <!-- facelet fuera de la carpeta perfiles -->
+                #{validarPerfiles.validarPerfil("Evaluador")}                
                 #{formatoB.buscarEvaluador(serviciosSimcaController.nombreUsuario)}                                
-                
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
                         <h:outputText value="Formato B: Evaluación del Anteproyecto"/> <br/>
