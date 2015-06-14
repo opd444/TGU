@@ -6,22 +6,24 @@
 package com.unicauca.tgu.Auxiliares;
 
 import com.unicauca.tgu.entities.Fase;
-import com.unicauca.tgu.entities.FasesTrabajoDeGrado;
 import com.unicauca.tgu.entities.FasesTrabajoDeGrado1;
 import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.jpacontroller.FaseFacade;
 import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.Application;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.html.HtmlPanelGrid;
+import javax.faces.context.FacesContext;
 import org.primefaces.component.button.Button;
 import org.primefaces.component.graphicimage.GraphicImage;
 import org.primefaces.component.panel.Panel;
-import org.primefaces.component.panelgrid.PanelGrid;
 
 /**
  *
@@ -29,17 +31,17 @@ import org.primefaces.component.panelgrid.PanelGrid;
  */
 @ManagedBean
 @ViewScoped
-public class PanelFasesController {
+public class PanelFasesController implements Serializable {
 
     private Panel panel;
-    private PanelGrid panelGrid;
+    private HtmlPanelGrid grid;
     @EJB
     private FaseFacade ejbFacadeFase;
     @EJB
     private TrabajogradoFaseFacade ejbFacadeTGFase;
 
     private List<Fase> fases;
-    
+
     private FasesTrabajoDeGrado1 fasesTG;
 
     public PanelFasesController() {
@@ -51,13 +53,19 @@ public class PanelFasesController {
 
         panel = new Panel();
         panel.setHeader("Fases del Trabajo de Grado");
+        String panelStyle = "text-align: center";
+        panel.setStyle(panelStyle);
+        panel.setToggleable(true);
 
-        panelGrid = new PanelGrid();
+        Application app = FacesContext.getCurrentInstance().getApplication();
+
+        grid = (HtmlPanelGrid) app.createComponent(HtmlPanelGrid.COMPONENT_TYPE);
         int columns = fases.size();
-        panelGrid.setColumns(columns);
+        grid.setColumns(columns);
+        grid.setCellpadding("1");
         String panelGridStyle = "margin: 0 auto;";
-        panelGrid.setStyle(panelGridStyle);
-        panelGrid.setStyleClass("ui-noborder");
+        grid.setStyle(panelGridStyle);        
+
         // Cargando las imagenes de las fases según su orden
         String graphicImageStyle = "width: 96px;";
 
@@ -66,17 +74,17 @@ public class PanelFasesController {
 
             graphicImage.setValue("../resources/img/" + fase.getFaseorden().toString() + ".png");
             graphicImage.setStyle(graphicImageStyle);
-            panelGrid.getChildren().add(graphicImage);
+            grid.getChildren().add(graphicImage);
         }
 
-        panel.getChildren().add(panelGrid);
+        panel.getChildren().add(grid);
     }
 
     public Panel getPaneltoFase(int orden) {
         // Creando los nombres de las fases
-        String buttonStyle = "width: 105px; height: 96px; font-size: 13px;";
-        String buttonSelectedStyle = "width: 105px; height: 96px; font-size: 13px; background-color:greenyellow;";
-        
+        String buttonStyle = "width: 105px; height: 96px; font-size: 13px; ";
+        String buttonSelectedStyle = buttonStyle + " background-color:greenyellow; ";
+
         habilitarfases();
 
         for (Fase fase : fases) {
@@ -91,19 +99,19 @@ public class PanelFasesController {
 
             button.setOutcome("fase-" + fase.getFaseorden().toString());
 
-            panelGrid.getChildren().add(button);
+            grid.getChildren().add(button);
         }
-        
+
         return panel;
     }
-    
+
     private void habilitarfases() {
         BigDecimal trabajoid = BigDecimal.valueOf(TrabajodeGradoActual.id);
-        
+
         List<TrabajogradoFase> _TGFases = ejbFacadeTGFase.ObtenerTrabajoFrasePor_trabajoID(trabajoid.intValue());
-        
+
         int fase = 0;
-        
+
         for (TrabajogradoFase _TGFase : _TGFases) {
             if (_TGFase.getTrabajoid().getTrabajoid().equals(trabajoid)) {
                 if (_TGFase.getEstado().equals(BigInteger.ONE)) {

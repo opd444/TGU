@@ -37,7 +37,7 @@
                         </div>                                         
                         <p:growl id="growl" showDetail="true" life="5000"/>
                         <p:spacer height="25"/>
-                        <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado">
+                        <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado" style="text-align: center">
                             <h:panelGrid columns="6" cellpadding="1" style="margin: 0 auto;">
                                 <p:graphicImage value="../resources/img/1.png" style="width: 96px;" />
                                 <p:graphicImage value="../resources/img/2.png" style="width: 96px;" />
@@ -46,7 +46,7 @@
                                 <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
                                 <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
 
-                                <p:button value="Presentación de la Idea" outcome="fase-1" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px;height: 96px; font-size: 13px;" />
+                                <p:button value="Presentación de la Idea" outcome="fase-1" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px;height: 96px; font-size: 13px; text-align: center; " />
                                 <p:button value="Realización del Anteproyecto" outcome="fase-2" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
 
                                 <p:commandButton type="button" value="Evaluación del Anteproyecto" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; background-color:greenyellow; height: 96px; font-size: 13px;" >
