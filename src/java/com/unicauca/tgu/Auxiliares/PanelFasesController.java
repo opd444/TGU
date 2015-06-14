@@ -52,6 +52,7 @@ public class PanelFasesController implements Serializable {
         fases = ejbFacadeFase.faseOrderByOrden();
 
         panel = new Panel();
+        panel.setId("panelFases");
         panel.setHeader("Fases del Trabajo de Grado");
         String panelStyle = "text-align: center";
         panel.setStyle(panelStyle);
