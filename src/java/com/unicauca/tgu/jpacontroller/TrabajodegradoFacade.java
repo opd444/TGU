@@ -107,7 +107,8 @@ public class TrabajodegradoFacade extends AbstractFacade<Trabajodegrado> {
         for (Trabajodegrado t : lst) {
             band = false;
             for (TrabajogradoFase f : t.getTrabajogradoFaseList()) {
-                if (f.getEstado().intValue() == 0) {
+                if( f.getFaseid().getFaseid().intValue() == 5 && f.getEstado().intValue() == 1)break;
+                if( f.getEstado().intValue() == 0) {
                     band = true;
                     break;
                 }
