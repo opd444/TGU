@@ -60,9 +60,9 @@ public class FormatoH {
     private String observaciones;
     private Date fecha;
 
-    private String estadoDirector;
+    private String estadoDirector = "Aprobado";
     private String estadoJurado1;
-    private String estadoJurado2;
+    private String estadoJurado2 = "Aprobado";
 
     private List<String> estados;
     /**
