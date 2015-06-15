@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Inicio" outcome="./../perfiles/vista-administrador.xhtml" />
+                        <p:menuitem value="Administrador" outcome="./../perfiles/vista-administrador.xhtml" />
+                        <p:menuitem value="Administrar fases" outcome="administrar-fases" />
+                    </p:breadCrumb>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">
+            </ui:define>
+
+            <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
+                #{validarPerfiles.validarPerfil("Administrador")}                
+                <p:panel styleClass="paneltrabajo" >
+                    <div class="tituloContenido">                        
+                        Administrar Fases <br />
+                    </div>
+                    <h:panelGrid style="margin: 0 auto;">
+                        <p:button id="cmdLinkCrear" value="Crear" outcome="crear-fase" />
+                    </h:panelGrid>
+                    <h:panelGrid style="margin: 0 auto;">                        
+                        <p:dataTable styleClass="tabladirector" var="item" value="#{administrarFasesController.fases}" 
+                                     paginator="true" 
+                                     rows="8" 
+                                     paginatorPosition="bottom" 
+                                     rowsPerPageTemplate="8,16,24" 
+                                     emptyMessage="Lo sentimos, no hay trabajos registrados." 
+                                     style="font-size: 14px;">
+                            <p:column headerText="Nombre" style="width: 150px;" >
+                                <h:outputText value="#{item.fasenombre}" />
+                            </p:column>
+                            <p:column headerText="Orden" style="width: 80px;" >
+                                <h:outputText value="#{item.faseorden}" />
+                            </p:column>
+
+                            <p:column headerText="Acciones" style="width: 200px;">
+                                <p:panelGrid columns="3" styleClass="ui-noborder">
+                                    <p:button id="cmdLinkVer" value="Ver" outcome="ver-fase?fase=#{item.faseid}" />
+                                    <p:button id="cmdLinkEditar" value="Editar" outcome="editar-fase?fase=#{item.faseid}" />
+                                    <p:button id="cmdLinkEliminar" value="Eliminar" outcome="eliminar-fase?fase=#{item.faseid}" />
+                                </p:panelGrid>
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGrid>
+                    <h:panelGrid style="margin: 0 auto;">
+                        <p:button id="cmdLinkVolver" value="Volver" outcome="./../perfiles/vista-administrador.xhtml" />
+                    </h:panelGrid>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

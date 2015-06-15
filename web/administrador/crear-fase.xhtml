@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Inicio" outcome="./../perfiles/vista-administrador.xhtml" />
+                        <p:menuitem value="Administrador" outcome="./../perfiles/vista-administrador.xhtml" />
+                        <p:menuitem value="Administrar fases" outcome="administrar-fases" />
+                        <p:menuitem value="Crear fase" />
+                    </p:breadCrumb>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">
+            </ui:define>
+
+            <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
+                #{validarPerfiles.validarPerfil("Administrador")}                
+                <p:panel styleClass="paneltrabajo" >
+                    <div class="tituloContenido">                        
+                        Crear Fase <br />
+                    </div>
+                    <h:form>
+                        <h:panelGrid columns="2" style="margin: 0 auto;" >
+                            <h:outputText value="Id de la Fase" />
+                            <p:inputText value="#{administrarFasesController.fase.faseid}" />
+                            <h:outputText /><h:outputText />
+                            <h:outputText value="Nombre de la Fase" />
+                            <p:inputText value="#{administrarFasesController.fase.fasenombre}" />
+                            <h:outputText /><h:outputText />
+                            <h:outputText value="Orden de la Fase" />
+                            <p:inputText value="#{administrarFasesController.fase.faseorden}" />
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" style="margin: 0 auto;">
+                            <p:button id="cmdLinkVolver" value="Cancelar" outcome="administrar-fases" />
+                            <p:commandButton value="Crear" actionListener="#{administrarFasesController.crearFase()}" />
+                        </h:panelGrid>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

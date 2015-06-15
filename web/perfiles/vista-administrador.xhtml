@@ -1,21 +1,41 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
 
     <body>
 
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
-                <!--miga de pan -->
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Inicio" outcome="./../perfiles/vista-administrador.xhtml" />
+                        <p:menuitem value="Administrador" outcome="./../perfiles/vista-administrador.xhtml" />
+                    </p:breadCrumb>
+                </h:form>
             </ui:define>
 
             <ui:define name="title">
             </ui:define>
 
             <ui:define name="body">
-                body
+                <p:panel styleClass="paneltrabajo" >
+                    <div class="tituloContenido">                        
+                        Vista Administrador <br />
+                    </div>
+                    <p:panel>
+                        <h:panelGrid columns="1">
+                            <p:button value="Administrar Fases"  outcome="./../administrador/administrar-fases.xhtml" />
+                            <br />
+                            <p:button value="Administrar Formatos de Productos (Cepeda)" outcome="./../administrador/administrar-formato-productos.xhtml" />
+                            <br />
+                            <p:button value="Administrar Roles (Cepeda)" outcome="./../administrador/administrar-roles.xhtml" />
+                        </h:panelGrid>
+                    </p:panel>
+                </p:panel>
             </ui:define>
 
         </ui:composition>
