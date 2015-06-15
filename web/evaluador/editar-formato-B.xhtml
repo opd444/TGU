@@ -28,10 +28,9 @@
 
             <ui:define name="body">
                 #{menuController.setOutPerfiles(true)}
-                
+                #{validarPerfiles.validarPerfil("Evaluador")}                
                 #{formatoB.buscarEvaluador(serviciosSimcaController.nombreUsuario)}                                
                 #{formatoB.prepararEdicion()}
-                
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
                         <h:outputText value="FORMATO B: EVALUACIÓN DEL ANTEPROYECTO"/> <br/>
@@ -197,7 +196,7 @@
                                         <p:fieldset legend="Titulo del trabajo de grado:" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoB.titulo}"> </p:outputLabel>
                                         </p:fieldset>
-                                        
+
                                         <p:fieldset legend="Nombre de los estudiantes:" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoB.est1est2}"> </p:outputLabel>
                                         </p:fieldset>
@@ -247,7 +246,7 @@
                                                 <f:convertDateTime type="date" dateStyle="full" timeZone="America/Bogota"/>
                                             </p:outputLabel>                                            
                                         </p:fieldset>
-                                        
+
                                         <p:fieldset legend="Nombre del evaluador:" toggleable="true" styleClass="txtareaform"> 
                                             <p:outputLabel value="#{formatoB.evaluador}"> </p:outputLabel>
                                         </p:fieldset>                                        

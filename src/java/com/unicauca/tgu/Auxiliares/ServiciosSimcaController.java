@@ -88,7 +88,6 @@ public class ServiciosSimcaController {
 
             HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             httpSession.setAttribute("nombreUsuario", usu.getNombreUsuario());
-            httpSession.setAttribute("rol", usu.getRol());
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getSessionMap().put("login", nombreUsuario);
 
@@ -111,11 +110,12 @@ public class ServiciosSimcaController {
                         roles.add(rol);
                     }
                 }
-                
+
                 VistaActual.rol = roles.get(0).getRolnombre();
+                httpSession.setAttribute("rol", roles.get(0).getRolnombre());
                 String vistaX = setOutcomePefil(roles.get(0).getRolnombre());
-                FacesContext.getCurrentInstance().getExternalContext().redirect("faces/"+vistaX+".xhtml");
-                
+                FacesContext.getCurrentInstance().getExternalContext().redirect("faces/" + vistaX + ".xhtml");
+
             } catch (IOException ex) {
                 Logger.getLogger(ServiciosSimcaController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -172,21 +172,20 @@ public class ServiciosSimcaController {
         switch (rol) {
             case "Director":
                 return "perfiles/vista-director";
-            case "Estudiante":
-            {
+            case "Estudiante": {
                 List<UsuarioRolTrabajogrado> list = ejbFacadeURT.findByUsuid_Rolid(usulog.getPersonacedula().intValue(), 1);
-                if(!list.isEmpty())
-                {
+                if (!list.isEmpty()) {
                     List<TrabajogradoFase> lstTrabFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(list.get(0).getTrabajoid().getTrabajoid().intValue());
                     int x = 999;
                     for (TrabajogradoFase tg : lstTrabFase) {
-                        if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x)
+                        if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x) {
                             x = tg.getFaseid().getFaseorden().intValue();
+                        }
                     }
-                    return "estudiante/fase-"+x;
-                }
-                else
+                    return "estudiante/fase-" + x;
+                } else {
                     return "perfiles/vista-estudiante";
+                }
             }
             case "Jefe de Departamento":
                 return "perfiles/vista-jefe-de-departamento";
@@ -198,6 +197,8 @@ public class ServiciosSimcaController {
                 return "perfiles/vista-secretaria-general";
             case "Jurado":
                 return "perfiles/vista-jurado";
+            case "Administrador":
+                return "perfiles/vista-administrador";
         }
         return null;
     }

@@ -27,7 +27,7 @@
 
             <ui:define name="body">
                 #{menuController.setOutPerfiles(true)}
-                
+                #{validarPerfiles.validarPerfil("Estudiante")}
                 #{estudianteViewController.nombresApellidos(serviciosSimcaController.nombreUsuario)}
                 #{trabajodegradoController.trabajoAsignado(estudianteViewController.entityTrabajo.trabajoid)}
                 #{trabajodegradoController.incializar()}                                

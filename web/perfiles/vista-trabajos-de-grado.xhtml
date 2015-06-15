@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="inicio" />
+                        <p:menuitem value="#{menuController.rolActual}" />
+                        <p:menuitem value="Ver Trabajos de Grado" />                        
+                    </p:breadCrumb>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">
+            </ui:define>
+
+            <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
+                <p:panel styleClass="paneltrabajo" >
+                    <h:form id="form">
+                        <p:growl id="growl" showDetail="true" life="5000"/>
+                        <!-- something -->
+                        <p:spacer height="25"/>
+                        <h:outputLabel id="tituloVistaJurado" class="tituloContenido" value="Trabajos de Grado" />        
+                        <p:spacer height="10"/>
+                        <p:dataTable  styleClass="tablaDirector" id="tablatgJurado" var="car" value="#{verTGController.trabajosDeGrado}"
+                                      paginator="true" rows="8" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24" emptyMessage="Lo sentimos, no hay trabajos registrados." style="font-size: 14px;" 
+                                      widgetVar="carsTable">
+                            <p:column style="width: 80px;" headerText="Fecha">
+                                <h:outputText value="#{car.fecha}">
+                                    <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column style="width: 275px;" headerText="Trabajo de Grado" filterBy="#{car.trabajoGrado}"> <!--filterBy="{car.trabajoGrado}"-->
+                                #{car.trabajoGrado}
+                            </p:column>
+                            <p:column style="width: 150px;" headerText="Director" filterBy="#{car.director}"> <!--filterBy="{car.trabajoGrado}"-->
+                                #{car.director}
+                            </p:column>
+                            <p:column style="width: 150px;" headerText="Estudiantes" filterBy="#{car.est1}"> <!--filterBy="{car.est1 or car.est2}"-->
+                                #{car.est1} <br /> #{car.est2}      
+                            </p:column>
+                            <p:column headerText="Fase" style="width: 275px; text-align: center" filterBy="#{car.estado.fasenombre}">
+                                <f:facet name="filter">
+                                    <p:selectOneMenu onchange="PF('carsTable').filter()" >
+                                        <f:selectItem itemLabel="Seleccione una fase" itemValue="#{null}" noSelectionOption="true" />
+                                        <f:selectItems value="#{verTGController.fases}" />
+                                    </p:selectOneMenu>
+                                </f:facet>
+                                <h:outputText style="text-align: center;" value="#{car.estado.fasenombre}" />   
+                            </p:column>        
+                        </p:dataTable>                        
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

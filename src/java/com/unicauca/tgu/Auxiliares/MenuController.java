@@ -81,7 +81,7 @@ public class MenuController implements Serializable {
         }
 
         DefaultSubMenu perfiles = new DefaultSubMenu("Perfiles");
-        
+
         perfiles.setStyle("background-color: lightcyan;");
 
         for (Rol rolItem : roles) {
@@ -96,13 +96,20 @@ public class MenuController implements Serializable {
             setStyleItem();
             initMenu = false; // para el bucle de redireccionamiento
         }
-        
-            DefaultMenuItem item = new DefaultMenuItem("Proceso");
-            item.setCommand("#{menuController.cmdProceso}");
-            item.setUpdate("formMenu");
-            item.setStyle("background-color: #DCDCFF;");
-            items.add(item);
-            perfiles.addElement(item);
+
+        DefaultMenuItem item = new DefaultMenuItem("Proceso");
+        item.setCommand("#{menuController.cmdProceso}");
+        item.setUpdate("formMenu");
+        item.setStyle("background-color: lightcyan;");
+        items.add(item);
+        perfiles.addElement(item);
+
+        DefaultMenuItem itemTG = new DefaultMenuItem("Ver Trabajos de Grado");
+        itemTG.setCommand("#{menuController.cmdVerTrabajosDeGrado}");
+        itemTG.setUpdate("formMenu");
+        itemTG.setStyle("background-color: lightcyan;");
+        items.add(itemTG);
+        perfiles.addElement(itemTG);
 
         model.addElement(perfiles);
     }
@@ -139,7 +146,11 @@ public class MenuController implements Serializable {
     private void cambioPerfil(DefaultMenuItem item) {
         itemsSetDefaultStyle();
         item.setStyle("background-color: #c2dfef");
-        VistaActual.rol = (String) item.getValue();
+
+        if (!item.getValue().equals("Proceso") || !item.getValue().equals("Ver Trabajos de Grado")) {
+            VistaActual.rol = (String) item.getValue();
+        }
+
         if (!initMenu) {// para el bucle de redireccionamiento
             redirectVista(setOutcomePefil((String) item.getValue()));
         }
@@ -204,7 +215,7 @@ public class MenuController implements Serializable {
             }
         }
     }
-    
+
     public void cmdProceso() {
         for (DefaultMenuItem item : items) {
             if (item.getValue().equals("Proceso")) {
@@ -212,7 +223,23 @@ public class MenuController implements Serializable {
             }
         }
     }
+
+    public void cmdVerTrabajosDeGrado() {
+        for (DefaultMenuItem item : items) {
+            if (item.getValue().equals("Ver Trabajos de Grado")) {
+                cambioPerfil(item);
+            }
+        }
+    }
     
+    public void cmdAdministrador() {
+        for (DefaultMenuItem item : items) {
+            if (item.getValue().equals("Administrador")) {
+                cambioPerfil(item);
+            }
+        }
+    }
+
     /**
      * itemsSetDefaultStyle: fija color por defecto para cada item en perfiles
      */
@@ -242,6 +269,8 @@ public class MenuController implements Serializable {
                 return "SecretariaGeneral";
             case "Jurado":
                 return "Jurado";
+            case "Administrador":
+                return "Administrador";
         }
         return null;
     }
@@ -268,6 +297,10 @@ public class MenuController implements Serializable {
                 return "vista-jurado";
             case "Proceso":
                 return "vista-proceso";
+            case "Ver Trabajos de Grado":
+                return "vista-trabajos-de-grado";
+            case "Administrador":
+                return "vista-administrador";
         }
         return null;
     }
@@ -303,6 +336,9 @@ public class MenuController implements Serializable {
                 case "Proceso":
                     cmdProceso();
                     break;
+                case "Administrador":
+                    cmdAdministrador();
+                    break;
             }
         }
     }
@@ -314,9 +350,11 @@ public class MenuController implements Serializable {
     public void setOutPerfiles(boolean outPerfiles) {
         this.outPerfiles = outPerfiles;
     }
+
     /**
      * outcomeCarpetaPefil: redirecciona hacia la carperta de cada perfil
-     * @return 
+     *
+     * @return
      */
     public String outcomeCarpetaPefil() {
         String rol = VistaActual.rol;
@@ -340,6 +378,7 @@ public class MenuController implements Serializable {
         }
         return null;
     }
+
     public String getRolActual() {
         return VistaActual.rol;
     }
