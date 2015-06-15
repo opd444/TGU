@@ -29,10 +29,10 @@
                     <p:panel styleClass="paneltrabajo" >
                         <h:panelGrid style="margin: 0 auto;">
                             <p:menubar styleClass="menubarstyleClass">
-                                <p:menuitem style="border-color: #808080" value="Anteproyectos sin evaluadores asignados" actionListener="#{coordinadorController.porAsignarEvaluadores()}"
+                                <p:menuitem style="border-color: #808080" value="Ver Trabajos en Curso" actionListener="#{coordinadorController.trabajosenCurso()}"
                                             update="tablacoord tituloCoord :formMigaCoord:migaCoord" icon="ui-icon-folder-open"/>
-                                <p:menuitem style="border-color: #808080" value="Anteproyectos con evaluadores asignados"
-                                            update="tablacoord tituloCoord :formMigaCoord:migaCoord" actionListener="#{coordinadorController.conEvaludaresAsignados()}" icon="ui-icon-folder-collapsed"/>
+                                <p:menuitem style="border-color: #808080" value="Ver Trabajos Terminados"
+                                            update="tablacoord tituloCoord :formMigaCoord:migaCoord" actionListener="#{coordinadorController.trabajosTerminados()}" icon="ui-icon-folder-collapsed"/>
                             </p:menubar>
                         </h:panelGrid>
                         <p:spacer height="25"/>
