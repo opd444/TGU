@@ -25,6 +25,7 @@
                     <a href="#" class="titulo">#{bundle.AppName}</a>
                     <div class="CuadroDeBotonesSesion">                        
                         <ui:insert name="CuadroDeBotonesSesion"> 
+                            #{validarPerfiles.validarPerfil("index")}                
                             <h:form>
                                 <h:panelGrid columns="2">
                                     <h:outputText value="#{serviciosSimcaController.nombreUsuario}" style=" font-size: 14px; font-weight: bold; color: white;" />

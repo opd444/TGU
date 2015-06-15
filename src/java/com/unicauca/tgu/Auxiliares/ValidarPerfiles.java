@@ -43,16 +43,25 @@ public class ValidarPerfiles {
 
     public void validarPerfil(String pefil) {
         String rol = VistaActual.rol;
-                
-        if (!rol.equals(pefil)) {
 
-            HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+
+        if (httpSession.getAttribute("nombreUsuario") == null) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/tgu/faces/index.xhtml");
+            } catch (IOException ex) {
+                Logger.getLogger(ValidarPerfiles.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        if (!pefil.equals("index") && !rol.equals(pefil)) {
+
             String nombreUsuario = httpSession.getAttribute("nombreUsuario").toString();
 
             usulog = ejbFacadeusuario.buscarPorUsuarionombre(nombreUsuario);
 
             String vistaX = setOutcomePefil(rol);
-            
+
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/tgu/faces/" + vistaX + ".xhtml");
             } catch (IOException ex) {
