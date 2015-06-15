@@ -43,7 +43,7 @@ public class ValidarPerfiles {
 
     public void validarPerfil(String pefil) {
         String rol = VistaActual.rol;
-
+                
         if (!rol.equals(pefil)) {
 
             HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);

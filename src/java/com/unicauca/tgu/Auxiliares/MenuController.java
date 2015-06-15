@@ -100,14 +100,14 @@ public class MenuController implements Serializable {
         DefaultMenuItem item = new DefaultMenuItem("Proceso");
         item.setCommand("#{menuController.cmdProceso}");
         item.setUpdate("formMenu");
-        item.setStyle("background-color: #DCDCFF;");
+        item.setStyle("background-color: lightcyan;");
         items.add(item);
         perfiles.addElement(item);
 
         DefaultMenuItem itemTG = new DefaultMenuItem("Ver Trabajos de Grado");
         itemTG.setCommand("#{menuController.cmdVerTrabajosDeGrado}");
         itemTG.setUpdate("formMenu");
-        itemTG.setStyle("background-color: #DCDCFF;");
+        itemTG.setStyle("background-color: lightcyan;");
         items.add(itemTG);
         perfiles.addElement(itemTG);
 
