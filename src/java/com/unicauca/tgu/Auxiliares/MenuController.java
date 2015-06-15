@@ -231,6 +231,14 @@ public class MenuController implements Serializable {
             }
         }
     }
+    
+    public void cmdAdministrador() {
+        for (DefaultMenuItem item : items) {
+            if (item.getValue().equals("Administrador")) {
+                cambioPerfil(item);
+            }
+        }
+    }
 
     /**
      * itemsSetDefaultStyle: fija color por defecto para cada item en perfiles
@@ -261,6 +269,8 @@ public class MenuController implements Serializable {
                 return "SecretariaGeneral";
             case "Jurado":
                 return "Jurado";
+            case "Administrador":
+                return "Administrador";
         }
         return null;
     }
@@ -289,6 +299,8 @@ public class MenuController implements Serializable {
                 return "vista-proceso";
             case "Ver Trabajos de Grado":
                 return "vista-trabajos-de-grado";
+            case "Administrador":
+                return "vista-administrador";
         }
         return null;
     }
@@ -323,6 +335,9 @@ public class MenuController implements Serializable {
                     break;
                 case "Proceso":
                     cmdProceso();
+                    break;
+                case "Administrador":
+                    cmdAdministrador();
                     break;
             }
         }
