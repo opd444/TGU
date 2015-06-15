@@ -6,9 +6,11 @@ import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.FormatosTablas.TablaPerfil;
 import com.unicauca.tgu.entities.Fase;
 import com.unicauca.tgu.entities.Productodetrabajo;
+import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
+import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
@@ -31,87 +33,35 @@ import javax.faces.event.ActionEvent;
 public class CoordinadorController {
 
     @EJB
-    private ProductodetrabajoFacade ejbFacadeProdTrab;
-    @EJB
-    private UsuarioRolTrabajogradoFacade ejbFacadeUsuRolTg;
-    @EJB
     private UsuarioFacade ejbFacadeusuario;
+
     @EJB
-    private TrabajogradoFaseFacade ejbFacadeTrabFase;
+    private TrabajodegradoFacade ejbFacadetrabgrad;
 
     private List<TablaPerfil> anteproys;
-    private int modo;    // 0 SIN ASIGNAER EVAL, 1 ASIGNADOS
+    private boolean modo;    // 0 SIN ASIGNAER EVAL, 1 ASIGNADOS
     private String titulo;
 
     public CoordinadorController() {
-        titulo = "Anteproyectos sin evaluadores asignados";
-        modo = 0;
+        titulo = "Trabajos de Grado en Curso";
+        modo = false;
     }
 
     public List<TablaPerfil> getAnteproys() {
 
         anteproys = new ArrayList();
 
-        List<Productodetrabajo> tem = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_formatoID(2);
+        //List<Productodetrabajo> tem = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_formatoID(2);
 
-        if (tem.size() > 0) {
+        List<Trabajodegrado> anteproystemp;
 
-            int cont = 0;
-            TablaPerfil f;
-
-            for (Productodetrabajo t : tem) {
-                
-                if(trabajoDeGradoAvalado(t.getProductocontenido())) {
-                
-                    cont = 0;
-                    f = new TablaPerfil();                  //sacamos la informacion general tanto jefe depto, director y los estud.
-
-                    List<UsuarioRolTrabajogrado> lst = ejbFacadeUsuRolTg.findbytrabajoId(t.getTrabajoid().getTrabajoid().intValue());
-
-                    if (lst.size() > 0) {
-                        f.setFecha(lst.get(0).getFechaasignacion());
-                        f.setTrabajoGradoId(lst.get(0).getTrabajoid().getTrabajoid().intValue());
-                        f.setTrabajoGrado(lst.get(0).getTrabajoid().getTrabajonombre());
-
-                        for (UsuarioRolTrabajogrado l : lst) {
-                            if (l.getRolid().getRolid().intValue() == 0) //director
-                            {
-                                f.setDirector(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
-                                f.setDirectorId(l.getPersonacedula().getPersonacedula().intValue());
-                            } else if (l.getRolid().getRolid().intValue() == 1 && cont == 0) //Estudiante 1
-                            {
-                                f.setEst1(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
-                                f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
-                                cont++;
-                            } else if (l.getRolid().getRolid().intValue() == 1 && cont == 1) //estudiante 2
-                            {
-                                f.setEst2(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
-                                f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());
-                            }
-                        }
-                        
-                        List<TrabajogradoFase> lstTrabFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(t.getTrabajoid().getTrabajoid().intValue());
-                        int x = 999;
-                        for (TrabajogradoFase tg : lstTrabFase) {
-                            if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x) {
-                                f.setEstado(tg.getFaseid());
-                                x = tg.getFaseid().getFaseorden().intValue();
-                            }
-                        }
-
-                        if (modo == 0) {
-                            if (!trabajoDeGradoAsignado(t.getProductocontenido())) {
-                                anteproys.add(f);
-                            }
-                        } else if (trabajoDeGradoAsignado(t.getProductocontenido())) {
-                            anteproys.add(f);
-                        }
-                        
-                    }
-                }
-            }
-
+        if (modo) {
+            anteproystemp = ejbFacadetrabgrad.getTrabajosTerminados();
+        } else {
+            anteproystemp = ejbFacadetrabgrad.getTrabajosEnCurso();
         }
+        TablaPerfil f = new TablaPerfil();
+        anteproys = f.llenarTabla(anteproystemp);
         return anteproys;
     }
 
@@ -171,23 +121,21 @@ public class CoordinadorController {
         }
     }
     
-    public void porAsignarEvaluadores()
-    {
-      modo = 0;
-      titulo = "Anteproyectos sin evaluadores asignados";
-    }
-    
-    public void conEvaludaresAsignados()
-    {
-      modo = 1;
-      titulo = "Anteproyectos con evaluadores asignados";
+    public void trabajosenCurso() {
+        modo = false;
+        titulo = "Trabajos de Grado en Curso";
     }
 
-    public int getModo() {
+    public void trabajosTerminados() {
+        modo = true;
+        titulo = "Trabajos de Grado Terminados";
+    }
+
+    public boolean getModo() {
         return modo;
     }
 
-    public void setModo(int modo) {
+    public void setModo(boolean modo) {
         this.modo = modo;
     }
 

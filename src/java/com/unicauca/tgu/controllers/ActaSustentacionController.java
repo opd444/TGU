@@ -228,25 +228,6 @@ public class ActaSustentacionController {
             prod.setTrabajoid(trab);
             ejbFacadeProdTrab.create(prod);
 
-            if (aprobado.equals("Aprobado")) {
-
-                List<TrabajogradoFase> lst = ejbFacadeTraFase.ObtenerTrabajoFrasePor_trabajoID(TrabajodeGradoActual.id);
-
-                for (TrabajogradoFase l : lst) {
-
-                    if (l.getFaseid().getFaseid().equals(BigDecimal.valueOf(5))) {
-                        l.setEstado(BigInteger.ONE);
-                        ejbFacadeTraFase.edit(l);
-                    }
-                    if (l.getFaseid().getFaseid().equals(BigDecimal.valueOf(6))) {
-                        l.setEstado(BigInteger.ZERO);
-                        ejbFacadeTraFase.edit(l);
-                    }
-                }
-            }
-            
-            
-
 //            Servicio_Email se = new Servicio_Email();
 //            se.setSubject("La revision de la idea del Trabajo de Grado: '"+nombretg+"' ha sido diligenciada.");
 //
@@ -280,39 +261,6 @@ public class ActaSustentacionController {
 
         try {
 
-            if (aprobado.equals("Aprobado")) {
-
-                List<TrabajogradoFase> lst = ejbFacadeTraFase.ObtenerTrabajoFrasePor_trabajoID(TrabajodeGradoActual.id);
-
-                for (TrabajogradoFase l : lst) {
-
-                    if (l.getFaseid().getFaseid().equals(BigDecimal.valueOf(5))) {
-                        l.setEstado(BigInteger.ONE);
-                        ejbFacadeTraFase.edit(l);
-                    }
-                    if (l.getFaseid().getFaseid().equals(BigDecimal.valueOf(6))) {
-                        l.setEstado(BigInteger.ZERO);
-                        ejbFacadeTraFase.edit(l);
-                    }
-                }
-            }
-            else {
-
-                List<TrabajogradoFase> lst = ejbFacadeTraFase.ObtenerTrabajoFrasePor_trabajoID(TrabajodeGradoActual.id);
-
-                for (TrabajogradoFase l : lst) {
-
-                    if (l.getFaseid().getFaseid().equals(BigDecimal.valueOf(5))) {
-                        l.setEstado(BigInteger.ZERO);
-                        ejbFacadeTraFase.edit(l);
-                    }
-                    if (l.getFaseid().getFaseid().equals(BigDecimal.valueOf(6))) {
-                        l.setEstado(BigInteger.ZERO);
-                        ejbFacadeTraFase.edit(l);
-                    }
-                }
-            }
-            
             productoActual.setProductocontenido(obtenerDatos());
 
             ejbFacadeProdTrab.edit(productoActual);
