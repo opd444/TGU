@@ -35,7 +35,23 @@
                         </div>                                         
                         <p:growl id="growl" showDetail="true" life="5000"/>
                         <p:spacer height="25"/>
-                        <p:panel binding="#{panelFasesController.getPaneltoFase(2)}" /> 
+                        <p:panel id="fasesTrabajoGrado" header="Fases del Trabajo de Grado" style="text-align: center">
+                            <h:panelGrid columns="6" cellpadding="1" style="margin: 0 auto;">
+                                <p:graphicImage value="../resources/img/1.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/2.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/3.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/4.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/5.png" style="width: 96px;" />
+                                <p:graphicImage value="../resources/img/6.png" style="width: 96px;" />                        
+
+                                <p:button value="Presentación de la Idea" outcome="fase-1" disabled="#{trabajodegradoController.fases.primeraFase}" style="width: 105px;height: 96px; font-size: 13px; text-align: center; " />
+                                <p:button value="Realización del Anteproyecto" outcome="fase-2" disabled="#{trabajodegradoController.fases.segundaFase}" style="width: 105px; height: 96px; font-size: 13px; background-color:greenyellow;" />
+                                <p:button value="Evaluación del Anteproyecto" outcome="fase-3" disabled="#{trabajodegradoController.fases.terceraFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Ejecución del Trabajo de Grado" outcome="fase-4" disabled="#{trabajodegradoController.fases.cuartaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Evaluación del Trabajo de Grado" outcome="fase-5" disabled="#{trabajodegradoController.fases.quintaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                                <p:button value="Finalizado" outcome="fase-6" disabled="#{trabajodegradoController.fases.sextaFase}" style="width: 105px; height: 96px; font-size: 13px;" />
+                            </h:panelGrid>
+                        </p:panel>      
                         <p:spacer height="25"/>
                         <p:panel id="pnlRealizacionAnteproyecto" header="2. Realización del Anteproyecto" style=" font-size: 14px;" widgetVar="pnlRealizacionAnteproyecto">
                             <h:panelGrid columns="5" cellpadding="5" cellspacing="5">
