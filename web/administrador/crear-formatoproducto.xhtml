@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Inicio" outcome="./../perfiles/vista-administrador.xhtml" />
+                        <p:menuitem value="Administrador" outcome="./../perfiles/vista-administrador.xhtml" />
+                        <p:menuitem value="Administrar fases" outcome="administrar-formato-productos" />
+                        <p:menuitem value="Crear formato de Trabajo" />
+                    </p:breadCrumb>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">
+            </ui:define>
+
+            <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
+                #{validarPerfiles.validarPerfil("Administrador")}                
+                <p:panel styleClass="paneltrabajo" >
+                    <div class="tituloContenido">                        
+                        Crear Formato de Trabajo <br />
+                    </div>
+                    <p:spacer height="30"/>
+                    <h:form>
+                        <p:growl id="growl" showDetail="false" life="5000"/>
+                        <p:panelGrid style="margin: 0 auto;">
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Id: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText value="#{administradorProductosTrabajoController.formatoPT.formatoid}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Nombre: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText value="#{administradorProductosTrabajoController.formatoPT.formatonombre}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Fase: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu value="#{administradorProductosTrabajoController.fase}">
+                                        <f:selectItems value="#{administradorProductosTrabajoController.lsfase}" var="fase" itemLabel="#{fase.fasenombre}" itemValue="#{fase}"/>
+                                    </p:selectOneMenu>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>   
+                        <p:spacer height="25"/>
+                        <h:panelGrid columns="2" style="margin: 0 auto;">
+                            <p:button id="cmdLinkVolver" value="Cancelar" outcome="administrar-formato-productos" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;" />
+                            <p:commandButton value="Crear" update="growl" action="#{administradorProductosTrabajoController.crearFormatoproducto()}" icon="ui-icon-disk" style="font-size: 13px; width: 120px;"/>
+                        </h:panelGrid>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

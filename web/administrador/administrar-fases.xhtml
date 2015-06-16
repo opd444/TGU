@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <body>
 
@@ -14,7 +15,7 @@
                     <p:breadCrumb styleClass="migaDePan">
                         <p:menuitem value="Inicio" outcome="./../perfiles/vista-administrador.xhtml" />
                         <p:menuitem value="Administrador" outcome="./../perfiles/vista-administrador.xhtml" />
-                        <p:menuitem value="Administrar fases" outcome="administrar-fases" />
+                        <p:menuitem value="Gestionar fases" outcome="administrar-fases" />
                     </p:breadCrumb>
                 </h:form>
             </ui:define>
@@ -24,45 +25,50 @@
 
             <ui:define name="body">
                 #{menuController.setOutPerfiles(true)}
-                #{validarPerfiles.validarPerfil("Administrador")}                
-                <p:panel styleClass="paneltrabajo" >
-                    <div class="tituloContenido">                        
-                        Administrar Fases <br />
-                    </div>
-                    <h:panelGrid style="margin: 0 auto;">
-                        <p:button id="cmdLinkCrear" value="Crear" outcome="crear-fase" />
-                    </h:panelGrid>
-                    <h:panelGrid style="margin: 0 auto;">                        
-                        <p:dataTable styleClass="tabladirector" var="item" value="#{administrarFasesController.fases}" 
-                                     paginator="true" 
-                                     rows="8" 
-                                     paginatorPosition="bottom" 
-                                     rowsPerPageTemplate="8,16,24" 
-                                     emptyMessage="Lo sentimos, no hay trabajos registrados." 
-                                     style="font-size: 14px;">
-                            <p:column headerText="Nombre" style="width: 150px;" >
-                                <h:outputText value="#{item.fasenombre}" />
-                            </p:column>
-                            <p:column headerText="Orden" style="width: 80px;" >
-                                <h:outputText value="#{item.faseorden}" />
-                            </p:column>
+                #{validarPerfiles.validarPerfil("Administrador")}
+                
+                <h:form id="form">
+                    <p:growl id="growl" showDetail="true" life="5000"/>
+                    <p:panel styleClass="paneltrabajo" >
+                        <div class="tituloContenido">                        
+                            Gestionar Fases <br /></div>
+                        <p:spacer height="20"/>
+                        <h:panelGrid style="margin: 0 auto;">
+                            <p:button id="cmdLinkCrear" value="Crear nueva fase" icon="ui-icon-plus" outcome="crear-fase"/>
+                        </h:panelGrid>
 
-                            <p:column headerText="Acciones" style="width: 200px;">
-                                <p:panelGrid columns="3" styleClass="ui-noborder">
-                                    <p:button id="cmdLinkVer" value="Ver" outcome="ver-fase?fase=#{item.faseid}" />
-                                    <p:button id="cmdLinkEditar" value="Editar" outcome="editar-fase?fase=#{item.faseid}" />
-                                    <p:button id="cmdLinkEliminar" value="Eliminar" outcome="eliminar-fase?fase=#{item.faseid}" />
-                                </p:panelGrid>
-                            </p:column>
-                        </p:dataTable>
-                    </h:panelGrid>
-                    <h:panelGrid style="margin: 0 auto;">
-                        <p:button id="cmdLinkVolver" value="Volver" outcome="./../perfiles/vista-administrador.xhtml" />
-                    </h:panelGrid>
-                </p:panel>
+                        <h:panelGrid style="margin: 0 auto;">                      
+                            <p:dataTable id="tablaFases" styleClass="tabladirector" var="item" value="#{administrarFasesController.fases}" 
+                                         paginator="true" 
+                                         rows="8" 
+                                         paginatorPosition="bottom" 
+                                         rowsPerPageTemplate="8,16,24" 
+                                         emptyMessage="Lo sentimos, no hay fases registradas." 
+                                         style="font-size: 14px;">
+                                <p:column headerText="Nombre" style="width: 180px;" >
+                                    <h:outputText value="#{item.fasenombre}" />
+                                </p:column>
+                                <p:column headerText="Orden" style="width: 40px; text-align: center;" >
+                                    <h:outputText value="#{item.faseorden}" />
+                                </p:column>
+
+                                <p:column headerText="Acciones" style="width: 250px;">
+                                    <p:panelGrid columns="3" styleClass="ui-noborder">
+                                        <p:button id="cmdLinkVer" value="Ver" outcome="ver-fase?fase=#{item.faseid}" icon="ui-icon-zoomin" style="height: 25px; font-size: 13px;" />
+                                        <p:button id="cmdLinkEditar" value="Editar" outcome="editar-fase?fase=#{item.faseid}" icon="ui-icon-pencil" style="height: 25px; font-size: 13px;" />
+                                        <p:button id="cmdLinkEliminar" value="Eliminar" outcome="eliminar-fase?fase=#{item.faseid}" icon="ui-icon-closethick" style="height: 25px; font-size: 13px;" />
+                                    </p:panelGrid>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                        <p:spacer height="20"/>
+                        <h:panelGrid style="margin: 0 auto;">
+                            <p:button id="cmdLinkVolver" value="Volver" outcome="./../perfiles/vista-administrador.xhtml" icon="ui-icon-arrowthick-1-w" />
+                        </h:panelGrid>
+                        <p:spacer height="10"/>
+                    </p:panel>
+                </h:form>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

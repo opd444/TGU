@@ -3,7 +3,9 @@ package com.unicauca.tgu.controllers;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.FormatosTablas.TablaPerfil;
 import com.unicauca.tgu.entities.Fase;
+import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Trabajodegrado;
+import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
 import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import java.io.IOException;
@@ -23,6 +25,8 @@ import javax.faces.event.ActionEvent;
 @ViewScoped
 public class JefeDepController {
 
+    @EJB
+    private ProductodetrabajoFacade ejbFacadeProdTrab;
     @EJB
     private UsuarioFacade ejbFacadeusuario;
     @EJB
@@ -63,12 +67,21 @@ public class JefeDepController {
 
         trabs = new ArrayList();
 
-        List<Trabajodegrado> trabstemp;
+        List<Trabajodegrado> trabstemp = new ArrayList();
 
         if (modo == true) {
             trabstemp = ejbFacadetrabgrad.getTrabajosTerminados();
         } else {
-            trabstemp = ejbFacadetrabgrad.getTrabajosEnCurso();
+            
+            List<Trabajodegrado> lstAux = ejbFacadetrabgrad.getTrabajosEnCurso();
+            
+            for(int i=0; i<lstAux.size(); i++)
+            {
+                List<Productodetrabajo> lstProd = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(lstAux.get(i).getTrabajoid().intValue(), 0);
+                if(!lstProd.isEmpty()) {
+                    trabstemp.add(lstAux.get(i));
+                }
+            }
         }
 
         TablaPerfil f = new TablaPerfil();

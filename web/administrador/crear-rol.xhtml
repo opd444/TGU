@@ -3,8 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <body>
 
@@ -15,8 +15,8 @@
                     <p:breadCrumb styleClass="migaDePan">
                         <p:menuitem value="Inicio" outcome="./../perfiles/vista-administrador.xhtml" />
                         <p:menuitem value="Administrador" outcome="./../perfiles/vista-administrador.xhtml" />
-                        <p:menuitem value="Administrar fases" outcome="administrar-fases" />
-                        <p:menuitem value="Ver fase" />
+                        <p:menuitem value="Administrar fases" outcome="administrar-roles" />
+                        <p:menuitem value="Crear rol" />
                     </p:breadCrumb>
                 </h:form>
             </ui:define>
@@ -27,30 +27,28 @@
             <ui:define name="body">
                 #{menuController.setOutPerfiles(true)}
                 #{validarPerfiles.validarPerfil("Administrador")}                
-                <f:metadata>
-                    <f:viewParam name="fase" value="#{administrarFasesController.faseId}" />
-                </f:metadata>
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
-                        Ver Fase <br />
+                        Crear Rol <br />
                     </div>
                     <p:spacer height="30"/>
                     <h:form>
                         <p:growl id="growl" showDetail="false" life="5000"/>
-                        <h:panelGrid columns="2" style="margin: 0 auto;" cellpadding="4" cellspacing="4" >
-                            <h:outputText value="Id:" style="font-weight: bold;"/>
-                            <h:outputText value="#{administrarFasesController.fase.faseid}" />
+                        <h:panelGrid columns="2" style="margin: 0 auto;" >
+                            <h:outputText value="Id:" />
+                            <p:inputText value="#{administradorRolesController.rol.rolid}" required="true" label="Id del rol" validatorMessage="El id del rol debe estar entre 0 y 999." size="4" requiredMessage="Debe ingresar el id del rol.">
+                                <f:convertNumber integerOnly="true" type="number" />
+                                <f:validateLongRange minimum="0" maximum="999" />
+                            </p:inputText >
                             <h:outputText /><h:outputText />
-                            <h:outputText value="Nombre:" style="font-weight: bold;"/>
-                            <h:outputText value="#{administrarFasesController.fase.fasenombre}" />
-                            <h:outputText /><h:outputText />
-                            <h:outputText value="Orden:" style="font-weight: bold;"/>
-                            <h:outputText value="#{administrarFasesController.fase.faseorden}" />
+                            <h:outputText value="Nombre:" />
+                            <p:inputText value="#{administradorRolesController.rol.rolnombre}" required="true" requiredMessage="Debe ingresar el nombre del rol." size="50"/>
                         </h:panelGrid>
                         <p:spacer height="30"/>
-                        <h:panelGrid columns="1" style="margin: 0 auto;">
-                            <p:button id="cmdLinkVolver" value="Volver" outcome="administrar-fases" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;" />
-                        </h:panelGrid> 
+                        <h:panelGrid columns="2" style="margin: 0 auto;">
+                            <p:button id="cmdLinkVolver" value="Cancelar" outcome="administrar-roles" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;" />
+                            <p:commandButton value="Crear" update="growl" action="#{administradorRolesController.crearRol()}" icon="ui-icon-disk" style="font-size: 13px; width: 120px;"/>
+                        </h:panelGrid>
                     </h:form>
                 </p:panel>
             </ui:define>

@@ -2,14 +2,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
 
     <body>
 
         <ui:composition template="./../plantillas/plantilla.xhtml">
 
             <ui:define name="menuprincipal">
-                menuprincipal
+                 <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="Inicio" outcome="./../perfiles/vista-administrador.xhtml" />
+                        <p:menuitem value="Administrador" outcome="./../perfiles/vista-administrador.xhtml" />
+                        <p:menuitem value="Administrar fases" outcome="administrar-formato-productos" />
+                    </p:breadCrumb>
+                </h:form>
             </ui:define>
 
             <ui:define name="title">
@@ -17,13 +24,52 @@
 
             <ui:define name="body">
                 #{menuController.setOutPerfiles(true)}
-                #{validarPerfiles.validarPerfil("Administrador")}                
-                <p:panel styleClass="paneltrabajo" >
-                    
-                </p:panel>
+                #{validarPerfiles.validarPerfil("Administrador")}
+                
+                <h:form>
+                
+                    <p:panel styleClass="paneltrabajo" >
+                        <div class="tituloContenido">                        
+                            Gestionar formatos de Trabajo <br />
+                        </div>
+                        <p:spacer height="20"/>
+                        <h:panelGrid style="margin: 0 auto;">
+                            <p:button id="cmdLinkCrear" value="Crear nuevo formato" icon="ui-icon-plus" outcome="crear-formatoproducto" />
+                        </h:panelGrid>
+                        <h:panelGrid style="margin: 0 auto;">                        
+                            <p:dataTable styleClass="tabladirector" var="item" value="#{administradorProductosTrabajoController.lstFormatoProducto}" 
+                                         paginator="true" 
+                                         rows="8" 
+                                         paginatorPosition="bottom" 
+                                         rowsPerPageTemplate="8,16,24" 
+                                         emptyMessage="Lo sentimos, no hay formatos de trabajo registrados." 
+                                         style="font-size: 14px;">
+
+                                <p:column headerText="Id" style="width: 40px;" >
+                                    <h:outputText value="#{item.formatoid}" />
+                                </p:column>
+
+                                <p:column headerText="Nombre" style="width: 190px;" >
+                                    <h:outputText value="#{item.formatonombre}" />
+                                </p:column>
+
+                                <p:column headerText="Acciones" style="width: 250px;">
+                                    <p:panelGrid columns="3" styleClass="ui-noborder">
+                                        <p:button id="cmdLinkVer" value="Ver" outcome="ver-formatoproducto?formatoproducto=#{item.faseid}" icon="ui-icon-zoomin" style="height: 25px; font-size: 13px;" />
+                                        <p:button id="cmdLinkEditar" value="Editar" outcome="editar-formatoproducto?formatoproducto=#{item.faseid}" icon="ui-icon-pencil" style="height: 25px; font-size: 13px;" />
+                                        <p:button id="cmdLinkEliminar" value="Eliminar" outcome="eliminar-formatoproducto?formatoproducto=#{item.faseid}" icon="ui-icon-closethick" style="height: 25px; font-size: 13px;" />
+                                    </p:panelGrid>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
+                        
+                        <p:spacer height="20"/>
+                        <h:panelGrid style="margin: 0 auto;">
+                            <p:button id="cmdLinkVolver" value="Volver" outcome="./../perfiles/vista-administrador.xhtml" icon="ui-icon-arrowthick-1-w" />
+                        </h:panelGrid>
+                    </p:panel>                 
+                </h:form>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

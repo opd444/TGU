@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
@@ -69,19 +70,24 @@ public class AdministrarFasesController {
         this.faseId = faseId;
     }
 
-    public void crearFase() throws IOException {
+    public String crearFase() throws IOException {
         ejbFacadeFase.create(fase);
-        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-        context.redirect("administrar-fases.xhtml");
+        //ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Fase creada con éxito.",""));
+        return "administrar-fases.xhtml";
     }
-    public void editarFase() throws IOException {
+    public String editarFase() throws IOException {
         ejbFacadeFase.edit(fase);
-        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-        context.redirect("administrar-fases.xhtml");
+        //ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        //context.redirect("administrar-fases.xhtml");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Fase editada con éxito.",""));
+        return "administrar-fases.xhtml";
     }
-    public void eliminarFase() throws IOException {
+    public String eliminarFase() throws IOException {
         ejbFacadeFase.remove(fase);
-        ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-        context.redirect("administrar-fases.xhtml");
+        //ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+        //context.redirect("administrar-fases.xhtml");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Fase eliminada con éxito.",""));
+        return "administrar-fases.xhtml";
     }
 }

@@ -26,31 +26,39 @@
 
             <ui:define name="body">
                 #{menuController.setOutPerfiles(true)}
-                #{validarPerfiles.validarPerfil("Administrador")}                
+                #{validarPerfiles.validarPerfil("Administrador")}
+                
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
                         Crear Fase <br />
                     </div>
+                    <p:spacer height="30"/>
                     <h:form>
+                        <p:growl id="growl" showDetail="false" life="5000"/>
                         <h:panelGrid columns="2" style="margin: 0 auto;" >
-                            <h:outputText value="Id de la Fase" />
-                            <p:inputText value="#{administrarFasesController.fase.faseid}" />
+                            <h:outputText value="Id:" />
+                            <p:inputText value="#{administrarFasesController.fase.faseid}" required="true" label="Id de la fase" validatorMessage="El id de la fase debe estar entre 0 y 999." size="4" requiredMessage="Debe ingresar el id de la fase.">
+                                <f:convertNumber integerOnly="true" type="number" />
+                                <f:validateLongRange minimum="0" maximum="999" />
+                            </p:inputText >
                             <h:outputText /><h:outputText />
-                            <h:outputText value="Nombre de la Fase" />
-                            <p:inputText value="#{administrarFasesController.fase.fasenombre}" />
+                            <h:outputText value="Nombre:" />
+                            <p:inputText value="#{administrarFasesController.fase.fasenombre}" required="true" requiredMessage="Debe ingresar el nombre de la fase." size="50"/>
                             <h:outputText /><h:outputText />
-                            <h:outputText value="Orden de la Fase" />
-                            <p:inputText value="#{administrarFasesController.fase.faseorden}" />
+                            <h:outputText value="Orden:" />
+                            <p:inputText value="#{administrarFasesController.fase.faseorden}" required="true" label="Id de la fase" validatorMessage="El orden de la fase debe estar entre 0 y 999." size="4" requiredMessage="Debe ingresar el orden de la fase.">
+                                <f:convertNumber integerOnly="true" type="number" />
+                                <f:validateLongRange minimum="0" maximum="999" />
+                            </p:inputText>
                         </h:panelGrid>
+                        <p:spacer height="30"/>
                         <h:panelGrid columns="2" style="margin: 0 auto;">
-                            <p:button id="cmdLinkVolver" value="Cancelar" outcome="administrar-fases" />
-                            <p:commandButton value="Crear" actionListener="#{administrarFasesController.crearFase()}" />
+                            <p:button id="cmdLinkVolver" value="Cancelar" outcome="administrar-fases" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;" />
+                            <p:commandButton value="Crear" update="growl" action="#{administrarFasesController.crearFase()}" icon="ui-icon-disk" style="font-size: 13px; width: 120px;"/>
                         </h:panelGrid>
                     </h:form>
                 </p:panel>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>

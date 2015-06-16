@@ -23,17 +23,18 @@
 
             <ui:define name="body">
                 <p:panel styleClass="paneltrabajo" >
+                    <p:spacer height="15"/>
                     <div class="tituloContenido">                        
-                        Vista Administrador <br />
-                    </div>
+                        Administración del Flujo de Trabajo <br /></div>
+                    <p:spacer height="20"/>
                     <p:panel>
-                        <h:panelGrid columns="1">
-                            <p:button value="Administrar Fases"  outcome="./../administrador/administrar-fases.xhtml" />
-                            <br />
-                            <p:button value="Administrar Formatos de Productos (Cepeda)" outcome="./../administrador/administrar-formato-productos.xhtml" />
-                            <br />
-                            <p:button value="Administrar Roles (Cepeda)" outcome="./../administrador/administrar-roles.xhtml" />
+                        <p:spacer height="30"/>
+                        <h:panelGrid columns="3" cellpadding="10" cellspacing="10" style="margin: 0 auto;">
+                            <p:button value="Gestionar Fases" icon="ui-icon-pencil" outcome="./../administrador/administrar-fases.xhtml" style="width: 180px;" />
+                            <p:button value="Gestionar Roles" icon="ui-icon-pencil" outcome="./../administrador/administrar-roles.xhtml" style="width: 180px;" />
+                            <p:button value="Gestionar Formatos" icon="ui-icon-pencil" outcome="./../administrador/administrar-formato-productos.xhtml" style="width: 180px;" />
                         </h:panelGrid>
+                        <p:spacer height="40"/>
                     </p:panel>
                 </p:panel>
             </ui:define>

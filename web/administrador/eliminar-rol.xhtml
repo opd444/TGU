@@ -15,8 +15,8 @@
                     <p:breadCrumb styleClass="migaDePan">
                         <p:menuitem value="Inicio" outcome="./../perfiles/vista-administrador.xhtml" />
                         <p:menuitem value="Administrador" outcome="./../perfiles/vista-administrador.xhtml" />
-                        <p:menuitem value="Administrar fases" outcome="administrar-fases" />
-                        <p:menuitem value="Ver fase" />
+                        <p:menuitem value="Administrar fases" outcome="administrar-roles" />
+                        <p:menuitem value="Eliminar fase" />
                     </p:breadCrumb>
                 </h:form>
             </ui:define>
@@ -28,29 +28,27 @@
                 #{menuController.setOutPerfiles(true)}
                 #{validarPerfiles.validarPerfil("Administrador")}                
                 <f:metadata>
-                    <f:viewParam name="fase" value="#{administrarFasesController.faseId}" />
+                    <f:viewParam name="rol" value="#{administradorRolesController.rolId}" />
                 </f:metadata>
                 <p:panel styleClass="paneltrabajo" >
                     <div class="tituloContenido">                        
-                        Ver Fase <br />
-                    </div>
+                        Eliminar Rol <br />
+                    </div>                    
                     <p:spacer height="30"/>
                     <h:form>
                         <p:growl id="growl" showDetail="false" life="5000"/>
                         <h:panelGrid columns="2" style="margin: 0 auto;" cellpadding="4" cellspacing="4" >
                             <h:outputText value="Id:" style="font-weight: bold;"/>
-                            <h:outputText value="#{administrarFasesController.fase.faseid}" />
+                            <h:outputText value="#{administradorRolesController.rol.rolid}" />
                             <h:outputText /><h:outputText />
                             <h:outputText value="Nombre:" style="font-weight: bold;"/>
-                            <h:outputText value="#{administrarFasesController.fase.fasenombre}" />
-                            <h:outputText /><h:outputText />
-                            <h:outputText value="Orden:" style="font-weight: bold;"/>
-                            <h:outputText value="#{administrarFasesController.fase.faseorden}" />
+                            <h:outputText value="#{administradorRolesController.rol.rolnombre}" />
                         </h:panelGrid>
                         <p:spacer height="30"/>
-                        <h:panelGrid columns="1" style="margin: 0 auto;">
-                            <p:button id="cmdLinkVolver" value="Volver" outcome="administrar-fases" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;" />
-                        </h:panelGrid> 
+                        <h:panelGrid columns="2" style="margin: 0 auto;">
+                            <p:button id="cmdLinkVolver" value="Cancelar" outcome="administrar-roles" icon="ui-icon-arrowthick-1-w" style="font-size: 13px; width: 120px;" />
+                            <p:commandButton value="Eliminar" action="#{administradorRolesController.eliminarRol()}" icon="ui-icon-closethick" style="font-size: 13px; width: 120px;"/>
+                        </h:panelGrid>
                     </h:form>
                 </p:panel>
             </ui:define>

@@ -323,7 +323,7 @@ public class FormatoA {
                 } else if (est1ant.getPersonacedula().intValue() != est1.getPersonacedula().intValue()) {
                     List<UsuarioRolTrabajogrado> tmp = ejbFacadeUsuroltrab.findbyUsuid(est1ant.getPersonacedula().intValue());
                     ejbFacadeUsuroltrab.remove(tmp.get(0));
-                    ejbFacadeUsuroltrab.edit(usuroltg);
+                    ejbFacadeUsuroltrab.create(usuroltg);
                 }
             }
             if (est2 != null) {
@@ -336,7 +336,7 @@ public class FormatoA {
                 } else if (est2ant.getPersonacedula().intValue() != est2.getPersonacedula().intValue()) {
                     List<UsuarioRolTrabajogrado> tmp = ejbFacadeUsuroltrab.findbyUsuid(est2ant.getPersonacedula().intValue());
                     ejbFacadeUsuroltrab.remove(tmp.get(0));
-                    ejbFacadeUsuroltrab.edit(usuroltg);
+                    ejbFacadeUsuroltrab.create(usuroltg);
                 }
             }
             
