@@ -123,7 +123,7 @@ public class ServiciosSimcaController {
 //            return "newjsf";
             return null;
         } else {
-            JsfUtil.addErrorMessage("Nombre de usuario o Contraseña incorrectos");
+            JsfUtil.addErrorMessage("Nombre de usuario o contraseña incorrectos.");
             return null;
         }
 
@@ -184,7 +184,7 @@ public class ServiciosSimcaController {
                     }
                     return "estudiante/fase-" + x;
                 } else {
-                    return "perfiles/vista-estudiante";
+                    return "perfiles/vista-proceso";
                 }
             }
             case "Jefe de Departamento":

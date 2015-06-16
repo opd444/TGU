@@ -313,7 +313,7 @@ public class FormatoB {
         try {
             String contenido = crearContenidoFormatoB();
             Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
-
+            /*
             UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);
 //            Usuario usuEvaluador = null;
 
@@ -325,7 +325,7 @@ public class FormatoB {
                 usuroltg.setPersonacedula(new Usuario(usuEvaluador.getPersonacedula()));
 
                 ejbFacadeUsuroltrab.create(usuroltg);
-            }
+            }*/
 
             Productodetrabajo prod = new Productodetrabajo(BigDecimal.ZERO, BigInteger.ZERO, contenido);
             prod.setFormatoid(new Formatoproducto(BigDecimal.valueOf(3)));
@@ -418,7 +418,7 @@ public class FormatoB {
 
     public void prepararbtnVerFormatoBEvaluador1() {
         List<Productodetrabajo> lstProdTrab = ejbFacadeProdTrab.findAll();
-
+        
         for (Productodetrabajo ProdTrab : lstProdTrab) {
             // Buscando el Formato B
             if (ProdTrab.getFormatoid().getFormatoid().equals(BigDecimal.valueOf(3)) && ProdTrab.getTrabajoid().getTrabajoid().equals(BigDecimal.valueOf(TrabajodeGradoActual.id))) {

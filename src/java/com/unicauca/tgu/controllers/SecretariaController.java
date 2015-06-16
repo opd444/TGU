@@ -1,20 +1,25 @@
 package com.unicauca.tgu.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.FormatosTablas.TablaPerfil;
 import com.unicauca.tgu.entities.Fase;
 import com.unicauca.tgu.entities.Productodetrabajo;
+import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.Usuario;
 import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
+import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -37,6 +42,8 @@ public class SecretariaController
     private UsuarioFacade ejbFacadeusuario;
     @EJB
     private TrabajogradoFaseFacade ejbFacadeTrabFase;
+    @EJB
+    private TrabajodegradoFacade ejbFacadetrabgrad;
     
     private List<TablaPerfil> anteproys;
     
@@ -53,74 +60,43 @@ public class SecretariaController
         ServiciosSimcaController s =  (ServiciosSimcaController)context.getApplication().evaluateExpressionGet(context, "#{serviciosSimcaController}", ServiciosSimcaController.class);
         secretaria = s.getUsulog();
         modo = false;
-        titulo = "Anteproyectos por aprobar";
+        titulo = "Trabajos de Grado en Curso";
     }
     
-    public List<TablaPerfil> getAnteproyectos()
+    public List<TablaPerfil> getTrabsSecretaria()
     {
         anteproys = new ArrayList();
-        TablaPerfil f;
-        int cont;
-        List<Productodetrabajo> lstProductos = new ArrayList();
-        List<Productodetrabajo> lstAux1 = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_formatoID(4);    //Se obtienen todos los productos con el formato: Acta de remisión. 
-        
-        if(modo == false) //Anteproyectos por aprobar
-        {
-            for(Productodetrabajo p : lstAux1)
-            {                
-                List<Productodetrabajo> lstAux2 = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(p.getTrabajoid().getTrabajoid().intValue(),5);
-                if(lstAux2.isEmpty())   //Sino tiene formato 5 asociado.
-                    lstProductos.add(p);
-            }
-        }
-        else { //Anteproyectos aprobados
-            for(Productodetrabajo p : lstAux1)
-            {                
-                List<Productodetrabajo> lstAux2 = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(p.getTrabajoid().getTrabajoid().intValue(),5);
-                if(!lstAux2.isEmpty())   //Si tiene formato 5 asociado.
-                    lstProductos.add(p);
-            }
-        }
-        
-        for(Productodetrabajo t : lstProductos)
-        {
-            cont = 0;
-            f = new TablaPerfil();
+        List<Trabajodegrado> anteproystemp = new ArrayList();
 
-            List<UsuarioRolTrabajogrado> lst = ejbFacadeUsuRolTg.findbytrabajoId(t.getTrabajoid().getTrabajoid().intValue());
-            if (lst.size() > 0)
+        if (modo) {
+            anteproystemp = ejbFacadetrabgrad.getTrabajosTerminadosporSecretariaId(secretaria.getPersonacedula().intValue());
+        }
+        else
+        {
+            int resultado;
+            List<Trabajodegrado> lstAux = ejbFacadetrabgrad.getTrabajosEnCurso();
+            
+            for(int i=0; i<lstAux.size(); i++)
             {
-                f.setFecha(lst.get(0).getFechaasignacion());
-                f.setTrabajoGradoId(lst.get(0).getTrabajoid().getTrabajoid().intValue());
-                f.setTrabajoGrado(lst.get(0).getTrabajoid().getTrabajonombre());
-
-                for (UsuarioRolTrabajogrado l : lst) {
-                    if (l.getRolid().getRolid().intValue() == 0) //director
-                    {
-                        f.setDirector(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
-                        f.setDirectorId(l.getPersonacedula().getPersonacedula().intValue());
-                    } else if (l.getRolid().getRolid().intValue() == 1 && cont == 0) //Estudiante 1
-                    {
-                        f.setEst1(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
-                        f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
-                        cont++;
-                    } else if (l.getRolid().getRolid().intValue() == 1 && cont == 1) //estudiante 2
-                    {
-                        f.setEst2(l.getPersonacedula().getPersonanombres() + " " + l.getPersonacedula().getPersonaapellidos());
-                        f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());
+                List<Productodetrabajo> lstProd = ejbFacadeProdTrab.ObtenerProdsTrabajoPor_trabajoID_formatoID(lstAux.get(i).getTrabajoid().intValue(), 4);
+                if(!lstProd.isEmpty()) {
+                    
+                    
+                    Gson gson = new Gson();
+                    Map<String, String> decoded = gson.fromJson(lstProd.get(0).getProductocontenido(), new TypeToken<Map<String, String>>() {}.getType());
+                    if (decoded.get("elementoConsideradoD") != null) {
+                        resultado = Integer.parseInt(decoded.get("elementoConsideradoD"));
+                        if(resultado == 1)
+                            anteproystemp.add(lstAux.get(i));
                     }
                 }
-                List<TrabajogradoFase> lstTrabFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(t.getTrabajoid().getTrabajoid().intValue());
-                int x = 999;
-                for (TrabajogradoFase tg : lstTrabFase) {
-                    if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x) {
-                        f.setEstado(tg.getFaseid());
-                        x = tg.getFaseid().getFaseorden().intValue();
-                    }
-                }
-                anteproys.add(f);                 
             }
         }
+        
+        TablaPerfil f = new TablaPerfil();
+        
+        anteproys = f.llenarTabla(anteproystemp);
+        
         return anteproys;
     }
     
@@ -178,15 +154,13 @@ public class SecretariaController
         this.modo = modo;
     }
     
-    public void anteproyectosPorAprobar()
-    {
+    public void trabajosenCurso() {
         modo = false;
-        titulo = "Anteproyectos por aprobar";
+        titulo = "Trabajos de Grado en Curso";
     }
-    
-    public void anteproyectosYaAprobados()
-    {
+
+    public void trabajosTerminados() {
         modo = true;
-        titulo = "Anteproyectos ya aprobados";
+        titulo = "Trabajos de Grado Terminados";
     }
 }

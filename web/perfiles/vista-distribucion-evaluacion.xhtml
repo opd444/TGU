@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../plantillas/plantilla.xhtml">
+
+            <ui:define name="menuprincipal">
+                <h:form>
+                    <p:breadCrumb styleClass="migaDePan">
+                        <p:menuitem value="inicio" />
+                        <p:menuitem value="#{menuController.rolActual}" />
+                        <p:menuitem value="Distribución de evaluación de Trabajos de Grado por Jurado" />                        
+                    </p:breadCrumb>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="title">
+            </ui:define>
+
+            <ui:define name="body">
+                #{menuController.setOutPerfiles(true)}
+                <p:panel styleClass="paneltrabajo" >
+                    <h:form id="form">
+                        <p:growl id="growl" showDetail="true" life="5000"/>
+                        <!-- something -->
+                        <p:spacer height="25"/>
+                        <h:outputLabel id="tituloVistaJurado" class="tituloContenido" value="Distribución de evaluación de Trabajos de Grado por Jurado" />        
+                        <p:spacer height="25"/>
+                        <p:dataTable  styleClass="tablaDirector" id="tablatgJurado" var="car" value="#{verDistribucionEvalTGController.trabajosDeGrado}"
+                                      paginator="true" rows="8" paginatorPosition="bottom" rowsPerPageTemplate="8,16,24,32,40" emptyMessage="Lo sentimos, no hay trabajos registrados." style="font-size: 14px;" >
+                            <p:column style="width: 120px;" headerText="Jurado"> <!--filterBy="#{car.jurado}"-->
+                                #{car.jurado}
+                            </p:column>
+                            
+                            <p:column style="width: 270px;" headerText="Trabajo de Grado a evaluar" > <!--filterBy="#{car.trabajoGrado}"-->
+                                #{car.trabajoGrado}
+                            </p:column>
+                            
+                            <p:column style="width: 135px; text-align: center" headerText="Fechas de sustentación">
+                                <br />
+                                <h:outputText value="#{car.fecha1}">
+                                    <f:convertDateTime type="date" dateStyle="full" pattern="dd 'de' MMMM 'de' yyyy" timeZone="America/Bogota"/>
+                                </h:outputText>
+                                <br />
+                                <h:outputText value="#{car.fecha2}">
+                                    <f:convertDateTime type="date" dateStyle="full" pattern="dd 'de' MMMM 'de' yyyy" timeZone="America/Bogota"/>
+                                </h:outputText>
+                                <br />
+                                <h:outputText value="#{car.fecha3}">
+                                    <f:convertDateTime type="date" dateStyle="full" pattern="dd 'de' MMMM 'de' yyyy" timeZone="America/Bogota"/>
+                                </h:outputText>
+                                <br />
+                            </p:column>       
+                        </p:dataTable>
+                    </h:form>
+                </p:panel>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

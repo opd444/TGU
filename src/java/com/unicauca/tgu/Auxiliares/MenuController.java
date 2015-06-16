@@ -6,10 +6,14 @@
 package com.unicauca.tgu.Auxiliares;
 
 import com.unicauca.tgu.entities.Rol;
+import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.UsuarioRol;
+import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.RolFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolFacade;
+import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
+import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -43,6 +47,10 @@ public class MenuController implements Serializable {
     RolFacade ejbFacadeRol;
     @EJB
     UsuarioRolFacade ejbFacadeUsuRol;
+    @EJB
+    private UsuarioRolTrabajogradoFacade ejbFacadeURT;
+    @EJB
+    private TrabajogradoFaseFacade ejbFacadeTrabFase;
 
     private MenuModel model;
     private List<DefaultMenuItem> items;
@@ -85,6 +93,7 @@ public class MenuController implements Serializable {
         perfiles.setStyle("background-color: lightcyan;");
 
         for (Rol rolItem : roles) {
+            
             String rolnombre = rolItem.getRolnombre();
             DefaultMenuItem item = new DefaultMenuItem(rolnombre);
             item.setCommand("#{menuController.cmd" + createNameOfCmd(rolnombre) + "}");
@@ -110,7 +119,17 @@ public class MenuController implements Serializable {
         itemTG.setStyle("background-color: lightcyan;");
         items.add(itemTG);
         perfiles.addElement(itemTG);
-
+        
+        //if(!VistaActual.rol.equals("Jefe de Departamento") || VistaActual.rol.equals("Estudiante") || VistaActual.rol.equals("Director"))
+        //{
+            DefaultMenuItem itemDE = new DefaultMenuItem("Ver Trabajos de Grado a sustentar");
+            itemDE.setCommand("#{menuController.cmdDistribucion}");
+            itemDE.setUpdate("formMenu");
+            itemDE.setStyle("background-color: lightcyan;");
+            items.add(itemDE);
+            perfiles.addElement(itemDE);
+        //}
+        
         model.addElement(perfiles);
     }
 
@@ -132,13 +151,9 @@ public class MenuController implements Serializable {
     private void redirectVista(String facelet) {
         ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
         try {
-            if (outPerfiles) {
-                context.redirect("../perfiles/" + facelet + ".xhtml");
-            } else {
-                context.redirect(facelet + ".xhtml");
-            }
-
-        } catch (IOException ex) {
+            context.redirect("/tgu/faces/" + facelet + ".xhtml");
+        }
+        catch (IOException ex) {
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -147,7 +162,7 @@ public class MenuController implements Serializable {
         itemsSetDefaultStyle();
         item.setStyle("background-color: #c2dfef");
 
-        if (!item.getValue().equals("Proceso") || !item.getValue().equals("Ver Trabajos de Grado")) {
+        if (!item.getValue().equals("Proceso") || !item.getValue().equals("Ver Trabajos de Grado") || !item.getValue().equals("Ver Trabajos de Grado a sustentar")) {
             VistaActual.rol = (String) item.getValue();
         }
 
@@ -232,6 +247,15 @@ public class MenuController implements Serializable {
         }
     }
     
+    public void cmdDistribucion() {
+        for (DefaultMenuItem item : items) {
+            if (item.getValue().equals("Ver Trabajos de Grado a sustentar")) {
+                cambioPerfil(item);
+            }
+        }
+    }
+    
+    
     public void cmdAdministrador() {
         for (DefaultMenuItem item : items) {
             if (item.getValue().equals("Administrador")) {
@@ -282,25 +306,42 @@ public class MenuController implements Serializable {
     public String setOutcomePefil(String rol) {
         switch (rol) {
             case "Director":
-                return "vista-director";
-            case "Estudiante":
-                return "vista-estudiante";
+                return "perfiles/vista-director";
+            case "Estudiante": {
+                FacesContext context = FacesContext.getCurrentInstance();
+                ServiciosSimcaController s = (ServiciosSimcaController) context.getApplication().evaluateExpressionGet(context, "#{serviciosSimcaController}", ServiciosSimcaController.class);
+                List<UsuarioRolTrabajogrado> list = ejbFacadeURT.findByUsuid_Rolid(s.getUsulog().getPersonacedula().intValue(), 1);
+                if (!list.isEmpty()) {
+                    List<TrabajogradoFase> lstTrabFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(list.get(0).getTrabajoid().getTrabajoid().intValue());
+                    int x = 999;
+                    for (TrabajogradoFase tg : lstTrabFase) {
+                        if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x) {
+                            x = tg.getFaseid().getFaseorden().intValue();
+                        }
+                    }
+                    return "estudiante/fase-" + x;
+                } else {
+                    return "perfiles/vista-proceso";
+                }
+            }
             case "Jefe de Departamento":
-                return "vista-jefe-de-departamento";
+                return "perfiles/vista-jefe-de-departamento";
             case "Coordinador de Programa":
-                return "vista-coordinador-de-programa";
+                return "perfiles/vista-coordinador-de-programa";
             case "Evaluador":
-                return "vista-evaluador";
+                return "perfiles/vista-evaluador";
             case "Secretaria General":
-                return "vista-secretaria-general";
+                return "perfiles/vista-secretaria-general";
             case "Jurado":
-                return "vista-jurado";
+                return "perfiles/vista-jurado";
             case "Proceso":
-                return "vista-proceso";
+                return "perfiles/vista-proceso";
             case "Ver Trabajos de Grado":
-                return "vista-trabajos-de-grado";
+                return "perfiles/vista-trabajos-de-grado";
             case "Administrador":
-                return "vista-administrador";
+                return "perfiles/vista-administrador";
+            case "Ver Trabajos de Grado a sustentar":
+                return "perfiles/vista-distribucion-evaluacion";
         }
         return null;
     }
@@ -335,6 +376,9 @@ public class MenuController implements Serializable {
                     break;
                 case "Proceso":
                     cmdProceso();
+                    break;
+                case "Distribucion":
+                    cmdDistribucion();
                     break;
                 case "Administrador":
                     cmdAdministrador();

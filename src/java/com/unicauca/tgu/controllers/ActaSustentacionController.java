@@ -246,7 +246,7 @@ public class ActaSustentacionController {
 //            se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
 //            se.enviarDiligenciadoRevisionIdea(nombretg);
 //            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Acta de Sustentación diligenciada con éxito.", ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Acta de Sustentación diligenciada con éxito."));
             return "fase-5";
         } catch (Exception e) {
 
@@ -273,7 +273,7 @@ public class ActaSustentacionController {
 //                se.setTo(TrabajodeGradoActual.director.getPersonacorreo());
 //                se.enviarEditadoAnteproyecto(nombretg);
 //            }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Acta de sustentación editado con éxito."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Completado", "Acta de sustentación editada con éxito."));
             return "fase-5";
 
         } catch (Exception e) {

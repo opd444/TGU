@@ -310,6 +310,11 @@ public class TrabajodegradoController implements Serializable {
 
     // Formato B
     public int numFormatosB() {
+        
+        List<Productodetrabajo> lstProd = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 3);
+        return lstProd.size();
+        
+        /*
         List<UsuarioRolTrabajogrado> lst = ejbFacadeUsuRolTrab.findAll();
 
         int num = 0;
@@ -320,7 +325,7 @@ public class TrabajodegradoController implements Serializable {
                 num += 1;
             }
         }
-        return num;
+        return num;*/
     }
 
     public boolean btnVerFormatoB1() {
@@ -368,12 +373,19 @@ public class TrabajodegradoController implements Serializable {
     }
 
     public boolean getBtnEditarRemisionAnteproyecto() {
-        List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 4);
-        if (lstProductos.size() > 0) {
-            return false;
-        } else {
-            return true;
+
+        List<Productodetrabajo> lstProd1 = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 5);
+        
+        if(lstProd1.isEmpty()) {
+            List<Productodetrabajo> lstProd2 = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 4);
+            if (!lstProd2.isEmpty()) {
+                return false;
+            } else {
+                return true;
+            }
         }
+        else
+            return true;
     }
 
     public boolean getBtnVerRemisionAnteproyecto() {

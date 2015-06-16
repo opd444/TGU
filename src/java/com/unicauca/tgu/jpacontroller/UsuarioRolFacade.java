@@ -6,6 +6,7 @@
 package com.unicauca.tgu.jpacontroller;
 
 import com.unicauca.tgu.entities.UsuarioRol;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -39,5 +40,11 @@ public class UsuarioRolFacade extends AbstractFacade<UsuarioRol> {
         } finally {
             // em.close();
         }
-    }    
+    }
+    
+    public List<UsuarioRol> findByRolid(BigInteger rolid) {
+        Query query = getEntityManager().createNamedQuery("UsuarioRol.findByRolid");
+        query.setParameter("rolid", rolid);
+        return query.getResultList();
+    }
 }

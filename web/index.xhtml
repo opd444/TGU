@@ -18,9 +18,9 @@
 
             <ui:define name="body" >
                 
-                <h:form id="formLogin">                    
+                <h:form id="formLogin">
+                    <p:growl id="growl" showDetail="false" life="5000"/>
                     <p:panel header="Iniciar Sesión" style=" width: 260px; text-align: center; margin: 140px 140px 140px 340px;" >
-                        <p:messages id="messages" showDetail="false"/>
                         <h:panelGrid columns="2" cellpadding="8" cellspacing="0">
                             <p:graphicImage value="resources/img/ico-usuario.png" />                            
                             <p:inputText id="nombreUsuario" value="#{serviciosSimcaController.nombreUsuario}" label="Nombre de usuario" required="true" placeholder="Nombre de usuario" requiredMessage="Usuario requerido." />
@@ -28,7 +28,7 @@
                             <p:graphicImage value="resources/img/ico-pass.png" />                                                        
                             <p:password id="contrasenia" value="#{serviciosSimcaController.contrasenia}" label="Contraseña" required="true" placeholder="Contraseña" requiredMessage="Contraseña requerida."/>
                             <f:facet name="footer">
-                                <p:commandButton value="Ingresar" action="#{serviciosSimcaController.login}" update="formLogin messages" icon="ui-icon-carat-1-e" />
+                                <p:commandButton value="Ingresar" action="#{serviciosSimcaController.login}" update="formLogin growl" icon="ui-icon-carat-1-e" />
                             </f:facet>
                         </h:panelGrid>
                     </p:panel>

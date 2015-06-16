@@ -17,6 +17,7 @@ import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.Usuario;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
 import com.unicauca.tgu.jpacontroller.ProductodetrabajoFacade;
+import com.unicauca.tgu.jpacontroller.TrabajodegradoFacade;
 import com.unicauca.tgu.jpacontroller.TrabajogradoFaseFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioFacade;
 import com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade;
@@ -52,6 +53,8 @@ public class EvaluadorController {
     private UsuarioRolTrabajogradoFacade usuRolTgEJB;
     @EJB
     private TrabajogradoFaseFacade ejbFacadeTrabFase;
+    @EJB
+    private TrabajodegradoFacade ejbFacadetrabgrad;
     
     private List<TablaPerfil> trabajos;
     private Usuario evaluador;
@@ -70,9 +73,9 @@ public class EvaluadorController {
         ServiciosSimcaController s =  (ServiciosSimcaController)context.getApplication().evaluateExpressionGet(context, "#{serviciosSimcaController}", ServiciosSimcaController.class);
         evaluador = s.getUsulog();
         modo = false;
-        titulo = "Anteproyecto por evaluar";
+        titulo = "Trabajos de Grado en Curso";
     }   
-
+    /*
     private boolean trabajoDeGradoAsignado(String usuNombre, String productoContenido) {
         Gson gson = new Gson();
 
@@ -108,118 +111,24 @@ public class EvaluadorController {
             }
         }
         return false;
-    }
+    }*/
     
-     public List<TablaPerfil> getAnteproyectos() {
-       
+     public List<TablaPerfil> getTrabsEvaluador()
+     {
+
         trabajos = new ArrayList();
-        TablaPerfil f;
-        int cont, temp;
-        List<Productodetrabajo> lstProductos = new ArrayList();
-        List<Productodetrabajo> lstAux1 = productoTrabEJB.ObtenerProdsTrabajoPor_formatoID(2);
-        
-        if(modo == false)    //Para anteproyectos por evaluar.
-        {
-            for(Productodetrabajo p : lstAux1)
-            {
-                if(trabajoDeGradoAsignado(evaluador.getUsuarionombre(), p.getProductocontenido()))
-                {
-                    List<Productodetrabajo> lstAux2 = productoTrabEJB.ObtenerProdsTrabajoPor_trabajoID_formatoID(p.getTrabajoid().getTrabajoid().intValue(),3);
-                    if(lstAux2.isEmpty())
-                        lstProductos.add(p);
-                    else if (lstAux2.size() == 1) {
-                            if(!trabajoDeGradoEvaluado(evaluador.getPersonanombres()+" "+evaluador.getPersonaapellidos(), lstAux2.get(0).getProductocontenido()))
-                                lstProductos.add(p);
-                    }
-                }
-            }
-        }
-        else                //Para anteproyectos evaluados.
-        {
-            for(Productodetrabajo p : lstAux1)
-            {
-                if(trabajoDeGradoAsignado(evaluador.getUsuarionombre(), p.getProductocontenido()))
-                {
-                    temp = 0;
-                    List<Productodetrabajo> lstAux2 = productoTrabEJB.ObtenerProdsTrabajoPor_trabajoID_formatoID(p.getTrabajoid().getTrabajoid().intValue(),3);
-                    if(lstAux2.size() > 0 ) {
-                        for(Productodetrabajo p2 : lstAux2) {
-                            if(trabajoDeGradoEvaluado(evaluador.getPersonanombres()+" "+evaluador.getPersonaapellidos(), p2.getProductocontenido())) {
-                                temp++;
-                            }
-                        }
-                    }
-                    if(temp > 0)
-                        lstProductos.add(p);
-                }
-            }
+        List<Trabajodegrado> anteproystemp;
+
+        if (modo) {
+            anteproystemp = ejbFacadetrabgrad.getTrabajosTerminadosporEvaluadorId(evaluador.getPersonacedula().intValue());
+        } else {
+            anteproystemp = ejbFacadetrabgrad.getTrabajosEnCursoPorEvaluadorId(evaluador.getPersonacedula().intValue());
         }
         
-        for(Productodetrabajo t : lstProductos)
-        { 
-            cont = 0;
-            f = new TablaPerfil();
-
-            List<UsuarioRolTrabajogrado> lst = usuRolTgEJB.findbytrabajoId(t.getTrabajoid().getTrabajoid().intValue());
-
-            if(lst.size() > 0)
-            {
-                f.setFecha(lst.get(0).getFechaasignacion());
-                f.setTrabajoGradoId(lst.get(0).getTrabajoid().getTrabajoid().intValue());
-                f.setTrabajoGrado(lst.get(0).getTrabajoid().getTrabajonombre());
-
-                for(UsuarioRolTrabajogrado l : lst)
-                {
-                        if(l.getRolid().getRolid().intValue() == 0)  //director
-                      {
-                          f.setDirector(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
-                          f.setDirectorId(l.getPersonacedula().getPersonacedula().intValue());   
-                      }   
-                    else if(l.getRolid().getRolid().intValue() == 1 && cont ==0)           //Estudiante 1
-                          { 
-                           f.setEst1(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
-                           f.setEst1Id(l.getPersonacedula().getPersonacedula().intValue());
-                           cont ++;
-                          }
-                      else if(l.getRolid().getRolid().intValue() == 1 && cont ==1)      //estudiante 2
-                       { 
-                           f.setEst2(l.getPersonacedula().getPersonanombres()+" "+l.getPersonacedula().getPersonaapellidos());
-                           f.setEst2Id(l.getPersonacedula().getPersonacedula().intValue());                      
-                       }
-                }
-                if(modo == true)
-                {   
-                    List<Productodetrabajo> lstProductos2 = productoTrabEJB.ObtenerProdsTrabajoPor_trabajoID_formatoID(t.getTrabajoid().getTrabajoid().intValue(),3);
-                    for(Productodetrabajo t1 : lstProductos2)
-                    {
-                        if(trabajoDeGradoEvaluado(evaluador.getPersonanombres()+" "+evaluador.getPersonaapellidos(), t1.getProductocontenido()))
-                        {
-                            int aprobado = 0;
-                            Gson gson = new Gson();
-                            Map<String, String> decoded = gson.fromJson(t1.getProductocontenido(), new TypeToken<Map<String, String>>() {}.getType());
-                            
-                            if (decoded.get("elementoConsideradoH") != null) {
-                                aprobado = Integer.parseInt(decoded.get("elementoConsideradoH"));
-                            }
-                            
-                            if(aprobado == 1)
-                                f.setAprobado(true);
-                            else
-                                f.setAprobado(false);
-                        }
-                    }
-                }
-                List<TrabajogradoFase> lstTrabFase = ejbFacadeTrabFase.ObtenerTrabajoFrasePor_trabajoID(t.getTrabajoid().getTrabajoid().intValue());
-                int x = 999;
-                for (TrabajogradoFase tg : lstTrabFase) {
-                    if (tg.getEstado().intValue() == 0 && tg.getFaseid().getFaseorden().intValue() < x) {
-                        f.setEstado(tg.getFaseid());
-                        x = tg.getFaseid().getFaseorden().intValue();
-                    }
-                }
-                trabajos.add(f);
-            }
-        }
+        TablaPerfil f = new TablaPerfil();
+        
+        trabajos = f.llenarTabla(anteproystemp);
+        
         return trabajos;
     }
 
@@ -274,15 +183,13 @@ public class EvaluadorController {
         this.modo = modo;
     }
     
-    public void anteproyectosPorEvaluar()
-    {
-      modo = false;
-      titulo = "Anteproyectos por evaluar";
+    public void trabajosenCurso() {
+        modo = false;
+        titulo = "Trabajos de Grado en Curso";
     }
-    
-    public void anteproyectosEvaluados()
-    {
-      modo = true;
-      titulo = "Anteproyectos evaluados";
+
+    public void trabajosTerminados() {
+        modo = true;
+        titulo = "Trabajos de Grado Terminados";
     }
 }

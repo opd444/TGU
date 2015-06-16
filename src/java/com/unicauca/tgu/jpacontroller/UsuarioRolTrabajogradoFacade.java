@@ -148,4 +148,15 @@ public class UsuarioRolTrabajogradoFacade extends AbstractFacade<UsuarioRolTraba
             // em.close();
         }
     }
+    
+    public List<UsuarioRolTrabajogrado> findbyRolId_TrabId(int usuid, int trabid) {
+        try {
+            String queryString = "SELECT t FROM UsuarioRolTrabajogrado t "
+                    + "where t.personacedula=" + usuid + " and t.trabajoid=" + trabid;
+            Query query = getEntityManager().createQuery(queryString);
+            return query.getResultList();
+        } finally {
+            // em.close();
+        }
+    }
 }

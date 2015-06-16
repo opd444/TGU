@@ -22,16 +22,6 @@
 
             <ui:define name="body">   
                 #{validarPerfiles.validarPerfil("Estudiante")}
-                <p:panel styleClass="paneltrabajo" rendered="#{!estudianteViewController.estTieneTG(serviciosSimcaController.nombreUsuario)}">
-                    <div class="tituloContenido">                        
-                        Lo sentimos, aun no tiene un trabajo de grado asignado.
-                    </div>
-                    <br /> <br />
-                    <h:panelGrid style="margin: 0 auto;">
-                        <h:outputText value="Modalidad de Trabajo de Grado: Trabajo de Investigación" style="font-weight: bold;" /> 
-                    </h:panelGrid>
-                    <ui:include src="./../procedimiento.xhtml"/> 
-                </p:panel>
             </ui:define>
         </ui:composition>
     </body>

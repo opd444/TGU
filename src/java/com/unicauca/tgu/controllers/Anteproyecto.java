@@ -8,6 +8,7 @@ import com.unicauca.tgu.Auxiliares.ServiciosSimcaController;
 import com.unicauca.tgu.Auxiliares.TrabajodeGradoActual;
 import com.unicauca.tgu.entities.Formatoproducto;
 import com.unicauca.tgu.entities.Productodetrabajo;
+import com.unicauca.tgu.entities.Rol;
 import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.Usuario;
 import com.unicauca.tgu.entities.UsuarioRol;
@@ -26,6 +27,7 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -457,31 +459,64 @@ public class Anteproyecto {
             Map<String, String> mapedicion
                     = gson.fromJson(anteproyactual.getProductocontenido(), new TypeToken<Map<String, String>>() {
                     }.getType());
-
+            
+            Date fecha = new Date();
+            Trabajodegrado trab = new Trabajodegrado(new BigDecimal(TrabajodeGradoActual.id), TrabajodeGradoActual.nombreTg);
+            UsuarioRolTrabajogrado usuroltg = new UsuarioRolTrabajogrado(BigDecimal.ZERO, fecha);
+            usuroltg.setRolid(new Rol(BigDecimal.valueOf(4)));                            //agregando al Evaluador
+            usuroltg.setTrabajoid(trab);
+                        
+            
             if (doc1 == null) {
                 if (mapedicion.containsKey("iddoc1")) {
+                    usuroltg.setPersonacedula(new Usuario(BigDecimal.valueOf(Integer.parseInt(mapedicion.get("iddoc1")))));
+                    ejbFacadeUsuroltrab.remove(usuroltg);
                     mapedicion.remove("iddoc1");
                     mapedicion.remove("nombredoc1");
                 }
             } else {
+                if (mapedicion.containsKey("iddoc1")) {
+                    List<UsuarioRolTrabajogrado> urt = ejbFacadeUsuroltrab.findByUsuid_Rolid_Trabid(Integer.parseInt(mapedicion.get("iddoc1")), 4, TrabajodeGradoActual.id);
+                    if(!urt.isEmpty()) {
+                        urt.get(0).setPersonacedula(new Usuario(doc1.getPersonacedula()));
+                        ejbFacadeUsuroltrab.edit(urt.get(0));
+                    }
+                }
+                else {
+                    usuroltg.setPersonacedula(new Usuario(doc1.getPersonacedula()));
+                    ejbFacadeUsuroltrab.create(usuroltg);
+                }
                 mapedicion.put("iddoc1", doc1.getPersonacedula().intValue() + "");
                 mapedicion.put("nombredoc1", doc1.getPersonanombres() + " " + doc1.getPersonaapellidos());
+                
             }
 
             if (doc2 == null) {
                 if (mapedicion.containsKey("iddoc2")) {
+                    usuroltg.setPersonacedula(new Usuario(BigDecimal.valueOf(Integer.parseInt(mapedicion.get("iddoc2")))));
+                    ejbFacadeUsuroltrab.remove(usuroltg);
                     mapedicion.remove("iddoc2");
                     mapedicion.remove("nombredoc2");
                 }
             } else {
+                if(mapedicion.containsKey("iddoc2")) {
+                   List<UsuarioRolTrabajogrado> urt= ejbFacadeUsuroltrab.findByUsuid_Rolid_Trabid(Integer.parseInt(mapedicion.get("iddoc2")), 4, TrabajodeGradoActual.id);
+                    if(!urt.isEmpty()) {
+                        urt.get(0).setPersonacedula(new Usuario(doc2.getPersonacedula()));
+                        ejbFacadeUsuroltrab.edit(urt.get(0));
+                    }
+                }
+                else {
+                    usuroltg.setPersonacedula(new Usuario(doc2.getPersonacedula()));
+                    ejbFacadeUsuroltrab.create(usuroltg);
+                }
                 mapedicion.put("iddoc2", doc2.getPersonacedula().intValue() + "");
                 mapedicion.put("nombredoc2", doc2.getPersonanombres() + " " + doc2.getPersonaapellidos());
             }
+            
 
             String contenido = gson.toJson(mapedicion, Map.class);
-
             anteproyactual.setProductocontenido(contenido);
-
             ejbFacadeProdTrab.edit(anteproyactual);
 
 //            Servicio_Email se = new Servicio_Email();

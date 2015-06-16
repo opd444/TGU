@@ -5,6 +5,7 @@
  */
 package com.unicauca.tgu.jpacontroller;
 
+import com.unicauca.tgu.entities.Productodetrabajo;
 import com.unicauca.tgu.entities.Trabajodegrado;
 import com.unicauca.tgu.entities.TrabajogradoFase;
 import com.unicauca.tgu.entities.UsuarioRolTrabajogrado;
@@ -24,7 +25,8 @@ import javax.persistence.TypedQuery;
 public class TrabajodegradoFacade extends AbstractFacade<Trabajodegrado> {
     
     @EJB
-    private com.unicauca.tgu.jpacontroller.UsuarioRolTrabajogradoFacade ejbFacade;
+    UsuarioRolTrabajogradoFacade ejbFacade;
+
     
     @PersistenceContext(unitName = "tguPU")
     private EntityManager em;
@@ -68,7 +70,19 @@ public class TrabajodegradoFacade extends AbstractFacade<Trabajodegrado> {
     public List<Trabajodegrado> getTrabajosEnCursoPorJuradoId(int idusu) {
         return getTrabajosTerminadosoEnCursoporRolId(idusu, 0, 7);
     }
+    
+    public List<Trabajodegrado> getTrabajosTerminadosporEvaluadorId(int idusu) {
+        return getTrabajosTerminadosoEnCursoporRolId(idusu, 1, 4);
+    }
 
+    public List<Trabajodegrado> getTrabajosEnCursoPorEvaluadorId(int idusu) {
+        return getTrabajosTerminadosoEnCursoporRolId(idusu, 0, 4);
+    }
+    
+    public List<Trabajodegrado> getTrabajosTerminadosporSecretariaId(int idusu) {
+        return getTrabajosTerminadosoEnCursoporRolId(idusu, 1, 6);
+    }  
+    
     public List<Trabajodegrado> getTrabajosTerminadosoEnCursoporRolId(int idusu, int modo,int rol) {
         List<Trabajodegrado> lst;
         if (modo == 1) {
