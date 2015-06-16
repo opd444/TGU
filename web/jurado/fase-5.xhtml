@@ -76,10 +76,10 @@
                             
                             <h:panelGrid columns="5" cellpadding="5" cellspacing="5">
                                 <h:outputText value="Formato H:" style="font-weight: bold;" />
-                                <p:button value="Diligenciar" icon="ui-icon-document" outcome="diligenciar-formato-H" disabled="#{false}" style="width: 120px;" rendered="#{true}" /> 
-                                <p:button value="Editar" icon="ui-icon-pencil" outcome="editar-formato-H" disabled="#{false}" style="width: 120px;" rendered="#{true}" />
-                                <p:button value="Ver" icon="ui-icon-comment" outcome="/vistas-documentos/ver-formato-H.xhtml" disabled="#{false}" style="width: 120px;" />
-                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{false}" style="width: 120px;" />
+                                <p:button value="Diligenciar" icon="ui-icon-document" outcome="diligenciar-formato-H" style="width: 120px;" rendered="#{!trabajodegradoController.btnDiligenciarFormatoH}" /> 
+                                <p:button value="Editar" icon="ui-icon-pencil" outcome="editar-formato-H" disabled="#{false}" style="width: 120px;" rendered="#{trabajodegradoController.btnDiligenciarFormatoH}" />
+                                <p:button value="Ver" icon="ui-icon-comment" outcome="/vistas-documentos/ver-formato-H.xhtml" disabled="#{!trabajodegradoController.btnDiligenciarFormatoH}" style="width: 120px;" />
+                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{!trabajodegradoController.btnDiligenciarFormatoH}" style="width: 120px;" />
                             </h:panelGrid>                            
                         </p:panel> 
                     </p:panel>

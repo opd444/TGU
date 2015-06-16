@@ -86,8 +86,7 @@ public class TrabajodegradoController implements Serializable {
         }
         return true;
     }
-    
-     
+
     public boolean getBtnVerRevisionFormatoA() {
         return !verificarProductodeTrabajo(trabajoid.intValue(), 1);
     }
@@ -115,37 +114,40 @@ public class TrabajodegradoController implements Serializable {
             return true;
         }
     }
-    
+
     public boolean getBtnDiligenciarFormatoF() {
         return verificarProductodeTrabajo(trabajoid.intValue(), 6);
-     }
-    
+    }
+
     public boolean getBtnEditarFormatoF() {
         return !getBtnDiligenciarFormatoF();
-     }
-    
+    }
+
     public boolean getBtnVerFormatoF() {
         return getBtnEditarFormatoF();
-     }
-    
+    }
+
     public boolean getBtnDescargarFormatoF() {
         return getBtnEditarFormatoF();
-     }
-    
-    public boolean getBtnDiligenciarActaSustentacion(){
+    }
+
+    public boolean getBtnDiligenciarActaSustentacion() {
         return verificarProductodeTrabajo(trabajoid.intValue(), 9);
-     }
-    
+    }
+
+    public boolean getBtnDiligenciarFormatoH() {
+        return verificarProductodeTrabajo(trabajoid.intValue(), 10);
+    }
+
     public boolean getBtnEditarActaSustentacion() {
         return getBtnDiligenciarActaSustentacion();
-     }
-    
+    }
+
     public boolean getBtnVerActaSustentacion() {
         return getBtnEditarActaSustentacion();
-     }
-    
-    /// -.-!
+    }
 
+    /// -.-!
     public boolean getBtnDiligenciarAnteproyecto() {
         List<Productodetrabajo> lstProd = obtenerProductodeTrabajoporFormato(TrabajodeGradoActual.id, 2);
         if (lstProd.size() > 0) {
@@ -364,9 +366,8 @@ public class TrabajodegradoController implements Serializable {
             return true;
         }
     }
-    
-    public boolean getBtnEditarRemisionAnteproyecto()
-    {
+
+    public boolean getBtnEditarRemisionAnteproyecto() {
         List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 4);
         if (lstProductos.size() > 0) {
             return false;
@@ -422,48 +423,49 @@ public class TrabajodegradoController implements Serializable {
     public boolean getBtnDescargarFormatoG() {
         return !getBtnDiligenciarFormatoG();
     }
-    
+
     /**
      * FORMATO: Oficio de Asignación de Jurados, realizado por la Secretaria.
+     *
      * @return Boolean
      */
-    
-    public boolean getBtnDiligenciarOficioAsigJurados()
-    {
-        if(getBtnEditarOficioAsigJurados() == false)
-        {
+    public boolean getBtnDiligenciarOficioAsigJurados() {
+        if (getBtnEditarOficioAsigJurados() == false) {
             List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 7);
             if (lstProductos.size() > 0) {
                 return true;
             } else {
                 return false;
             }
-        }
-        else
+        } else {
             return false;
+        }
     }
 
     public boolean getBtnEditarOficioAsigJurados() {
         List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 8);
-        if (lstProductos.size() > 0)
+        if (lstProductos.size() > 0) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     public boolean getBtnVerOficioAsigJurados() {
         List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 8);
-        if (lstProductos.size() > 0)
+        if (lstProductos.size() > 0) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
-    
+
     public boolean getBtnDescargarOficioAsigJurados() {
         List<Productodetrabajo> lstProductos = ejbFacadePro.ObtenerProdsTrabajoPor_trabajoID_formatoID(trabajoid.intValue(), 8);
-        if (lstProductos.size() > 0)
+        if (lstProductos.size() > 0) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 }

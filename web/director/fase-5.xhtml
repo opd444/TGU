@@ -74,9 +74,14 @@
                             </h:panelGrid>
                             <h:panelGrid columns="3" cellpadding="5" cellspacing="5">                        
                                 <h:outputText value="Acta de sustentación" style="font-weight: bold;" />  
-                                 <p:button value="Ver" icon="ui-icon-comment" outcome="/vistas-documentos/ver-acta-sustentacion.xhtml" disabled="#{!trabajodegradoController.btnVerActaSustentacion}" style="width: 120px;" />      
-                                 <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{!trabajodegradoController.btnVerActaSustentacion}" style="width: 120px;" />
+                                <p:button value="Ver" icon="ui-icon-comment" outcome="/vistas-documentos/ver-acta-sustentacion.xhtml" disabled="#{!trabajodegradoController.btnVerActaSustentacion}" style="width: 120px;" />      
+                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{!trabajodegradoController.btnVerActaSustentacion}" style="width: 120px;" />
                             </h:panelGrid>
+                            <h:panelGrid columns="3" cellpadding="5" cellspacing="5">
+                                <h:outputText value="Formato H:" style="font-weight: bold;" />                                
+                                <p:button value="Ver" icon="ui-icon-comment" outcome="/vistas-documentos/ver-formato-H.xhtml" disabled="#{!trabajodegradoController.btnDiligenciarFormatoH}" style="width: 120px;" />
+                                <p:commandButton value="Descargar" icon="ui-icon-arrowthickstop-1-s" disabled="#{!trabajodegradoController.btnDiligenciarFormatoH}" style="width: 120px;" />
+                            </h:panelGrid>                            
                         </p:panel>
 
                     </p:panel>
